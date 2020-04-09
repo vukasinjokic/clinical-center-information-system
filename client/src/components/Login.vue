@@ -72,7 +72,7 @@ import axios from 'axios'
     methods:{
         login(){
             axios
-            .post('http://localhost:8081/login',this.user)
+            .post('http://localhost:8081/api/login',this.user)
             .then(response =>{
                 if(response.data){
                     alert("Uspesno logovanje");
