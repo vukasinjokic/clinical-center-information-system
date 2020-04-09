@@ -5,6 +5,7 @@ import Home from '../components/Home'
 import Doctors from '../components/Doctors'
 import Login from '../components/Login'
 import Appointments from '../components/Appointments'
+import Patients from '../components/Patients'
 
 
 Vue.use(VueRouter);
@@ -37,6 +38,11 @@ const router = new VueRouter({
         name: 'Appointments',
         component : Appointments
 
+      },
+      {
+        path: '/patients',
+        name: 'Patients',
+        component : Patients
       }
     ]
   })
