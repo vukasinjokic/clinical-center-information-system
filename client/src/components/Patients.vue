@@ -7,7 +7,7 @@
     v-model="patient.name"
     label="patient name"
     name="name"
-    type="number"
+    type="text"
     />
     </v-form>
 

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
+import com.example.demo.useful_beans.PatientToAdd;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -13,8 +14,10 @@ public class PatientService {
 
     Set<Patient> patients = new HashSet<Patient>();
 
-    public boolean addPatient(Patient patient){
-        patients.add(patient);
+    public boolean addPatient(PatientToAdd patient){
+        Patient p = new Patient();
+        p.setName(patient.name);
+        patients.add(p);
         return true;
     }
 
