@@ -8,10 +8,16 @@
         to="/home"
       >
       Home</router-link>
-      
+      <v-spacer></v-spacer>
       <router-link
         to="/doctors"
       >Doctors</router-link>
+      <v-spacer></v-spacer>
+      
+      
+      <router-link
+        to="/appointments"
+      >Appointments</router-link>
 
       <v-spacer></v-spacer>
       <v-toolbar-title>Clinic center</v-toolbar-title>
