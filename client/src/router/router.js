@@ -2,12 +2,19 @@ import Vue from 'vue';
 import VueRouter from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
 import Home from '../components/Home'
+import Doctors from '../components/Doctors'
+import Login from '../components/Login'
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
     mode : 'hash',
     routes: [
+      {
+        path: '/',
+        name: Login,
+        component: Login
+      },
       {
         path: '/helloWorld',
         name: 'HelloWorld',
@@ -17,6 +24,11 @@ const router = new VueRouter({
         path: '/home',
         name: 'Home',
         component: Home
+      },
+      {
+        path: '/doctors',
+        name: 'Doctors',
+        component: Doctors
       }
     ]
   })
