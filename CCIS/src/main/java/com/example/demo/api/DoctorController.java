@@ -1,8 +1,9 @@
-package api;
+package com.example.demo.api;
 
-import model.Doctor;
+import com.example.demo.model.Doctor;
+import com.example.demo.service.DoctorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import service.DoctorService;
 
 import java.util.HashSet;
 

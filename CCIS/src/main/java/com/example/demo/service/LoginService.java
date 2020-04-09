@@ -1,12 +1,12 @@
-package service;
+package com.example.demo.service;
 
-import model.Doctor;
-import model.User;
-import useful_beans.UserToLogin;
+import com.example.demo.model.User;
+import com.example.demo.useful_beans.UserToLogin;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
-
+@Service
 public class LoginService {
 
     private HashSet<User> users = new HashSet<User>();

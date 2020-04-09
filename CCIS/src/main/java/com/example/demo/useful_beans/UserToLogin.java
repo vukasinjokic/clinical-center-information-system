@@ -1,4 +1,4 @@
-package useful_beans;
+package com.example.demo.useful_beans;
 
 public class UserToLogin {
     public String email;

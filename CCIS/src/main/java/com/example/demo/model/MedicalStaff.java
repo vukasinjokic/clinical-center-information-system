@@ -1,5 +1,4 @@
-package model;
-import java.util.*;
+package com.example.demo.model;
 
 public abstract class MedicalStaff extends User {
    private Calendar calendar;

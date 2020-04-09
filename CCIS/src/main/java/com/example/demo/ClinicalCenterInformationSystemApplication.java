@@ -1,11 +1,12 @@
-package main;
+package com.example.demo;
 
-import api.LoginController;
-import model.Doctor;
-import model.User;
+import com.example.demo.api.LoginController;
+import com.example.demo.model.Doctor;
+import com.example.demo.model.User;
+import com.example.demo.service.LoginService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import service.LoginService;
+
 
 import javax.print.Doc;
 import java.util.HashSet;
