@@ -1,8 +1,25 @@
 package com.example.demo.model;
 
+import javax.persistence.*;
+import java.util.UUID;
+
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "operationRooms")
 public class OperationRoom {
+
+   @Id
+   @GeneratedValue(strategy = IDENTITY)
+   @Column(name = "id", unique = true, nullable = false)
+   private Integer id;
+
+   @Column(name = "name", unique = true, nullable = false)
    private String name;
 
+   @OneToOne(fetch = LAZY)
+   @JoinColumn(name = "calendar_id")
    private Calendar calendar;
 
    public OperationRoom() {

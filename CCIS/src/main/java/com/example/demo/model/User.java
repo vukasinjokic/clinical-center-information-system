@@ -1,29 +1,56 @@
 package com.example.demo.model;
+import javax.persistence.*;
 import java.util.*;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
+   @Id
+   @GeneratedValue(strategy = IDENTITY)
+   @Column(name = "id", unique = true, nullable = false)
+   private Integer id;
+
+   @Column(name = "email", unique = true, nullable = false)
    private String email;
+
+   @Column(name = "password", nullable = false)
    private String password;
-   private String name;
+
+   @Column(name = "firstName", nullable = false)
+   private String firstName;
+
+   @Column(name = "lastName", nullable = false)
    private String lastName;
+
+   @Column(name = "address", nullable = false)
    private String address;
+
+   @Column(name = "city", nullable = false)
    private String city;
+
+   @Column(name = "country", nullable = false)
    private String country;
-   private String phone;
+
+   @Column(name = "phoneNumber", nullable = false)
+   private String phoneNumber;
+
+   @Column(name = "socialSecurityNumber", unique = true, nullable = false)
    private String socialSecurityNumber;
 
    public User() {
    }
 
-   public User(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber) {
+   public User(String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber) {
       this.email = email;
       this.password = password;
-      this.name = name;
+      this.firstName = firstName;
       this.lastName = lastName;
       this.address = address;
       this.city = city;
       this.country = country;
-      this.phone = phone;
+      this.phoneNumber = phoneNumber;
       this.socialSecurityNumber = socialSecurityNumber;
    }
 
@@ -43,12 +70,12 @@ public abstract class User {
       this.password = password;
    }
 
-   public String getName() {
-      return name;
+   public String getFirstName() {
+      return firstName;
    }
 
-   public void setName(String name) {
-      this.name = name;
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
    }
 
    public String getLastName() {
@@ -83,12 +110,12 @@ public abstract class User {
       this.country = country;
    }
 
-   public String getPhone() {
-      return phone;
+   public String getPhoneNumber() {
+      return phoneNumber;
    }
 
-   public void setPhone(String phone) {
-      this.phone = phone;
+   public void setPhoneNumber(String phone) {
+      this.phoneNumber = phone;
    }
 
    public String getSocialSecurityNumber() {

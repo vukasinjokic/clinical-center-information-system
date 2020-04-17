@@ -1,7 +1,16 @@
 package com.example.demo.model;
 
+import javax.persistence.*;
+
 public class Request {
    public enum RequestType{};
+   @Id
+   @GeneratedValue
+   @Column(name = "id", unique = true, nullable = false)
+   private Integer id;
+
+   @Enumerated(EnumType.STRING)
+   @Column(name = "type", length = 20)
    private RequestType type;
    private String description;
 

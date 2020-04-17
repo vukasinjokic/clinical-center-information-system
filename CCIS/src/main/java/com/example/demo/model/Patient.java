@@ -1,6 +1,17 @@
 package com.example.demo.model;
+import static javax.persistence.FetchType.LAZY;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "patients")
 public class Patient extends User {
+
+   @OneToOne(fetch = LAZY)
+   @JoinColumn(name = "medicalRecordId")
    private MedicalRecord medicalRecord;
 
    public Patient() {
