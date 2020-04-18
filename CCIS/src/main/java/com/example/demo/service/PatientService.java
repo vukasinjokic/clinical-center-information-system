@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
 import com.example.demo.useful_beans.PatientToAdd;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class PatientService {
 
     public boolean addPatient(PatientToAdd patient){
         Patient p = new Patient();
-        p.setName(patient.name);
+        p.setFirstName(patient.name);
         patients.add(p);
         return true;
     }

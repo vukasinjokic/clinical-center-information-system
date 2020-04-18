@@ -1,6 +1,18 @@
 package com.example.demo.model;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import static javax.persistence.FetchType.LAZY;
+
+@Entity
+@Table(name = "clinicAdmins")
 public class ClinicAdmin extends User {
+
+   @ManyToOne(fetch = LAZY)
+   @JoinColumn(name = "clinicId", referencedColumnName = "id", nullable = false)
    private Clinic clinic;
 
    public ClinicAdmin() {
