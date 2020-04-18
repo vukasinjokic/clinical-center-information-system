@@ -1,6 +1,13 @@
 package com.example.demo.model;
 
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class MedicalStaff extends User {
+
+
+   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private Calendar calendar;
 
    public MedicalStaff() {

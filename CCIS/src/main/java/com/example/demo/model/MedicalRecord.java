@@ -1,9 +1,19 @@
 package com.example.demo.model;
+import javax.persistence.*;
 import java.util.*;
 
+@Entity
 public class MedicalRecord {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "medRecord_id", unique = true, nullable=false)
+   private Integer id;
+
+   @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "medicalRecord")
    private Collection<String> history;
-   
+
+   @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "medicalRecord")
    private Collection<Appointment> appointments;
 
    public MedicalRecord() {

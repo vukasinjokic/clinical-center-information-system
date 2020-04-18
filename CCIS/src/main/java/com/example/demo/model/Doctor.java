@@ -1,9 +1,19 @@
 package com.example.demo.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "doctor")
 public class Doctor extends MedicalStaff {
+
+   @Column(name="doc_rating", unique = false, nullable = false)
    private float rating;
+
+   @Column(name = "doc_hours", unique = false, nullable = false)
    private int businessHours;
 
+   @ManyToOne
+   @JoinColumn(name = "exType_id", referencedColumnName = "exType_id",nullable = false)
    private ExaminationType examinationType;
 
    public Doctor() {
