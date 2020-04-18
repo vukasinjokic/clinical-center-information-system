@@ -1,17 +1,46 @@
 package com.example.demo.model;
 
+import javax.persistence.*;
 import java.util.*;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "clinics")
 public class Clinic {
+
+   @Id
+   @GeneratedValue(strategy = IDENTITY)
+   @Column(name = "id", unique = true, nullable = false)
+   private Integer id;
+
+   @Column(name = "name", unique = false, nullable = false)
    private String name;
+
+   @Column(name = "address", unique = false, nullable = false)
    private String address;
+
+   @Column(name = "description", unique = false, nullable = false)
    private String description;
+
+   @Column(name = "priceList", unique = false, nullable = false)
    private String priceList;
+
+   @Column(name = "rating", unique = false, nullable = false)
    private float rating;
 
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
    private Collection<Doctor> doctors;
+
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
    private Collection<Appointment> appointments;
+
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
    private Collection<OperationRoom> operationRooms;
+
+   @OneToOne(fetch = LAZY)
    private CodeBook codeBook;
 
 
