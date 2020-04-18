@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class MedicalStaff extends User {
 
-
-   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   @OneToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "calendar_id", referencedColumnName = "id",nullable = false)
    private Calendar calendar;
 
    public MedicalStaff() {

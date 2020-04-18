@@ -7,13 +7,13 @@ public class ExaminationType {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "exType_id", unique = true, nullable = false)
+   @Column(name = "id", unique = true, nullable = false)
    private Integer id;
 
-   @Column(name = "exType_name", unique = false,nullable = false)
+   @Column(name = "name", unique = false,nullable = false)
    private String name;
 
-   @Column(name = "exType_duration", unique = false, nullable = false)
+   @Column(name = "duration", unique = false, nullable = false)
    private float duration;
 
    public ExaminationType() {

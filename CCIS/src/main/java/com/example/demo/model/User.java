@@ -3,13 +3,14 @@ import javax.persistence.*;
 import java.util.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.TABLE;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
    @Id
-   @GeneratedValue(strategy = IDENTITY)
-   @Column(name = "id", unique = true, nullable = false)
+   @GeneratedValue(strategy = TABLE)
+   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Column(name = "email", unique = true, nullable = false)

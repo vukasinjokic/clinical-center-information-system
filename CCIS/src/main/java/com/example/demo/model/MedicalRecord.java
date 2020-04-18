@@ -7,13 +7,16 @@ public class MedicalRecord {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "medRecord_id", unique = true, nullable=false)
+   @Column(name = "id", unique = true, nullable=false)
    private Integer id;
 
-   @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "medicalRecord")
+   //@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "medicalRecord")
+   @ElementCollection
+   @CollectionTable(name = "history", joinColumns = @JoinColumn(name = "medicalRecord_id"))
+   @Column(name = "history")
    private Collection<String> history;
 
-   @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "medicalRecord")
+   @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
    private Collection<Appointment> appointments;
 
    public MedicalRecord() {

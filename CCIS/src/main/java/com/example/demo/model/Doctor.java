@@ -6,20 +6,21 @@ import javax.persistence.*;
 @Table(name = "doctor")
 public class Doctor extends MedicalStaff {
 
-   @Column(name="doc_rating", unique = false, nullable = false)
+   @Column(name="rating", unique = false, nullable = false)
    private float rating;
 
-   @Column(name = "doc_hours", unique = false, nullable = false)
-   private int businessHours;
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "busHours_id", referencedColumnName = "id", nullable = false)
+   private BusinessHours businessHours;
 
-   @ManyToOne
-   @JoinColumn(name = "exType_id", referencedColumnName = "exType_id",nullable = false)
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "exType_id", referencedColumnName = "id",nullable = false)
    private ExaminationType examinationType;
 
    public Doctor() {
    }
 
-   public Doctor(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, float rating, int businessHours, ExaminationType examinationType) {
+   public Doctor(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, float rating, BusinessHours businessHours, ExaminationType examinationType) {
       super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, calendar);
       this.rating = rating;
       this.businessHours = businessHours;
@@ -38,11 +39,11 @@ public class Doctor extends MedicalStaff {
       this.rating = rating;
    }
 
-   public int getBusinessHours() {
+   public BusinessHours getBusinessHours() {
       return businessHours;
    }
 
-   public void setBusinessHours(int businessHours) {
+   public void setBusinessHours(BusinessHours businessHours) {
       this.businessHours = businessHours;
    }
 
