@@ -310,27 +310,27 @@ values ('Poliklinika Žekić', 'Grčkoškolska 3, Novi Sad',
 -------------------------------------------------------- Inserting clinic admins --------------------------------------------------------
 insert into clinic_admins			-- id = 1
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
-values ('mejl@gmail.com', 'admin', 'Veljko', 'Plećaš', 'Nepoznata 4', 'Novi Sad', 'Srbija', '0641234567', '44444444444', 1);
+values ('mejl1@gmail.com', 'admin', 'Veljko', 'Plećaš', 'Nepoznata 4', 'Novi Sad', 'Srbija', '0641234567', '44444444444', 1);
 
 insert into clinic_admins			-- id = 2
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
-values ('mejl@gmail.com', 'admin', 'Nikola', 'Kabašaj', 'Nepoznata 5', 'Sremska Mitrovica', 'Srbija', '0641234567', '55555555555', 1);
+values ('mejl2@gmail.com', 'admin', 'Nikola', 'Kabašaj', 'Nepoznata 5', 'Sremska Mitrovica', 'Srbija', '0641234567', '55555555555', 1);
 
 insert into clinic_admins			-- id = 3
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
-values ('mejl@gmail.com', 'admin', 'Jovan', 'Bodroža', 'Nepoznata 6', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '66666666666', 2);
+values ('mejl3@gmail.com', 'admin', 'Jovan', 'Bodroža', 'Nepoznata 6', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '66666666666', 2);
 
 insert into clinic_admins			-- id = 4
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
-values ('mejl@gmail.com', 'admin', 'Petar', 'Petrović', 'Nepoznata 7', 'Subotica', 'Srbija', '0641234567', '77777777777', 2);
+values ('mejl4@gmail.com', 'admin', 'Petar', 'Petrović', 'Nepoznata 7', 'Subotica', 'Srbija', '0641234567', '77777777777', 2);
 
 insert into clinic_admins			-- id = 5
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
-values ('mejl@gmail.com', 'admin', 'Dejan', 'Dejanović', 'Nepoznata 8', 'Kikinda', 'Srbija', '0641234567', '88888888888', 3);
+values ('mejl5@gmail.com', 'admin', 'Dejan', 'Dejanović', 'Nepoznata 8', 'Kikinda', 'Srbija', '0641234567', '88888888888', 3);
 
 insert into clinic_admins			-- id = 6
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
-values ('mejl@gmail.com', 'admin', 'Jovan', 'Jovanović', 'Nepoznata 9', 'Loznica', 'Srbija', '0641234567', '99999999999', 3);
+values ('mejl6@gmail.com', 'admin', 'Jovan', 'Jovanović', 'Nepoznata 9', 'Loznica', 'Srbija', '0641234567', '99999999999', 3);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -357,27 +357,27 @@ insert into calendars (id) values (12);
 ----------------------------------------------------------- Inserting nursers -----------------------------------------------------------
 insert into nurses			-- id = 1
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values ('mejl@gmail.com', 'nurse', 'Ljubica', 'Ljuvinčić', 'Nepoznata 19', 'Knjaževac', 'Srbija', '0641234567', '10101010101', 1, 1);
+values ('mejl7@gmail.com', 'nurse', 'Ljubica', 'Ljuvinčić', 'Nepoznata 19', 'Knjaževac', 'Srbija', '0641234567', '10101010101', 1, 1);
 
 insert into nurses			-- id = 2
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values ('mejl@gmail.com', 'nurse', 'Marijana', 'Marijanović', 'Nepoznata 20', 'Kruševac', 'Srbija', '0641234567', '20202020202', 2, 1);
+values ('mejl8@gmail.com', 'nurse', 'Marijana', 'Marijanović', 'Nepoznata 20', 'Kruševac', 'Srbija', '0641234567', '20202020202', 2, 1);
 
 insert into nurses			-- id = 3
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values ('mejl@gmail.com', 'nurse', 'Marina', 'Marinić', 'Nepoznata 21', 'Mladenovac', 'Srbija', '0641234567', '21212121212', 3, 2);
+values ('mejl9@gmail.com', 'nurse', 'Marina', 'Marinić', 'Nepoznata 21', 'Mladenovac', 'Srbija', '0641234567', '21212121212', 3, 2);
 
 insert into nurses			-- id = 4
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values ('mejl@gmail.com', 'nurse', 'Dušan', 'Dušanović', 'Nepoznata 22', 'Niš', 'Srbija', '0641234567', '23232323232', 4, 2);
+values ('mejl10@gmail.com', 'nurse', 'Dušan', 'Dušanović', 'Nepoznata 22', 'Niš', 'Srbija', '0641234567', '23232323232', 4, 2);
 
 insert into nurses			-- id = 5
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values ('mejl@gmail.com', 'nurse', 'Marko', 'Marković', 'Nepoznata 23', 'Gornji Milanovac', 'Srbija', '0641234567', '24242424242', 5, 3);
+values ('mejl11@gmail.com', 'nurse', 'Marko', 'Marković', 'Nepoznata 23', 'Gornji Milanovac', 'Srbija', '0641234567', '24242424242', 5, 3);
 
 insert into nurses			-- id = 6
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values ('mejl@gmail.com', 'nurse', 'Aljoša', 'Aljošić', 'Nepoznata 24', 'Donji Milanovac', 'Srbija', '0641234567', '252525252', 6, 3);
+values ('mejl12@gmail.com', 'nurse', 'Aljoša', 'Aljošić', 'Nepoznata 24', 'Donji Milanovac', 'Srbija', '0641234567', '252525252', 6, 3);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -407,27 +407,27 @@ insert into examination_types (name, duration) values ('Tip 3', 15.0);			-- id =
 ----------------------------------------------------------- Inserting doctors -----------------------------------------------------------
 insert into doctors			-- id = 1
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values ('mejl@gmail.com', 'doctor', 'Duško', 'Dušković', 'Nepoznata 34', 'Prokuplje', 'Srbija', '0641234567', '36363636363', 7, 0.0, 1, 1, 1);
+values ('mejl13@gmail.com', 'doctor', 'Duško', 'Dušković', 'Nepoznata 34', 'Prokuplje', 'Srbija', '0641234567', '36363636363', 7, 0.0, 1, 1, 1);
 
 insert into doctors			-- id = 2
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values ('mejl@gmail.com', 'doctor', 'Vesna', 'Vesnić', 'Nepoznata 35', 'Smederevo', 'Srbija', '0641234567', '37373737373', 8, 0.0, 2, 2, 1);
+values ('mejl14@gmail.com', 'doctor', 'Vesna', 'Vesnić', 'Nepoznata 35', 'Smederevo', 'Srbija', '0641234567', '37373737373', 8, 0.0, 2, 2, 1);
 
 insert into doctors			-- id = 3
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values ('mejl@gmail.com', 'doctor', 'Ivan', 'Ivanović', 'Nepoznata 36', 'Jagodina', 'Srbija', '0641234567', '38383838383', 9, 0.0, 3, 3, 2);
+values ('mejl15@gmail.com', 'doctor', 'Ivan', 'Ivanović', 'Nepoznata 36', 'Jagodina', 'Srbija', '0641234567', '38383838383', 9, 0.0, 3, 3, 2);
 
 insert into doctors			-- id = 4
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values ('mejl@gmail.com', 'doctor', 'Zorana', 'Zoranović', 'Nepoznata 37', 'Bor', 'Srbija', '0641234567', '39393939393', 10, 0.0, 4, 1, 2);
+values ('mejl16@gmail.com', 'doctor', 'Zorana', 'Zoranović', 'Nepoznata 37', 'Bor', 'Srbija', '0641234567', '39393939393', 10, 0.0, 4, 1, 2);
 
 insert into doctors			-- id = 5
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values ('mejl@gmail.com', 'doctor', 'Zoran', 'Zorić', 'Nepoznata 38', 'Šabac', 'Srbija', '0641234567', '40404040404', 11, 0.0, 5, 2, 3);
+values ('mejl17@gmail.com', 'doctor', 'Zoran', 'Zorić', 'Nepoznata 38', 'Šabac', 'Srbija', '0641234567', '40404040404', 11, 0.0, 5, 2, 3);
 
 insert into doctors			-- id = 6
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values ('mejl@gmail.com', 'doctor', 'Goran', 'Gorić', 'Nepoznata 39', 'Pančevo', 'Srbija', '0641234567', '41414141414', 12, 0.0, 3, 3, 3);
+values ('mejl18@gmail.com', 'doctor', 'Goran', 'Gorić', 'Nepoznata 39', 'Pančevo', 'Srbija', '0641234567', '41414141414', 12, 0.0, 3, 3, 3);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -480,27 +480,27 @@ insert into histories (medical_record_id, history) values (6, 'Kolera');								
 ---------------------------------------------------------- Inserting patients -----------------------------------------------------------
 insert into patients			-- id = 1
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id)
-values ('mejl@gmail.com', 'pacijent', 'Ljubiša', 'Ljubišić', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1);
+values ('mejl19@gmail.com', 'pacijent', 'Ljubiša', 'Ljubišić', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1);
 
 insert into patients			-- id = 2
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id)
-values ('mejl@gmail.com', 'pacijent', 'Ana', 'Anić', 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 2);
+values ('mejl20@gmail.com', 'pacijent', 'Ana', 'Anić', 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 2);
 
 insert into patients			-- id = 3
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id)
-values ('mejl@gmail.com', 'admin', 'Milica', 'Milicić', 'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141', 3);
+values ('mejl21@gmail.com', 'admin', 'Milica', 'Milicić', 'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141', 3);
 
 insert into patients			-- id = 4
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id)
-values ('mejl@gmail.com', 'admin', 'Gordana', 'Gordanović', 'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 4);
+values ('mejl22@gmail.com', 'admin', 'Gordana', 'Gordanović', 'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 4);
 
 insert into patients			-- id = 5
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id)
-values ('mejl@gmail.com', 'admin', 'Olja', 'Oljić', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161', 5);
+values ('mejl23@gmail.com', 'admin', 'Olja', 'Oljić', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161', 5);
 
 insert into patients			-- id = 6
 (email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id)
-values ('mejl@gmail.com', 'admin', 'Milena', 'Milenić', 'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 6);
+values ('mejl24@gmail.com', 'admin', 'Milena', 'Milenić', 'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 6);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

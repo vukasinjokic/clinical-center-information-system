@@ -13,7 +13,7 @@ public abstract class User {
    @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
-   @Column(name = "email", nullable = false)          // not unique because e-mails of developers are used
+   @Column(name = "email", unique = true, nullable = false)
    private String email;
 
    @Column(name = "password", nullable = false)
