@@ -1,9 +1,10 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import java.sql.Time;
 
 @Entity
-@Table(name = "businessHours")
+@Table(name = "business_hours")
 public class BusinessHours {
 
     @Id
@@ -12,29 +13,29 @@ public class BusinessHours {
     private Integer id;
 
     @Column(name="started", unique = false, nullable = false)
-    private float started;
+    private Time started;
 
     @Column(name="ended", unique = false, nullable = false)
-    private float ended;
+    private Time ended;
 
-    public BusinessHours(float started, float ended) {
+    public BusinessHours(Time started, Time ended) {
         this.started = started;
         this.ended = ended;
     }
 
-    public float getStarted() {
+    public Time getStarted() {
         return started;
     }
 
-    public void setStarted(float started) {
+    public void setStarted(Time started) {
         this.started = started;
     }
 
-    public float getEnded() {
+    public Time getEnded() {
         return ended;
     }
 
-    public void setEnded(float ended) {
+    public void setEnded(Time ended) {
         this.ended = ended;
     }
 }
