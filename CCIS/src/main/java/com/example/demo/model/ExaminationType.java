@@ -3,11 +3,12 @@ package com.example.demo.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "examinationType")
 public class ExaminationType {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "id", unique = true, nullable = false)
+   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Column(name = "name", unique = false,nullable = false)

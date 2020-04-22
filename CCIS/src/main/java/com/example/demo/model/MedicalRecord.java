@@ -7,7 +7,7 @@ public class MedicalRecord {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "id", unique = true, nullable=false)
+   @Column(name = "id", unique = true, nullable=false, columnDefinition = "serial")
    private Integer id;
 
    //@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "medicalRecord")

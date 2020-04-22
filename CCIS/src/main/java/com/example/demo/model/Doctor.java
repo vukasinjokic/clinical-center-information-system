@@ -14,7 +14,7 @@ public class Doctor extends MedicalStaff {
    private BusinessHours businessHours;
 
    @OneToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "exType_id", referencedColumnName = "id",nullable = false)
+   @JoinColumn(name = "exType_id", referencedColumnName = "id",nullable = true)
    private ExaminationType examinationType;
 
    public Doctor() {

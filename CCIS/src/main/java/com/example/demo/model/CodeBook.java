@@ -1,6 +1,4 @@
 package com.example.demo.model;
-import org.omg.CORBA.portable.IDLEntity;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -15,7 +13,7 @@ public class CodeBook {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name="id", unique = true, nullable = false)
+   @Column(name="id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @ElementCollection
