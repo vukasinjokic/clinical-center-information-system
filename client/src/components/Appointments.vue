@@ -32,7 +32,7 @@ export default {
     name: "Appointments",
     
     created(){
-        this.fetchAppointments;
+        this.fetchAppointments();
     },
     data(){
         return {
@@ -42,9 +42,11 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['appointments/fetchAppointments']),
-     
+        ...mapActions('appointments', ['fetchAppointments']),
+        addAppointment(){
+            console.log("Implementiraj");
+        }
     },
-    computed: mapGetters(['allAppointments']),
+    computed: mapGetters('appointments',['allAppointments']),
 }
 </script>
