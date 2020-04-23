@@ -2,16 +2,20 @@ package com.example.demo.model;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "requests")
 public class Request {
-   public enum RequestType{};
+   public enum RequestType{REGISTRATION, LEAVE};
    @Id
    @GeneratedValue
-   @Column(name = "id", unique = true, nullable = false)
+   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Enumerated(EnumType.STRING)
-   @Column(name = "type", length = 20)
+   @Column(name = "req_type", length = 20)
    private RequestType type;
+
+   @Column(name = "description", nullable = false)
    private String description;
 
    public Request() {
