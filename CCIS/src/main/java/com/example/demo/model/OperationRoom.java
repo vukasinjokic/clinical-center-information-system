@@ -3,6 +3,7 @@ package com.example.demo.model;
 import javax.persistence.*;
 import java.util.UUID;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,8 +19,8 @@ public class OperationRoom {
    @Column(name = "name", unique = true, nullable = false)
    private String name;
 
-   @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "calendar_id")
+   @OneToOne(fetch = EAGER)
+   @JoinColumn(name = "calendar_id",referencedColumnName = "id")
    private Calendar calendar;
 
    public OperationRoom() {

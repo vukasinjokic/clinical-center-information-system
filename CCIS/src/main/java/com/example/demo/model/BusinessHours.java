@@ -9,7 +9,7 @@ public class BusinessHours {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique = true, nullable = false)
+    @Column(name="id", unique = true, nullable = false, columnDefinition = "serial")
     private Integer id;
 
     @Column(name="started", unique = false, nullable = false)
@@ -22,6 +22,7 @@ public class BusinessHours {
         this.started = started;
         this.ended = ended;
     }
+    public BusinessHours(){}
 
     public Time getStarted() {
         return started;
