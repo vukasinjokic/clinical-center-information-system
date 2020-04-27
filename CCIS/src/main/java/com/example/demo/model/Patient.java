@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Patient extends User {
 
    @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "medicalRecordId")
+   @JoinColumn(name = "medical_record_id")
    private MedicalRecord medicalRecord;
 
    public Patient() {

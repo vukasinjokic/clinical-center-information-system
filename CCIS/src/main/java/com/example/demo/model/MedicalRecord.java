@@ -3,23 +3,26 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@Table(name = "medical_records")
 public class MedicalRecord {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "id", unique = true, nullable=false)
+   @Column(name = "id", unique = true, nullable=false, columnDefinition = "serial")
    private Integer id;
 
    //@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "medicalRecord")
    @ElementCollection
-   @CollectionTable(name = "history", joinColumns = @JoinColumn(name = "medicalRecord_id"))
+   @CollectionTable(name = "histories", joinColumns = @JoinColumn(name = "medical_record_id"))
    @Column(name = "history")
    private Collection<String> history;
 
    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+   @JoinColumn(name = "medical_record_id")
    private Collection<Appointment> appointments;
 
    public MedicalRecord() {
+      this.history = new HashSet<String>();
       this.appointments = new HashSet<Appointment>();
    }
 

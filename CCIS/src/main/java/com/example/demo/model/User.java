@@ -19,10 +19,10 @@ public abstract class User {
    @Column(name = "password", nullable = false)
    private String password;
 
-   @Column(name = "firstName", nullable = false)
+   @Column(name = "first_name", nullable = false)
    private String firstName;
 
-   @Column(name = "lastName", nullable = false)
+   @Column(name = "last_name", nullable = false)
    private String lastName;
 
    @Column(name = "address", nullable = false)
@@ -34,10 +34,10 @@ public abstract class User {
    @Column(name = "country", nullable = false)
    private String country;
 
-   @Column(name = "phoneNumber", nullable = false)
+   @Column(name = "phone_number", nullable = false)
    private String phoneNumber;
 
-   @Column(name = "socialSecurityNumber", unique = true, nullable = false)
+   @Column(name = "social_security_number", unique = true, nullable = false)
    private String socialSecurityNumber;
 
    public User() {

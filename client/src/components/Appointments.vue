@@ -12,15 +12,28 @@
     </v-form>
 
     <v-btn v-on:click="addAppointment" color="primary">Add appointment</v-btn>
-    <v-btn v-on:click="getAllAppointments" color="primary">Get All Appointments</v-btn>
+  
+    <div> 
+        <div v-for="app in allAppointments" :key="app.id">
+            {{app.id}}
+            {{app.price}}
+            {{app.discount}}
+        </div>
+    </div>
 
 </div>
 </template>
 
 <script>
-import axios from 'axios'
+
+import {mapGetters, mapActions} from 'vuex';
+
 export default {
     name: "Appointments",
+    
+    created(){
+        this.fetchAppointments();
+    },
     data(){
         return {
             appointment:{
@@ -29,22 +42,11 @@ export default {
         }
     },
     methods:{
+        ...mapActions('appointments', ['fetchAppointments']),
         addAppointment(){
-            axios
-            .post('http://localhost:8081/appointments/add', this.appointment)
-            .then(response => {
-                if(response.data){
-                    alert("Uspesno dodat pregled");
-                }
-            })
-        },
-        getAllAppointments(){
-            axios
-            .get('http://localhost:8081/appointments/getAppointments')
-            .then(response => {
-                alert(response.data);
-            })
+            console.log("Implementiraj");
         }
-    }
+    },
+    computed: mapGetters('appointments',['allAppointments']),
 }
 </script>

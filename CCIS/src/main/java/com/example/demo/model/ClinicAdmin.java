@@ -8,11 +8,11 @@ import javax.persistence.Table;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Table(name = "clinicAdmins")
+@Table(name = "clinic_admins")
 public class ClinicAdmin extends User {
 
    @ManyToOne(fetch = LAZY)
-   @JoinColumn(name = "clinicId", referencedColumnName = "id", nullable = false)
+   @JoinColumn(name = "clinic_id", referencedColumnName = "id", nullable = false)
    private Clinic clinic;
 
    public ClinicAdmin() {

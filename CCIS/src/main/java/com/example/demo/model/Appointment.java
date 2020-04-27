@@ -12,9 +12,10 @@ public class Appointment {
 
    @Id
    @GeneratedValue(strategy = IDENTITY)
-   @Column(name = "id", unique = true, nullable = false)
+   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
+   @Temporal(TemporalType.TIMESTAMP)
    @Column(name = "time", unique = false, nullable = false)
    private Date time;
 
@@ -25,19 +26,19 @@ public class Appointment {
    private float discount;
 
    @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "doctorId", referencedColumnName = "id", nullable = false)
+   @JoinColumn(name = "doctor_id", referencedColumnName = "id")
    private Doctor doctor;
 
    @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "operationRoomId", referencedColumnName = "id", nullable = false)
+   @JoinColumn(name = "operation_room_id", referencedColumnName = "id")
    private OperationRoom operationRoom;
 
    @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "examinationTypeId", referencedColumnName = "id", nullable = false)
+   @JoinColumn(name = "examination_type_id", referencedColumnName = "id")
    private ExaminationType examinationType;
 
    @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "patientId", referencedColumnName = "id", nullable = true)
+   @JoinColumn(name = "patient_id", referencedColumnName = "id")
    private Patient patient;
 
 

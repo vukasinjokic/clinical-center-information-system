@@ -13,7 +13,7 @@ public class Clinic {
 
    @Id
    @GeneratedValue(strategy = IDENTITY)
-   @Column(name = "id", unique = true, nullable = false)
+   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Column(name = "name", unique = false, nullable = false)
@@ -25,29 +25,37 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @Column(name = "priceList", unique = false, nullable = false)
+   @Column(name = "price_list", unique = false, nullable = false)
    private String priceList;
 
    @Column(name = "rating", unique = false, nullable = false)
    private float rating;
 
    @OneToMany(cascade = {ALL}, fetch = LAZY)
+   @JoinColumn(name = "clinic_id")
    private Collection<Doctor> doctors;
 
    @OneToMany(cascade = {ALL}, fetch = LAZY)
+   @JoinColumn(name = "clinic_id")
+   private Collection<Nurse> nurses;
+
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
+   @JoinColumn(name = "clinic_id")
    private Collection<Appointment> appointments;
 
    @OneToMany(cascade = {ALL}, fetch = LAZY)
+   @JoinColumn(name = "clinic_id")
    private Collection<OperationRoom> operationRooms;
 
    @OneToOne(fetch = LAZY)
+   @JoinColumn(name = "code_book_id", referencedColumnName = "id")
    private CodeBook codeBook;
 
 
    public Clinic() {
    }
 
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<OperationRoom> operationRooms, CodeBook codeBook) {
+   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<OperationRoom> operationRooms, CodeBook codeBook) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -157,6 +165,40 @@ public class Clinic {
       if (doctors != null)
          doctors.clear();
    }
+
+   public Collection<Nurse> getNurses() {
+      return nurses;
+   }
+
+   public void setNurses(Collection<Nurse> nurses) {
+      this.nurses = nurses;
+   }
+
+   public void addNurse(Nurse newNurse) {
+      if (newNurse == null)
+         return;
+      if (this.nurses == null)
+         this.nurses = new HashSet<Nurse>();
+      if (!this.nurses.contains(newNurse))
+         this.nurses.add(newNurse);
+   }
+
+   /** @pdGenerated default remove
+    * @param oldNurse */
+   public void removeNurse(Nurse oldNurse) {
+      if (oldNurse == null)
+         return;
+      if (this.nurses != null)
+         if (this.nurses.contains(oldNurse))
+            this.nurses.remove(oldNurse);
+   }
+
+   /** @pdGenerated default removeAll */
+   public void removeAllNurses() {
+      if (nurses != null)
+         nurses.clear();
+   }
+
    /** @pdGenerated default getter */
    public java.util.Collection<Appointment> getAppointments() {
       if (appointments == null)
