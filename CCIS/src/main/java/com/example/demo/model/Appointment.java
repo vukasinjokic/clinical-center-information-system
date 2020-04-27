@@ -1,8 +1,11 @@
 package com.example.demo.model;
 
+import org.springframework.data.repository.cdi.Eager;
+
 import javax.persistence.*;
 import java.util.*;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -25,19 +28,19 @@ public class Appointment {
    @Column(name = "discount", unique = false, nullable = false)
    private float discount;
 
-   @OneToOne(fetch = LAZY)
+   @OneToOne(fetch = EAGER)
    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
    private Doctor doctor;
 
-   @OneToOne(fetch = LAZY)
+   @OneToOne(fetch = EAGER)
    @JoinColumn(name = "operation_room_id", referencedColumnName = "id")
    private OperationRoom operationRoom;
 
-   @OneToOne(fetch = LAZY)
+   @OneToOne(fetch = EAGER)
    @JoinColumn(name = "examination_type_id", referencedColumnName = "id")
    private ExaminationType examinationType;
 
-   @OneToOne(fetch = LAZY)
+   @OneToOne(fetch = EAGER)
    @JoinColumn(name = "patient_id", referencedColumnName = "id")
    private Patient patient;
 

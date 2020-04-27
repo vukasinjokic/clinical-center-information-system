@@ -1,4 +1,5 @@
 package com.example.demo.model;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 import javax.persistence.Entity;
@@ -10,8 +11,8 @@ import javax.persistence.Table;
 @Table(name = "patients")
 public class Patient extends User {
 
-   @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "medical_record_id")
+   @OneToOne(fetch = EAGER)
+   @JoinColumn(name = "medical_record_id", referencedColumnName = "id")
    private MedicalRecord medicalRecord;
 
    public Patient() {

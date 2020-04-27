@@ -9,11 +9,11 @@ public class Doctor extends MedicalStaff {
    @Column(name="rating", unique = false, nullable = false)
    private float rating;
 
-   @OneToOne(fetch = FetchType.LAZY)
+   @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "bus_hours_id", referencedColumnName = "id", nullable = false)
    private BusinessHours businessHours;
 
-   @OneToOne(fetch = FetchType.LAZY)
+   @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "ex_type_id", referencedColumnName = "id",nullable = false)
    private ExaminationType examinationType;
 

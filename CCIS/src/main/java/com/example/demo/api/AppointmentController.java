@@ -5,6 +5,7 @@ import com.example.demo.service.AppointmentService;
 import com.example.demo.useful_beans.AppointmentToAdd;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -25,7 +26,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/getAppointments")
-    public Set<Appointment> getAllAppointments(){
+    public List<Appointment> getAllAppointments(){
         return appointmentService.getAllAppointments();
     }
 

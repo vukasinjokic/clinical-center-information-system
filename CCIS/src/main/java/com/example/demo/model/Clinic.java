@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -47,7 +48,7 @@ public class Clinic {
    @JoinColumn(name = "clinic_id")
    private Collection<OperationRoom> operationRooms;
 
-   @OneToOne(fetch = LAZY)
+   @OneToOne(fetch = EAGER)
    @JoinColumn(name = "code_book_id", referencedColumnName = "id")
    private CodeBook codeBook;
 
