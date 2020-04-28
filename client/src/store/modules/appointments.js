@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 const state = {
     appointments: []
@@ -10,9 +10,9 @@ const getters = {
 
 const actions = {
     async fetchAppointments({commit}){
-        const response = await axios.get('http://localhost:8081/appointments/getAppointments');
+        // const response = await axios.get('http://localhost:8081/appointments/getAppointments');
   
-       commit('setAppo', response.data);
+       commit('setAppo', [{id : "Hello from appoint view", price : "1000"}]);
     }   
 };
 

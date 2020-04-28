@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
-import Home from '../components/Home'
-import Doctors from '../components/Doctors'
+import Home from '../views/Home'
+import Doctors from '../views/Doctors'
 import Login from '../components/Login'
-import Appointments from '../components/Appointments'
-import Patients from '../components/Patients'
+import Appointments from '../views/Appointments'
+import Patients from '../views/Patients'
 
 
 Vue.use(VueRouter);
