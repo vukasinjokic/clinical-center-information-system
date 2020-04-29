@@ -1,4 +1,6 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -19,15 +21,17 @@ public class CodeBook {
    private Integer id;
 
    @ElementCollection(fetch = LAZY)
+   @JsonIgnore
    @CollectionTable(name = "diagnoses",
-           joinColumns = {@JoinColumn(name = "code_book_id", referencedColumnName = "id")})
+           joinColumns = {@JoinColumn(name = "code_book_id")})
    @MapKeyColumn(name = "code")
    @Column(name = "description")
    private Map<String, String> diagnoses;
 
    @ElementCollection(fetch = LAZY)
+   @JsonIgnore
    @CollectionTable(name = "medications",
-           joinColumns = {@JoinColumn(name = "code_book_id", referencedColumnName = "id")})
+           joinColumns = {@JoinColumn(name = "code_book_id")})
    @MapKeyColumn(name = "code")
    @Column(name = "description")
    private Map<String, String> medications;

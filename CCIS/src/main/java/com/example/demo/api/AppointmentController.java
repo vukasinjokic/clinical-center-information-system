@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.model.Appointment;
+import com.example.demo.model.Clinic;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.useful_beans.AppointmentToAdd;
 import org.springframework.web.bind.annotation.*;

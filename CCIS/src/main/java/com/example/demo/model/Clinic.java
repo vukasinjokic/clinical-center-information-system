@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -39,18 +42,15 @@ public class Clinic {
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    @JoinColumn(name = "clinic_id")
    private Collection<Nurse> nurses;
-
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    @JoinColumn(name = "clinic_id")
    private Collection<Appointment> appointments;
-
-   @OneToMany(cascade = {ALL}, fetch = LAZY, targetEntity = OperationRoom.class
-   )
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
    @JoinColumn(name = "clinic_id")
    private Collection<OperationRoom> operationRooms;
-
-   @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "code_book_id", referencedColumnName = "id")
+   @OneToOne(fetch = LAZY)
+   @JsonIgnore
+   @JoinColumn(name = "code_book_id")
    private CodeBook codeBook;
 
 

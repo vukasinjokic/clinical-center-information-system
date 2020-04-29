@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
@@ -29,19 +31,19 @@ public class Appointment {
    private float discount;
 
    @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+   @JoinColumn(name = "doctor_id")
    private Doctor doctor;
 
    @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "operation_room_id", referencedColumnName = "id")
+   @JoinColumn(name = "operation_room_id")
    private OperationRoom operationRoom;
 
    @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "examination_type_id", referencedColumnName = "id")
+   @JoinColumn(name = "examination_type_id")
    private ExaminationType examinationType;
 
    @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "patient_id", referencedColumnName = "id")
+   @JoinColumn(name = "patient_id")
    private Patient patient;
 
 

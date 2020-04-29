@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "nurses")
+@AttributeOverride(name = "id", column = @Column(name = "n_id", columnDefinition = "serial"))
 public class Nurse extends MedicalStaff {
 
     public Nurse() {

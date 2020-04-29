@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -13,14 +15,14 @@ public class OperationRoom {
 
    @Id
    @GeneratedValue(strategy = IDENTITY)
-   @Column(name = "id", unique = true, nullable = false)
+   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Column(name = "name", unique = true, nullable = false)
    private String name;
 
    @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "calendar_id",referencedColumnName = "id")
+   @JoinColumn(name = "calendar_id")
    private Calendar calendar;
 
    public OperationRoom() {

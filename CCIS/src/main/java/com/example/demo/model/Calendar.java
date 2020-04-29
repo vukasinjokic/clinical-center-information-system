@@ -12,4 +12,10 @@ public class Calendar {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
     private Integer id;
+
+    public Calendar() {
+    }
+
+
+
 }

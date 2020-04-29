@@ -15,8 +15,8 @@
   
     <div> 
         <div v-for="app in allAppointments" :key="app.id">
-            {{app.price}}
-            {{app.discount}}
+            {{app.id}}
+            {{app.doctor}}
         </div>
     </div>
 
@@ -36,6 +36,7 @@ export default {
     data(){
         return {
             appointment:{
+                id: null,
                 price : null
             }
         }
