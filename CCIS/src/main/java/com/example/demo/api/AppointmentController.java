@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-    private ModelMapper modelMapper;
+    private ModelMapper modelMapper = new ModelMapper();
 
     public AppointmentController(AppointmentService appointmentService){
         this.appointmentService = appointmentService;
@@ -37,7 +37,22 @@ public class AppointmentController {
         List<Appointment> allAppointments = appointmentService.getAllAppointments();
 
         return allAppointments.stream()
-                .map(app -> modelMapper.map(app, AppointmentDTO.class))
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    private AppointmentDTO convertToDTO(Appointment appointment){
+        AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);
+        setDTOFields(appointmentDTO, appointment);
+        return appointmentDTO;
+    }
+
+    private void setDTOFields(AppointmentDTO appointmentDTO, Appointment appointment){
+        appointmentDTO.setDoctor(appointment.getDoctor());
+        appointmentDTO.setPatient(appointment.getPatient());
+        appointmentDTO.setOperationRoom(appointment.getOperationRoom());
+        appointmentDTO.setExaminationType(appointment.getExaminationType());
+        appointmentDTO.setClinic(appointment.getClinic());
+        appointmentDTO.setTime(appointment.getTime());
     }
 }

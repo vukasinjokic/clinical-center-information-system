@@ -71,6 +71,14 @@ public class Appointment {
       this.clinic = clinic;
    }
 
+   public Clinic getClinic() {
+      return clinic;
+   }
+
+   public void setClinic(Clinic clinic) {
+      this.clinic = clinic;
+   }
+
    public Integer getId() {
       return id;
    }

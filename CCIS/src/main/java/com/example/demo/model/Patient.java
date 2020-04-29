@@ -18,7 +18,7 @@ public class Patient extends User {
    private MedicalRecord medicalRecord;
 
    @OneToMany(cascade = {CascadeType.ALL},fetch = LAZY)
-   @JoinColumn(name = "appointment_id")
+   @JoinColumn(name = "patient_id")
    private Collection<Appointment> appointment;
 
    public Patient() {

@@ -18,6 +18,12 @@
             {{app.id}}
             {{app.discount}}
             {{app.price}}
+            {{app.doctor}}
+            {{app.patient}}
+            {{app.clinic}}
+            {{app.operationRoom}}
+            {{app.examinationType}}
+            {{app.date}}
         </div>
     </div>
 
