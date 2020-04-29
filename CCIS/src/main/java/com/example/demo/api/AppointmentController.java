@@ -40,19 +40,9 @@ public class AppointmentController {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
-    private AppointmentDTO convertToDTO(Appointment appointment){
+    public AppointmentDTO convertToDTO(Appointment appointment){
         AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);
-        setDTOFields(appointmentDTO, appointment);
+        appointmentDTO.setDTOFields(appointment);
         return appointmentDTO;
-    }
-
-    private void setDTOFields(AppointmentDTO appointmentDTO, Appointment appointment){
-        appointmentDTO.setDoctor(appointment.getDoctor());
-        appointmentDTO.setPatient(appointment.getPatient());
-        appointmentDTO.setOperationRoom(appointment.getOperationRoom());
-        appointmentDTO.setExaminationType(appointment.getExaminationType());
-        appointmentDTO.setClinic(appointment.getClinic());
-        appointmentDTO.setTime(appointment.getTime());
     }
 }

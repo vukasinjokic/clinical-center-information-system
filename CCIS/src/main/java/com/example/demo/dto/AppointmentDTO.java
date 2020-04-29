@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 
 import com.example.demo.model.*;
+import org.modelmapper.ModelMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +18,16 @@ public class AppointmentDTO {
     private String examinationType;
     private String medicalRecord; //vrv ne treba
     private String clinic;
+
+
+    public void setDTOFields(Appointment appointment){
+        this.setDoctor(appointment.getDoctor());
+        this.setPatient(appointment.getPatient());
+        this.setOperationRoom(appointment.getOperationRoom());
+        this.setExaminationType(appointment.getExaminationType());
+        this.setClinic(appointment.getClinic());
+        this.setTime(appointment.getTime());
+    }
 
     public void setDoctor(Doctor doctor){
         this.doctor = doctor.getLastName() + " " +  doctor.getFirstName();
