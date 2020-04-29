@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.AppointmentRepository;
 import com.example.demo.model.Appointment;
+import com.example.demo.model.Clinic;
 import com.example.demo.useful_beans.AppointmentToAdd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

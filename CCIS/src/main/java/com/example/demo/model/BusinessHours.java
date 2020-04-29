@@ -18,11 +18,13 @@ public class BusinessHours {
     @Column(name="ended", unique = false, nullable = false)
     private Time ended;
 
+
+    public BusinessHours(){}
+
     public BusinessHours(Time started, Time ended) {
         this.started = started;
         this.ended = ended;
     }
-    public BusinessHours(){}
 
     public Time getStarted() {
         return started;

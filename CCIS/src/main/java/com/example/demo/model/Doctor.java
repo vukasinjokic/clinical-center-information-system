@@ -1,20 +1,23 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "doctors")
+@AttributeOverride(name = "id", column = @Column(name = "d_id", columnDefinition = "serial"))
 public class Doctor extends MedicalStaff {
 
    @Column(name="rating", unique = false, nullable = false)
    private float rating;
 
    @OneToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "bus_hours_id", referencedColumnName = "id", nullable = false)
+   @JoinColumn(name = "bus_hours_id", nullable = false)
    private BusinessHours businessHours;
 
    @OneToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "ex_type_id", referencedColumnName = "id",nullable = false)
+   @JoinColumn(name = "ex_type_id",nullable = false)
    private ExaminationType examinationType;
 
    public Doctor() {

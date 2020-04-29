@@ -5,8 +5,7 @@ import java.util.*;
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.GenerationType.TABLE;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class User {
    @Id
    @GeneratedValue(strategy = TABLE)

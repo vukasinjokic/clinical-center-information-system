@@ -1,13 +1,14 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class MedicalStaff extends User {
 
    @OneToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "calendar_id", referencedColumnName = "id",nullable = false)
+   @JoinColumn(name = "calendar_id", nullable = false)
    private Calendar calendar;
 
    public MedicalStaff() {

@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -11,8 +11,9 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "clinic_admins")
 public class ClinicAdmin extends User {
 
-   @ManyToOne(fetch = LAZY)
-   @JoinColumn(name = "clinic_id", referencedColumnName = "id", nullable = false)
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JsonIgnore
+   @JoinColumn(name = "clinic_id",nullable = false)
    private Clinic clinic;
 
    public ClinicAdmin() {

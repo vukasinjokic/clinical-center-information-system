@@ -1,18 +1,21 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "patients")
+@AttributeOverride(name = "id", column = @Column(name = "p_id", columnDefinition = "serial"))
 public class Patient extends User {
 
-   @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "medical_record_id", referencedColumnName = "id")
+
+   @OneToOne(fetch = LAZY)
+   @JsonIgnore
+   @JoinColumn(name = "medical_record_id")
    private MedicalRecord medicalRecord;
 
    public Patient() {
