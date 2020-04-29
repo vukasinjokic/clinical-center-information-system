@@ -29,12 +29,7 @@ public class AppointmentController {
 
     @GetMapping("/getAppointments")
     public List<Appointment> getAllAppointments(){
-        ArrayList<Appointment> app = new ArrayList<Appointment>();
-        Appointment appointment = new Appointment();
-        appointment.setPrice(3);
-        appointment.setDiscount(4);
-        app.add(appointment);
-        return app;
+        return appointmentService.getAllAppointments();
     }
 
 }

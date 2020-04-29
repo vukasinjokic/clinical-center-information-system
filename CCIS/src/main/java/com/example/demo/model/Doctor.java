@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "doctors")
-@AttributeOverride(name = "id", column = @Column(name = "d_id", columnDefinition = "serial"))
 public class Doctor extends MedicalStaff {
 
    @Column(name="rating", unique = false, nullable = false)
@@ -20,18 +19,20 @@ public class Doctor extends MedicalStaff {
    @JoinColumn(name = "ex_type_id",nullable = false)
    private ExaminationType examinationType;
 
+
+
    public Doctor() {
    }
 
-   public Doctor(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, float rating, BusinessHours businessHours, ExaminationType examinationType) {
-      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, calendar);
+   public Doctor(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, float rating, BusinessHours businessHours, ExaminationType examinationType, Clinic clinic) {
+      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, calendar, clinic );
       this.rating = rating;
       this.businessHours = businessHours;
       this.examinationType = examinationType;
    }
 
-   public Doctor(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber) {
-      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
+   public Doctor(Integer id,String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber) {
+      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
    }
 
    public float getRating() {

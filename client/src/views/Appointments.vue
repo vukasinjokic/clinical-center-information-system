@@ -16,7 +16,8 @@
     <div> 
         <div v-for="app in allAppointments" :key="app.id">
             {{app.id}}
-            {{app.doctor}}
+            {{app.discount}}
+            {{app.price}}
         </div>
     </div>
 

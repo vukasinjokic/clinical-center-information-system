@@ -25,12 +25,17 @@ public class OperationRoom {
    @JoinColumn(name = "calendar_id")
    private Calendar calendar;
 
+   @ManyToOne(fetch = LAZY)
+   @JoinColumn(name = "clinic_id")
+   private Clinic clinic;
+
    public OperationRoom() {
    }
 
-   public OperationRoom(String name, Calendar calendar) {
+   public OperationRoom(String name, Calendar calendar, Clinic clinic) {
       this.name = name;
       this.calendar = calendar;
+      this.clinic = clinic;
    }
 
    public String getName() {

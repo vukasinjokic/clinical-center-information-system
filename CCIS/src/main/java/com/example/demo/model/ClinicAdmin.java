@@ -19,12 +19,12 @@ public class ClinicAdmin extends User {
    public ClinicAdmin() {
    }
 
-   public ClinicAdmin(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber) {
-      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
+   public ClinicAdmin(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber) {
+      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
    }
 
-   public ClinicAdmin(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Clinic clinic) {
-      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
+   public ClinicAdmin(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Clinic clinic) {
+      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
       this.clinic = clinic;
    }
 

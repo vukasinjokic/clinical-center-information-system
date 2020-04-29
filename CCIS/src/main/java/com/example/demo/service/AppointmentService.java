@@ -24,6 +24,9 @@ public class AppointmentService {
     }
 
     public List<Appointment> getAllAppointments(){
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(appointmentRepository.findAll());
+
         return appointmentRepository.findAll();
     }
 

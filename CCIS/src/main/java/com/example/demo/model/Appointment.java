@@ -46,11 +46,20 @@ public class Appointment {
    @JoinColumn(name = "patient_id")
    private Patient patient;
 
+   @ManyToOne(fetch = LAZY)
+   @JoinColumn(name = "medical_record_id")
+   private MedicalRecord medicalRecord;
+
+   @ManyToOne(fetch = LAZY)
+   @JoinColumn(name = "clinic_id")
+   private Clinic clinic;
+
 
    public Appointment() {
    }
 
-   public Appointment(Date time, float price, float discount, Doctor doctor, OperationRoom operationRoom, ExaminationType examinationType, Patient patient) {
+   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, OperationRoom operationRoom, ExaminationType examinationType, Patient patient, MedicalRecord medicalRecord, Clinic clinic) {
+      this.id = id;
       this.time = time;
       this.price = price;
       this.discount = discount;
@@ -58,6 +67,24 @@ public class Appointment {
       this.operationRoom = operationRoom;
       this.examinationType = examinationType;
       this.patient = patient;
+      this.medicalRecord = medicalRecord;
+      this.clinic = clinic;
+   }
+
+   public Integer getId() {
+      return id;
+   }
+
+   public void setId(Integer id) {
+      this.id = id;
+   }
+
+   public MedicalRecord getMedicalRecord() {
+      return medicalRecord;
+   }
+
+   public void setMedicalRecord(MedicalRecord medicalRecord) {
+      this.medicalRecord = medicalRecord;
    }
 
    public Date getTime() {

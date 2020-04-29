@@ -5,10 +5,12 @@ import java.util.*;
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.GenerationType.TABLE;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
    @Id
-   @GeneratedValue(strategy = TABLE)
+   @GeneratedValue(strategy=GenerationType.TABLE, generator="ust_seq_user")
+   @SequenceGenerator(name = "ust_seq_user", sequenceName = "ust_seq_user", initialValue = 1, allocationSize=1)
    @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
@@ -42,7 +44,8 @@ public abstract class User {
    public User() {
    }
 
-   public User(String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber) {
+   public User(Integer id, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber) {
+      this.id = id;
       this.email = email;
       this.password = password;
       this.firstName = firstName;

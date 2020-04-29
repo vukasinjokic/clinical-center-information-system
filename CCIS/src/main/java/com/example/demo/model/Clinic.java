@@ -42,12 +42,15 @@ public class Clinic {
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    @JoinColumn(name = "clinic_id")
    private Collection<Nurse> nurses;
+
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    @JoinColumn(name = "clinic_id")
    private Collection<Appointment> appointments;
+
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    @JoinColumn(name = "clinic_id")
    private Collection<OperationRoom> operationRooms;
+
    @OneToOne(fetch = LAZY)
    @JsonIgnore
    @JoinColumn(name = "code_book_id")

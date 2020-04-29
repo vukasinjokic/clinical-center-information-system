@@ -21,9 +21,18 @@ public class BusinessHours {
 
     public BusinessHours(){}
 
-    public BusinessHours(Time started, Time ended) {
+    public BusinessHours(Integer id, Time started, Time ended) {
+        this.id = id;
         this.started = started;
         this.ended = ended;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Time getStarted() {
