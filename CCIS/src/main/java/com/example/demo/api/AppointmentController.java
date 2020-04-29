@@ -5,6 +5,7 @@ import com.example.demo.service.AppointmentService;
 import com.example.demo.useful_beans.AppointmentToAdd;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +28,12 @@ public class AppointmentController {
 
     @GetMapping("/getAppointments")
     public List<Appointment> getAllAppointments(){
-        return appointmentService.getAllAppointments();
+        ArrayList<Appointment> app = new ArrayList<Appointment>();
+        Appointment appointment = new Appointment();
+        appointment.setPrice(3);
+        appointment.setDiscount(4);
+        app.add(appointment);
+        return app;
     }
 
 }

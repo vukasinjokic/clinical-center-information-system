@@ -10,8 +10,8 @@
       Home</router-link>
       <v-spacer></v-spacer>
       <router-link
-        to="/doctors"
-      >Doctors</router-link>
+        to="/rooms"
+      >Rooms</router-link>
       <v-spacer></v-spacer>
       
       

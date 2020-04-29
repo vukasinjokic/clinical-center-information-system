@@ -44,7 +44,8 @@ public class Clinic {
    @JoinColumn(name = "clinic_id")
    private Collection<Appointment> appointments;
 
-   @OneToMany(cascade = {ALL}, fetch = LAZY)
+   @OneToMany(cascade = {ALL}, fetch = LAZY, targetEntity = OperationRoom.class
+   )
    @JoinColumn(name = "clinic_id")
    private Collection<OperationRoom> operationRooms;
 
