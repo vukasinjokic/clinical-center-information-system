@@ -1,14 +1,18 @@
 package com.example.demo.api;
 
+import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Clinic;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.useful_beans.AppointmentToAdd;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/appointments")
@@ -16,6 +20,7 @@ import java.util.Set;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
+    private ModelMapper modelMapper;
 
     public AppointmentController(AppointmentService appointmentService){
         this.appointmentService = appointmentService;
@@ -28,8 +33,11 @@ public class AppointmentController {
     }
 
     @GetMapping("/getAppointments")
-    public List<Appointment> getAllAppointments(){
-        return appointmentService.getAllAppointments();
-    }
+    public List<AppointmentDTO> getAllAppointments() {
+        List<Appointment> allAppointments = appointmentService.getAllAppointments();
 
+        return allAppointments.stream()
+                .map(app -> modelMapper.map(app, AppointmentDTO.class))
+                .collect(Collectors.toList());
+    }
 }

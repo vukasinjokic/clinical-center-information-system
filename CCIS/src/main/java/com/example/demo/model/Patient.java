@@ -6,6 +6,7 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "patients")
@@ -16,7 +17,19 @@ public class Patient extends User {
    @JoinColumn(name = "medical_record_id")
    private MedicalRecord medicalRecord;
 
+   @OneToMany(cascade = {CascadeType.ALL},fetch = LAZY)
+   @JoinColumn(name = "appointment_id")
+   private Collection<Appointment> appointment;
+
    public Patient() {
+   }
+
+   public Collection<Appointment> getAppointment() {
+      return appointment;
+   }
+
+   public void setAppointment(Collection<Appointment> appointment) {
+      this.appointment = appointment;
    }
 
    public Patient(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, MedicalRecord medicalRecord) {

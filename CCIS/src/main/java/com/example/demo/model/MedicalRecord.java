@@ -21,9 +21,6 @@ public class MedicalRecord {
    @JoinColumn(name = "medical_record_id")
    private Collection<Appointment> appointments;
 
-
-
-
    public MedicalRecord() {
       this.history = new HashSet<String>();
       this.appointments = new HashSet<Appointment>();

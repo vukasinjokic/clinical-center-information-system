@@ -30,11 +30,11 @@ public class Appointment {
    @Column(name = "discount", unique = false, nullable = false)
    private float discount;
 
-   @OneToOne(fetch = EAGER)
+   @ManyToOne(fetch = LAZY)
    @JoinColumn(name = "doctor_id")
    private Doctor doctor;
 
-   @OneToOne(fetch = EAGER)
+   @OneToOne(fetch = LAZY)
    @JoinColumn(name = "operation_room_id")
    private OperationRoom operationRoom;
 
@@ -42,7 +42,7 @@ public class Appointment {
    @JoinColumn(name = "examination_type_id")
    private ExaminationType examinationType;
 
-   @OneToOne(fetch = EAGER)
+   @ManyToOne(fetch = EAGER)
    @JoinColumn(name = "patient_id")
    private Patient patient;
 

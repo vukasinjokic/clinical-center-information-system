@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "doctors")
@@ -19,7 +20,9 @@ public class Doctor extends MedicalStaff {
    @JoinColumn(name = "ex_type_id",nullable = false)
    private ExaminationType examinationType;
 
-
+   @OneToMany(fetch = FetchType.LAZY)
+   @JoinColumn(name = "appointment_id")
+   private Collection<Appointment> appointments;
 
    public Doctor() {
    }
