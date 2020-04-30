@@ -507,18 +507,18 @@ values (nextval('ust_seq_user'), 'mejl24@gmail.com', 'admin', 'Milena', 'MileniÄ
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting operation rooms -------------------------------------------------------
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 1', 7, 1);				-- id = 1
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 2', 7, 1);				-- id = 2
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 3', 8, 1);				-- id = 3
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 4', 8, 1);				-- id = 4
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 5', 9, 2);				-- id = 5
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 6', 9, 2);				-- id = 6
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 7', 10, 2);			-- id = 7
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 8', 10, 2);			-- id = 8
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 9', 11, 3);			-- id = 9
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 10', 11, 3);			-- id = 10
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 11', 12, 3);			-- id = 11
-insert into operation_rooms (name, calendar_id, clinic_id) values ('Sala 12', 12, 3);			-- id = 12
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 1','100', 7, 1);				-- id = 1
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 2','101', 7, 1);				-- id = 2
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 3','102', 8, 1);				-- id = 3
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 4','103', 8, 1);				-- id = 4
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 5','104', 9, 2);				-- id = 5
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 6','105', 9, 2);				-- id = 6
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 7','106', 10, 2);			-- id = 7
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 8','107', 10, 2);			-- id = 8
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 9','108', 11, 3);			-- id = 9
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 10','109', 11, 3);			-- id = 10
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 11','110', 12, 3);			-- id = 11
+insert into operation_rooms  (name,number, calendar_id, clinic_id) values ('Sala 12','111', 12, 3);			-- id = 12
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
