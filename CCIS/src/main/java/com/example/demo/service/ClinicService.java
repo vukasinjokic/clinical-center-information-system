@@ -5,6 +5,7 @@ import com.example.demo.model.Clinic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -18,10 +19,10 @@ public class ClinicService {
     }
 
     public Clinic findById(Integer id) {
-        return clinicRepository.findById(id);
+        return clinicRepository.findById(id).orElse(null);
     }
 
-    public Set<Clinic> getAllClinics() {
-        return clinicRepository.getAllClinics();
+    public List<Clinic> getAllClinics() {
+        return clinicRepository.findAll();
     }
 }

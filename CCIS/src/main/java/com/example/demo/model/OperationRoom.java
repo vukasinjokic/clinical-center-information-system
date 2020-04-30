@@ -70,5 +70,12 @@ public class OperationRoom {
 
    public void setNumber(String number) {
       this.number = number;
+      
+   public Clinic getClinic() {
+      return clinic;
+   }
+
+   public void setClinic(Clinic clinic) {
+      this.clinic = clinic;
    }
 }
