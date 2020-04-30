@@ -21,7 +21,6 @@ public class CodeBook {
    private Integer id;
 
    @ElementCollection(fetch = LAZY)
-   @JsonIgnore
    @CollectionTable(name = "diagnoses",
            joinColumns = {@JoinColumn(name = "code_book_id")})
    @MapKeyColumn(name = "code")
@@ -29,7 +28,6 @@ public class CodeBook {
    private Map<String, String> diagnoses;
 
    @ElementCollection(fetch = LAZY)
-   @JsonIgnore
    @CollectionTable(name = "medications",
            joinColumns = {@JoinColumn(name = "code_book_id")})
    @MapKeyColumn(name = "code")

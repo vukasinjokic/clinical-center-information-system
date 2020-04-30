@@ -13,5 +13,5 @@ public class ClinicDTO {
     private List<String> nurses;
     private List<AppointmentDTO> appointments;
     private List<String> operationRooms;
-    private String codebook; //
+    private String codebook; // String ili da se napravi codebookDTO?
 }
