@@ -1,6 +1,8 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import appointments from './modules/appointments';
+import room from './modules/room';
+import clinics from './modules/clinics.js';
 
 // load vuex
 Vue.use(Vuex);
@@ -8,6 +10,8 @@ Vue.use(Vuex);
 // create store
 export default new Vuex.Store({
     modules: {
-        appointments
+        appointments,
+        room,
+        clinics
     }
 });

@@ -21,6 +21,9 @@ public class OperationRoom {
    @Column(name = "name", unique = true, nullable = false)
    private String name;
 
+   @Column(name = "number", unique = true, nullable = false)
+   private String number;
+
    @OneToOne(fetch = EAGER)
    @JoinColumn(name = "calendar_id")
    private Calendar calendar;
@@ -31,10 +34,17 @@ public class OperationRoom {
 
    public OperationRoom() {
    }
-
    public OperationRoom(String name, Calendar calendar, Clinic clinic) {
       this.name = name;
       this.calendar = calendar;
+      this.clinic = clinic;
+   }
+
+   public Clinic getClinic() {
+      return clinic;
+   }
+
+   public void setClinic(Clinic clinic) {
       this.clinic = clinic;
    }
 
@@ -53,4 +63,13 @@ public class OperationRoom {
    public void setCalendar(Calendar calendar) {
       this.calendar = calendar;
    }
+
+   public String getNumber() {
+      return number;
+   }
+
+   public void setNumber(String number) {
+      this.number = number;
+   }
+
 }

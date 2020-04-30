@@ -11,9 +11,8 @@ const getters = {
 const actions = {
     async fetchAppointments({commit}){
         const response = await axios.get('http://localhost:8081/appointments/getAppointments');
-        console.log(response.data);
-    //    commit('setAppo', [{id : "Hello from appoint view", price : "1000"}]);
-        commit('setAppo', response.data);
+  
+       commit('setAppo', response.data);
     }   
 };
 

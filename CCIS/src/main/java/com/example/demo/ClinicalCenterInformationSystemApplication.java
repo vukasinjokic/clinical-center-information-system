@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.print.Doc;
 import java.util.HashSet;
 
@@ -16,6 +18,7 @@ public class ClinicalCenterInformationSystemApplication {
 
 	public static LoginService loginService = new LoginService();
 	public static LoginController loginController = new LoginController(loginService);
+	public static EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("CCISPersistence");
 
 	public static void main(String[] args) {
 
