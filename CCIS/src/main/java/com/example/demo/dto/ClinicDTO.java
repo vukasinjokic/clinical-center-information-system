@@ -21,11 +21,20 @@ public class ClinicDTO {
 //    private String codebook; //
 
     public void setDTOFields(Clinic clinic){
+        this.setId(clinic.getId());
         this.setRating(clinic.getRating());
         this.setDoctors(clinic.getDoctors());
         this.setNurses(clinic.getNurses());
         this.setAppointments(clinic.getAppointments());
         this.setOperationRooms(clinic.getOperationRooms());
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id.toString();
     }
 
     public String getName() {

@@ -25,6 +25,12 @@
         to="/patients"
       >Patients</router-link>
       <v-spacer></v-spacer>
+
+      <router-link
+        to="/clinics"
+      >Clinics</router-link>
+      <v-spacer></v-spacer>
+
       <v-toolbar-title>Clinic center</v-toolbar-title>
     </v-app-bar>
     <v-content>

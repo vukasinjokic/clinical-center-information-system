@@ -6,6 +6,8 @@ import Room from '../views/Rooms'
 import Login from '../components/Login'
 import Appointments from '../views/Appointments'
 import Patients from '../views/Patients'
+import Clinics from '../views/Clinics.vue'
+import Clinic from '../views/Clinic.vue'
 
 
 Vue.use(VueRouter);
@@ -43,6 +45,16 @@ const router = new VueRouter({
         path: '/patients',
         name: 'Patients',
         component : Patients
+      },
+      {
+        path: '/clinics',
+        name: 'Clinics',
+        component : Clinics
+      },
+      {
+        path: '/clinic/:id',
+        name: 'Clinic',
+        component: Clinic
       }
     ]
   })
