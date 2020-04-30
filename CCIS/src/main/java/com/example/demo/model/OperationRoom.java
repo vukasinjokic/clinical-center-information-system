@@ -53,4 +53,12 @@ public class OperationRoom {
    public void setCalendar(Calendar calendar) {
       this.calendar = calendar;
    }
+
+   public Clinic getClinic() {
+      return clinic;
+   }
+
+   public void setClinic(Clinic clinic) {
+      this.clinic = clinic;
+   }
 }

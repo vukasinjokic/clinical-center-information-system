@@ -3,10 +3,11 @@ package com.example.demo.Repository;
 import com.example.demo.model.Clinic;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 
 
-public interface ClinicRepository /* extends JpaRepository<Clinic, Integer>*/ {
-    Clinic findById(Integer id);
-    Set<Clinic> getAllClinics();
+public interface ClinicRepository extends JpaRepository<Clinic, Integer> {
+    Optional<Clinic> findById(Integer id);
+    List<Clinic> findAll();
 }
