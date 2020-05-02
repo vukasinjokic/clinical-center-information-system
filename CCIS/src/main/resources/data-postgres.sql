@@ -369,9 +369,9 @@ insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-03-0
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- Inserting event_names ----------------------------------------------------------------
-insert into event_end_dates (calendar_id, event_names) values (1, 'Operacija');
-insert into event_end_dates (calendar_id, event_names) values (1, 'Hiruski Pregled');
-insert into event_end_dates (calendar_id, event_names) values (1, 'Ultrazvuk');
+insert into event_names (calendar_id, event_names) values (1, 'Operacija');
+insert into event_names (calendar_id, event_names) values (1, 'Hiruski Pregled');
+insert into event_names (calendar_id, event_names) values (1, 'Ultrazvuk');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
