@@ -23,7 +23,7 @@
                     dark grey
                 >
                 <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">More info about {{ item.name }}</td>
+                    <td :colspan="headers.length">More info about calendar {{ item.name }}</td>
                 </template>
                 </v-data-table>
             </v-card>

@@ -61,4 +61,12 @@ public class Doctor extends MedicalStaff {
    public void setExaminationType(ExaminationType examinationType) {
       this.examinationType = examinationType;
    }
+
+   public Collection<Appointment> getAppointments() {
+      return appointments;
+   }
+
+   public void setAppointments(Collection<Appointment> appointments) {
+      this.appointments = appointments;
+   }
 }

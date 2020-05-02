@@ -48,7 +48,7 @@ const router = new VueRouter({
         component : Patients
       },
       {
-        path: '/calendar',
+        path: '/doctors/:id/calendar',
         name: 'Calendar',
         component : Calendar
       },
