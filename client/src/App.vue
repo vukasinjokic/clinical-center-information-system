@@ -1,5 +1,8 @@
 <template>
   <v-app>
+     <v-content>
+        <router-view></router-view>  
+      </v-content>
     <v-app-bar
       app
       dark
@@ -13,8 +16,7 @@
         to="/rooms"
       >Rooms</router-link>
       <v-spacer></v-spacer>
-      
-      
+        
       <router-link
         to="/appointments"
       >Appointments</router-link>
@@ -33,9 +35,7 @@
 
       <v-toolbar-title>Clinic center</v-toolbar-title>
     </v-app-bar>
-    <v-content>
-      <router-view></router-view>  
-    </v-content>
+   
   </v-app>
 </template>
 

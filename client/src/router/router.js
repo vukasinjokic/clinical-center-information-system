@@ -3,12 +3,13 @@ import VueRouter from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
 import Home from '../views/Home'
 import Room from '../views/Rooms'
-import Login from '../components/Login'
+import Login from '../views/Login'
 import Appointments from '../views/Appointments'
 import Patients from '../views/Patients'
 import Calendar from '../views/Calendar'
-import Clinics from '../views/Clinics.vue'
-import Clinic from '../views/Clinic.vue'
+import Clinics from '../views/clinic/Clinics.vue'
+import Clinic from '../views/clinic/Clinic.vue'
+import Register from '../views/Register.vue'
 
 
 Vue.use(VueRouter);
@@ -20,6 +21,11 @@ const router = new VueRouter({
         path: '/',
         name: Login,
         component: Login
+      },
+      {
+        path: '/register',
+        name: Register,
+        component: Register
       },
       {
         path: '/helloWorld',

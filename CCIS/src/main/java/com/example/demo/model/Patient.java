@@ -12,7 +12,6 @@ import java.util.Collection;
 @Table(name = "patients")
 public class Patient extends User {
 
-
    @OneToOne(fetch = LAZY)
    @JoinColumn(name = "medical_record_id")
    private MedicalRecord medicalRecord;

@@ -21,10 +21,23 @@
                     item-key="name"
                     show-expand
                     dark grey
+                   
                 >
                 <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">More info about {{ item.name }}</td>
+                    <td :colspan="headers.length">More info about calendar for {{ item.name }}</td>
                 </template>
+
+                <template v-slot:item.actions="{ item }">
+                    <v-icon
+                    small
+                    class="mr-2"
+                    @click="deatails(item)"
+                    >
+                    mdi-pencil
+                    </v-icon>
+                   
+                </template>
+
                 </v-data-table>
             </v-card>
         </v-container>
@@ -49,9 +62,7 @@ export default {
         return {
             headers: [
                 {
-                    text: 'Name',
-                    value: 'name',
-                    fileterable: true
+                    text: 'Name', value: 'name',fileterable: true
                 },
                 {
                     text: 'Number',
@@ -59,10 +70,11 @@ export default {
                     fileterable:true            
                 },
                 {
-                    text: 'Clinic',
-                    value: 'clinic',
-                    fileterable: true
-                }
+                    text: 'Clinic', value: 'clinic',fileterable: true
+                },
+                { 
+                    text: 'Actions', value: 'actions', sortable: false 
+                },
             ],
             search: "",
             expanded: []
@@ -70,7 +82,7 @@ export default {
     },
     methods: {
         ...mapActions('room',['fetchRooms']),
-        submit(){
+        deatails(){
             
         }
        
