@@ -354,7 +354,7 @@ insert into calendars (id) values (12);
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- Inserting event_start_dates ----------------------------------------------------------
-insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-03-04 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (1,'2020-05-04 10:00:00');
 insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-03-04 12:00:00');
 insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-03-04 14:00:00');
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -362,8 +362,8 @@ insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-0
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- Inserting event_end_dates ------------------------------------------------------------
-insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-03-04 11:00:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-03-04 13:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (1, '2020-05-04 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-04-04 13:00:00');
 insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-03-04 15:00:00');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -529,7 +529,7 @@ values (nextval('ust_seq_user'), 'mejl24@gmail.com', 'admin', 'Milena', 'MileniÄ
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting operation rooms -------------------------------------------------------
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 1','100', 7, 1);				-- id = 1
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 1','100', 1, 1);				-- id = 1
 insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 2','101', 7, 1);				-- id = 2
 insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 3','102', 8, 1);				-- id = 3
 insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 4','103', 8, 1);				-- id = 4

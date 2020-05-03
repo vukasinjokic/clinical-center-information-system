@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.model.Calendar;
 import com.example.demo.model.Clinic;
 import com.example.demo.model.OperationRoom;
 
@@ -7,6 +8,7 @@ public class OperationRoomDTO {
     private String id;
     private String name;
     private String number;
+    private Calendar calendar;
 
     private String clinic;
 //    private CalendarDTO calendarDTO;
@@ -14,8 +16,16 @@ public class OperationRoomDTO {
     public void setDtoFields(OperationRoom operationRoom){
         this.number = operationRoom.getNumber();
         this.clinic = operationRoom.getClinic().getName();
+        this.calendar.setEventStartDates(operationRoom.getCalendar().getEventStartDates());
+        this.calendar.setEventEndDates(operationRoom.getCalendar().getEventEndDates());
     }
 
+    public Calendar getCalendar() {
+        return calendar;
+    }
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
     public String getId() {
         return id;
     }

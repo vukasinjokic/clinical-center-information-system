@@ -6,40 +6,52 @@
              <v-card>
                 <v-card-title>
                     <v-text-field
-                    v-model="search"
-                    label="Search"
-                    single-line
-                    hide-details
-                    ></v-text-field>
-                </v-card-title>
+                        v-model="search"
+                        label="Search"
+                        single-line
+                        hide-details
+                    ></v-text-field><v-spacer/>
+                    
+                    <v-menu
+                        v-model="fromDateMenu"
+                        :close-on-content-click="true"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px">
+                        <template v-slot:activator="{ on }">
+                            <v-text-field  v-model="date"
+                                prepend-icon="mdi-timetable"
+                                v-on="on"
+                                label="Pick date"
+                                :value="date"
+                                hint="MM/DD/YYYY format"
+                                />
+                        </template>
+                        <v-date-picker  v-model="date"
+                                @input="fromDateMenu = false">           
+                        </v-date-picker>          
+                    </v-menu>
+                </v-card-title>          
+                </v-card>
                 <v-data-table
                     :headers="headers"
-                    :items="getAllRooms"
+                    :items="applyFilter"
                     :items-per-page="5"
-                    :search="search"
                     :expanded.sync="expanded"
                     item-key="name"
                     show-expand
-                    dark grey
-                   
-                >
+                    dark grey>
                 <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">More info about calendar for {{ item.name }}</td>
+                    <td :colspan="headers.length">
+                        <tr v-for="it in item.calendar.eventStartDates.length" v-bind:key=it.name>
+                            <td>Start date: {{ dateToString(item.calendar.eventStartDates[it-1])}}</td>
+                            <td>End date: {{ dateToString(item.calendar.eventEndDates[it-1])}}</td>
+                        </tr>
+                     </td>
                 </template>
-
-                <template v-slot:item.actions="{ item }">
-                    <v-icon
-                    small
-                    class="mr-2"
-                    @click="deatails(item)"
-                    >
-                    mdi-pencil
-                    </v-icon>
-                   
-                </template>
-
                 </v-data-table>
-            </v-card>
+            {{date}}
         </v-container>
         </div>
         <div>
@@ -53,7 +65,6 @@ import {mapGetters, mapActions} from 'vuex'
 
 export default {
     name: 'Rooms',
-
     created(){
         this.fetchRooms();
     },
@@ -65,9 +76,7 @@ export default {
                     text: 'Name', value: 'name',fileterable: true
                 },
                 {
-                    text: 'Number',
-                    value: 'number',
-                    fileterable:true            
+                    text: 'Number', value: 'number', fileterable:true            
                 },
                 {
                     text: 'Clinic', value: 'clinic',fileterable: true
@@ -77,17 +86,24 @@ export default {
                 },
             ],
             search: "",
+            date:"",
             expanded: []
         }
     },
     methods: {
         ...mapActions('room',['fetchRooms']),
-        deatails(){
-            
+        dateToString(item){
+            var d = new Date(item);
+            return d.toString().substring(0,25);
         }
-       
     },
-    computed: mapGetters('room', ['getAllRooms']),
+    computed:{ 
+        ...mapGetters('room', ['getAllRooms','getFiltered']),
+        applyFilter: function(){
+            return this.getFiltered(this.search,this.date);
+        }
+    }
+
 }
 </script>
 

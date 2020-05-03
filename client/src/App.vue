@@ -4,6 +4,7 @@
         <router-view></router-view>  
       </v-content>
     <v-app-bar
+      height="35px"
       app
       dark
     >
