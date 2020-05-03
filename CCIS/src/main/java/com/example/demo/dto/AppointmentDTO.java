@@ -20,13 +20,21 @@ public class AppointmentDTO {
     private String clinic;
 
 
-    public void setDTOFields(Appointment appointment){
+    public void setFields(Appointment appointment){
         this.setDoctor(appointment.getDoctor());
         this.setPatient(appointment.getPatient());
         this.setOperationRoom(appointment.getOperationRoom());
         this.setExaminationType(appointment.getExaminationType());
         this.setClinic(appointment.getClinic());
         this.setTime(appointment.getTime());
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
     }
 
     public void setDoctor(Doctor doctor){
@@ -57,81 +65,48 @@ public class AppointmentDTO {
         return clinic;
     }
 
-    public void setClinic(String clinic) {
-        this.clinic = clinic;
-    }
-
     public String getDate() {
         return time;
     }
 
-    public void setDate(String date) {
-        this.time = date;
-    }
 
     public float getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
 
     public float getDiscount() {
         return discount;
     }
 
-    public void setDiscount(float discount) {
-        this.discount = discount;
+    public void setId(String id) {
+        this.id = id;
     }
-
-
 
     public String getDoctor() {
         return doctor;
-    }
-
-    public void setDoctor(String doctor) {
-        this.doctor = doctor;
     }
 
     public String getPatient() {
         return patient;
     }
 
-    public void setPatient(String patient) {
-        this.patient = patient;
-    }
-
     public String getOperationRoom() {
         return operationRoom;
     }
 
-    public void setOperationRoom(String operationRoom) {
-        this.operationRoom = operationRoom;
-    }
 
     public String getExaminationType() {
         return examinationType;
     }
 
-    public void setExaminationType(String examinationType) {
-        this.examinationType = examinationType;
-    }
 
     public String getMedicalRecord() {
         return medicalRecord;
-    }
-
-    public void setMedicalRecord(String medicalRecord) {
-        this.medicalRecord = medicalRecord;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

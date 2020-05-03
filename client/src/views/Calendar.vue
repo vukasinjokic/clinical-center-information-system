@@ -22,15 +22,7 @@
         class="ma-2"
         label="type"
       ></v-select>
-      <v-select
-        v-model="mode"
-        :items="modes"
-        dense
-        outlined
-        hide-details
-        label="event-overlap-mode"
-        class="ma-2"
-      ></v-select>
+   
       <v-select
         v-model="weekday"
         :items="weekdays"
@@ -66,6 +58,7 @@
 </template>
 
 <script>
+import axios from "axios";
   export default {
     data: () => ({
       type: 'month',
@@ -86,6 +79,21 @@
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Operacija', 'Ultrazvuk', 'Hirurski pregled'],
     }),
+    created() {
+        axios
+        .get("http://localhost:8081/doctors/16/calendar")
+        .then(response => {
+            response.data.eventStartDates.forEach(date => {
+                this.eventStartDates.push(new Date(date))
+            }); 
+            response.data.eventEndDates.forEach(date => {
+                this.eventEndDates.push(new Date(date))
+            }); 
+            this.names = response.data.eventNames;
+        })
+
+
+    },
     methods: {
       getEvents () {
         const events = []

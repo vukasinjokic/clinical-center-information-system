@@ -42,7 +42,7 @@ public class AppointmentController {
     }
     public AppointmentDTO convertToDTO(Appointment appointment){
         AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);
-        appointmentDTO.setDTOFields(appointment);
+        appointmentDTO.setFields(appointment);
         return appointmentDTO;
     }
 }
