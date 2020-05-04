@@ -115,7 +115,7 @@ public class ClinicDTO {
         ModelMapper modelMapper = new ModelMapper();
         for (Appointment appointment : appointments) {
             AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);
-            appointmentDTO.setDTOFields(appointment);
+            appointmentDTO.setFields(appointment);
             appointmentDTOS.add(appointmentDTO);
         }
 
