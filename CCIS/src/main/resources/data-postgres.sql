@@ -418,9 +418,9 @@ insert into business_hours (started, ended) values ('7:00:00', '14:00:00');				-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting examination types -------------------------------------------------------
-insert into examination_types (name, duration) values ('Tip 1', 15.0);			-- id = 1
-insert into examination_types (name, duration) values ('Tip 2', 15.0);			-- id = 2
-insert into examination_types (name, duration) values ('Tip 3', 15.0);			-- id = 3
+insert into examination_types (name, duration) values ('Pregled 1', 5.0);			-- id = 1
+insert into examination_types (name, duration) values ('Pregled 2', 3.0);			-- id = 2
+insert into examination_types (name, duration) values ('Pregled 3', 1.0);			-- id = 3
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

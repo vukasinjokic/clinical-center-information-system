@@ -1,19 +1,9 @@
 <template>
 <div>
-    <div class="home">
-    </div>
-    <v-form>
-    <v-text-field
-    v-model="appointment.price"
-    label="Appointment price"
-    name="price"
-    type="number"
-    />
-    </v-form>
-
-    <v-btn v-on:click="addAppointment" color="primary">Add appointment</v-btn>
-  
-    <div> 
+    <v-container>
+        <div class="text-right">
+            <AddFreeAppointment></AddFreeAppointment>
+        </div>
         <div v-for="app in allAppointments" :key="app.id">
             {{app.id}}
             {{app.discount}}
@@ -25,20 +15,19 @@
             {{app.examinationType}}
             {{app.date}}
         </div>
-    </div>
-
+    </v-container>
 </div>
 </template>
 
 <script>
 
 import {mapGetters, mapActions} from 'vuex';
+import AddFreeAppointment from '../components/AddFreeAppointment.vue'
 
 export default {
     name: "Appointments",
-    
-    created(){
-        this.fetchAppointments();
+    components: {
+        AddFreeAppointment
     },
     data(){
         return {
@@ -48,12 +37,17 @@ export default {
             }
         }
     },
+    created(){
+        this.fetchAppointments();
+    },
+    computed: mapGetters('appointments',['allAppointments']),
+    
     methods:{
         ...mapActions('appointments', ['fetchAppointments']),
         addAppointment(){
             console.log("Implementiraj");
         }
     },
-    computed: mapGetters('appointments',['allAppointments']),
+    
 }
 </script>

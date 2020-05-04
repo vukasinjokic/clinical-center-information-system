@@ -11,7 +11,6 @@
                         single-line
                         hide-details
                     ></v-text-field><v-spacer/>
-                    
                     <v-menu
                         v-model="fromDateMenu"
                         :close-on-content-click="true"
@@ -90,6 +89,12 @@ export default {
             expanded: []
         }
     },
+    computed:{ 
+        ...mapGetters('room', ['getAllRooms','getFiltered']),
+        applyFilter: function(){
+            return this.getFiltered(this.search,this.date);
+        }
+    },
     methods: {
         ...mapActions('room',['fetchRooms']),
         dateToString(item){
@@ -97,12 +102,7 @@ export default {
             return d.toString().substring(0,25);
         }
     },
-    computed:{ 
-        ...mapGetters('room', ['getAllRooms','getFiltered']),
-        applyFilter: function(){
-            return this.getFiltered(this.search,this.date);
-        }
-    }
+    
 
 }
 </script>
