@@ -81,7 +81,20 @@
     methods:{
         submit(){
           if(this.$refs.form.validate()){
-            //tvoj kod jefto
+            axios
+            .post('http://localhost:8081/auth/login', this.user)
+            .then(response =>{
+                if(response.data){
+                    localStorage.setItem('JWT', response.data.accessToken);
+                    localStorage.setItem('Duration', response.data.expiresIn);
+                    alert("Uspesno logovanje");
+                    this.$router.push('home');
+                }
+                else
+                    alert("Neispravan email ime ili lozinka");
+            })
+            .catch(() => { alert("Neispravan email ili lozinka") });
+
           }
         }
     }

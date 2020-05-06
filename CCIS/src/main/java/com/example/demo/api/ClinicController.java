@@ -5,8 +5,10 @@ import com.example.demo.model.Clinic;
 import com.example.demo.service.ClinicService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,8 +27,16 @@ public class ClinicController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('PATIENT')")
     public List<ClinicDTO> getAllClinics() {
         List<Clinic> clinics = clinicService.getAllClinics();
+//        List<ClinicDTO> clinicDTOs = new ArrayList<>(clinics.size());
+//
+//        for (int i = 0; i < clinics.size(); i++) {
+//            clinicDTOs.add(convertToDTO(clinics.get(i)));
+//        }
+//
+//        return clinicDTOs;
 
         return clinics.stream()
                 .map(this::convertToDTO)
@@ -34,6 +44,7 @@ public class ClinicController {
     }
 
     @GetMapping(path = "{id}")
+    @PreAuthorize("hasRole('PATIENT')")
     public ClinicDTO findById(@PathVariable("id") Integer id) {
         Clinic clinic = clinicService.findById(id);
         ClinicDTO clinicDTO = modelMapper.map(clinic, ClinicDTO.class);

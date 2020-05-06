@@ -1,7 +1,6 @@
 package com.example.demo.Repository;
 
 import com.example.demo.ClinicalCenterInformationSystemApplication;
-import com.example.demo.dummy.DummyClinicClass;
 import com.example.demo.model.Clinic;
 import org.springframework.stereotype.Repository;
 
