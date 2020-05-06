@@ -418,9 +418,15 @@ insert into business_hours (started, ended) values ('7:00:00', '14:00:00');				-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting examination types -------------------------------------------------------
+<<<<<<< HEAD
 insert into examination_types (name, duration) values ('Sistematski pregled', 1000 * 60 * 30);			-- id = 1
 insert into examination_types (name, duration) values ('Ultrazvuk', 1000 * 60 * 60);			-- id = 2
 insert into examination_types (name, duration) values ('Operacija', 1000 * 60 * 90);			-- id = 3
+=======
+insert into examination_types (name, duration) values ('Sistematski pregled', 1000 * 60 * 60);			-- id = 1
+insert into examination_types (name, duration) values ('Ultrazvuk', 3.0);			-- id = 2
+insert into examination_types (name, duration) values ('Operacija', 1.0);			-- id = 3
+>>>>>>> 68ddbca6757b785d4066648c5f50d35be169ee3f
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -577,6 +583,7 @@ values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 
 insert into appointments			-- id = 6
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				6, 				2);
+
 
 insert into appointments			-- id = 7
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)

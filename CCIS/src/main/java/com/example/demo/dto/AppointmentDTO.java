@@ -12,7 +12,7 @@ public class AppointmentDTO {
     private String time;
     private float price;
     private float discount;
-    private String doctor;
+    private String doctor; //
     private String patient;
     private String operationRoom;
     private String examinationType;
@@ -21,6 +21,7 @@ public class AppointmentDTO {
 
 
     public void setFields(Appointment appointment){
+
         this.setDoctor(appointment.getDoctor());
         this.setPatient(appointment.getPatient());
         this.setOperationRoom(appointment.getOperationRoom());
@@ -38,7 +39,21 @@ public class AppointmentDTO {
     }
 
     public void setDoctor(Doctor doctor){
-        this.doctor = doctor.getLastName() + " " +  doctor.getFirstName();
+        this.doctor = doctor.getEmail();
+    }
+    public void setDoctor(String doctor){
+        this.doctor = doctor;
+    }
+
+    public void setExaminationType(String examinationType) {
+        this.examinationType = examinationType;
+    }
+    public void setClinic(String clinic){
+        this.clinic = clinic;
+    }
+
+    public void setOperationRoom(String operationRoom){
+        this.operationRoom = operationRoom;
     }
 
     public void setPatient(Patient patient){
@@ -46,7 +61,7 @@ public class AppointmentDTO {
     }
 
     public void setOperationRoom(OperationRoom or){
-        this.operationRoom = or.getName();
+        this.operationRoom = or.getName() + " " + or.getNumber();
     }
 
     public void setExaminationType(ExaminationType et){

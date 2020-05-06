@@ -43,11 +43,11 @@ public class Appointment {
    private ExaminationType examinationType;
 
    @ManyToOne(fetch = EAGER)
-   @JoinColumn(name = "patient_id")
+   @JoinColumn(name = "patient_id", nullable = true)
    private Patient patient;
 
    @ManyToOne(fetch = LAZY)
-   @JoinColumn(name = "medical_record_id")
+   @JoinColumn(name = "medical_record_id",nullable = true)
    private MedicalRecord medicalRecord;
 
    @ManyToOne(fetch = LAZY)
@@ -68,6 +68,15 @@ public class Appointment {
       this.examinationType = examinationType;
       this.patient = patient;
       this.medicalRecord = medicalRecord;
+      this.clinic = clinic;
+   }
+   public Appointment(Date time, float price, float discount, Doctor doctor, OperationRoom operationRoom, ExaminationType examinationType, Clinic clinic) {
+      this.time = time;
+      this.price = price;
+      this.discount = discount;
+      this.doctor = doctor;
+      this.operationRoom = operationRoom;
+      this.examinationType = examinationType;
       this.clinic = clinic;
    }
 

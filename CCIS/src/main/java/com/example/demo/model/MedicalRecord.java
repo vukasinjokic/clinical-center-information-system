@@ -18,7 +18,7 @@ public class MedicalRecord {
    private Collection<String> history;
 
    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-   @JoinColumn(name = "medical_record_id")
+   @JoinColumn(name = "medical_record_id", nullable = true)
    private Collection<Appointment> appointments;
 
    public MedicalRecord() {

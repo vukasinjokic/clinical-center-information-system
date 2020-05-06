@@ -64,7 +64,6 @@ const getters = {
 const actions = {
     async fetchRooms({commit}){
         const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms");
-
         commit('setRooms', response.data);
     },
 
