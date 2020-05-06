@@ -18,8 +18,8 @@ public abstract class User implements UserDetails {
    @Column(name = "username", unique = true, nullable = false)
    private String username;
 
-//   @Column(name = "email", unique = true, nullable = false)
-//   private String email;
+   @Column(name = "email", unique = true, nullable = false)
+   private String email;
 
    @Column(name = "password", nullable = false)
    private String password;
@@ -57,10 +57,10 @@ public abstract class User implements UserDetails {
    public User() {
    }
 
-   public User(Integer id, String username, /*String email,*/ String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
+   public User(Integer id, String username, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
       this.id = id;
       this.username = username;
-//      this.email = email;
+      this.email = email;
       this.password = password;
       this.firstName = firstName;
       this.lastName = lastName;
@@ -81,13 +81,13 @@ public abstract class User implements UserDetails {
       this.id = id;
    }
 
-//   public String getEmail() {
-//      return email;
-//   }
-//
-//   public void setEmail(String email) {
-//      this.email = email;
-//   }
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
    @Override
    public String getPassword() {

@@ -18,12 +18,12 @@ public class ClinicAdmin extends User {
    public ClinicAdmin() {
    }
 
-   public ClinicAdmin(Integer id, String username, /*String email,*/ String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
-      super(id, username, /*email,*/ password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
+   public ClinicAdmin(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
    }
 
-   public ClinicAdmin(Integer id, String username, /*String email,*/ String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Clinic clinic, List<Authority> authorities) {
-      super(id, username, /*email,*/ password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
+   public ClinicAdmin(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Clinic clinic, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
       this.clinic = clinic;
    }
 

@@ -35,7 +35,7 @@ public class PatientService {
     }
 
     public Optional<Patient> selectPatientById(String id){
-        return patients.stream().filter(patient -> patient./*getEmail()*/getPassword().equals(id))
+        return patients.stream().filter(patient -> patient.getEmail().equals(id))
                 .findFirst();
     }
 }

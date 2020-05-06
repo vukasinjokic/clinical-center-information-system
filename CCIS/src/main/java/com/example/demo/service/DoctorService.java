@@ -35,7 +35,7 @@ public class DoctorService {
     }
 
     public Optional<Doctor> selectDoctorById(String id){
-        return doctors.stream().filter(doctor -> doctor./*getEmail()*/getPassword().equals(id))
+        return doctors.stream().filter(doctor -> doctor.getEmail().equals(id))
                 .findFirst();
     }
 

@@ -28,15 +28,15 @@ public class Doctor extends MedicalStaff {
    public Doctor() {
    }
 
-   public Doctor(Integer id, String username, /*String email,*/ String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, float rating, BusinessHours businessHours, ExaminationType examinationType, Clinic clinic, List<Authority> authorities) {
-      super(id, username, /*email,*/ password, name, lastName, address, city, country, phone, socialSecurityNumber, calendar, clinic, authorities);
+   public Doctor(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, float rating, BusinessHours businessHours, ExaminationType examinationType, Clinic clinic, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, calendar, clinic, authorities);
       this.rating = rating;
       this.businessHours = businessHours;
       this.examinationType = examinationType;
    }
 
-   public Doctor(Integer id, String username, /*String email,*/ String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
-      super(id, username, /*email,*/ password, name, lastName, address, city, country, phone, socialSecurityNumber, authorities);
+   public Doctor(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, authorities);
    }
 
    public float getRating() {
