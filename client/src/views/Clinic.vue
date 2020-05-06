@@ -7,6 +7,7 @@
             {{clinic.rating}}
         </div>
         
+        <h2>Ovo su doktori u klinici</h2>
         <div
         class="doctor"
         v-for="doctor in this.clinic.doctors"
@@ -26,6 +27,8 @@
             //     {{clinic.rating}}
             // </div>
 import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
     name: "Clinic",
 
@@ -54,18 +57,17 @@ export default {
         }
         axios.get(`http://localhost:8081/clinics/${this.$route.params.id}`, config)
         .then( response => {
-            this.clinic.id = response.data.id;
-            this.clinic.name = response.data.name;
-            this.clinic.address = response.data.address;
-            this.clinic.description = response.data.description;
-            this.clinic.priceList = response.data.priceList;
-            this.clinic.rating = response.data.rating;
-            this.clinic.doctors = response.data.doctors;
-            this.clinic.nurses = response.data.nurses;
-            this.clinic.appointments = response.data.appointments;
-            this.clinic.operationRooms = response.data.operationRooms;
-        })
-    }
+            this.clinicsSetter([response.data])
+
+            this.clinic = this.allClinics()[0];
+        });
+    },
+
+    methods: {
+        ...mapActions("clinics", ["clinicsSetter"]),
+
+        ...mapGetters("clinics", ["allClinics"])
+    },
 }
 </script>
 

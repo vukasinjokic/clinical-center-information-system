@@ -30,8 +30,8 @@ public class Patient extends User {
       this.appointment = appointment;
    }
 
-   public Patient(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, MedicalRecord medicalRecord, List<Authority> authorities) {
-      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
+   public Patient(Integer id, String username, /*String email,*/ String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, MedicalRecord medicalRecord, List<Authority> authorities) {
+      super(id, username, /*email,*/ password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
       this.medicalRecord = medicalRecord;
    }
 

@@ -27,8 +27,8 @@
                 <v-form>
                   <v-text-field
                     v-model="user.username"
-                    label="Username"
-                    name="username"
+                    label="Email"
+                    name="email"
                     type="text"
                   />
 
@@ -81,8 +81,9 @@ import axios from 'axios'
                     this.$router.push('home');
                 }
                 else
-                    alert("Neispravno korisnicko ime ili lozinka");
-            });
+                    alert("Neispravan email ime ili lozinka");
+            })
+            .catch(() => { alert("Neispravan email ili lozinka") });
 
         }
     }

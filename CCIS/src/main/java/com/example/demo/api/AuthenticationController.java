@@ -1,10 +1,12 @@
 package com.example.demo.api;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserTokenState;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.security.auth.JwtAuthenticationRequest;
 import com.example.demo.service.CustomUserDetailsService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -60,6 +62,15 @@ public class AuthenticationController {
         System.out.println(jwt);
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
+
+    @GetMapping("/userDetails")
+    public UserDTO getUserDetails() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDTO userDTO = new UserDTO(user);
+        System.out.println(userDTO);
+        return userDTO;
+    }
+
 
 //    // Endpoint za registraciju novog korisnika
 //    @PostMapping("/signup")
