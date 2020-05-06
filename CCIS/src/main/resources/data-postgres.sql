@@ -365,24 +365,24 @@ insert into calendars (id) values (12);
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- Inserting event_start_dates ----------------------------------------------------------
--- insert into event_start_dates (calendar_id, event_start_dates) values (7,'2019-03-04 10:00:00');
--- insert into event_start_dates (calendar_id, event_start_dates) values (7,'2019-03-04 12:00:00');
--- insert into event_start_dates (calendar_id, event_start_dates) values (7,'2019-03-04 14:00:00');
+-- insert into event_start_dates (calendar_id, event_start_dates) values (1,'2020-05-04 10:00:00');
+-- insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-03-04 12:00:00');
+-- insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-03-04 14:00:00');
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 --
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -------------------------------------------------- Inserting event_end_dates ------------------------------------------------------------
--- insert into event_end_dates (calendar_id, event_end_dates) values (7, '2019-03-04 11:00:00');
--- insert into event_end_dates (calendar_id, event_end_dates) values (7, '2019-03-04 13:00:00');
--- insert into event_end_dates (calendar_id, event_end_dates) values (7, '2019-03-04 15:00:00');
+-- insert into event_end_dates (calendar_id, event_end_dates) values (1, '2020-05-04 11:00:00');
+-- insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-04-04 13:00:00');
+-- insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-03-04 15:00:00');
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -------------------------------------------------- Inserting event_names ----------------------------------------------------------------
--- insert into event_names (calendar_id, event_names) values (7, 'Operacija');
--- insert into event_names (calendar_id, event_names) values (7, 'Hiruski Pregled');
--- insert into event_names (calendar_id, event_names) values (7, 'Ultrazvuk');
+-- insert into event_names (calendar_id, event_names) values (1, 'Operacija');
+-- insert into event_names (calendar_id, event_names) values (1, 'Hiruski Pregled');
+-- insert into event_names (calendar_id, event_names) values (1, 'Ultrazvuk');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -429,9 +429,15 @@ insert into business_hours (started, ended) values ('7:00:00', '14:00:00');				-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting examination types -------------------------------------------------------
+<<<<<<< HEAD
+insert into examination_types (name, duration) values ('Sistematski pregled', 1000 * 60 * 30);			-- id = 1
+insert into examination_types (name, duration) values ('Ultrazvuk', 1000 * 60 * 60);			-- id = 2
+insert into examination_types (name, duration) values ('Operacija', 1000 * 60 * 90);			-- id = 3
+=======
 insert into examination_types (name, duration) values ('Sistematski pregled', 1000 * 60 * 60);			-- id = 1
-insert into examination_types (name, duration) values ('Ultrazvuk', 15.0);			-- id = 2
-insert into examination_types (name, duration) values ('Operacija', 15.0);			-- id = 3
+insert into examination_types (name, duration) values ('Ultrazvuk', 3.0);			-- id = 2
+insert into examination_types (name, duration) values ('Operacija', 1.0);			-- id = 3
+>>>>>>> 68ddbca6757b785d4066648c5f50d35be169ee3f
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -540,7 +546,7 @@ values (nextval('ust_seq_user'), 'pacijent6@gmail.com', 'pacijent6@gmail.com', '
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting operation rooms -------------------------------------------------------
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 1','100', 7, 1);				-- id = 1
+insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 1','100', 1, 1);				-- id = 1
 insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 2','101', 7, 1);				-- id = 2
 insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 3','102', 8, 1);				-- id = 3
 insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 4','103', 8, 1);				-- id = 4
@@ -560,57 +566,62 @@ insert into operation_rooms  (name,number, calendar_id, clinic_id) values ('Sala
 --------------------------------------------------------- Inserting appointments --------------------------------------------------------
 insert into appointments			-- id = 1
 (				time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-01 09:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 				1, 				1);
+values ('2020-05-01 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 				1, 				1);
+
+insert into appointments			-- id = 1
+(				time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+values ('2020-05-01 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 				1, 				1);
 
 insert into appointments			-- id = 2
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 				2, 				1);
+values ('2020-05-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 				2, 				1);
 
 insert into appointments			-- id = 3
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 				3, 				1);
+values ('2020-05-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 				3, 				1);
 
 insert into appointments			-- id = 4
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				4,				1);
+values ('2020-05-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				4,				1);
 
 
 
 
 insert into appointments			-- id = 5
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 				5,				2);
+values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 				5,				2);
 
 insert into appointments			-- id = 6
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				6, 				2);
+values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				6, 				2);
+
 
 insert into appointments			-- id = 7
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 				1,				2);
+values ('2020-05-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 				1,				2);
 
 insert into appointments			-- id = 8
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 				2, 				2);
+values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 				2, 				2);
 
 
 
 
 insert into appointments			-- id = 9
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 				3,				3);
+values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 				3,				3);
 
 insert into appointments			-- id = 10
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 				4, 				3);
+values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 				4, 				3);
 
 insert into appointments			-- id = 11
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 				5,				3);
+values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 				5,				3);
 
 insert into appointments			-- id = 12
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				6, 				3);
+values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				6, 				3);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

@@ -30,7 +30,7 @@ public class DoctorDTO {
 
     public void setFields(Doctor doctor){
         try {
-            setUpCalendar(doctor.getCalendar().getId(), doctor.getAppointments());
+            CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
             setClinic(doctor.getClinic());
         }
         catch(Exception e){
@@ -41,26 +41,6 @@ public class DoctorDTO {
     private void setClinic(Clinic clinic){
         this.clinic = clinic.getName();
     }
-
-    private void setUpCalendar(Integer id, Collection<Appointment> appointments) throws ParseException {
-        ArrayList<Date> eventStartDates = new ArrayList<Date>();
-        ArrayList<Date> eventEndDates = new ArrayList<Date>();
-        ArrayList<String> eventNames = new ArrayList<String>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        for(Appointment a : appointments){
-            Date startTime = a.getTime();
-            ExaminationType exType = a.getExaminationType();
-            eventStartDates.add(sdf.parse(sdf.format(startTime)));
-            eventEndDates.add(sdf.parse(sdf.format(new Date(startTime.getTime() + (long)exType.getDuration()))));
-            eventNames.add(exType.getName());
-        }
-        calendar.setEventEndDates(eventEndDates);
-        calendar.setEventStartDates(eventStartDates);
-        calendar.setEventNames(eventNames);
-        calendar.setId(id);
-
-    }
-
 
     public String getId() {
         return id;

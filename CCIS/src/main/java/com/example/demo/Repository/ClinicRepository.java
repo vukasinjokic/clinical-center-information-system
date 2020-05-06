@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ClinicRepository extends JpaRepository<Clinic, Integer> {
     Optional<Clinic> findById(Integer id);
     List<Clinic> findAll();
+    Optional<Clinic> findByName(String name);
 }
