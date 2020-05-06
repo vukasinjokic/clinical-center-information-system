@@ -47,6 +47,10 @@ const actions = {
     async fetchDoctors({commit}, ex_type){
         const response = await axios.get('http://localhost:8081/appointments/getDoctors/'+ex_type);
         commit('setDoctors',response.data);
+    },
+    async saveAppointment({commit}, appo){
+        const response = await axios.post('http://localhost:8081/appointments/addAppointment', appo);
+        commit('newApp', response.data);
     }
 };
 
@@ -55,6 +59,7 @@ const mutations = {
     setFreeAppointmentsRooms: (state, rooms) => (state.freeAppointmentRooms = rooms),
     setTypes: (state, types) => (state.examinationTypes = types),
     setDoctors: (state,doctors) => (state.doctors = doctors),
+    newApp: (state, newAppointment) => state.appointments.unshift(newAppointment)
 };
 
 const namespaced = true;

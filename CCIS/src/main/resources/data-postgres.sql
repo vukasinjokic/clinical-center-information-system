@@ -571,8 +571,8 @@ insert into appointments			-- id = 5
 values ('2019-03-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 				5,				2);
 
 insert into appointments			-- id = 6
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				6, 				2);
+				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id,  clinic_id)
+values ('2019-03-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				2);
 
 insert into appointments			-- id = 7
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)

@@ -1,20 +1,17 @@
 <template>
 <div>
     <v-container>
-        <div class="text-right">
+        <div class="desno" style="margin: 10px">
             <AddFreeAppointment></AddFreeAppointment>
         </div>
-        <div v-for="app in allAppointments" :key="app.id">
-            {{app.id}}
-            {{app.discount}}
-            {{app.price}}
-            {{app.doctor}}
-            {{app.patient}}
-            {{app.clinic}}
-            {{app.operationRoom}}
-            {{app.examinationType}}
-            {{app.date}}
-        </div>
+        <v-data-table
+                    :headers="headers"
+                    :items="allAppointments"
+                    :items-per-page="5"
+                    item-key="name"
+                    dark grey>
+        </v-data-table>
+        
     </v-container>
 </div>
 </template>
@@ -34,7 +31,33 @@ export default {
             appointment:{
                 id: null,
                 price : null
-            }
+            },
+            headers:[
+                 {
+                    text: 'Discount', value: 'discount',fileterable: true
+                },
+                {
+                    text: 'Price', value: 'price', fileterable:true            
+                },
+                {
+                    text: 'Doctor', value: 'doctor',fileterable: true
+                },
+                { 
+                    text: 'Patient', value: 'patient',fileterable: true
+                },
+                 {
+                    text: 'Clinic', value: 'clinic',fileterable: true
+                },
+                {
+                    text: 'Operation room', value: 'operationRoom', fileterable:true            
+                },
+                {
+                    text: 'Date', value: 'date',fileterable: true
+                },
+                { 
+                    text: 'Examination type', value: 'examinationType'
+                },
+            ]
         }
     },
     created(){
@@ -51,3 +74,9 @@ export default {
     
 }
 </script>
+<style>
+.desno{
+    position: relative;
+    left: 326px;
+}
+</style>

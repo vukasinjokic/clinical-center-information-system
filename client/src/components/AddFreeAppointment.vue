@@ -74,6 +74,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-select
+                    v-model="room"
                     :rules="[requiredRule]"
                     :items="allRoomsNumber"
                     label="Examination room"
@@ -82,6 +83,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-select
+                    :rules="[requiredRule]"
                     hint="Choose examination type"
                     :items="getDoctors"
                     label="Doctor(choose examination type)"
@@ -100,7 +102,6 @@
         </v-card>
       </v-dialog>
     </v-row>
-    {{time}}
 </div>
 </template>
 
@@ -116,7 +117,8 @@ export default {
             type: "",
             dura: null,
             price: null,
-            doctor: ""
+            doctor: "",
+            room: ""
         }
     },
     created() {
@@ -136,7 +138,7 @@ export default {
         },
     },
     methods:{
-        ...mapActions('appointments',['fetchRooms','fetchTypes','fetchDoctors']),
+        ...mapActions('appointments',['fetchRooms','fetchTypes','fetchDoctors','saveAppointment']),
 
         closeDialog(){
             this.dialog = false;
@@ -144,6 +146,17 @@ export default {
         },
         save(){
           if(this.$refs.form.validate()){
+            var newAppointment = 
+                    {
+                      time: "2012-04-23T18:25:43.511Z",
+                      price: this.price,
+                      doctor: this.doctor,
+                      operationRoom: this.room,
+                      examinationType: this.type,
+                      clinic: "Ne znam kliniku dok se ne uradi login"
+                    }
+
+            this.saveAppointment(newAppointment);
             this.dialog = false;
           }
         },
