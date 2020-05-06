@@ -34,7 +34,7 @@ public class Appointment {
    @JoinColumn(name = "doctor_id")
    private Doctor doctor;
 
-   @OneToOne(fetch = LAZY)
+   @ManyToOne(fetch = LAZY)
    @JoinColumn(name = "operation_room_id")
    private OperationRoom operationRoom;
 

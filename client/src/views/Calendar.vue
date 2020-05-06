@@ -74,22 +74,27 @@ import axios from "axios";
       ],
       value: '',
       events: [],
-      eventStartDates: ['2020-04-04 10:00:00', '2020-04-04 12:00:00', '2020-04-04 14:00:00'],
-      eventEndDates: ['2020-04-04 11:00:00', '2020-04-04 13:00:00', '2020-04-04 15:00:00'],
+      eventStartDates: [],
+      eventEndDates: [],
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: ['Operacija', 'Ultrazvuk', 'Hirurski pregled'],
+      names: [],
     }),
     created() {
         axios
         .get("http://localhost:8081/doctors/16/calendar")
         .then(response => {
             response.data.eventStartDates.forEach(date => {
-                this.eventStartDates.push(new Date(date))
+                let eventStartDate= new Date(date)
+                let formatted_date = eventStartDate.getFullYear() + "-" + (eventStartDate.getMonth() + 1) + "-" + eventStartDate.getDate() + " " + eventStartDate.getHours() + ":" + eventStartDate.getMinutes();
+                this.eventStartDates.push(formatted_date)
             }); 
             response.data.eventEndDates.forEach(date => {
-                this.eventEndDates.push(new Date(date))
+                let eventEndDate= new Date(date)
+                let formatted_date = eventEndDate.getFullYear() + "-" + (eventEndDate.getMonth() + 1) + "-" + eventEndDate.getDate() + " " + eventEndDate.getHours() + ":" + eventEndDate.getMinutes();
+                this.eventEndDates.push(formatted_date)
             }); 
             this.names = response.data.eventNames;
+            this.getEvents();
         })
 
 

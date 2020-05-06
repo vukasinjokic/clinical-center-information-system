@@ -418,9 +418,9 @@ insert into business_hours (started, ended) values ('7:00:00', '14:00:00');				-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting examination types -------------------------------------------------------
-insert into examination_types (name, duration) values ('Sistematski pregled', 1000 * 60 * 60);			-- id = 1
-insert into examination_types (name, duration) values ('Ultrazvuk', 15.0);			-- id = 2
-insert into examination_types (name, duration) values ('Operacija', 15.0);			-- id = 3
+insert into examination_types (name, duration) values ('Sistematski pregled', 1000 * 60 * 30);			-- id = 1
+insert into examination_types (name, duration) values ('Ultrazvuk', 1000 * 60 * 60);			-- id = 2
+insert into examination_types (name, duration) values ('Operacija', 1000 * 60 * 90);			-- id = 3
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -549,57 +549,61 @@ insert into operation_rooms  (name,number, calendar_id, clinic_id) values ('Sala
 --------------------------------------------------------- Inserting appointments --------------------------------------------------------
 insert into appointments			-- id = 1
 (				time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-01 09:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 				1, 				1);
+values ('2020-05-01 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 				1, 				1);
+
+insert into appointments			-- id = 1
+(				time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+values ('2020-05-01 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 				1, 				1);
 
 insert into appointments			-- id = 2
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 				2, 				1);
+values ('2020-05-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 				2, 				1);
 
 insert into appointments			-- id = 3
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 				3, 				1);
+values ('2020-05-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 				3, 				1);
 
 insert into appointments			-- id = 4
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				4,				1);
+values ('2020-05-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				4,				1);
 
 
 
 
 insert into appointments			-- id = 5
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 				5,				2);
+values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 				5,				2);
 
 insert into appointments			-- id = 6
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				6, 				2);
+values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				6, 				2);
 
 insert into appointments			-- id = 7
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 				1,				2);
+values ('2020-05-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 				1,				2);
 
 insert into appointments			-- id = 8
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 				2, 				2);
+values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 				2, 				2);
 
 
 
 
 insert into appointments			-- id = 9
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 				3,				3);
+values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 				3,				3);
 
 insert into appointments			-- id = 10
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 				4, 				3);
+values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 				4, 				3);
 
 insert into appointments			-- id = 11
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 				5,				3);
+values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 				5,				3);
 
 insert into appointments			-- id = 12
 				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2019-03-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				6, 				3);
+values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				6, 				3);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
