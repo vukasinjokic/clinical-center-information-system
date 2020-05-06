@@ -13,8 +13,8 @@ public class LoginService {
     private HashSet<User> users;
 
     public LoginService() {
-        User doctor = new Doctor(10000, "nikola@gmail.com","123","Nikola","Stojanovic","Pwuskinova 4",
-                "Beograd","Srbija","0111111111","12");
+        User doctor = new Doctor(10000, "nikola", "nikola@gmail.com","123","Nikola","Stojanovic","Pwuskinova 4",
+                "Beograd","Srbija","0111111111","12", null);
         this.users = new HashSet<User>();
         users.add(doctor);
     }
@@ -25,7 +25,7 @@ public class LoginService {
 
     public boolean login(UserToLogin userToLogin){
         Optional<User> user;
-        user = users.stream().filter(user1 -> user1.getEmail().equals(userToLogin.email)
+        user = users.stream().filter(user1 -> user1.getUsername().equals(userToLogin.username)
             && user1.getPassword().equals(userToLogin.password))
                 .findAny();
         if(user.isPresent())

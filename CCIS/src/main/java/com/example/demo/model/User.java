@@ -1,18 +1,22 @@
 package com.example.demo.model;
-import javax.persistence.*;
-import java.util.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import static javax.persistence.GenerationType.IDENTITY;
-import static javax.persistence.GenerationType.TABLE;
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class User {
+public abstract class User implements UserDetails {
    @Id
    @GeneratedValue(strategy=GenerationType.TABLE, generator="ust_seq_user")
    @SequenceGenerator(name = "ust_seq_user", sequenceName = "ust_seq_user", initialValue = 1, allocationSize=1)
    @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
+
+   @Column(name = "username", unique = true, nullable = false)
+   private String username;
 
    @Column(name = "email", unique = true, nullable = false)
    private String email;
@@ -41,11 +45,21 @@ public abstract class User {
    @Column(name = "social_security_number", unique = true, nullable = false)
    private String socialSecurityNumber;
 
+   @Column(name = "last_password_reset_date")
+   private Timestamp lastPasswordResetDate;
+
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "user_authority",
+           joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+   private List<Authority> authorities;
+
    public User() {
    }
 
-   public User(Integer id, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber) {
+   public User(Integer id, String username, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
       this.id = id;
+      this.username = username;
       this.email = email;
       this.password = password;
       this.firstName = firstName;
@@ -55,6 +69,8 @@ public abstract class User {
       this.country = country;
       this.phoneNumber = phoneNumber;
       this.socialSecurityNumber = socialSecurityNumber;
+      this.lastPasswordResetDate = lastPasswordResetDate;
+      this.authorities = authorities;
    }
 
    public Integer getId() {
@@ -73,6 +89,7 @@ public abstract class User {
       this.email = email;
    }
 
+   @Override
    public String getPassword() {
       return password;
    }
@@ -148,5 +165,51 @@ public abstract class User {
    @Override
    public int hashCode() {
       return Objects.hash(socialSecurityNumber);
+   }
+
+   @Override
+   public Collection<? extends GrantedAuthority> getAuthorities() {
+      return this.authorities;
+   }
+
+   public void setAuthorities(List<Authority> authorities) {
+      this.authorities = authorities;
+   }
+
+   public Timestamp getLastPasswordResetDate() {
+      return lastPasswordResetDate;
+   }
+
+   public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+      this.lastPasswordResetDate = lastPasswordResetDate;
+   }
+
+   @Override
+   public String getUsername() {
+      return username;
+   }
+
+   public void setUsername(String username) {
+      this.username = username;
+   }
+
+   @Override
+   public boolean isAccountNonExpired() {
+      return true;
+   }
+
+   @Override
+   public boolean isAccountNonLocked() {
+      return true;
+   }
+
+   @Override
+   public boolean isCredentialsNonExpired() {
+      return true;
+   }
+
+   @Override
+   public boolean isEnabled() {
+      return true;
    }
 }

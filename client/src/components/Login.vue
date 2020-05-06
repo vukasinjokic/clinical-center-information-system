@@ -26,9 +26,9 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    v-model="user.email"
-                    label="Email"
-                    name="email"
+                    v-model="user.username"
+                    label="Username"
+                    name="username"
                     type="text"
                   />
 
@@ -63,7 +63,7 @@ import axios from 'axios'
     data() {
        return{
             user:{
-                email: "",
+                username: "",
                 password: ""
             }
        } 
@@ -72,14 +72,16 @@ import axios from 'axios'
     methods:{
         login(){
             axios
-            .post('http://localhost:8081/api/login',this.user)
+            .post('http://localhost:8081/auth/login', this.user)
             .then(response =>{
                 if(response.data){
+                    localStorage.setItem('JWT', response.data.accessToken);
+                    localStorage.setItem('Duration', response.data.expiresIn);
                     alert("Uspesno logovanje");
                     this.$router.push('home');
                 }
                 else
-                    alert("Neispravan email ili lozinka");
+                    alert("Neispravno korisnicko ime ili lozinka");
             });
 
         }

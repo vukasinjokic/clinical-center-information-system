@@ -11,7 +11,12 @@ const getters = {
 
 const actions = {
     async fetchRooms({commit}){
-        const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms");
+        let config = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("JWT"),
+            }
+          }
+        const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms", config);
 
         commit('setRooms', response.data);
     }

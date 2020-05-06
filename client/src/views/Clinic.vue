@@ -47,7 +47,12 @@ export default {
     },
 
     created() {
-        axios.get(`http://localhost:8081/clinics/${this.$route.params.id}`)
+        let config = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("JWT"),
+            }
+        }
+        axios.get(`http://localhost:8081/clinics/${this.$route.params.id}`, config)
         .then( response => {
             this.clinic.id = response.data.id;
             this.clinic.name = response.data.name;

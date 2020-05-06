@@ -1,11 +1,10 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
+import java.util.List;
 
 @Entity
 @Table(name = "clinic_admins")
@@ -19,12 +18,12 @@ public class ClinicAdmin extends User {
    public ClinicAdmin() {
    }
 
-   public ClinicAdmin(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber) {
-      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
+   public ClinicAdmin(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
    }
 
-   public ClinicAdmin(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Clinic clinic) {
-      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
+   public ClinicAdmin(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Clinic clinic, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
       this.clinic = clinic;
    }
 

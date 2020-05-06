@@ -10,7 +10,18 @@ const getters = {
 
 const actions = {
     async fetchClinics({commit}){
-        const response = await axios.get('http://localhost:8081/clinics');
+        let config = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("JWT"),
+            }
+          }
+          
+        //   let data = {
+        //     'HTTP_CONTENT_LANGUAGE': self.language
+        //   }
+          
+        //   axios.post(URL, data, config).then(...)
+        const response = await axios.get('http://localhost:8081/clinics', config);
         commit('setClinics', response.data);
     },
 };
