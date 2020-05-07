@@ -7,6 +7,8 @@ import java.util.Date;
 public class UserDTO {
     private String id;
 
+    private String email;
+
     private String username;
 
     private String password;
@@ -29,6 +31,7 @@ public class UserDTO {
 
     public UserDTO(User user) {
         id = user.getId().toString();
+        email = user.getEmail();
         username = user.getUsername();
         password = user.getPassword();
         firstName = user.getFirstName();
@@ -50,6 +53,14 @@ public class UserDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
