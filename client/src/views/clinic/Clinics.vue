@@ -1,17 +1,21 @@
 <template>
     <div>
-        <input type="text" v-model="search" placeholder="Search clinics">
-        <div class="clinics">
-            <div
-            class="clinic"
-            @click="onClick(clinic)"
-            v-for="clinic in filteredClinics" 
-            v-bind:key="clinic.id">
-                {{clinic.name}}
-                {{clinic.address}}
-                {{clinic.rating}}
-            </div>
-        </div>
+        <v-container>
+            <v-row>
+                <v-col
+                    cols="12"
+                    sm="4"
+                    >
+                <v-text-field outlined class="desno" type="text" v-model="search" placeholder="Search clinics"/>
+                </v-col>
+            </v-row>
+            
+            <v-data-table
+                :headers="headers"
+                :items="filteredClinics"
+                dark/>
+            
+        </v-container>
     </div>
 </template>
 
@@ -24,7 +28,12 @@ export default {
 
     data() {
         return {
-            search: ''
+            search: '',
+            headers: [
+                {text: "Name", value: "name"},
+                {text: "Address", value: "address"},
+                {text: "Rating", value: "rating"},
+            ]
         }
     },
 
@@ -59,15 +68,10 @@ export default {
          grid-gap: 1rem;
      }
 
-     .clinic {
-         border: 1px solid #ccc;
-         background: #41b883;
-         padding: 1rem;
-         border-radius: 5px;
-         text-align: center;
-         position: relative;
-         cursor: pointer;
-     }
+    .desno{
+    position: relative;
+    left: 326px;
+}
 
     input[type="text"] {
         padding: 5px;

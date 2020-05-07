@@ -80,8 +80,14 @@ import axios from "axios";
       names: [],
     }),
     created() {
+          const config = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("JWT"),
+        }
+      }
+
         axios
-        .get("http://localhost:8081/doctors/16/calendar")
+        .get("http://localhost:8081/doctors/16/calendar", config)
         .then(response => {
             response.data.eventStartDates.forEach(date => {
                 let eventStartDate= new Date(date)

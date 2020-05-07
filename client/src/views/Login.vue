@@ -26,7 +26,7 @@
                 <v-card-text>
                   <v-form ref="form">
                     <v-text-field
-                      v-model="user.email"
+                      v-model="user.username"
                       :rules="[requiredRule,emailRule]"
                       label="Email"
                       name="email"
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
   export default {
     name: "Login",
@@ -73,7 +73,7 @@
     data() {
        return{
             user:{
-                email: "",
+                username: "",
                 password: ""
             }
        } 
