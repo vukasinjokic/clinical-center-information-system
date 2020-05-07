@@ -3,11 +3,11 @@ import App from './App.vue'
 import router from './router/router.js'
 import vuetify from './plugins/vuetify';
 import store from './store'
-import axios from 'axios'
+import Axios from 'axios'
 
 Vue.config.productionTip = false;
-Vue.$axios = axios;
-Vue.$axios.defaults.headers['Authorization'] = localStorage.getItem("JWT");
+Vue.$axios = Axios;
+Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
 
 
 //v-calendar ima bag koji ispisuje warn u konzoli.Ovo samo sprecava ispis.
