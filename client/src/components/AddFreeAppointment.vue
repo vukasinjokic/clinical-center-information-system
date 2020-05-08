@@ -151,7 +151,7 @@ export default {
                       time: "2012-04-23T18:25:43.511Z",
                       price: this.price,
                       doctor: this.doctor,
-                      operationRoom: this.room,
+                      room: this.room,
                       examinationType: this.type,
                       clinic: "Ne znam kliniku dok se ne uradi login"
                     }

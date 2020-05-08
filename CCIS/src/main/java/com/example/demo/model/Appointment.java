@@ -1,9 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.repository.cdi.Eager;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -35,8 +31,8 @@ public class Appointment {
    private Doctor doctor;
 
    @ManyToOne(fetch = LAZY)
-   @JoinColumn(name = "operation_room_id")
-   private OperationRoom operationRoom;
+   @JoinColumn(name = "room_id")
+   private Room room;
 
    @OneToOne(fetch = EAGER)
    @JoinColumn(name = "examination_type_id")
@@ -58,24 +54,24 @@ public class Appointment {
    public Appointment() {
    }
 
-   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, OperationRoom operationRoom, ExaminationType examinationType, Patient patient, MedicalRecord medicalRecord, Clinic clinic) {
+   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient, MedicalRecord medicalRecord, Clinic clinic) {
       this.id = id;
       this.time = time;
       this.price = price;
       this.discount = discount;
       this.doctor = doctor;
-      this.operationRoom = operationRoom;
+      this.room = room;
       this.examinationType = examinationType;
       this.patient = patient;
       this.medicalRecord = medicalRecord;
       this.clinic = clinic;
    }
-   public Appointment(Date time, float price, float discount, Doctor doctor, OperationRoom operationRoom, ExaminationType examinationType, Clinic clinic) {
+   public Appointment(Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Clinic clinic) {
       this.time = time;
       this.price = price;
       this.discount = discount;
       this.doctor = doctor;
-      this.operationRoom = operationRoom;
+      this.room = room;
       this.examinationType = examinationType;
       this.clinic = clinic;
    }
@@ -136,12 +132,12 @@ public class Appointment {
       this.doctor = doctor;
    }
 
-   public OperationRoom getOperationRoom() {
-      return operationRoom;
+   public Room getRoom() {
+      return room;
    }
 
-   public void setOperationRoom(OperationRoom operationRoom) {
-      this.operationRoom = operationRoom;
+   public void setRoom(Room room) {
+      this.room = room;
    }
 
    public ExaminationType getExaminationType() {

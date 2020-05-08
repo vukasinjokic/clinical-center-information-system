@@ -116,9 +116,9 @@ export default {
                 {
                     text: 'Clinic', value: 'clinic',fileterable: true
                 },
-                // { 
-                //     text: 'Actions', value: 'actions', sortable: false 
-                // },
+                { 
+                    text: 'Type', value: 'type', sortable: true 
+                },
             ],
             search: "",
             date:"",

@@ -84,7 +84,7 @@ const actions = {
                 Authorization: "Bearer " + localStorage.getItem("JWT"),
             }
           }
-        const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms", config);
+        const response = await axios.get("http://localhost:8081/rooms/getRooms", config);
 
         commit('setRooms', response.data);
         commit('setFilteredRooms', response.data);

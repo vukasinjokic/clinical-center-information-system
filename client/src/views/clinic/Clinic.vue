@@ -44,7 +44,7 @@ export default {
                 doctors: [],
                 nurses: [],
                 appointments: [],
-                operationRooms: []
+                rooms: []
             }
         }
     },

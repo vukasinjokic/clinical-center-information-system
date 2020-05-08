@@ -17,7 +17,7 @@ public class ClinicDTO {
     private List<String> doctors;
     private List<String> nurses;
     private List<AppointmentDTO> appointments;
-    private List<String> operationRooms;
+    private List<String> rooms;
 //    private String codebook; //
 
     public void setDTOFields(Clinic clinic){
@@ -26,7 +26,7 @@ public class ClinicDTO {
         this.setDoctors(clinic.getDoctors());
         this.setNurses(clinic.getNurses());
         this.setAppointments(clinic.getAppointments());
-        this.setOperationRooms(clinic.getOperationRooms());
+        this.setRooms(clinic.getRooms());
     }
 
     public String getId() {
@@ -122,19 +122,19 @@ public class ClinicDTO {
         this.appointments = appointmentDTOS;
     }
 
-    public List<String> getOperationRooms() {
-        return operationRooms;
+    public List<String> getRooms() {
+        return rooms;
     }
 
-    public void setOperationRooms(Collection<OperationRoom> operationRooms) {
+    public void setRooms(Collection<Room> rooms) {
         List<String> strOperationRooms = new ArrayList<>();
 
         ModelMapper modelMapper = new ModelMapper();
-        for (OperationRoom operationRoom : operationRooms) {
-            strOperationRooms.add(operationRoom.getName() + " " + operationRoom.getClinic().getName());
+        for (Room room : rooms) {
+            strOperationRooms.add(room.getName() + " " + room.getClinic().getName());
         }
 
-        this.operationRooms = strOperationRooms;
+        this.rooms = strOperationRooms;
     }
 
 //    public String getCodebook() {

@@ -1,13 +1,11 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -49,7 +47,7 @@ public class Clinic {
 
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    @JoinColumn(name = "clinic_id")
-   private Collection<OperationRoom> operationRooms;
+   private Collection<Room> rooms;
 
    @OneToOne(fetch = LAZY)
    @JsonIgnore
@@ -60,7 +58,7 @@ public class Clinic {
    public Clinic() {
    }
 
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<OperationRoom> operationRooms, CodeBook codeBook) {
+   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -68,7 +66,7 @@ public class Clinic {
       this.rating = rating;
       this.doctors = doctors;
       this.appointments = appointments;
-      this.operationRooms = operationRooms;
+      this.rooms = rooms;
       this.codeBook = codeBook;
    }
 
@@ -257,52 +255,52 @@ public class Clinic {
          appointments.clear();
    }
    /** @pdGenerated default getter */
-   public java.util.Collection<OperationRoom> getOperationRooms() {
-      if (operationRooms == null)
-         operationRooms = new java.util.HashSet<OperationRoom>();
-      return operationRooms;
+   public java.util.Collection<Room> getRooms() {
+      if (rooms == null)
+         rooms = new java.util.HashSet<Room>();
+      return rooms;
    }
    
    /** @pdGenerated default iterator getter */
-   public java.util.Iterator getIteratorOperationRoom() {
-      if (operationRooms == null)
-         operationRooms = new java.util.HashSet<OperationRoom>();
-      return operationRooms.iterator();
+   public java.util.Iterator getIteratorRoom() {
+      if (rooms == null)
+         rooms = new java.util.HashSet<Room>();
+      return rooms.iterator();
    }
    
    /** @pdGenerated default setter
-     * @param newOperationRoom */
-   public void setOperationRooms(java.util.Collection<OperationRoom> newOperationRoom) {
-      removeAllOperationRooms();
-      for (java.util.Iterator iter = newOperationRoom.iterator(); iter.hasNext();)
-         addOperationRoom((OperationRoom)iter.next());
+     * @param newRoom */
+   public void setRooms(java.util.Collection<Room> newRoom) {
+      removeAllRooms();
+      for (java.util.Iterator iter = newRoom.iterator(); iter.hasNext();)
+         addRoom((Room)iter.next());
    }
    
    /** @pdGenerated default add
-     * @param newOperationRoom */
-   public void addOperationRoom(OperationRoom newOperationRoom) {
-      if (newOperationRoom == null)
+     * @param newRoom */
+   public void addRoom(Room newRoom) {
+      if (newRoom == null)
          return;
-      if (this.operationRooms == null)
-         this.operationRooms = new java.util.HashSet<OperationRoom>();
-      if (!this.operationRooms.contains(newOperationRoom))
-         this.operationRooms.add(newOperationRoom);
+      if (this.rooms == null)
+         this.rooms = new java.util.HashSet<Room>();
+      if (!this.rooms.contains(newRoom))
+         this.rooms.add(newRoom);
    }
    
    /** @pdGenerated default remove
-     * @param oldOperationRoom */
-   public void removeOperationRoom(OperationRoom oldOperationRoom) {
-      if (oldOperationRoom == null)
+     * @param oldRoom */
+   public void removeRoom(Room oldRoom) {
+      if (oldRoom == null)
          return;
-      if (this.operationRooms != null)
-         if (this.operationRooms.contains(oldOperationRoom))
-            this.operationRooms.remove(oldOperationRoom);
+      if (this.rooms != null)
+         if (this.rooms.contains(oldRoom))
+            this.rooms.remove(oldRoom);
    }
    
    /** @pdGenerated default removeAll */
-   public void removeAllOperationRooms() {
-      if (operationRooms != null)
-         operationRooms.clear();
+   public void removeAllRooms() {
+      if (rooms != null)
+         rooms.clear();
    }
 
 }

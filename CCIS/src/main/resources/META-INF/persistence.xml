@@ -15,7 +15,7 @@
         <class>com.example.demo.model.MedicalRecord</class>
         <class>com.example.demo.model.MedicalStaff</class>
         <class>com.example.demo.model.Nurse</class>
-        <class>com.example.demo.model.OperationRoom</class>
+        <class>com.example.demo.model.Room</class>
         <class>com.example.demo.model.Patient</class>
         <class>com.example.demo.model.Request</class>
         <class>com.example.demo.model.User</class>

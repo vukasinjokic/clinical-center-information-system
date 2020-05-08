@@ -11,9 +11,9 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "operation_rooms")
-public class OperationRoom {
-
+@Table(name = "rooms")
+public class Room {
+   public enum RoomType{OPERATION, APPOINTMENT};
    @Id
    @GeneratedValue(strategy = IDENTITY)
    @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
@@ -24,6 +24,10 @@ public class OperationRoom {
 
    @Column(name = "number", unique = true, nullable = false)
    private String number;
+
+   @Enumerated(EnumType.STRING)
+   @Column(name = "room_type", length = 15)
+   private RoomType type;
 
    @OneToOne(fetch = EAGER)
    @JoinColumn(name = "calendar_id")
@@ -37,9 +41,9 @@ public class OperationRoom {
    @JoinColumn(name = "operation_room_id")
    private Collection<Appointment> appointments;
 
-   public OperationRoom() {
+   public Room() {
    }
-   public OperationRoom(String name, Calendar calendar, Clinic clinic, Collection<Appointment> appointments) {
+   public Room(String name, Calendar calendar, Clinic clinic, Collection<Appointment> appointments) {
       this.name = name;
       this.calendar = calendar;
       this.clinic = clinic;
@@ -94,4 +98,11 @@ public class OperationRoom {
       this.number = number;
    }
 
+   public RoomType getType() {
+      return type;
+   }
+
+   public void setType(RoomType type) {
+      this.type = type;
+   }
 }
