@@ -55,7 +55,7 @@ public class AuthenticationController {
         for (GrantedAuthority authority : user.getAuthorities())
             strAuthorities.add(authority.getAuthority());
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, strAuthorities));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, strAuthorities, user.getEmail()));
     }
 
     @GetMapping("/userDetails")

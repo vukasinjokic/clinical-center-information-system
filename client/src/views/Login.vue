@@ -80,7 +80,7 @@ import { mapActions } from 'vuex';
        } 
     },
     methods:{
-        ...mapActions("userAuthorities", ["logIn"]),
+        ...mapActions("userDetails", ["logIn"]),
 
         submit(){
           if(this.$refs.form.validate()){
