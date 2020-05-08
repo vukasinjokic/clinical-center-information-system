@@ -1,4 +1,5 @@
-import axios from 'axios';
+import Vue from 'vue';
+import axios from 'axios'
 
 const state = {
     appointments: [],
@@ -31,9 +32,16 @@ const getters = {
     }
 };
 
+const config = {
+    headers: {
+        Authorization: "Bearer " + localStorage.getItem("JWT"),
+    }
+  }
+
 const actions = {
     async fetchAppointments({commit}){
-        const response = await axios.get('http://localhost:8081/appointments/getAppointments');
+       
+        const response = await Vue.$axios.get('http://localhost:8081/appointments/getAppointments');
         commit('setAppo', response.data);
     },
     async fetchRooms({commit}){
@@ -49,7 +57,7 @@ const actions = {
         commit('setDoctors',response.data);
     },
     async saveAppointment({commit}, appo){
-        const response = await axios.post('http://localhost:8081/appointments/addAppointment', appo);
+        const response = await axios.post('http://localhost:8081/appointments/addAppointment', appo, config);
         commit('newApp', response.data);
     }
 };

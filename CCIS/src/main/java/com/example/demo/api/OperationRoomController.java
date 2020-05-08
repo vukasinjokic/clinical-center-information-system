@@ -5,6 +5,7 @@ import com.example.demo.model.OperationRoom;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.service.OperationRoomService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class OperationRoomController {
     }
 
     @GetMapping("/getOperationRooms")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public List<OperationRoomDTO> getAllOperationRooms(){
         List<OperationRoom> allRooms = roomService.getAllOperationRooms();
 

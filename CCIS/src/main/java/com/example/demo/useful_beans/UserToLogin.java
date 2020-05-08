@@ -1,11 +1,11 @@
 package com.example.demo.useful_beans;
 
 public class UserToLogin {
-    public String email;
+    public String username;
     public String password;
 
-    public UserToLogin(String email, String password) {
-        this.email = email;
+    public UserToLogin(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 }

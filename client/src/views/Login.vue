@@ -26,7 +26,7 @@
                 <v-card-text>
                   <v-form ref="form">
                     <v-text-field
-                      v-model="user.email"
+                      v-model="user.username"
                       :rules="[requiredRule,emailRule]"
                       label="Email"
                       name="email"
@@ -58,7 +58,8 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios';
+import { mapActions } from 'vuex';
 
   export default {
     name: "Login",
@@ -73,15 +74,29 @@
     data() {
        return{
             user:{
-                email: "",
+                username: "",
                 password: ""
             }
        } 
     },
     methods:{
+        ...mapActions("userDetails", ["logIn"]),
+
         submit(){
           if(this.$refs.form.validate()){
-            //tvoj kod jefto
+            axios
+            .post('http://localhost:8081/auth/login', this.user)
+            .then(response =>{
+                if(response.data){
+                    this.logIn(response.data);
+                    alert("Uspesno logovanje");
+                    this.$router.push('home');
+                }
+                else
+                    alert("Neispravan email ime ili lozinka");
+            })
+            .catch(() => { alert("Neispravan email ili lozinka") });
+
           }
         }
     }

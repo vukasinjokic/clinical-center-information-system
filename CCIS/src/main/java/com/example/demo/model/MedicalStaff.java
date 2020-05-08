@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
+import java.util.List;
 
 @MappedSuperclass
 public abstract class MedicalStaff extends User {
@@ -18,12 +17,12 @@ public abstract class MedicalStaff extends User {
    public MedicalStaff() {
    }
 
-   public MedicalStaff(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber) {
-      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
+   public MedicalStaff(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
    }
 
-   public MedicalStaff(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar,Clinic clinic) {
-      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber);
+   public MedicalStaff(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, Clinic clinic, List<Authority> authorities) {
+      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
       this.calendar = calendar;
       this.clinic = clinic;
    }

@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
@@ -40,6 +41,7 @@ public class AppointmentController {
         this.operationRoomService = operationRoomService;
     }
     @GetMapping("/getAppointments")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public List<AppointmentDTO> getAllAppointments() {
         List<Appointment> allAppointments = appointmentService.getAllAppointments();
 
@@ -49,6 +51,7 @@ public class AppointmentController {
     }
     //operation rooms for free appointment
     @GetMapping("/getRooms")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public List<OperationRoomDTO> getOperationRooms(){
         List<OperationRoom> operationRooms = operationRoomService.getAllOperationRooms();
 
@@ -57,11 +60,13 @@ public class AppointmentController {
                 .collect(Collectors.toList());
     }
     @GetMapping("/getTypes")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public List<ExaminationType> getExaminationTypes(){
         return examinationTypeRepository.findAll();
     }
 
     @GetMapping(path="/getDoctors/{ex_type_name}")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public List<DoctorDTO> getDoctorsByExType(@PathVariable("ex_type_name") String ex_type_name){
         List<Doctor> doctors = doctorRepository.findByExaminationTypeName(ex_type_name);
 
@@ -71,6 +76,7 @@ public class AppointmentController {
     }
 
     @PostMapping(path = "/addAppointment", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
         //patient = null  clinic = trenutno je zakucana vrednost dok ne bude login gotov
         Appointment appointment = appointmentService.saveAppointment(appointmentDTO);

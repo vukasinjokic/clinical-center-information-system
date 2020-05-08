@@ -21,14 +21,7 @@ const getters = {
 };
 
 const actions = {
-    fetchRooms({commit}){
-        axios
-        .get("http://localhost:8081/operationRooms/getOperationRooms")
-        .then(response => {
-            commit('setRooms', response.data);
-            commit('setFilteredRooms', response.data);
-        });
-    },
+    
 
     filterRooms: ({commit}, payload) => {
         let search = payload.search;
@@ -81,9 +74,31 @@ const actions = {
         });
         if(duration == "00:00") availableTimes = null;   
         commit('setFilteredRooms', filteredRooms);
-        commit('setAvailableTimes', availableTimes);
+        commit('setAvailableTimes', availableTimes);        
+    },
 
-    }
+    async fetchRooms({commit}){
+      
+        let config = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("JWT"),
+            }
+          }
+        const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms", config);
+
+        commit('setRooms', response.data);
+        commit('setFilteredRooms', response.data);
+
+    },
+
+    // fetchRooms({commit}){
+    //     axios
+    //     .get("http://localhost:8081/operationRooms/getOperationRooms")
+    //     .then(response => {
+    //         commit('setRooms', response.data);
+    //         commit('setFilteredRooms', response.data);
+    //     });
+    // },
 };
 
 const mutations = {

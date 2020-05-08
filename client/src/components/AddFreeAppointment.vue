@@ -161,7 +161,8 @@ export default {
           }
         },
         doSome(){
-            this.dura = this.getTypeDuration(this.type).duration;
+            var duration = parseInt(this.getTypeDuration(this.type).duration);
+            this.dura = duration/3600000 + "h";
             this.fetchDoctors(this.type);
         }
     }

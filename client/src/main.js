@@ -3,8 +3,12 @@ import App from './App.vue'
 import router from './router/router.js'
 import vuetify from './plugins/vuetify';
 import store from './store'
+import Axios from 'axios'
 
 Vue.config.productionTip = false;
+Vue.$axios = Axios;
+Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
+
 
 //v-calendar ima bag koji ispisuje warn u konzoli.Ovo samo sprecava ispis.
 const ignoreWarnMessage = 'The .native modifier for v-on is only valid on components but it was used on <div>.';
