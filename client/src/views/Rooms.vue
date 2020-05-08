@@ -64,6 +64,15 @@
                         </v-date-picker>          
                     </v-menu>
                     <v-spacer></v-spacer>
+                    <v-combobox
+                        v-model="type"
+                        :items="types"
+                        label="Select type"
+
+                    >
+
+                    </v-combobox>
+                    <v-spacer></v-spacer>
                     <v-btn @click="filter">Search</v-btn>
                 </v-card-title>          
                 </v-card>
@@ -122,6 +131,8 @@ export default {
             ],
             search: "",
             date:"",
+            type:"",
+            types:['Appointment','Operation'],
             expanded: [],
             duration: "00:00",
             menu2: false,
@@ -135,7 +146,7 @@ export default {
             return d.toString().substring(0,21);
         },
         filter(){
-          this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration});         
+          this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration, 'type': this.type});         
         },
         
         allowedMinutes: m => m % 15 === 0,

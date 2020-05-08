@@ -68,6 +68,7 @@ const actions = {
                 }
                 
             }
+            showRoom = room.type.toUpperCase().match(payload.type.toUpperCase()) ? true : false;
             if(date == "") showRoom = true;
             availableTimes[room.id] = firstAvailable;
             return first  && showRoom;
