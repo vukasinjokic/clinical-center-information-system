@@ -10,6 +10,8 @@ import Calendar from '../views/Calendar'
 import Clinics from '../views/clinic/Clinics.vue'
 import Clinic from '../views/clinic/Clinic.vue'
 import Register from '../views/Register.vue'
+import DoctorPage from '../views/DoctorPage'
+import DoctorHome from '../components/DoctorHome.vue'
 
 
 Vue.use(VueRouter);
@@ -54,9 +56,14 @@ const router = new VueRouter({
         component : Patients
       },
       {
-        path: '/doctors/:id/calendar',
-        name: 'Calendar',
-        component : Calendar
+        path: '/doctor',
+        name: 'DoctorPage',
+        component: DoctorPage,
+        children: [
+            {path: 'homepage', name: 'DoctorHome', component: DoctorHome},
+            {path: 'acount', component: HelloWorld},
+            {path: ':16/calendar', name: 'Calendar', component : Calendar}
+        ]
       },
       {
         path: '/clinics',

@@ -6,35 +6,41 @@
     <v-app-bar
       height="35px"
       app
-      dark
+      class="deep-purple accent-4"
     >
       <router-link
+        class="white--text"
         to="/home"
+        
       >
       Home</router-link>
       <v-spacer></v-spacer>
       <router-link
+        class="white--text"
         to="/rooms"
       >Rooms</router-link>
       <v-spacer></v-spacer>
         
       <router-link
+        class="white--text"
         to="/appointments"
       >Appointments</router-link>
       <v-spacer></v-spacer>
       
       
       <router-link
+      class="white--text"
         to="/patients"
       >Patients</router-link>
       <v-spacer></v-spacer>
 
       <router-link
+      class="white--text"
         to="/clinics"
       >Clinics</router-link>
       <v-spacer></v-spacer>
 
-      <v-toolbar-title>Clinic center</v-toolbar-title>
+      <v-toolbar-title class="white--text">Clinic center</v-toolbar-title>
     </v-app-bar>
    
   </v-app>
