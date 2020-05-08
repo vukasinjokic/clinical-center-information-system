@@ -3,6 +3,7 @@ import Vue from 'vue';
 import appointments from './modules/appointments';
 import room from './modules/room';
 import clinics from './modules/clinics.js';
+import userAuthorities from './modules/userAuthorities.js';
 
 // load vuex
 Vue.use(Vuex);
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     modules: {
         appointments,
         room,
-        clinics
+        clinics,
+        userAuthorities
     }
 });

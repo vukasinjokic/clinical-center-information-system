@@ -5,25 +5,18 @@ import com.example.demo.dto.UserTokenState;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.security.auth.JwtAuthenticationRequest;
-import com.example.demo.service.CustomUserDetailsService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.useful_beans.UserToLogin;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/auth")
@@ -58,9 +51,11 @@ public class AuthenticationController {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
+        List<String> strAuthorities = new ArrayList<>();
+        for (GrantedAuthority authority : user.getAuthorities())
+            strAuthorities.add(authority.getAuthority());
 
-        System.out.println(jwt);
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, strAuthorities));
     }
 
     @GetMapping("/userDetails")
