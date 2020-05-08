@@ -64,13 +64,13 @@
                         </v-date-picker>          
                     </v-menu>
                     <v-spacer></v-spacer>
-                    <v-btn @click="filterRooms">Search</v-btn>
+                    <v-btn @click="filter">Search</v-btn>
                 </v-card-title>          
                 </v-card>
-                <v-data-table
+                <v-data-table 
                     :ref="table"
                     :headers="headers"
-                    :items="getRoomsTable"
+                    :items="filteredRooms"
                     :items-per-page="5"
                     :expanded.sync="expanded"
                     item-key="name"
@@ -82,9 +82,9 @@
                             <td>Start date: {{ dateToString(item.calendar.eventStartDates[it-1])}}</td>
                             <td>End date: {{ dateToString(item.calendar.eventEndDates[it-1])}}</td>
                         </tr>
-                        <tr style="background-color:gray" v-if="availableAppointments">
-                            <td >First available appointment : {{dateToString(availableAppointments[item.id])}}</td>
-                            <td style="text-align:center; margin-left:140px;"><v-btn @click="filterRooms" color="blue">Reserve room</v-btn> </td>
+                        <tr style="background-color:gray" v-if="availableTimes">
+                            <td >First available appointment : {{dateToString(availableTimes[item.id])}}</td>
+                            <td style="text-align:center; margin-left:140px;"><v-btn @click="filter" color="blue">Reserve room</v-btn> </td>
                             
                         </tr>
                      </td>
@@ -93,21 +93,16 @@
             
         </v-container>
         </div>
-        <div>
-            
-        </div>
+        
     </div> 
 </template>
 <script>
 
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapState} from 'vuex'
 
 export default {
     name: 'Rooms',
-    created(){
-        this.fetchRooms();    
-        this.getRooms();    
-    },
+    
 
     data(){
         return {
@@ -128,45 +123,39 @@ export default {
             search: "",
             date:"",
             expanded: [],
-            rooms: [],
-            availableAppointments : null,
             duration: "00:00",
             menu2: false,
         }
     },
     methods: {
-        ...mapActions('room',['fetchRooms', 'getRooms']),
-
-        getRooms(){
-            this.rooms = this.getAllRooms();
-        },
+        ...mapActions('room',['fetchRooms','filterRooms']),
 
         dateToString(item){
             var d = new Date(item);
             return d.toString().substring(0,21);
         },
-        filterRooms(){
-          let result = this.getFiltered(this.search, this.date, this.duration);
-          this.availableAppointments = result.availableAppointments;
-          this.rooms = result.rooms;
-          
+        filter(){
+          this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration});         
         },
         
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10
     },
     computed:{ 
-        ...mapGetters('room', ['getAllRooms','getFiltered']),
-        getRoomsTable: function(){
-            return (this.getFiltered(this.search,this.date,this.duration)).rooms;
+        ...mapGetters('room', ['getAvailableTimes', 'getFilteredRooms']),
+        ...mapState([ 'rooms','loading']),
+
+        filteredRooms: function(){
+            return this.getFilteredRooms();
         },
-        // getRooms: function(){
-        //     this.rooms = this.getAllRooms();
-        // },
- 
+
+        availableTimes: function(){
+            return this.getAvailableTimes();
+        }
     },
-
-
+    created(){
+        this.fetchRooms();
+    },
 }
 </script>
 

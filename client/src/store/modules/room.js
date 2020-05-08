@@ -1,18 +1,41 @@
 import axios from "axios";
 
 const state = {
-    rooms : [] 
+    rooms : [],
+    filteredRooms : [],
+    availableTimes : null
 };
 
 const getters = {
     getAllRooms: (state) => () =>{
-        return state.rooms;
-      
+        return state.rooms; 
     },
 
-    getFiltered: (state) => (search,date,duration) => {
-        let availableAppointments = {};
-        let rooms = state.rooms.filter(room => {
+    getFilteredRooms: (state) => () => {
+        return state.filteredRooms;
+    },
+
+    getAvailableTimes: (state) => () =>{
+        return state.availableTimes;
+    },
+};
+
+const actions = {
+    fetchRooms({commit}){
+        axios
+        .get("http://localhost:8081/operationRooms/getOperationRooms")
+        .then(response => {
+            commit('setRooms', response.data);
+            commit('setFilteredRooms', response.data);
+        });
+    },
+
+    filterRooms: ({commit}, payload) => {
+        let search = payload.search;
+        let duration = payload.duration;
+        let date = payload.date == "" ? new Date() : payload.date;
+        let availableTimes = {};
+        let filteredRooms = state.rooms.filter(room => {
             let first = room.name.toUpperCase().match(search.toUpperCase()) || room.number.toUpperCase().match(search.toUpperCase());
             let firstAvailable = null;
             let eventStartDates = room.calendar.eventStartDates.slice();
@@ -53,27 +76,26 @@ const getters = {
                 
             }
             if(date == "") showRoom = true;
-            availableAppointments[room.id] = firstAvailable;
+            availableTimes[room.id] = firstAvailable;
             return first  && showRoom;
         });
-        return {'availableAppointments' : availableAppointments, 'rooms': rooms};
-        
-    }
-};
+        if(duration == "00:00") availableTimes = null;   
+        commit('setFilteredRooms', filteredRooms);
+        commit('setAvailableTimes', availableTimes);
 
-const actions = {
-    async fetchRooms({commit}){
-        const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms");
-        commit('setRooms', response.data);
-    },
-
-    getRooms(){
-        return state.rooms;
     }
 };
 
 const mutations = {
-    setRooms: (state, rooms) => state.rooms = rooms
+    setRooms: (state, rooms) => {
+        state.rooms = rooms
+    },
+    setFilteredRooms: (state, frooms) => {
+        state.filteredRooms = frooms;
+    },
+    setAvailableTimes: (state, times) => {
+        state.availableTimes = times;
+    }
 };
 
 
