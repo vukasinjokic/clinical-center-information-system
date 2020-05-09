@@ -41,7 +41,7 @@
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
     </v-sheet>
-    <v-sheet height="600">
+    <v-sheet height="500">
       <v-calendar
         ref="calendar"
         v-model="value"

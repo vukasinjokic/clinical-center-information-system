@@ -11,7 +11,7 @@ import Clinics from '../views/clinic/Clinics.vue'
 import Clinic from '../views/clinic/Clinic.vue'
 import Register from '../views/Register.vue'
 import DoctorPage from '../views/DoctorPage'
-import DoctorHome from '../components/DoctorHome.vue'
+import PatientReview from '../components/PatientReview.vue'
 
 
 Vue.use(VueRouter);
@@ -60,7 +60,7 @@ const router = new VueRouter({
         name: 'DoctorPage',
         component: DoctorPage,
         children: [
-            {path: 'homepage', name: 'DoctorHome', component: DoctorHome},
+            {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'acount', component: HelloWorld},
             {path: ':16/calendar', name: 'Calendar', component : Calendar}
         ]

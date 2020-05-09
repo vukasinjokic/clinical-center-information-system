@@ -4,7 +4,7 @@
         <router-view></router-view>  
       </v-content>
     <v-app-bar
-      height="35px"
+      height="40px"
       app
       class="deep-purple accent-4"
     >

@@ -1,6 +1,6 @@
 <template>
     <div>       
-        <v-navigation-drawer :clipped="clipped" v-model="drawer" enable-resize-watcher app dark class="deep-purple accent-4">
+        <v-navigation-drawer width="220" :clipped="clipped" v-model="drawer" enable-resize-watcher app dark class="deep-purple accent-4">
             <v-list>
                 <v-list-item v-for="item in items"
                         :to="item.link" 
@@ -8,7 +8,7 @@
                         link
                         >
                     <v-list-item-content>
-                        <v-list-item-title >{{ item.title }}</v-list-item-title>
+                        <v-list-item-title class="font">{{ item.title }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item> 
             </v-list>
@@ -19,7 +19,7 @@
             </template>
         </v-navigation-drawer>      
          
-        <v-content style="padding: 0px 0px 0px 0px">
+        <v-content style="padding: 4px 0px 0px 2px">
             <v-container fluid>
                 <router-view></router-view>
             </v-container>
@@ -32,7 +32,7 @@ export default {
     data(){
         return {
             items: [
-                { title: 'Patient', link: '/doctor/homepage' },
+                { title: 'Patient', link: '/doctor/patient' },
                 { title: 'Zapocinjanje pregleda', link: '/doctor/acount' },
                 { title: 'Work calendar', link: '/doctor/:16/calendar' },
                 { title: 'Create request for vacation', link: '/doctor/acount' },
@@ -45,4 +45,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.font{
+    font-size: 13px
+}
+</style>
