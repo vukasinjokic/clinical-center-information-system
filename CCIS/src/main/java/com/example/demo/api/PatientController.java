@@ -6,6 +6,7 @@ import com.example.demo.model.ClinicAdmin;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
 import com.example.demo.service.ClinicAdminService;
+import com.example.demo.service.DoctorService;
 import com.example.demo.service.PatientService;
 import com.example.demo.useful_beans.PatientToAdd;
 import org.modelmapper.ModelMapper;
@@ -24,19 +25,20 @@ import java.util.stream.Collectors;
 public class PatientController {
 
     private final PatientService patientService;
-    private final ClinicAdminService clinicAdminService;
+    private final DoctorService doctorService;
+
     private ModelMapper modelMapper = new ModelMapper();
 
-    public PatientController(PatientService patientService, ClinicAdminService clinicAdminService) {
+    public PatientController(PatientService patientService, DoctorService doctorService) {
         this.patientService = patientService;
-        this.clinicAdminService = clinicAdminService;
+        this.doctorService = doctorService;
     }
 
-    @GetMapping(path="/getPatients/{admin_email}")
-    @PreAuthorize("hasAnyRole('CLINIC_ADMIN', 'DOCTOR')")
-    public List<PatientDTO> getPatients(@PathVariable("admin_email") String admin_email){
-        ClinicAdmin clinicAdmin = clinicAdminService.getClinicAdminByEmail(admin_email);
-        List<Patient> patients = patientService.getPatients(clinicAdmin.getClinic().getName());
+    @GetMapping(path="/getPatients/{doctor_email}")
+    @PreAuthorize("hasAnyRole('DOCTOR')")
+    public List<PatientDTO> getPatientsByClinic(@PathVariable("doctor_email") String doctor_email){
+        Doctor d = doctorService.findByEmail(doctor_email);
+        List<Patient> patients = patientService.getPatients(d.getClinic().getName());
 
         return patients.stream()
                 .map(this::convertToDTO)

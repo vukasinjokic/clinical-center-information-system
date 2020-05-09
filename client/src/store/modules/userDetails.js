@@ -14,7 +14,7 @@ const actions = {
     async logIn({ commit }, data) {
         localStorage.setItem('JWT', data.accessToken);
         localStorage.setItem('Duration', data.expiresIn);
-        localStorage.setItem('user', {"email": data.email, "authorities": data.authorities});
+        localStorage.setItem('user_email', data.email);
         commit('setUser', {
             email: data.email,
             authorities: data.authorities
@@ -38,6 +38,7 @@ const actions = {
 
 const mutations = {
     setUser: (state, user) => (state.user = user),
+    setUserEmail: (state,email) => (state.user.email = email),
     removeUser: (state) => (
         state.user.email = "",
         state.user.authorities.length = 0

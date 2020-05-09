@@ -13,7 +13,7 @@ const actions = {
     async fetchPatients({commit, rootState}) {
         var email = rootState.userDetails.user.email; // kaze da je email=""
         console.log(email);
-        const response = await Vue.$axios.get('http://localhost:8081/patients/getPatients/' + "admin1@gmail.com");
+        const response = await Vue.$axios.get('http://localhost:8081/patients/getPatients/' + email);
         commit('setPatients', response.data);
     }
 };

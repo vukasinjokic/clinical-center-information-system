@@ -26,12 +26,11 @@ new Vue({
   vuetify,
   render: h => h(App),
   created(){
-      const user = localStorage.getItem('user');
-     
-      if(user){
-        const userData = JSON.parse(user);
-        console.log(user)
-        this.$store.commit('userDetails/setUser', userData);
+      const user = localStorage.getItem('user_email');
+      if(user != null){
+        console.log(user);
+        
+        this.$store.commit('userDetails/setUserEmail', user);
       }
   }
 }).$mount('#app')

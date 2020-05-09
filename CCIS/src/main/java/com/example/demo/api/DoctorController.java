@@ -22,23 +22,7 @@ public class DoctorController {
     public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;
     }
-    @PostMapping("/add")
-    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public String addDoctor(@RequestBody Doctor doctor){
-        doctorService.addDoctor(doctor);
-        return "Uspesno dodat";
-    }
-    @GetMapping("/getDoctors")
-    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public HashSet<Doctor> getDoctors(){
-        return doctorService.getDoctors();
-    }
 
-    @DeleteMapping(path = "{id}")
-    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public void deleteDoctor(@PathVariable("id") String id){
-        doctorService.deleteDoctor(id);
-    }
 
     @GetMapping(path = "{id}")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
@@ -47,13 +31,14 @@ public class DoctorController {
         DoctorDTO doctorDTO = modelMapper.map(doctor, DoctorDTO.class);
         doctorDTO.setFields(doctor);
         return doctorDTO;
-
     }
 
-    @GetMapping(path = "/{id}/calendar")
-    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public Calendar getDoctorsCalendar(@PathVariable("id") Integer id){
-        DoctorDTO doctor = findById(id);
-        return doctor.getCalendar();
+    @GetMapping(path = "/calendar/{email}")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    public Calendar getDoctorsCalendar(@PathVariable("email") String email){
+        Doctor doctor = doctorService.findByEmail(email);
+        DoctorDTO doctorDTO = modelMapper.map(doctor,DoctorDTO.class);
+        doctorDTO.setFields(doctor);
+        return doctorDTO.getCalendar();
     }
 }
