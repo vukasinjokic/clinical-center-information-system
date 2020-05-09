@@ -49,6 +49,10 @@ public class Clinic {
    @JoinColumn(name = "clinic_id")
    private Collection<Room> rooms;
 
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
+   @JoinColumn(name= "clinic_id")
+   private Collection<Patient> patients;
+
    @OneToOne(fetch = LAZY)
    @JsonIgnore
    @JoinColumn(name = "code_book_id")
@@ -130,6 +134,14 @@ public class Clinic {
       if (doctors == null)
          doctors = new java.util.HashSet<Doctor>();
       return doctors;
+   }
+
+   public Collection<Patient> getPatients() {
+      return patients;
+   }
+
+   public void setPatients(Collection<Patient> patients) {
+      this.patients = patients;
    }
 
    public java.util.Iterator getIteratorDoctors() {

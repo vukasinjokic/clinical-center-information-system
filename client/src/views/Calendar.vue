@@ -41,7 +41,7 @@
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
     </v-sheet>
-    <v-sheet height="600">
+    <v-sheet height="500">
       <v-calendar
         ref="calendar"
         v-model="value"
@@ -80,14 +80,9 @@ import axios from "axios";
       names: [],
     }),
     created() {
-          const config = {
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("JWT"),
-        }
-      }
-
+       
         axios
-        .get("http://localhost:8081/doctors/16/calendar", config)
+        .get("http://localhost:8081/doctors/calendar/"+localStorage.getItem('user_email'))
         .then(response => {
             response.data.eventStartDates.forEach(date => {
                 let eventStartDate= new Date(date)
