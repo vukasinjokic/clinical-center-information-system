@@ -167,7 +167,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('room',['fetchRooms','filterRooms', 'fetchClinicDoctors']),
+        ...mapActions('room',['fetchRooms','filterRooms', 'fetchClinicDoctors', 'alertDoctors']),
 
         dateToString(item){
             var d = new Date(item);
@@ -193,7 +193,8 @@ export default {
         },
 
         sendNotification(){
-
+            console.log(this.clinicDoctorsDict[this.doctorsSelect[0]].email);
+            this.alertDoctors(this.doctorsSelect);
         },
 
         

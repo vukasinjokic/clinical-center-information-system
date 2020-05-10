@@ -59,6 +59,10 @@ public class AppointmentDTO {
         this.patient = patient.getLastName() + " " +  patient.getFirstName();
     }
 
+    public void setPatient(String patient) {
+        this.patient = patient;
+    }
+
     public void setRoom(Room r){
         this.room = r.getName() + " " + r.getNumber();
     }

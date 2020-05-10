@@ -85,6 +85,23 @@ const actions = {
         commit('setAvailableTimes', availableTimes);        
     },
 
+    async alertDoctors({commit}, doctorsNames){
+        
+//         let config = {
+//             headers: {
+//                 Authorization: "Bearer " + localStorage.getItem("JWT"),
+//             }
+//         }
+        let doctors = [];
+        doctorsNames.forEach(name => {
+            doctors.push(state.clinicDoctorsDict[name]);
+        });
+        const response = await axios.post("http://localhost:8081/clinicAdmins/alertDoctorsOperation", doctors);
+        console.log(commit);
+        console.log(response);
+
+    },
+
     async fetchRooms({commit}){
       
         let config = {
