@@ -14,7 +14,7 @@
                     <v-row>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field
-                                v-model="firstName" 
+                                v-model="user.firstName" 
                                 :rules="[ruleRequired]" 
                                 label="First Name" 
                                 maxlength="20" 
@@ -23,7 +23,7 @@
                         </v-col>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field
-                                v-model="lastName"
+                                v-model="user.lastName"
                                 :rules="[ruleRequired]" 
                                 label="Last Name" 
                                 maxlength="20" 
@@ -32,7 +32,7 @@
                         </v-col>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
-                                v-model="email" 
+                                v-model="user.email" 
                                 :rules="emailRules" 
                                 label="E-mail" 
                                 required>
@@ -40,15 +40,15 @@
                         </v-col>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
-                                v-model="address" 
+                                v-model="user.address" 
                                 :rules="[ruleRequired]" 
-                                label="Adress" 
+                                label="Address" 
                                 required>
                             </v-text-field>
                         </v-col>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
-                                v-model="city" 
+                                v-model="user.city" 
                                 :rules="[ruleRequired]" 
                                 label="City" 
                                 required>
@@ -56,7 +56,7 @@
                         </v-col>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
-                                v-model="country" 
+                                v-model="user.country" 
                                 :rules="[ruleRequired]" 
                                 label="Country" 
                                 required>
@@ -64,7 +64,7 @@
                         </v-col>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
-                                v-model="phoneNumber" 
+                                v-model="user.phoneNumber" 
                                 :rules="[ruleRequired]" 
                                 label="Phone number" 
                                 required>
@@ -72,7 +72,7 @@
                         </v-col>
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
-                                v-model="socialSecurityNumber" 
+                                v-model="user.socialSecurityNumber" 
                                 :rules="[ruleRequired]" 
                                 label="Social security number" 
                                 required>
@@ -81,7 +81,7 @@
 
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
-                                v-model="password" 
+                                v-model="user.password" 
                                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
                                 :rules="[ruleRequired, minChar]" 
                                 :type="show1 ? 'text' : 'password'" 
@@ -119,10 +119,12 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     computed: {
         passwordMatch() {
-            return () => this.password === this.verify || "Password must match";
+            return () => this.user.password === this.verify || "Password must match";
         },
         ruleRequired(){
             return (value) => !!value || "Required.";
@@ -134,17 +136,25 @@ export default {
     methods: {
         submit() {
             if (this.$refs.registerForm.validate()) {
-                // submit form to server/API here...
+                axios.post('http://localhost:8081/auth/registerPatient', this.user);
             }
         },
     },
     data(){
-        return{
+        return {
+            // dodati use.nesto gore
+            user: {
+                firstName: "",
+                lastName: "",
+                email: "",
+                address: "",
+                city: "",
+                country: "",
+                phoneNumber: "",
+                socialSecurityNumber: "",
+                password: ""
+            },
             valid: true,
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
             verify: "",
             emailRules: [
                 v => !!v || "Required",

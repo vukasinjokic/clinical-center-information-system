@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Authority;
+import com.example.demo.model.MedicalRecord;
 import com.example.demo.model.Patient;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,15 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public User savePatient(UserDTO userToRegister) {
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<User> findByEmailOrSocialSecurityNumber(String email, String socialSecurityNumber) {
+        return userRepository.findByEmailOrSocialSecurityNumber(email, socialSecurityNumber);
+    }
+
+    public Patient registerPatient(UserDTO userToRegister) {
         Patient patient = new Patient();
         patient.setUsername(userToRegister.getUsername());
         patient.setEmail(userToRegister.getEmail());
@@ -48,6 +57,9 @@ public class UserService {
 
         List<Authority> auth = authorityService.findByName("ROLE_PATIENT");
         patient.setAuthorities(auth);
+
+        patient.setMedicalRecord(null);
+        patient.setAppointment(null);
 
         patient = this.userRepository.save(patient);
         return patient;

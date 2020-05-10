@@ -29,6 +29,10 @@ public class UserDTO {
 
     private String lastPasswordResetDate;
 
+    public UserDTO() {
+
+    }
+
     public UserDTO(User user) {
         id = user.getId().toString();
         email = user.getEmail();

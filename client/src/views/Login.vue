@@ -58,7 +58,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import { mapActions } from 'vuex';
 
   export default {
     name: "Login",
@@ -79,14 +80,15 @@ import axios from 'axios'
        } 
     },
     methods:{
+        ...mapActions("userDetails", ["logIn"]),
+
         submit(){
           if(this.$refs.form.validate()){
             axios
             .post('http://localhost:8081/auth/login', this.user)
             .then(response =>{
                 if(response.data){
-                    localStorage.setItem('JWT', response.data.accessToken);
-                    localStorage.setItem('Duration', response.data.expiresIn);
+                    this.logIn(response.data);
                     alert("Uspesno logovanje");
                     this.$router.push('home');
                 }

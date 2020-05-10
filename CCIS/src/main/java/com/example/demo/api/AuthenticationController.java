@@ -3,9 +3,9 @@ package com.example.demo.api;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserToLogin;
 import com.example.demo.dto.UserTokenState;
+import com.example.demo.model.Patient;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
-import com.example.demo.security.auth.JwtAuthenticationRequest;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/auth")
@@ -52,9 +55,11 @@ public class AuthenticationController {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
+        List<String> strAuthorities = new ArrayList<>();
+        for (GrantedAuthority authority : user.getAuthorities())
+            strAuthorities.add(authority.getAuthority());
 
-        System.out.println(jwt);
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, strAuthorities, user.getEmail()));
     }
 
     @GetMapping("/userDetails")
@@ -65,16 +70,32 @@ public class AuthenticationController {
         return userDTO;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> addPatient(@RequestBody UserDTO userRequest, UriComponentsBuilder ucBuilder) {
+    @PostMapping("/registerPatient")
+    public ResponseEntity registerPatient(@RequestBody UserDTO patientToRegister, UriComponentsBuilder ucBuilder) {
+        patientToRegister.setUsername(patientToRegister.getEmail());
 
-        User existUser = this.userService.findByUsername(userRequest.getUsername());
-        if (existUser != null) {
-            throw new RuntimeException("Username already exists");
+        List<User> existUsers = userService.findByEmailOrSocialSecurityNumber(
+                patientToRegister.getEmail(),
+                patientToRegister.getSocialSecurityNumber());
+
+        if (existUsers.size() > 2)
+            throw new RuntimeException("Unknown error. This should not happen.");
+
+        else if (existUsers.size() == 2)
+            throw new RuntimeException("Both email and social security number are already taken.");
+
+        else if (existUsers.size() == 1) {
+            if (existUsers.get(0).getEmail().equals(patientToRegister.getEmail()))
+                throw new RuntimeException("Chosen email is already taken.");
+
+            if (existUsers.get(0).getSocialSecurityNumber().equals(patientToRegister.getSocialSecurityNumber()))
+                throw new RuntimeException("Chosen social security number is already taken.");
+
         }
 
-        User user = this.userService.savePatient(userRequest);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        // TODO: poslati email zahtev
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 
