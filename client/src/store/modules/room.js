@@ -3,7 +3,10 @@ import axios from "axios";
 const state = {
     rooms : [],
     filteredRooms : [],
-    availableTimes : null
+    availableTimes : null,
+    clinicDoctors: [],
+    //Key: doctors name, Value: doctor
+    clinicDoctorsDict: {}
 };
 
 const getters = {
@@ -18,6 +21,10 @@ const getters = {
     getAvailableTimes: (state) => () =>{
         return state.availableTimes;
     },
+
+    getClinicDoctorsDict: (state) => () =>{
+        return state.clinicDoctorsDict;
+    }
 };
 
 const actions = {
@@ -92,14 +99,19 @@ const actions = {
 
     },
 
-    // fetchRooms({commit}){
-    //     axios
-    //     .get("http://localhost:8081/operationRooms/getOperationRooms")
-    //     .then(response => {
-    //         commit('setRooms', response.data);
-    //         commit('setFilteredRooms', response.data);
-    //     });
-    // },
+    async fetchClinicDoctors({commit}){
+        
+        let config = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("JWT"),
+            }
+          }
+        const response = await axios.get('http://localhost:8081/clinicAdmins/getClinicDoctors/' + localStorage.getItem('user_email'), config);
+        commit('setClinicDoctors', response.data);
+        commit('setClinicDoctorsDict');
+
+    },
+
 };
 
 const mutations = {
@@ -111,7 +123,17 @@ const mutations = {
     },
     setAvailableTimes: (state, times) => {
         state.availableTimes = times;
-    }
+    },
+    setClinicDoctors: (state, doctors) =>{
+        state.clinicDoctors = doctors;
+    },
+    setClinicDoctorsDict: (state) => {
+        state.clinicDoctorsDict = {};
+        state.clinicDoctors.forEach(doctor => {
+            state.clinicDoctorsDict[doctor.firstName + ' ' + doctor.lastName] = doctor;
+        });
+    },
+    
 };
 
 

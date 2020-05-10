@@ -115,7 +115,7 @@
                                     <v-card-actions>
                                     <v-spacer></v-spacer>
                                     <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
-                                    <v-btn color="blue darken-1" text @click="dialog = false">Reserve</v-btn>
+                                    <v-btn color="blue darken-1" text @click="sendNotification()">Send notification</v-btn>
                                     </v-card-actions>
                                 </v-card>
                                 </v-dialog>
@@ -132,8 +132,7 @@
 </template>
 <script>
 
-import {mapGetters, mapActions, mapState} from 'vuex'
-import axios from "axios";
+import {mapGetters, mapActions} from 'vuex'
  
 export default {
     name: 'Rooms',
@@ -164,13 +163,11 @@ export default {
             menu2: false,
             dialog: false,
 
-            //Keys : doctors names, Values: doctor objects
-            clinicDoctorsDict: {},
-            clinicDoctors: [],
+            doctorsSelect: []
         }
     },
     methods: {
-        ...mapActions('room',['fetchRooms','filterRooms']),
+        ...mapActions('room',['fetchRooms','filterRooms', 'fetchClinicDoctors']),
 
         dateToString(item){
             var d = new Date(item);
@@ -189,33 +186,24 @@ export default {
             }
         },
         reserveOperationRoom(room){
-            var self = this;
-            axios.get('http://localhost:8081/clinicAdmins/getClinicDoctors/' + localStorage.getItem('user_email'))
-            .then(response => {
-                self.clinicDoctors = response.data;
-                console.log(room);
-                self.setUpDoctorDict();
-                self.dialog = true;
-            })
-            
-
-
-        },
-
-        setUpDoctorDict(){
-            this.clinicDoctorsDict = {};
             this.doctorsSelect = [];
-            this.clinicDoctors.forEach(doctor => {
-                this.clinicDoctorsDict[doctor.firstName + ' ' + doctor.lastName] = doctor;
-            });
+            this.dialog = true;
+            console.log(room);
+            
         },
+
+        sendNotification(){
+
+        },
+
+        
                 
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10
     },
     computed:{ 
-        ...mapGetters('room', ['getAvailableTimes', 'getFilteredRooms']),
-        ...mapState([ 'rooms','loading']),
+        ...mapGetters('room', ['getAvailableTimes', 'getFilteredRooms', 'getClinicDoctorsDict']),
+        
 
         filteredRooms: function(){
             return this.getFilteredRooms();
@@ -223,10 +211,15 @@ export default {
 
         availableTimes: function(){
             return this.getAvailableTimes();
+        },
+
+        clinicDoctorsDict: function(){
+            return this.getClinicDoctorsDict();
         }
     },
     created(){
         this.fetchRooms();
+        this.fetchClinicDoctors();
     },
 }
 </script>
