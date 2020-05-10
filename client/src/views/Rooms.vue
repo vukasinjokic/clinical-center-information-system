@@ -93,8 +93,33 @@
                         </tr>
                         <tr style="background-color:gray" v-if="availableTimes">
                             <td >First available appointment : {{dateToString(availableTimes[item.id])}}</td>
-                            <td style="text-align:center; margin-left:140px;"><v-btn @click="filter" color="blue">Reserve room</v-btn> </td>
-                            
+                            <td style="text-align:center; margin-left:140px;"><v-btn @click="reserveRoom(item)" color="blue">Reserve room</v-btn> </td>
+                            <v-row justify="center">
+                                <v-dialog v-model="dialog" persistent max-width="500">
+                                <v-card>
+                                    <v-card-title class="headline">Choose doctors to attend operation</v-card-title>
+                                    <v-container fluid>
+                                    <v-row align="center">
+                                        <v-col sm="100">
+                                            <v-select
+                                            v-model="doctorsSelect"
+                                            :items="Object.keys(clinicDoctorsDict)"
+                                            :menu-props="{ maxHeight: '400' }"
+                                            label="Select"
+                                            style="width:500px"
+                                            multiple
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                    </v-container>
+                                    <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" text @click="dialog = false">Reserve</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                                </v-dialog>
+                            </v-row>
                         </tr>
                      </td>
                 </template>
@@ -108,7 +133,8 @@
 <script>
 
 import {mapGetters, mapActions, mapState} from 'vuex'
-
+import axios from "axios";
+ 
 export default {
     name: 'Rooms',
     
@@ -136,6 +162,11 @@ export default {
             expanded: [],
             duration: "00:00",
             menu2: false,
+            dialog: false,
+
+            //Keys : doctors names, Values: doctor objects
+            clinicDoctorsDict: {},
+            clinicDoctors: [],
         }
     },
     methods: {
@@ -148,7 +179,37 @@ export default {
         filter(){
           this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration, 'type': this.type});         
         },
-        
+
+        reserveRoom(room){
+            if(room.type.toUpperCase().match('OPERATION')){
+                this.reserveOperationRoom(room);
+            }
+            else{
+                this.reserveAppointmentRoom(room);
+            }
+        },
+        reserveOperationRoom(room){
+            var self = this;
+            axios.get('http://localhost:8081/clinicAdmins/getClinicDoctors/' + localStorage.getItem('user_email'))
+            .then(response => {
+                self.clinicDoctors = response.data;
+                console.log(room);
+                self.setUpDoctorDict();
+                self.dialog = true;
+            })
+            
+
+
+        },
+
+        setUpDoctorDict(){
+            this.clinicDoctorsDict = {};
+            this.doctorsSelect = [];
+            this.clinicDoctors.forEach(doctor => {
+                this.clinicDoctorsDict[doctor.firstName + ' ' + doctor.lastName] = doctor;
+            });
+        },
+                
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10
     },
