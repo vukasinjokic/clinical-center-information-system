@@ -49,7 +49,7 @@ export default {
                     text: 'Clinic', value: 'clinic',fileterable: true
                 },
                 {
-                    text: 'Operation room', value: 'operationRoom', fileterable:true            
+                    text: 'Room', value: 'room', fileterable:true            
                 },
                 {
                     text: 'Date', value: 'date',fileterable: true

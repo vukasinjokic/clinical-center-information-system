@@ -1,18 +1,41 @@
 import axios from "axios";
 
 const state = {
-    rooms : [] 
+    rooms : [],
+    filteredRooms : [],
+    availableTimes : null,
+    clinicDoctors: [],
+    //Key: doctors name, Value: doctor
+    clinicDoctorsDict: {}
 };
 
 const getters = {
     getAllRooms: (state) => () =>{
-        return state.rooms;
-      
+        return state.rooms; 
     },
 
-    getFiltered: (state) => (search,date,duration) => {
-        let availableAppointments = {};
-        let rooms = state.rooms.filter(room => {
+    getFilteredRooms: (state) => () => {
+        return state.filteredRooms;
+    },
+
+    getAvailableTimes: (state) => () =>{
+        return state.availableTimes;
+    },
+
+    getClinicDoctorsDict: (state) => () =>{
+        return state.clinicDoctorsDict;
+    }
+};
+
+const actions = {
+    
+
+    filterRooms: ({commit}, payload) => {
+        let search = payload.search;
+        let duration = payload.duration;
+        let date = payload.date == "" ? new Date() : payload.date;
+        let availableTimes = {};
+        let filteredRooms = state.rooms.filter(room => {
             let first = room.name.toUpperCase().match(search.toUpperCase()) || room.number.toUpperCase().match(search.toUpperCase());
             let firstAvailable = null;
             let eventStartDates = room.calendar.eventStartDates.slice();
@@ -52,16 +75,33 @@ const getters = {
                 }
                 
             }
+            showRoom = room.type.toUpperCase().match(payload.type.toUpperCase()) ? true : false;
             if(date == "") showRoom = true;
-            availableAppointments[room.id] = firstAvailable;
+            availableTimes[room.id] = firstAvailable;
             return first  && showRoom;
         });
-        return {'availableAppointments' : availableAppointments, 'rooms': rooms};
-        
-    }
-};
+        if(duration == "00:00") availableTimes = null;   
+        commit('setFilteredRooms', filteredRooms);
+        commit('setAvailableTimes', availableTimes);        
+    },
 
-const actions = {
+    async alertDoctors({commit}, doctorsNames){
+        
+//         let config = {
+//             headers: {
+//                 Authorization: "Bearer " + localStorage.getItem("JWT"),
+//             }
+//         }
+        let doctors = [];
+        doctorsNames.forEach(name => {
+            doctors.push(state.clinicDoctorsDict[name]);
+        });
+        const response = await axios.post("http://localhost:8081/clinicAdmins/alertDoctorsOperation", doctors);
+        console.log(commit);
+        console.log(response);
+
+    },
+
     async fetchRooms({commit}){
       
         let config = {
@@ -69,18 +109,48 @@ const actions = {
                 Authorization: "Bearer " + localStorage.getItem("JWT"),
             }
           }
-        const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms", config);
+        const response = await axios.get("http://localhost:8081/rooms/getRooms", config);
 
         commit('setRooms', response.data);
+        commit('setFilteredRooms', response.data);
+
     },
 
-    getRooms(){
-        return state.rooms;
-    }
+    async fetchClinicDoctors({commit}){
+        
+        let config = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("JWT"),
+            }
+          }
+        const response = await axios.get('http://localhost:8081/clinicAdmins/getClinicDoctors/' + localStorage.getItem('user_email'), config);
+        commit('setClinicDoctors', response.data);
+        commit('setClinicDoctorsDict');
+
+    },
+
 };
 
 const mutations = {
-    setRooms: (state, rooms) => state.rooms = rooms
+    setRooms: (state, rooms) => {
+        state.rooms = rooms
+    },
+    setFilteredRooms: (state, frooms) => {
+        state.filteredRooms = frooms;
+    },
+    setAvailableTimes: (state, times) => {
+        state.availableTimes = times;
+    },
+    setClinicDoctors: (state, doctors) =>{
+        state.clinicDoctors = doctors;
+    },
+    setClinicDoctorsDict: (state) => {
+        state.clinicDoctorsDict = {};
+        state.clinicDoctors.forEach(doctor => {
+            state.clinicDoctorsDict[doctor.firstName + ' ' + doctor.lastName] = doctor;
+        });
+    },
+    
 };
 
 

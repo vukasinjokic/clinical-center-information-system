@@ -1,9 +1,8 @@
 package com.example.demo.api;
 
-import com.example.demo.dto.OperationRoomDTO;
-import com.example.demo.model.OperationRoom;
-import com.example.demo.service.AppointmentService;
-import com.example.demo.service.OperationRoomService;
+import com.example.demo.dto.RoomDTO;
+import com.example.demo.model.Room;
+import com.example.demo.service.RoomService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,29 +14,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
-@RequestMapping("/operationRooms")
+@RequestMapping("/rooms")
 @RestController
-public class OperationRoomController {
+public class RoomController {
 
-    private final OperationRoomService roomService;
+    private final RoomService roomService;
     private ModelMapper modelMapper = new ModelMapper();
 
-    public OperationRoomController(OperationRoomService roomService) {
+    public RoomController(RoomService roomService) {
         this.roomService = roomService;
     }
 
-    @GetMapping("/getOperationRooms")
+    @GetMapping("/getRooms")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public List<OperationRoomDTO> getAllOperationRooms(){
-        List<OperationRoom> allRooms = roomService.getAllOperationRooms();
+    public List<RoomDTO> getAllRooms(){
+        List<Room> allRooms = roomService.getAllRooms();
 
         return allRooms.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-    private OperationRoomDTO convertToDTO(OperationRoom operationRoom){
-        OperationRoomDTO operationRoomDTO = modelMapper.map(operationRoom, OperationRoomDTO.class);
-        operationRoomDTO.setDtoFields(operationRoom);
-        return operationRoomDTO;
+    private RoomDTO convertToDTO(Room room){
+        RoomDTO roomDTO = modelMapper.map(room, RoomDTO.class);
+        roomDTO.setDtoFields(room);
+        return roomDTO;
     }
 }

@@ -64,13 +64,22 @@
                         </v-date-picker>          
                     </v-menu>
                     <v-spacer></v-spacer>
-                    <v-btn @click="filterRooms">Search</v-btn>
+                    <v-combobox
+                        v-model="type"
+                        :items="types"
+                        label="Select type"
+
+                    >
+
+                    </v-combobox>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="filter">Search</v-btn>
                 </v-card-title>          
                 </v-card>
-                <v-data-table
+                <v-data-table 
                     :ref="table"
                     :headers="headers"
-                    :items="getRoomsTable"
+                    :items="filteredRooms"
                     :items-per-page="5"
                     :expanded.sync="expanded"
                     item-key="name"
@@ -82,10 +91,35 @@
                             <td>Start date: {{ dateToString(item.calendar.eventStartDates[it-1])}}</td>
                             <td>End date: {{ dateToString(item.calendar.eventEndDates[it-1])}}</td>
                         </tr>
-                        <tr style="background-color:gray" v-if="availableAppointments">
-                            <td >First available appointment : {{dateToString(availableAppointments[item.id])}}</td>
-                            <td style="text-align:center; margin-left:140px;"><v-btn @click="filterRooms" color="blue">Reserve room</v-btn> </td>
-                            
+                        <tr style="background-color:gray" v-if="availableTimes">
+                            <td >First available appointment : {{dateToString(availableTimes[item.id])}}</td>
+                            <td style="text-align:center; margin-left:140px;"><v-btn @click="reserveRoom(item)" color="blue">Reserve room</v-btn> </td>
+                            <v-row justify="center">
+                                <v-dialog v-model="dialog" persistent max-width="500">
+                                <v-card>
+                                    <v-card-title class="headline">Choose doctors to attend operation</v-card-title>
+                                    <v-container fluid>
+                                    <v-row align="center">
+                                        <v-col sm="100">
+                                            <v-select
+                                            v-model="doctorsSelect"
+                                            :items="Object.keys(clinicDoctorsDict)"
+                                            :menu-props="{ maxHeight: '400' }"
+                                            label="Select"
+                                            style="width:500px"
+                                            multiple
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                    </v-container>
+                                    <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" text @click="sendNotification()">Send notification</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                                </v-dialog>
+                            </v-row>
                         </tr>
                      </td>
                 </template>
@@ -93,21 +127,16 @@
             
         </v-container>
         </div>
-        <div>
-            
-        </div>
+        
     </div> 
 </template>
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
-
+ 
 export default {
     name: 'Rooms',
-    created(){
-        this.fetchRooms();    
-        this.getRooms();    
-    },
+    
 
     data(){
         return {
@@ -121,52 +150,78 @@ export default {
                 {
                     text: 'Clinic', value: 'clinic',fileterable: true
                 },
-                // { 
-                //     text: 'Actions', value: 'actions', sortable: false 
-                // },
+                { 
+                    text: 'Type', value: 'type', sortable: true 
+                },
             ],
             search: "",
             date:"",
+            type:"",
+            types:['Appointment','Operation'],
             expanded: [],
-            rooms: [],
-            availableAppointments : null,
             duration: "00:00",
             menu2: false,
+            dialog: false,
+
+            doctorsSelect: []
         }
     },
     methods: {
-        ...mapActions('room',['fetchRooms', 'getRooms']),
-
-        getRooms(){
-            this.rooms = this.getAllRooms();
-        },
+        ...mapActions('room',['fetchRooms','filterRooms', 'fetchClinicDoctors', 'alertDoctors']),
 
         dateToString(item){
             var d = new Date(item);
             return d.toString().substring(0,21);
         },
-        filterRooms(){
-          let result = this.getFiltered(this.search, this.date, this.duration);
-          this.availableAppointments = result.availableAppointments;
-          this.rooms = result.rooms;
-          
+        filter(){
+          this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration, 'type': this.type});         
         },
+
+        reserveRoom(room){
+            if(room.type.toUpperCase().match('OPERATION')){
+                this.reserveOperationRoom(room);
+            }
+            else{
+                this.reserveAppointmentRoom(room);
+            }
+        },
+        reserveOperationRoom(room){
+            this.doctorsSelect = [];
+            this.dialog = true;
+            console.log(room);
+            
+        },
+
+        sendNotification(){
+            console.log(this.clinicDoctorsDict[this.doctorsSelect[0]].email);
+            this.alertDoctors(this.doctorsSelect);
+        },
+
         
+                
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10
     },
     computed:{ 
-        ...mapGetters('room', ['getAllRooms','getFiltered']),
-        getRoomsTable: function(){
-            return (this.getFiltered(this.search,this.date,this.duration)).rooms;
+        ...mapGetters('room', ['getAvailableTimes', 'getFilteredRooms', 'getClinicDoctorsDict']),
+        
+
+        filteredRooms: function(){
+            return this.getFilteredRooms();
         },
-        // getRooms: function(){
-        //     this.rooms = this.getAllRooms();
-        // },
- 
+
+        availableTimes: function(){
+            return this.getAvailableTimes();
+        },
+
+        clinicDoctorsDict: function(){
+            return this.getClinicDoctorsDict();
+        }
     },
-
-
+    created(){
+        this.fetchRooms();
+        this.fetchClinicDoctors();
+    },
 }
 </script>
 

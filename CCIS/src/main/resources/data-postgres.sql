@@ -539,19 +539,19 @@ values (nextval('ust_seq_user'), 'pacijent6@gmail.com', 'pacijent6@gmail.com', '
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------- Inserting operation rooms -------------------------------------------------------
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 1','100', 1, 1);				-- id = 1
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 2','101', 7, 1);				-- id = 2
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 3','102', 8, 1);				-- id = 3
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 4','103', 8, 1);				-- id = 4
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 5','104', 9, 2);				-- id = 5
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 6','105', 9, 2);				-- id = 6
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 7','106', 10, 2);			-- id = 7
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 8','107', 10, 2);			-- id = 8
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 9','108', 11, 3);			-- id = 9
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 10','109', 11, 3);			-- id = 10
-insert into operation_rooms (name,number, calendar_id, clinic_id) values ('Sala 11','110', 12, 3);			-- id = 11
-insert into operation_rooms  (name,number, calendar_id, clinic_id) values ('Sala 12','111', 12, 3);			-- id = 12
+------------------------------------------------------- Inserting rooms -------------------------------------------------------
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 1','100', 1, 1, 'APPOINTMENT');				-- id = 1
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 2','101', 7, 1, 'APPOINTMENT');				-- id = 2
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 3','102', 8, 1, 'APPOINTMENT');				-- id = 3
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 4','103', 8, 1, 'APPOINTMENT');				-- id = 4
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 5','104', 9, 2, 'APPOINTMENT');				-- id = 5
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 6','105', 9, 2, 'APPOINTMENT');				-- id = 6
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 7','106', 10, 2, 'OPERATION');			-- id = 7
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 8','107', 10, 2, 'OPERATION');			-- id = 8
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 9','108', 11, 3, 'OPERATION');			-- id = 9
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 10','109', 11, 3, 'OPERATION');			-- id = 10
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 11','110', 12, 3, 'OPERATION');			-- id = 11
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 12','111', 12, 3, 'OPERATION');			-- id = 12
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -559,63 +559,63 @@ insert into operation_rooms  (name,number, calendar_id, clinic_id) values ('Sala
 -----------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------- Inserting appointments --------------------------------------------------------
 insert into appointments			-- id = 1
-(				time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+(				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-01 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 				1, 				1);
 
 insert into appointments			-- id = 1
-(				time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+(				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-01 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 				1, 				1);
 
 insert into appointments			-- id = 2
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 				2, 				1);
 
 insert into appointments			-- id = 3
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 				3, 				1);
 
 insert into appointments			-- id = 4
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				4,				1);
 
 
 
 
 insert into appointments			-- id = 5
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 				5,				2);
 
 insert into appointments			-- id = 6
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 				6, 				2);
 
 
 insert into appointments			-- id = 7
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 				1,				2);
 
 insert into appointments			-- id = 8
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 				2, 				2);
 
 
 
 
 insert into appointments			-- id = 9
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 				3,				3);
 
 insert into appointments			-- id = 10
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 				4, 				3);
 
 insert into appointments			-- id = 11
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
 values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 				5,				3);
 
-insert into appointments			-- id = 12
-				(time, 			price, 	discount, 	doctor_id, operation_room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
-values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				6, 				3);
+-- insert into appointments			-- id = 12
+-- 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, medical_record_id, clinic_id)
+-- values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				6, 				3);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

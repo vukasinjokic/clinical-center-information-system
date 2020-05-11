@@ -2,26 +2,21 @@ package com.example.demo.dto;
 
 import com.example.demo.model.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-
-public class OperationRoomDTO {
+public class RoomDTO {
     private String id;
     private String name;
     private String number;
     private Calendar calendar;
 //    private Collection<Appointment> appointments;
     private String clinic;
+    private String type;
 
 
-    public void setDtoFields(OperationRoom operationRoom){
+    public void setDtoFields(Room room){
         try{
-            this.number = operationRoom.getNumber();
-            this.clinic = operationRoom.getClinic().getName();
-            CalendarDTO.setUpCalendar(operationRoom.getCalendar().getId(), calendar, operationRoom.getAppointments());
+            this.number = room.getNumber();
+            this.clinic = room.getClinic().getName();
+            CalendarDTO.setUpCalendar(room.getCalendar().getId(), calendar, room.getAppointments());
         }
         catch (Exception e){
             e.printStackTrace();
@@ -61,5 +56,13 @@ public class OperationRoomDTO {
     }
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
