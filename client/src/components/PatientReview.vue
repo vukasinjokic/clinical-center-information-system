@@ -8,10 +8,7 @@
             :items-per-page="5"
             item-key="item.email"
         >
-
         </v-data-table>
-      
-
 </div>
 </template>
 

@@ -59,7 +59,7 @@ const actions = {
     async saveAppointment({commit}, appo){
         const response = await axios.post('http://localhost:8081/appointments/addAppointment', appo, config);
         commit('newApp', response.data);
-    }
+    },
 };
 
 const mutations = {

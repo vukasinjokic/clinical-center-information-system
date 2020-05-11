@@ -33,10 +33,10 @@ export default {
         return {
             items: [
                 { title: 'Patient', link: '/doctor/patient' },
-                { title: 'Zapocinjanje pregleda', link: '/doctor/acount' },
+                { title: 'Zapocinjanje pregleda', link: '/doctor/profile' },
                 { title: 'Work calendar', link: '/doctor/:16/calendar' },
                 { title: 'Create request for vacation', link: '/doctor/acount' },
-                { title: 'Profile', link: '/doctor/acount' },
+                { title: 'Profile', link: '/doctor/profile' },
                 { title: 'Zakazivanje pregleda/operacija', link: '/doctor/acount' },
             ],
             drawer: true

@@ -30,8 +30,8 @@
       
       <router-link
       class="white--text"
-        to="/patients"
-      >Patients</router-link>
+        to="/ex_type"
+      >Examination TYpe</router-link>
       <v-spacer></v-spacer>
 
       <router-link

@@ -79,6 +79,7 @@ public class AppointmentController {
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
         //patient = null  clinic = trenutno je zakucana vrednost dok ne bude login gotov
+        //validacija ide u service
         Appointment appointment = appointmentService.saveAppointment(appointmentDTO);
 
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.CREATED);
