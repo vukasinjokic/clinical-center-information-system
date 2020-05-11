@@ -40,14 +40,13 @@ public class AppointmentService {
         Date date = formatter.parse(appointmentDTO.getDate());
         Doctor getDoctor = doctorRepository.findByEmail(appointmentDTO.getDoctor());
         int room_len = appointmentDTO.getRoom().length();
-        String room_number = appointmentDTO.getRoom().substring(room_len - 3, room_len-1);
+        String room_number = appointmentDTO.getRoom().substring(room_len - 3, room_len);
         Room getRoom = roomRepository.findByNumber(room_number);
         Clinic getClinic = clinicRepository.findByName("Poliklinika Sparta").get();
         ExaminationType getType = examinationTypeRepository.findByName(appointmentDTO.getExaminationType());
 
         Appointment appointment_to_add = new Appointment(date,appointmentDTO.getPrice(),0,getDoctor,getRoom,getType,getClinic);
 
-        appointment_to_add.setMedicalRecord(new MedicalRecord());
         appointmentRepository.save(appointment_to_add);
 
         return appointment_to_add;

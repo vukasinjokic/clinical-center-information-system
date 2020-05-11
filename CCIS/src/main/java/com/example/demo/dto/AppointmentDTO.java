@@ -56,6 +56,7 @@ public class AppointmentDTO {
     }
 
     public void setPatient(Patient patient){
+        if(patient == null) return;
         this.patient = patient.getLastName() + " " +  patient.getFirstName();
     }
 

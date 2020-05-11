@@ -33,28 +33,22 @@ public class Clinic {
    @Column(name = "rating", unique = false, nullable = false)
    private float rating;
 
-   @OneToMany(cascade = {ALL}, fetch = LAZY)
-   @JoinColumn(name = "clinic_id")
+   @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Doctor> doctors;
 
-   @OneToMany(cascade = {ALL}, fetch = LAZY)
-   @JoinColumn(name = "clinic_id")
+   @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Nurse> nurses;
 
-   @OneToMany(cascade = {ALL}, fetch = LAZY)
-   @JoinColumn(name = "clinic_id")
+   @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Appointment> appointments;
 
-   @OneToMany(cascade = {ALL}, fetch = LAZY)
-   @JoinColumn(name = "clinic_id")
+   @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Room> rooms;
 
-   @OneToMany(cascade = {ALL}, fetch = LAZY)
-   @JoinColumn(name= "clinic_id")
+   @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Patient> patients;
 
    @OneToOne(fetch = LAZY)
-   @JsonIgnore
    @JoinColumn(name = "code_book_id")
    private CodeBook codeBook;
 

@@ -18,8 +18,7 @@ public class Patient extends User {
    @JoinColumn(name="clinic_id")
    private Clinic clinic;
 
-   @OneToMany(cascade = {CascadeType.ALL},fetch = LAZY)
-   @JoinColumn(name = "patient_id")
+   @OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL},fetch = LAZY)
    private Collection<Appointment> appointment;
 
    public Patient() {

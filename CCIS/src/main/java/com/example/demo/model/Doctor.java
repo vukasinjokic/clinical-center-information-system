@@ -21,8 +21,7 @@ public class Doctor extends MedicalStaff {
    @JoinColumn(name = "ex_type_id",nullable = false)
    private ExaminationType examinationType;
 
-   @OneToMany(fetch = FetchType.LAZY)
-   @JoinColumn(name = "doctor_id")
+   @OneToMany(mappedBy = "doctor" ,fetch = FetchType.LAZY)
    private Collection<Appointment> appointments;
 
    public Doctor() {

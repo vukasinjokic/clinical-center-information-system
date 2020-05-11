@@ -14,7 +14,7 @@ public class ClinicalCenterInformationSystemApplication {
 //
 //	public static LoginService loginService = new LoginService();
 //	public static AuthenticationController authenticationController = new AuthenticationController(loginService);
-	public static EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("CCISPersistence");
+//	public static EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("CCISPersistence");
 
 	public static void main(String[] args) {
 

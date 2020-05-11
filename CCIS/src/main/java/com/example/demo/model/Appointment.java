@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import javax.servlet.annotation.HttpMethodConstraint;
 import java.util.*;
 
 import static javax.persistence.FetchType.EAGER;
@@ -39,12 +40,8 @@ public class Appointment {
    private ExaminationType examinationType;
 
    @ManyToOne(fetch = EAGER)
-   @JoinColumn(name = "patient_id", nullable = true)
+   @JoinColumn(name = "patient_id")
    private Patient patient;
-
-   @ManyToOne(fetch = LAZY)
-   @JoinColumn(name = "medical_record_id",nullable = true)
-   private MedicalRecord medicalRecord;
 
    @ManyToOne(fetch = LAZY)
    @JoinColumn(name = "clinic_id")
@@ -54,7 +51,7 @@ public class Appointment {
    public Appointment() {
    }
 
-   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient, MedicalRecord medicalRecord, Clinic clinic) {
+   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic) {
       this.id = id;
       this.time = time;
       this.price = price;
@@ -63,7 +60,6 @@ public class Appointment {
       this.room = room;
       this.examinationType = examinationType;
       this.patient = patient;
-      this.medicalRecord = medicalRecord;
       this.clinic = clinic;
    }
    public Appointment(Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Clinic clinic) {
@@ -90,14 +86,6 @@ public class Appointment {
 
    public void setId(Integer id) {
       this.id = id;
-   }
-
-   public MedicalRecord getMedicalRecord() {
-      return medicalRecord;
-   }
-
-   public void setMedicalRecord(MedicalRecord medicalRecord) {
-      this.medicalRecord = medicalRecord;
    }
 
    public Date getTime() {
