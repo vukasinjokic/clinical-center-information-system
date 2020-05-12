@@ -129,7 +129,6 @@ public class ClinicDTO {
     public void setOperationRooms(Collection<OperationRoom> operationRooms) {
         List<String> strOperationRooms = new ArrayList<>();
 
-        ModelMapper modelMapper = new ModelMapper();
         for (OperationRoom operationRoom : operationRooms) {
             strOperationRooms.add(operationRoom.getName() + " " + operationRoom.getClinic().getName());
         }
