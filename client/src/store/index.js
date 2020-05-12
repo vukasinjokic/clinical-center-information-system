@@ -4,6 +4,8 @@ import appointments from './modules/appointments';
 import room from './modules/room';
 import clinics from './modules/clinics.js';
 import userDetails from './modules/userDetails.js';
+import patient from './modules/patient'
+import examination_type from './modules/examination_type'
 
 // load vuex
 Vue.use(Vuex);
@@ -14,6 +16,8 @@ export default new Vuex.Store({
         appointments,
         room,
         clinics,
-        userDetails
+        userDetails,
+        patient,
+        examination_type,
     }
 });

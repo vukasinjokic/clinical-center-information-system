@@ -11,6 +11,8 @@ public class ExaminationType {
    @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
+
+
    @Column(name = "name", unique = false,nullable = false)
    private String name;
 
@@ -24,7 +26,13 @@ public class ExaminationType {
       this.name = name;
       this.duration = duration;
    }
+   public Integer getId() {
+      return id;
+   }
 
+   public void setId(Integer id) {
+      this.id = id;
+   }
    public String getName() {
       return name;
    }

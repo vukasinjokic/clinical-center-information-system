@@ -1,15 +1,17 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
+import UserProfile from '../components/UserProfile.vue'
 import Home from '../views/Home'
 import Room from '../views/Rooms'
 import Login from '../views/Login'
 import Appointments from '../views/Appointments'
-import Patients from '../views/Patients'
+import ExaminationTypeReview from '../components/examinationType/ExaminationTypeReview.vue'
 import Calendar from '../views/Calendar'
 import Clinics from '../views/clinic/Clinics.vue'
 import Clinic from '../views/clinic/Clinic.vue'
 import Register from '../views/Register.vue'
+import DoctorPage from '../views/DoctorPage'
+import PatientReview from '../components/PatientReview.vue'
 
 
 Vue.use(VueRouter);
@@ -27,11 +29,7 @@ const router = new VueRouter({
         name: Register,
         component: Register
       },
-      {
-        path: '/helloWorld',
-        name: 'HelloWorld',
-        component: HelloWorld
-      },
+      
       {
         path: '/home',
         name: 'Home',
@@ -49,14 +47,19 @@ const router = new VueRouter({
 
       },
       {
-        path: '/patients',
-        name: 'Patients',
-        component : Patients
+        path: '/ex_type',
+        name: 'ExaminationType',
+        component : ExaminationTypeReview
       },
       {
-        path: '/doctors/:id/calendar',
-        name: 'Calendar',
-        component : Calendar
+        path: '/doctor',
+        name: 'DoctorPage',
+        component: DoctorPage,
+        children: [
+            {path: 'patient', name: 'PatientReview', component: PatientReview},
+            {path: 'profile', name: 'UserProfile', component: UserProfile},
+            {path: ':16/calendar', name: 'Calendar', component : Calendar}
+        ]
       },
       {
         path: '/clinics',

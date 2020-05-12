@@ -14,6 +14,10 @@ public class Patient extends User {
    @JoinColumn(name = "medical_record_id")
    private MedicalRecord medicalRecord;
 
+   @ManyToOne(fetch = LAZY)
+   @JoinColumn(name="clinic_id")
+   private Clinic clinic;
+
    @OneToMany(cascade = {CascadeType.ALL},fetch = LAZY)
    @JoinColumn(name = "patient_id")
    private Collection<Appointment> appointment;
@@ -40,5 +44,13 @@ public class Patient extends User {
 
    public void setMedicalRecord(MedicalRecord medicalRecord) {
       this.medicalRecord = medicalRecord;
+   }
+
+   public Clinic getClinic() {
+      return clinic;
+   }
+
+   public void setClinic(Clinic clinic) {
+      this.clinic = clinic;
    }
 }
