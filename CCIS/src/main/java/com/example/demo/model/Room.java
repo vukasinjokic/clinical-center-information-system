@@ -42,11 +42,17 @@ public class Room {
 
    public Room() {
    }
-   public Room(String name, Calendar calendar, Clinic clinic, Collection<Appointment> appointments) {
+   public Room(String name, String number, Calendar calendar, Clinic clinic) {
       this.name = name;
+      this.number = number;
       this.calendar = calendar;
       this.clinic = clinic;
-      this.appointments = appointments;
+   }
+   public Room(String name,String number,  Clinic clinic,RoomType roomType) {
+      this.name = name;
+      this.number = number;
+      this.clinic = clinic;
+      this.type = roomType;
    }
 
    public Integer getId() {

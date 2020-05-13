@@ -45,7 +45,7 @@ public class ExaminationTypeService {
             ExaminationType examinationType = findType.get();
             List<Appointment> appointments = appointmentRepository.findByExaminationTypeId(examinationType.getId());
             if(appointments.size() == 0){
-                if(!this.validateName(forUpdate.getName())){
+                if(!this.validateUsing(forUpdate.getName())){
                     examinationType.setName(forUpdate.getName());
                     examinationType.setDuration(forUpdate.getDuration());
                     examinationType = examinationTypeRepository.save(examinationType);
@@ -57,7 +57,20 @@ public class ExaminationTypeService {
         return null;
     }
 
-    public boolean validateName(String name){
+    public ExaminationType saveType(ExaminationType examinationType){
+        ExaminationType doesExist = examinationTypeRepository.findByName(examinationType.getName());
+        if(doesExist == null){
+            if(!validateName(examinationType.getName()))
+                return null;
+
+            ExaminationType ex_type = new ExaminationType(examinationType.getName(),examinationType.getDuration());
+            examinationTypeRepository.save(ex_type);
+            return ex_type;
+        }
+        return null;
+    }
+
+    public boolean validateUsing(String name){
         List<ExaminationType> examinationTypes = examinationTypeRepository.findAll();
         List<ExaminationType> doesExist = examinationTypes.stream()
                 .filter(t -> t.getName().equals(name))
@@ -67,14 +80,11 @@ public class ExaminationTypeService {
         return true;
     }
 
-    public ExaminationType saveType(ExaminationType examinationType){
-        ExaminationType doesExist = examinationTypeRepository.findByName(examinationType.getName());
-        if(doesExist == null){
-            ExaminationType ex_type = new ExaminationType(examinationType.getName(),examinationType.getDuration());
-            examinationTypeRepository.save(ex_type);
-            return ex_type;
-        }
-        return null;
+    public boolean validateName(String name){
+        ExaminationType examinationType = examinationTypeRepository.findByName(name);
+        if(examinationType == null)
+            return true;
+        return false;
     }
 
 }

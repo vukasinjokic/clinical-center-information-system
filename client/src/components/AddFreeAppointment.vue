@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
-           <v-btn outlined v-on="on" color="deep-purple accent-4">Add free appointment</v-btn>
+           <v-btn  v-on="on" color="deep-purple accent-4">Add free appointment</v-btn>
         </template>
         <v-card>
           <v-toolbar height="45px" color="primary">
@@ -148,7 +148,7 @@ export default {
           if(this.$refs.form.validate()){
             var newAppointment = 
                     {
-                      time: "2012-04-23T18:25:43.511Z",
+                      time: new Date(this.date + " " + this.time),
                       price: this.price,
                       doctor: this.doctor,
                       room: this.room,
@@ -156,7 +156,7 @@ export default {
                       clinic: "Ne znam kliniku dok se ne uradi login"
                     }
 
-            this.saveAppointment(newAppointment);
+            this.saveAppointment(newAppointment); 
             this.dialog = false;
           }
         },

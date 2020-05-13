@@ -77,10 +77,10 @@ public class AppointmentController {
     @PostMapping(path = "/addAppointment", consumes = "application/json")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
-        //patient = null  clinic = trenutno je zakucana vrednost dok ne bude login gotov
         //validacija ide u service
         Appointment appointment = appointmentService.saveAppointment(appointmentDTO);
-
+        if(appointment == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.CREATED);
     }
 

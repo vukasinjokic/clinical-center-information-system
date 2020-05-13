@@ -26,11 +26,11 @@
             :search="search"
         >
         <template v-slot:top>
-        <v-toolbar flat color="white">
+        <v-toolbar flat class="blue-grey darken-4 white--text">
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="300px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">New type</v-btn>
+              <v-btn color="deep-purple accent-4" dark class="mb-2" v-on="on">New type</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -39,8 +39,10 @@
               <v-card-text>
                 <v-container>
                   <v-row>
+                    <v-form ref="form">
                     <v-col cols="12" sm="6" md="12">
                       <v-text-field 
+                            :rules="[requiredRule]"
                             label="Examination type name"
                             v-model="editedItem.name"></v-text-field>
                     </v-col>
@@ -49,6 +51,7 @@
                         :rules="[numberRule,requiredRule]" >
                       </v-text-field>
                     </v-col>
+                    </v-form>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -134,17 +137,20 @@ export default {
             this.dialog = true;
         },
         save(){
+          if(this.$refs.form.validate()){
             if(this.editedIndex > -1){
                 this.updateType(this.editedItem);
             }else{
                 this.addType(this.editedItem);
             }
             this.close();
+          }
         },
         close(){
             this.dialog = false;
             this.editedItem = Object.assign({}, this.defaultItem);
-            this.editedIndex = -1;
+            this.editedIndex = -1;  
+            this.$refs.form.reset();  //moze da pravi problem(ne stigne da posalje zahtev)
         }
     },
 }
