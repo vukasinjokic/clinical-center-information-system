@@ -20,6 +20,7 @@ public class EmailService {
     @Async
     public void alertDoctorsOperation(List<DoctorDTO> doctors) throws MailException, InterruptedException{
         //TODO Appointment treba da se prosledi sa backa
+        //TODO schedule appointment in doctors calendars
         for(DoctorDTO doctor : doctors){
             SimpleMailMessage mail = new SimpleMailMessage();
 //            mail.setTo(doctor.getEmail());

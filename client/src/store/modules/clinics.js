@@ -8,14 +8,14 @@ const getters = {
     allClinics: (state) => state.clinics
 };
 
+const config = {
+    headers: {
+        Authorization: "Bearer " + localStorage.getItem("JWT"),
+    }
+}
+
 const actions = {
-    async fetchClinics({commit}){
-        let config = {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("JWT"),
-            }
-          }
-          
+    async fetchClinics({commit}){          
         //   let data = {
         //     'HTTP_CONTENT_LANGUAGE': self.language
         //   }
@@ -30,11 +30,18 @@ const actions = {
 
     async clinicsSetter({commit}, clinics) {
         commit('setClinics', clinics);
+    },
+
+    async saveClinic({commit}, clinic){
+        const response = await axios.post('http://localhost:8081/clinics/addClinic', clinic, config);
+        commit('newClinic', response.data);
     }
+
 };
 
 const mutations = {
-    setClinics: (state, clinics) => (state.clinics = clinics)
+    setClinics: (state, clinics) => (state.clinics = clinics),
+    newClinic: (state, newClinic) => state.clinics.unshift(newClinic)
 };
 
 const namespaced = true;

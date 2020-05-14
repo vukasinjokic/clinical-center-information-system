@@ -27,10 +27,10 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @Column(name = "price_list", unique = false, nullable = false)
+   @Column(name = "price_list", unique = false)
    private String priceList;
 
-   @Column(name = "rating", unique = false, nullable = false)
+   @Column(name = "rating", unique = false)
    private float rating;
 
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
@@ -48,12 +48,18 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Patient> patients;
 
-   @OneToOne(fetch = LAZY)
+   @ManyToOne( fetch = LAZY, cascade = {ALL})
    @JoinColumn(name = "code_book_id")
    private CodeBook codeBook;
 
 
    public Clinic() {
+   }
+
+   public Clinic(String name, String description, String address){
+      this.name = name;
+      this.description = description;
+      this.address = address;
    }
 
    public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook) {

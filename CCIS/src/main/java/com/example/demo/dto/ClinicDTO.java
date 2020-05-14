@@ -82,6 +82,7 @@ public class ClinicDTO {
     }
 
     public void setDoctors(Collection<Doctor> doctors) {
+        if(doctors == null) return;
         List<String> strDoctors = new ArrayList<>();
 
         for (Doctor doctor : doctors) {
@@ -96,6 +97,7 @@ public class ClinicDTO {
     }
 
     public void setNurses(Collection<Nurse> nurses) {
+        if(nurses == null) return;
         List<String> strNurses = new ArrayList<>();
 
         for (Nurse nurse : nurses) {
@@ -110,6 +112,7 @@ public class ClinicDTO {
     }
 
     public void setAppointments(Collection<Appointment> appointments) {
+        if(appointments == null) return;
         List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
 
         ModelMapper modelMapper = new ModelMapper();
@@ -127,6 +130,7 @@ public class ClinicDTO {
     }
 
     public void setRooms(Collection<Room> rooms) {
+        if(rooms == null) return;
         List<String> strOperationRooms = new ArrayList<>();
 
         ModelMapper modelMapper = new ModelMapper();

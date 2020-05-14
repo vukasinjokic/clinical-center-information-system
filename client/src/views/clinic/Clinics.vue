@@ -1,15 +1,18 @@
 <template>
     <div>
         <v-container>
-            <v-row>
-                <v-col
-                    cols="12"
-                    sm="4"
-                    >
-                <v-text-field outlined class="desno" type="text" v-model="search" placeholder="Search clinics"/>
-                </v-col>
-            </v-row>
-            
+            <AddClinic></AddClinic>
+            <v-card>
+                <v-card-title>
+                    <v-text-field
+                        v-model="search"
+                        label="Search"
+                        single-line
+                        show-details
+                        
+                    ></v-text-field>
+                </v-card-title>
+            </v-card>            
             <v-data-table
                 :headers="headers"
                 :items="filteredClinics"
@@ -21,10 +24,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import AddClinic from '../../components/AddClinic.vue'
 
 
 export default {
     name: "Clinics",
+    components: {
+        AddClinic
+    },
 
     data() {
         return {
@@ -33,6 +40,7 @@ export default {
                 {text: "Name", value: "name"},
                 {text: "Address", value: "address"},
                 {text: "Rating", value: "rating"},
+                {text: "Description", value: "description", width: "25%"}
             ]
         }
     },
@@ -51,7 +59,7 @@ export default {
 
         filteredClinics: function() {
             return this.allClinics.filter(clinic => {
-                return clinic.name.match(this.search);
+                return clinic.name.toUpperCase().match(this.search.toUpperCase());
             })
         }
     }, 
