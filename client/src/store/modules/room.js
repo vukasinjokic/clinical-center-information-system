@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import Vue from 'vue';
 const state = {
     rooms : [],
     filteredRooms : [],
@@ -10,9 +10,7 @@ const state = {
 };
 
 const getters = {
-    getAllRooms: (state) => () =>{
-        return state.rooms; 
-    },
+    getAllRooms: (state) => state.rooms,
 
     getFilteredRooms: (state) => () => {
         return state.filteredRooms;
@@ -87,11 +85,6 @@ const actions = {
 
     async alertDoctors({commit}, doctorsNames){
         
-//         let config = {
-//             headers: {
-//                 Authorization: "Bearer " + localStorage.getItem("JWT"),
-//             }
-//         }
         let doctors = [];
         doctorsNames.forEach(name => {
             doctors.push(state.clinicDoctorsDict[name]);
@@ -106,8 +99,7 @@ const actions = {
       
         let config = {
             headers: {
-                Authorization: "Bearer " + localStorage.getItem("JWT"),
-            }
+                Authorization: "Bearer " + localStorage.getItem("JWT"),}
           }
         const response = await axios.get("http://localhost:8081/rooms/getRooms", config);
 
@@ -128,6 +120,31 @@ const actions = {
         commit('setClinicDoctorsDict');
 
     },
+
+    async deleteRoom({commit}, id){
+        try{
+            await Vue.$axios.delete('http://localhost:8081/rooms/deleteRoom/' + id);
+            commit('deletedRoom', id);
+        }catch(error){
+            alert(error.response);
+        }
+    },
+    async addRoom({commit}, room){
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/rooms/addRoom', room);
+            commit('addedRoom', response.data);
+        }catch(error){
+            alert(error.response);
+        }
+    },
+    async updateRoom({commit}, room){
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/rooms/updateRoom', room);
+            commit('updatedRoom', response.data);
+        }catch(error){
+            alert(error.response.status);
+        }
+    }
 
 };
 
@@ -150,6 +167,16 @@ const mutations = {
             state.clinicDoctorsDict[doctor.firstName + ' ' + doctor.lastName] = doctor;
         });
     },
+    deletedRoom(state,id) {
+        const index = state.rooms.findIndex(type => type.id === id);
+        state.rooms.splice(index,1);
+    },
+    addedRoom: (state,room) => state.rooms.push(room),
+
+    updatedRoom (state,room){
+        const index = state.rooms.findIndex(t => t.id === room.id);
+        Object.assign(state.rooms[index], room);
+    }
     
 };
 

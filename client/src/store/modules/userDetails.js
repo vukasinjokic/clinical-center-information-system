@@ -33,7 +33,7 @@ const actions = {
 
     async userSetter({commit}, user) {
         commit('setUser', user);
-    }
+    },
 };
 
 const mutations = {

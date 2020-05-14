@@ -15,7 +15,6 @@ public class AppointmentDTO {
     private String patient;
     private String room;
     private String examinationType;
-    private String medicalRecord; //vrv ne treba
     private String clinic;
 
 
@@ -120,9 +119,6 @@ public class AppointmentDTO {
     }
 
 
-    public String getMedicalRecord() {
-        return medicalRecord;
-    }
 
     public String getId() {
         return id;
