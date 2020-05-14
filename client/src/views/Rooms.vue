@@ -1,9 +1,11 @@
 <template>
     <div class="home"> 
-        <h1>Room view</h1>
         <div>
         <v-container>
              <v-card>
+                 <v-card-title>
+                     Rooms
+                 </v-card-title>
                 <v-card-title>
                     <v-text-field
                         v-model="search"

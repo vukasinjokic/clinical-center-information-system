@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.DoctorDTO;
+import com.example.demo.model.Doctor;
+import com.example.demo.useful_beans.MedicalStaffRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,7 +18,6 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-
     @Async
     public void alertDoctorsOperation(List<DoctorDTO> doctors) throws MailException, InterruptedException{
         //TODO Appointment treba da se prosledi sa backa
@@ -31,4 +32,15 @@ public class EmailService {
         }
     }
 
+    @Async
+    public void alertAdminForVacation(Doctor doctor, MedicalStaffRequest request){
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("isamrstim23@gmail.com");
+        mail.setFrom(doctor.getEmail());
+        mail.setSubject("Zahtev za " + request.getType().toString());
+        mail.setText("Postovani/a " + ", \n\n doktor " + doctor.getFirstName() + " " + doctor.getLastName()
+                       + " je zatrazio " + request.getType() + " od: " + request.getFromDate().toString()+
+                        " do: " +request.getToDate().toString() + " datuma.");
+        javaMailSender.send(mail);
+    }
 }

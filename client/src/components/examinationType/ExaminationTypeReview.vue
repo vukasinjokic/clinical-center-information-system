@@ -30,7 +30,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="300px">
             <template v-slot:activator="{ on }">
-              <v-btn color="deep-purple accent-4" dark class="mb-2" v-on="on">New type</v-btn>
+              <v-btn color="orange lighten-1" dark class="mb-2" v-on="on">New type</v-btn>
             </template>
             <v-card>
               <v-card-title>

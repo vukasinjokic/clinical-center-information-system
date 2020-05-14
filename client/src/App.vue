@@ -6,7 +6,7 @@
     <v-app-bar
       height="40px"
       app
-      class="deep-purple accent-4"
+      class="blue-grey darken-4 white--text"
     >
       <router-link
         class="white--text"

@@ -1,6 +1,6 @@
 <template>
-    <div>       
-        <v-navigation-drawer width="220" :clipped="clipped" v-model="drawer" enable-resize-watcher app dark class="deep-purple accent-4">
+    <div>     
+        <v-navigation-drawer width="220" :clipped="clipped" v-model="drawer" enable-resize-watcher app dark class="blue-grey darken-2">
             <v-list>
                 <v-list-item v-for="item in items"
                         :to="item.link" 
@@ -35,7 +35,7 @@ export default {
                 { title: 'Patient', link: '/doctor/patient' },
                 { title: 'Zapocinjanje pregleda', link: '/doctor/profile' },
                 { title: 'Work calendar', link: '/doctor/:16/calendar' },
-                { title: 'Create request for vacation', link: '/doctor/acount' },
+                { title: 'Create request for vacation', link: '/doctor/vacationRequest' },
                 { title: 'Profile', link: '/doctor/profile' },
                 { title: 'Zakazivanje pregleda/operacija', link: '/doctor/acount' },
             ],

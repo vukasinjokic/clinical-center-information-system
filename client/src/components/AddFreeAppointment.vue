@@ -3,10 +3,10 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
-           <v-btn  v-on="on" color="deep-purple accent-4">Add free appointment</v-btn>
+           <v-btn  v-on="on" color="orange lighten-1">Add free appointment</v-btn>
         </template>
         <v-card>
-          <v-toolbar height="45px" color="primary">
+          <v-toolbar height="45px" color="orange lighten-1" class="white--text">
             <span class="headline">Add free appointment</span>
           </v-toolbar>
           <v-card-text>
