@@ -32,7 +32,6 @@ public class ClinicService {
 
     public Clinic addClinic(ClinicDTO clinicDTO) throws ParseException{
         Clinic clinic = new Clinic(clinicDTO.getName(), clinicDTO.getDescription(), clinicDTO.getAddress());
-        clinic.setCodeBook(codeBookRepository.findById(1).get());
         clinicRepository.save(clinic);
         return clinic;
     }

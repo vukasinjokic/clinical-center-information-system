@@ -14,7 +14,6 @@ public class Appointment {
 
    @Id
    @GeneratedValue(strategy = IDENTITY)
-   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Temporal(TemporalType.TIMESTAMP)

@@ -8,7 +8,6 @@ public class ExaminationType {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
 

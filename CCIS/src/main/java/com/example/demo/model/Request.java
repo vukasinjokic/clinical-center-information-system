@@ -8,7 +8,6 @@ public class Request {
    public enum RequestType{REGISTRATION, LEAVE};
    @Id
    @GeneratedValue
-   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Enumerated(EnumType.STRING)

@@ -14,7 +14,6 @@ public class Calendar {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
     private Integer id;
 
     @ElementCollection
