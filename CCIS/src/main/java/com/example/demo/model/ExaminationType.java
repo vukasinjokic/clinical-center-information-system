@@ -10,8 +10,6 @@ public class ExaminationType {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
 
-
-
    @Column(name = "name", unique = false,nullable = false)
    private String name;
 
