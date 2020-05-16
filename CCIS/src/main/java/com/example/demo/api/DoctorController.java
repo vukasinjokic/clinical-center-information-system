@@ -1,5 +1,6 @@
 package com.example.demo.api;
 
+import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Doctor;
@@ -33,6 +34,16 @@ public class DoctorController {
             return new ResponseEntity<>("OK",HttpStatus.OK);
         }
         return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/scheduleAppointment")
+    @PreAuthorize("hasAnyRole('DOCTOR')")
+    public ResponseEntity<String> scheduleAppointment(@RequestBody AppointmentDTO appointmentDTO){
+        if(doctorService.schedule(appointmentDTO)){
+            return new ResponseEntity<>("OK",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+
     }
 
     @GetMapping(path = "{id}")

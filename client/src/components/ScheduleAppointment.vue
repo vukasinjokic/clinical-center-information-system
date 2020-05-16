@@ -69,30 +69,19 @@
                             label="Choose type">
                         </v-select>
                     </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                        <v-text-field
-                            v-model="number"
-                            label="Broj sobe">
-                        </v-text-field> 
-                    </v-col>
-                    
-                    </v-row>
-                    <v-row>
                     <v-col  cols="12" sm="6" md="6">
                         <v-text-field 
                             v-model="email"
                             label="Patient email">
                         </v-text-field>
-                        
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col  cols="12" sm="6" md="3" >
-                        <v-btn
-                             
-                            style="margin: 10px; 0px; 0px; 0px;"
-                            color="orange lighten-1" dark @click="submit">Schedule</v-btn>
                     </v-col>
                     </v-row>
+                    <v-col md="3" offset-md="9">
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="orange lighten-1" dark @click="submit">Schedule</v-btn>
+                    </v-col>
+             
                 </v-container>
             </v-text>
         </v-card>
@@ -100,6 +89,7 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 export default {
     data(){
         return {
@@ -117,7 +107,7 @@ export default {
 
     },
     methods: {
-
+        ...mapActions('doctor',['scheduleAppointment']),
     },
 }
 </script>

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Doctor;
 import com.example.demo.useful_beans.MedicalStaffRequest;
@@ -44,4 +45,9 @@ public class EmailService {
                         " do: " +request.getToDate().toString() + " datuma.");
         javaMailSender.send(mail);
     }
+
+    public void alertAdminForAppointment(AppointmentDTO AppointmentDTO, Doctor doctor){
+
+    }
+
 }
