@@ -19,7 +19,7 @@
             </template>
         </v-navigation-drawer>      
          
-        <v-content style="padding: 4px 0px 0px 2px">
+        <v-content style="padding: 6px 0px 0px 6px">
             <v-container fluid>
                 <router-view></router-view>
             </v-container>
@@ -33,11 +33,11 @@ export default {
         return {
             items: [
                 { title: 'Patient', link: '/doctor/patient' },
-                { title: 'Zapocinjanje pregleda', link: '/doctor/profile' },
+                { title: 'Zapocinjanje pregleda', link: '/doctor/' },
                 { title: 'Work calendar', link: '/doctor/:16/calendar' },
                 { title: 'Create request for vacation', link: '/doctor/vacationRequest' },
                 { title: 'Profile', link: '/doctor/profile' },
-                { title: 'Zakazivanje pregleda/operacija', link: '/doctor/acount' },
+                { title: 'Zakazivanje pregleda/operacija', link: '/doctor/scheduleApp' },
             ],
             drawer: true
         }   

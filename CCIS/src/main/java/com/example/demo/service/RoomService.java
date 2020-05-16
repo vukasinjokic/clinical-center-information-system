@@ -36,10 +36,8 @@ public class RoomService {
 
         if(doesExist == null && doesExistName == null){
             Clinic clinic = user.getClinic();
-            Optional<Calendar> privremeno = calendarRepository.findById(1);
 
             Room new_room = new Room(roomDTO.getName(),roomDTO.getNumber(),clinic, Room.RoomType.valueOf(roomDTO.getType().toUpperCase()));
-            new_room.setCalendar(privremeno.get());
             return roomRepository.save(new_room);
         }
 

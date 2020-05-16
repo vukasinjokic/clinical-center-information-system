@@ -13,6 +13,7 @@ import Register from '../views/Register.vue'
 import DoctorPage from '../views/DoctorPage'
 import PatientReview from '../components/PatientReview.vue'
 import VacationRequest from '../components/VacationRequest'
+import ScheduleAppointment from '../components/ScheduleAppointment';
 
 
 Vue.use(VueRouter);
@@ -60,7 +61,8 @@ const router = new VueRouter({
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
-            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest}
+            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
+            {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment}
         ]
       },
       {
