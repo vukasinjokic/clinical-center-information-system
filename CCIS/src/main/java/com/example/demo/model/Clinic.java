@@ -15,7 +15,6 @@ public class Clinic {
 
    @Id
    @GeneratedValue(strategy = IDENTITY)
-   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Column(name = "name", unique = false, nullable = false)
@@ -52,6 +51,9 @@ public class Clinic {
    @JoinColumn(name = "code_book_id")
    private CodeBook codeBook;
 
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
+   private Collection<AppointmentRequest> appointmentRequests;
+
 
    public Clinic() {
    }
@@ -62,7 +64,7 @@ public class Clinic {
       this.address = address;
    }
 
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook) {
+   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -72,11 +74,21 @@ public class Clinic {
       this.appointments = appointments;
       this.rooms = rooms;
       this.codeBook = codeBook;
+      this.appointmentRequests = appointmentRequests;
    }
 
    public Integer getId() {
       return id;
    }
+
+   public Collection<AppointmentRequest> getAppointmentRequests() {
+      return appointmentRequests;
+   }
+
+   public void setAppointmentRequests(Collection<AppointmentRequest> appointmentRequests) {
+      this.appointmentRequests = appointmentRequests;
+   }
+
 
    public String getName() {
       return name;

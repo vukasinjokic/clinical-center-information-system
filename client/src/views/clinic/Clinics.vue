@@ -1,19 +1,24 @@
 <template>
     <div>
         <v-container>
-            <AddClinic></AddClinic>
             <v-card>
                 <v-card-title>
+                    Clinics
+                    <v-spacer></v-spacer>
                     <v-text-field
                         v-model="search"
                         label="Search"
                         single-line
                         show-details
+                        append-icon="mdi-magnify"
                         
                     ></v-text-field>
                 </v-card-title>
-            </v-card>            
+            </v-card>    
+            <AddClinic></AddClinic>
+
             <v-data-table
+                class="blue-grey darken-4 white--text"
                 :headers="headers"
                 :items="filteredClinics"
                 dark/>
