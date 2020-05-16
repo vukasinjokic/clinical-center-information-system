@@ -1,15 +1,6 @@
 <template>
     <div>
         <v-container>
-            <!-- <v-row>
-                <v-col
-                    cols="12"
-                    sm="4"
-                    >
-                <v-text-field outlined class="desno" type="text" v-model="search" placeholder="Search clinics"/>
-                </v-col>
-            </v-row> -->
-
             <v-card>
                 <v-card-title>
                     <v-text-field
@@ -33,7 +24,8 @@
                             v-on="on"
                             label="Pick date"
                             :value="chosenDate"
-                            hint="MM/DD/YYYY format"/>
+                            hint="MM/DD/YYYY format"
+                            readonly/>
                         </template>
                         <v-date-picker  v-model="chosenDate"
                         @input="fromDateMenu = false">           
@@ -44,20 +36,39 @@
 
                     <v-select
                     v-model="chosenExamination"
-                    :items="examinationTypes"
+                    :items="this.getTypes()"
+                    item-text="name"
                     label="Chose examination type">
                     </v-select>
                 
                     <v-spacer></v-spacer>
 
-                    <v-btn @click="applyFilters">Apply filters</v-btn>
+                    <v-btn @click="setApplyFilters(true)">Apply filters</v-btn>
                 </v-card-title>          
             </v-card>
             
             <v-data-table
                 :headers="headers"
-                :items="filteredClinics"
-                dark/>
+                :items="filterClinics"
+                class="blue-grey darken-4 white--text"
+                @click:row="onClick"
+                show-expand
+                dark>
+            
+                <template v-slot:expanded-item="{ headers, item }">
+                    <td :colspan="headers.length">
+                        <th>Ime doktora</th>
+                        <th>Prezime doktora</th>
+                        <th>Tip pregleda</th>
+                        <tr v-for="doctor in item.doctors" v-bind:key=doctor.name>
+                            <td>{{doctor.firstName}}</td>
+                            <td>{{doctor.lastName}}</td>
+                            <td>{{doctor.examinationType.name}}</td>
+                        </tr>
+                    </td>
+                </template>
+
+            </v-data-table>
             
         </v-container>
     </div>
@@ -72,7 +83,9 @@ export default {
 
     data() {
         return {
-            examinationTypes: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+            applyFilters: false,
+            clinics: this.allClinics(),
+            examinations: [],
             chosenExamination: "",
             filterWord: '',
             chosenDate: "",
@@ -86,30 +99,128 @@ export default {
     },
 
     methods: {
-        ...mapActions("clinics", ["fetchClinics"]),
+        ...mapActions("clinics", ["fetchClinics", "fetchFilteredClinics"]),
+        
+        ...mapActions("examination_type", ["fetchExaminationTypes"]),
 
-        onClick(clinic) {
-            this.$router.push({ name: 'Clinic', params: { id: clinic.id } });
+        ...mapGetters("clinics", ['allClinics', "getFilteredClinics"]),
+
+        ...mapGetters("examination_type", ['getTypes']),
+
+        onClick(value) {
+            console.log(JSON.stringify(value))
+            alert(JSON.stringify(value));
+            // this.$router.push({ name: 'Clinic', params: { id: clinic.id } });
             
         },
 
-        applyFilters() {
-            alert("filterWord {" + this.filterWord + "} chosenExamination {" + this.chosenExamination + "} chosenDate {" + this.chosenDate + "}")
-        }
+        setApplyFilters(newApply) {
+            this.applyFilters = newApply;
+        },
     },
     
     computed: {
-        ...mapGetters("clinics", ['allClinics']),
+        filterClinics: function(){
+            if (this.applyFilters) {
+                this.setApplyFilters(false);
+                return this.clinics.filter(clinic => {
+                    var foundByName = false;
+                    var foundByDate = true;
+                    var foundByType = false;
 
-        filteredClinics: function() {
-            // return this.allClinics.filter(clinic => {
-            //     return clinic.name.match(this.search);
-            // })
-            return this.allClinics
+                    // Filter clinics by clinic name
+                    if (clinic.name.toLowerCase().match(this.filterWord.toLowerCase())) {
+                        foundByName = true;
+                    }
+
+                    // This clinic name, does not match name from input, no need for further check
+                    if (!foundByName) {
+                        return false;
+                    }
+
+                    // Filter clinics by examination type
+                    if (this.chosenExamination === "") {
+                        foundByType = true;
+                    } else {
+                        for (let i = 0; i < clinic.doctors.length; i++) {
+                            const doctor = clinic.doctors[i];
+                            if (doctor.examinationType.name === this.chosenExamination) {
+                                foundByType = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // In this clinic there are no doctor that can perform chosen examination type, no need for further check
+                    if (!foundByType) {
+                        return false;
+                    }
+
+
+                    // Filter clinics by examination date
+                    if (this.chosenDate === "") {
+                        foundByDate = true;
+                    } else {
+                        var examinationType = this.getTypes().filter(examination => {
+                            return examination.name.match(this.chosenExamination);
+                        })[0];
+
+                        for (let k = 0; k < clinic.doctors.length; k++) {
+                            var doctor = clinic.doctors[k];
+                            
+                            let eventStartDates = doctor.calendar.eventStartDates.slice();
+                            let eventEndDates = doctor.calendar.eventEndDates;   
+
+                            let startSelectedDay = (new Date(this.chosenDate));
+                            startSelectedDay.setHours(7,0,0,0);
+                            let endSelectedDay = new Date(this.chosenDate);
+                            endSelectedDay.setHours(14,0,0,0);
+
+                            eventStartDates.unshift(startSelectedDay);
+
+                            let hours = examinationType.duration
+                            let durationMilliseconds = hours * 1000 * 60 * 60;
+                            for (var i = 1; i <= eventStartDates.length; i++) {
+                                let startAppDate = new Date(eventStartDates[i]);
+                                let endAppDate = new Date(eventEndDates[i-1]);
+                                
+                                // Can the appointment be set before the first already set appointment 
+                                if(i == 1 && new Date(eventStartDates[i-1]).getTime() + durationMilliseconds <= startAppDate.getTime()){
+                                    foundByDate = true
+                                    break;
+                                }
+                                
+                                // Can the appointment be set INBETWEEN already set appointments
+                                if(i < eventStartDates.length && endAppDate.getTime() + durationMilliseconds  <= new Date(eventStartDates[i + 1]).getTime()){
+                                    foundByDate = true
+                                    break;
+                                }
+
+                                // Can the appontment be set AFTER the last already set appointment
+                                if(i == eventStartDates.length - 1 && new Date(endAppDate).getTime() + durationMilliseconds <= endSelectedDay.getTime()){
+                                    foundByDate = true;
+                                    break;
+                                }
+                            }
+
+                            // There is doctor that can perform examination, no need to to search more doctors in same clinic
+                            if (foundByDate) {
+                                break;
+                            }
+                        }
+                    }
+
+                    return foundByDate && foundByName && foundByType;
+                })
+            } else {
+                return this.clinics;
+            }
         }
-    }, 
+    },
+
     created() {
         this.fetchClinics();
+        this.fetchExaminationTypes();
     }
 }
 </script>
@@ -122,9 +233,9 @@ export default {
      }
 
     .desno{
-    position: relative;
-    left: 326px;
-}
+        position: relative;
+        left: 326px;
+    }
 
     input[type="text"] {
         padding: 5px;

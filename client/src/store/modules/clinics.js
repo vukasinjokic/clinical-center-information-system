@@ -1,4 +1,4 @@
-import axios from 'axios';
+import Vue from 'vue';
 
 const state = {
     clinics: [],
@@ -10,25 +10,14 @@ const getters = {
 
 const actions = {
     async fetchClinics({commit}){
-        let config = {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("JWT"),
-            }
-          }
-          
-        //   let data = {
-        //     'HTTP_CONTENT_LANGUAGE': self.language
-        //   }
-          
-        //   axios.post(URL, data, config).then(...)
-        await axios.get('http://localhost:8081/clinics', config)
+        await Vue.$axios.get('http://localhost:8081/clinics')
         .then(response => {
             commit('setClinics', response.data);
         })
         .catch(() => { alert("Nemate pravo pregleda svih klinika") });
     },
 
-    async clinicsSetter({commit}, clinics) {
+    clinicsSetter({commit}, clinics) {
         commit('setClinics', clinics);
     }
 };

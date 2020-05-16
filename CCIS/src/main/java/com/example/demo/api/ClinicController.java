@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.dto.ClinicDTO;
+import com.example.demo.dto.ClinicsDTO;
 import com.example.demo.model.Clinic;
 import com.example.demo.service.ClinicService;
 import org.modelmapper.ModelMapper;
@@ -8,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -28,7 +27,7 @@ public class ClinicController {
 
     @GetMapping
     @PreAuthorize("hasRole('PATIENT')")
-    public List<ClinicDTO> getAllClinics() {
+    public List<ClinicsDTO> getAllClinics() {
         List<Clinic> clinics = clinicService.getAllClinics();
 //        List<ClinicDTO> clinicDTOs = new ArrayList<>(clinics.size());
 //
@@ -39,7 +38,7 @@ public class ClinicController {
 //        return clinicDTOs;
 
         return clinics.stream()
-                .map(this::convertToDTO)
+                .map(this::convertToClinicsDTO)
                 .collect(Collectors.toList());
     }
 
@@ -52,9 +51,15 @@ public class ClinicController {
         return clinicDTO;
     }
 
-    private ClinicDTO convertToDTO(Clinic clinic){
+    private ClinicDTO convertToClinicDTO(Clinic clinic){
         ClinicDTO clinicDTO = modelMapper.map(clinic, ClinicDTO.class);
         clinicDTO.setDTOFields(clinic);
         return clinicDTO;
+    }
+
+    private ClinicsDTO convertToClinicsDTO(Clinic clinic){
+        ClinicsDTO clinicsDTO = modelMapper.map(clinic, ClinicsDTO.class);
+        clinicsDTO.setDTOFields(clinic);
+        return clinicsDTO;
     }
 }
