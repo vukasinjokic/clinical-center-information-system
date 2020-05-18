@@ -8,4 +8,6 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
     List<Patient> findByClinicName(String name);
+
+    Patient findByEmail(String email);
 }

@@ -4,6 +4,7 @@
             <v-card-title>Postupak zakazivanja pregleda i operacija</v-card-title>
             <v-text>
                 <v-container>
+                    <v-form ref="form">
                     <v-row>
                     <v-col cols="12" sm= "6" md= '6'>
                         <v-menu
@@ -19,6 +20,7 @@
                         >   
                         <template v-slot:activator="{ on }">
                             <v-text-field
+                                :rules="[requiredRule]"
                                 v-model="time"
                                 label="Pick duration"
                                 prepend-icon="mdi-timer"
@@ -47,6 +49,7 @@
                             max-width="290px">
                             <template v-slot:activator="{ on }">
                                 <v-text-field  
+                                    :rules="[requiredRule]"
                                     prepend-icon="mdi-timetable"
                                     v-model="date"
                                     readonly
@@ -57,13 +60,15 @@
                                     />
                             </template>
                             <v-date-picker  
-                                    v-model="date"
-                                    @input="menuDate = false">           
+                                :min="nowDate"
+                                v-model="date"
+                                @input="menuDate = false">           
                             </v-date-picker>          
                         </v-menu>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-select
+                            :rules="[requiredRule]"
                             v-model="type"
                             :items="items"
                             label="Choose type">
@@ -71,6 +76,7 @@
                     </v-col>
                     <v-col  cols="12" sm="6" md="6">
                         <v-text-field 
+                            :rules="[requiredRule]"
                             v-model="email"
                             label="Patient email">
                         </v-text-field>
@@ -79,9 +85,9 @@
                     <v-col md="3" offset-md="9">
                         <v-spacer></v-spacer>
                         <v-btn
-                            color="orange lighten-1" dark @click="submit">Schedule</v-btn>
+                            color="orange lighten-1" dark @click="zakazi">Schedule</v-btn>
                     </v-col>
-             
+                </v-form>
                 </v-container>
             </v-text>
         </v-card>
@@ -104,10 +110,26 @@ export default {
         }
     },
     computed: {
-
+        requiredRule(){
+            return (value) => !!value || "Required.";
+        },
+        nowDate(){
+            return new Date().toISOString().slice(0,10);
+        }
     },
     methods: {
         ...mapActions('doctor',['scheduleAppointment']),
+
+        zakazi(){
+            if(this.$refs.form.validate()){
+                var obj = {
+                    time: new Date(this.date +  ' ' + this.duration),
+                    examinationType: this.type,
+                    patient: this.email
+                }
+                this.scheduleAppointment(obj);
+            }
+        }
     },
 }
 </script>

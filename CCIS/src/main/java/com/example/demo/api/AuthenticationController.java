@@ -1,11 +1,14 @@
 package com.example.demo.api;
 
+import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserTokenState;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.security.auth.JwtAuthenticationRequest;
+import com.example.demo.useful_beans.ChangePassword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/auth")
@@ -28,6 +32,9 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserRepository userRepository;
 
 //    @Autowired
 //    private CustomUserDetailsService userDetailsService;
@@ -64,6 +71,42 @@ public class AuthenticationController {
         UserDTO userDTO = new UserDTO(user);
         System.out.println(userDTO);
         return userDTO;
+    }
+
+    @PostMapping("/updateProfile")
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO userDTO){
+        Optional<User> check = userRepository.findById(Integer.parseInt(userDTO.getId()));
+
+        if(check.isPresent()){
+            User user = check.get();
+            user.setFirstName(userDTO.getFirstName());
+            user.setLastName(userDTO.getLastName());
+            user.setAddress(userDTO.getAddress());
+            user.setCity(userDTO.getCity());
+            user.setCountry(userDTO.getCountry());
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+//            user.setSocialSecurityNumber(userDTO.getSocialSecurityNumber());
+
+            userRepository.save(user);
+            return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<Void> changePassword(@RequestBody ChangePassword changePassword){
+        Optional<User> check = userRepository.findById(Integer.parseInt(changePassword.getId()));
+
+        if(check.isPresent()){
+            User user = check.get();
+            if(!user.getPassword().equals(changePassword.getOld()))
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+            user.setPassword(changePassword.getNew_pass());
+            userRepository.save(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

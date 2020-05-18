@@ -10,67 +10,64 @@
             </v-list-item>
             <v-list-item>
                 <v-list-item-title>Email: </v-list-item-title>
-                <v-list-item-title v-text="user.username"/>
+                <v-list-item-title v-text="getUserProf.username"/>
             </v-list-item>
             <v-list-item>
                 <v-list-item-title>Ime: </v-list-item-title>
-                <v-list-item-title v-text="user.firstName"/>
+                <v-list-item-title v-text="getUserProf.firstName"/>
             </v-list-item>
             <v-list-item>
                 <v-list-item-title>Prezime: </v-list-item-title>
-                <v-list-item-title v-text="user.lastName"/>
+                <v-list-item-title v-text="getUserProf.lastName"/>
             </v-list-item>
             <v-list-item>
                 <v-list-item-title>Adresa prebivalista: </v-list-item-title>
-                <v-list-item-title v-text="user.address"/>
+                <v-list-item-title v-text="getUserProf.address"/>
             </v-list-item>
             <v-list-item>
                 <v-list-item-title>Grad: </v-list-item-title>
-                <v-list-item-title v-text="user.city"/>
+                <v-list-item-title v-text="getUserProf.city"/>
             </v-list-item>                        
             <v-list-item>
                 <v-list-item-title>Drzava: </v-list-item-title>
-                <v-list-item-title v-text="user.country"/>
+                <v-list-item-title v-text="getUserProf.country"/>
             </v-list-item>
             <v-list-item>
                 <v-list-item-title>Broj telefona: </v-list-item-title>
-                <v-list-item-title v-text="user.phoneNumber"/>
+                <v-list-item-title v-text="getUserProf.phoneNumber"/>
             </v-list-item>
-
+            <v-list-item>
+                <v-list-item-title>Broj osiguranika: </v-list-item-title>
+                <v-list-item-title v-text="getUserProf.socialSecurityNumber"/>
+            </v-list-item>
         </v-card>
-
+        <v-spacer/>
+        <EditProfile></EditProfile>
+        <ChangePassword></ChangePassword>
+        
         </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import EditProfile from './EditProfile'
+import ChangePassword from './ChangePassword'
+
 export default {
     name:'UserProfile',
+    components: {EditProfile, ChangePassword},
     data(){
         return{
-            user:{
-                id: "",
-                username:"",
-                password: "",
-                firstName : "",
-                lastName: "",
-                address : "",
-                city: "",
-                country : "",
-                phoneNumber : "",
-                socialSecurityNumber: "",
-                lastPasswordResetDate : "",
-            }
+           
         }
     },
     created() {
-        this.fetchUserProfile();
-        this.user = this.getUserProfile;
+        this.fetchUserProf();
     },
-    computed: mapGetters('patient', ['getUserProfile']),
+    computed: mapGetters('userProfile', ['getUserProf']),
 
     methods:{
-        ...mapActions('patient',['fetchUserProfile'])
+        ...mapActions('userProfile',['fetchUserProf'])
     }
 }
 </script>

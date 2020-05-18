@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.HashSet;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -38,7 +39,7 @@ public class DoctorController {
 
     @PostMapping("/scheduleAppointment")
     @PreAuthorize("hasAnyRole('DOCTOR')")
-    public ResponseEntity<String> scheduleAppointment(@RequestBody AppointmentDTO appointmentDTO){
+    public ResponseEntity<String> scheduleAppointment(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
         if(doctorService.schedule(appointmentDTO)){
             return new ResponseEntity<>("OK",HttpStatus.OK);
         }
