@@ -1,5 +1,5 @@
 <template>
-<div  style="margin: 110px; 10px; 0px; 0px;">
+<div  style="margin: 40px; 10px; 0px; 0px;">
 
     <v-card max-width="450">
         <v-card-title>

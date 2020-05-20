@@ -10,10 +10,10 @@
     >
       <router-link
         class="white--text"
-        to="/home"
+        to="/vacRequests"
         
       >
-      Home</router-link>
+      Vacation requests</router-link>
       <v-spacer></v-spacer>
       <router-link
         class="white--text"

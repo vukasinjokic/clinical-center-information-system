@@ -8,6 +8,7 @@ import patient from './modules/patient'
 import examination_type from './modules/examination_type'
 import doctor from './modules/doctor'
 import userProfile from './modules/userProfile'
+import clinicAdmin from './modules/clinicAdmin'
 
 // load vuex
 Vue.use(Vuex);
@@ -22,6 +23,7 @@ export default new Vuex.Store({
         patient,
         examination_type,
         doctor,
-        userProfile
+        userProfile,
+        clinicAdmin
     }
 });

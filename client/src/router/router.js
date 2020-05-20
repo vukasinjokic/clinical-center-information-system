@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 import UserProfile from '../components/UserProfile.vue'
-import Home from '../views/Home'
+import VacationReqReview from '../components/VacationReqReview'
 import Room from '../views/Rooms'
 import Login from '../views/Login'
 import Appointments from '../views/Appointments'
@@ -33,9 +33,9 @@ const router = new VueRouter({
       },
       
       {
-        path: '/home',
-        name: 'Home',
-        component: Home
+        path: '/vacRequests',
+        name: 'Vacation Requests',
+        component: VacationReqReview
       },
       {
         path: '/rooms',

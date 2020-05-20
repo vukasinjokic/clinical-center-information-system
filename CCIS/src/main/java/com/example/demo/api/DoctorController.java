@@ -5,16 +5,14 @@ import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Doctor;
 import com.example.demo.service.DoctorService;
-import com.example.demo.useful_beans.MedicalStaffRequest;
+import com.example.demo.model.MedicalStaffRequest;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.HashSet;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/doctors")

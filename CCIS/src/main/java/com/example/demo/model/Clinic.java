@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -54,9 +56,13 @@ public class Clinic {
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    private Collection<AppointmentRequest> appointmentRequests;
 
+   @OneToMany(cascade = {ALL}, fetch = EAGER, orphanRemoval = true)
+   private Collection<MedicalStaffRequest> medicalStaffRequests;
 
    public Clinic() {
    }
+
+
 
    public Clinic(String name, String description, String address){
       this.name = name;
@@ -79,6 +85,14 @@ public class Clinic {
 
    public Integer getId() {
       return id;
+   }
+
+   public Collection<MedicalStaffRequest> getMedicalStaffRequests() {
+      return medicalStaffRequests;
+   }
+
+   public void setMedicalStaffRequests(Collection<MedicalStaffRequest> medicalStaffRequests) {
+      this.medicalStaffRequests = medicalStaffRequests;
    }
 
    public Collection<AppointmentRequest> getAppointmentRequests() {
