@@ -134,7 +134,6 @@ export default {
     computed: {
         // Kao sto se vrsi filtriranje klinika tako i filtriram doktore u okviru te klinike
         filterClinics: function(){
-            console.log("filter");
             // Is button clicked for applying filters?
             if (this.applyFilters) {
                 // Reset state of button and perform filter

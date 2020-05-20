@@ -75,15 +75,23 @@
             :headers="headers"
             :items="getDoctorsTable"
             class="blue-grey darken-4 white--text"
-            @click:row="onClick"
             show-expand
             dark>
 
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
+                        <th>Free appointment</th>
                         <tr v-for="freeAppointment in item.freeAppointments" v-bind:key="freeAppointment.id">
-                            <td>{{freeAppointment.id}}</td>
                             <td>{{freeAppointment.time}}</td>
+                            <td>
+                                <v-btn color="blue"
+                                @click="onClick({
+                                    doctor: item,
+                                    chosenAppointment: freeAppointment.time
+                                })">
+                                    Schedule appointment
+                                </v-btn>
+                            </td>
                         </tr>
                     </td>
                 </template>
@@ -128,7 +136,16 @@ export default {
         ...mapGetters("examination_type", ['getTypes']),
 
         onClick(value) {
-            alert(value.firstName + " " + value.lastName);
+            var doctor = {};
+            doctor.id = value.doctor.id;
+            doctor.firstName = value.doctor.firstName;
+            doctor.lastName = value.doctor.lastName;
+            doctor.email = value.doctor.email;
+            doctor.clinicId = value.doctor.clinicId;
+            doctor.chosenAppointment = value.chosenAppointment;
+            alert(JSON.stringify(doctor));
+
+            // TODO: posalti zahtev na bek
         },
 
         setApplyFilters(newApply) {
