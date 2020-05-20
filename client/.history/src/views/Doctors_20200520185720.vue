@@ -137,10 +137,9 @@ export default {
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 
-        // TODO: Videti zasto slanje mejla traje dugo
-        async onClick(appointmentRequest) {
+        onClick(appointmentRequest) {
             appointmentRequest.patientEmail = localStorage.getItem("user_email");
-            await Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
+            Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
             .then(response => {
                 if (response.status === 200) {
                     alert("Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")

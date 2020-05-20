@@ -86,9 +86,8 @@
                             <td>
                                 <v-btn color="blue"
                                 @click="onClick({
-                                    doctorId: item.id,
-                                    clinicId: item.clinicId,
-                                    appointmentTime: freeAppointment.time
+                                    doctor: item,
+                                    chosenAppointment: freeAppointment.time
                                 })">
                                     Schedule appointment
                                 </v-btn>
@@ -104,7 +103,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Vue from 'vue';
 
 export default {
     name: "Doctors",
@@ -137,23 +135,18 @@ export default {
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 
-        // TODO: Videti zasto slanje mejla traje dugo
-        async onClick(appointmentRequest) {
-            appointmentRequest.patientEmail = localStorage.getItem("user_email");
-            await Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
-            .then(response => {
-                if (response.status === 200) {
-                    alert("Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
-                } else {
-                    alert("Unknown error: " + response.status + ". Message: " + response.data);
-                }
-            }).catch(response => {
-                if (response.status >= 400) {
-                    alert("Error: " + response.status + ". Message: " + response.data)
-                } else {
-                    alert("Unknown error: " + response.status + ". Message: " + response.data);
-                }
-            });
+        onClick(value) {
+            var appointmentRequest = {};
+            appointmentRequest.doctorId = value.doctor.id;
+            appointmentRequest.appointmentTime = value.chosenAppointment;
+
+            doctor.firstName = value.doctor.firstName;
+            doctor.lastName = value.doctor.lastName;
+            doctor.email = value.doctor.email;
+            doctor.clinicId = value.doctor.clinicId;
+            alert(JSON.stringify(doctor));
+
+            // TODO: posalti zahtev na bek
         },
 
         setApplyFilters(newApply) {

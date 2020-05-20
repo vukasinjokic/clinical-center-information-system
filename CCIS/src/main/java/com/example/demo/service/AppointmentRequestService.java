@@ -16,4 +16,9 @@ public class AppointmentRequestService {
     public List<AppointmentRequest> getRequests(){
         return appointmentRequestRepository.findAll();
     }
+
+    public boolean saveRequest(AppointmentRequest request) {
+        AppointmentRequest appointmentRequest = appointmentRequestRepository.save(request);
+        return appointmentRequest != null;
+    }
 }

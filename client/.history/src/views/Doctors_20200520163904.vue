@@ -87,7 +87,6 @@
                                 <v-btn color="blue"
                                 @click="onClick({
                                     doctorId: item.id,
-                                    clinicId: item.clinicId,
                                     appointmentTime: freeAppointment.time
                                 })">
                                     Schedule appointment
@@ -137,23 +136,8 @@ export default {
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 
-        // TODO: Videti zasto slanje mejla traje dugo
-        async onClick(appointmentRequest) {
-            appointmentRequest.patientEmail = localStorage.getItem("user_email");
-            await Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
-            .then(response => {
-                if (response.status === 200) {
-                    alert("Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
-                } else {
-                    alert("Unknown error: " + response.status + ". Message: " + response.data);
-                }
-            }).catch(response => {
-                if (response.status >= 400) {
-                    alert("Error: " + response.status + ". Message: " + response.data)
-                } else {
-                    alert("Unknown error: " + response.status + ". Message: " + response.data);
-                }
-            });
+        onClick(appointmentRequest) {
+            // TODO: posalti zahtev na bek
         },
 
         setApplyFilters(newApply) {

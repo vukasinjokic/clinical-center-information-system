@@ -27,9 +27,7 @@
                             readonly
                             @click="chosenDate = ''"/>
                         </template>
-                        <v-date-picker 
-                        v-model="chosenDate"
-                        :min="nowDate"
+                        <v-date-picker  v-model="chosenDate"
                         @input="fromDateMenu = false">
                         </v-date-picker>
                     </v-menu>
@@ -102,7 +100,7 @@ export default {
                 {text: "Name", value: "name"},
                 {text: "Address", value: "address"},
                 {text: "Price List", value: "priceList"},
-                {text: "Rating", value: "rating"},
+                {text: "Rating", value: "rating"}
                 {text: "Description", value: "description", width: "25%"}
             ]
         }
@@ -131,8 +129,6 @@ export default {
             this.$router.push({ name: 'Doctors'});
         },
 
-
-
         setApplyFilters(newApply) {
             this.applyFilters = newApply;
         },
@@ -143,9 +139,6 @@ export default {
     },
     
     computed: {
-        nowDate(){
-            return new Date().toISOString().slice(0,10);
-        },
         // Kao sto se vrsi filtriranje klinika tako i filtriram doktore u okviru te klinike
         filterClinics: function(){
             // Is button clicked for applying filters?

@@ -37,6 +37,10 @@ public class ClinicAdminService {
         return clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
     }
 
+    public List<ClinicAdmin> getClinicAdminsByClinicId(Integer clinicId) {
+        return clinicAdminRepository.findByClinicId(clinicId);
+    }
+
     public void handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
         emailService.alertDoctorsOperation(appointmentToReserve.getDoctors());
         //add patient to predefined appointment if it exists

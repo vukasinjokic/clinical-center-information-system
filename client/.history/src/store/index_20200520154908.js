@@ -23,7 +23,7 @@ export default new Vuex.Store({
         patient,
         examination_type,
         doctors,
-        doctor,
+        doctor
         appointmentRequests
 
     }

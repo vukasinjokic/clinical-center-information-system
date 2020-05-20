@@ -142,6 +142,7 @@ export default {
     },
     data(){
         return {
+            // dodati use.nesto gore
             user: {
                 firstName: "",
                 lastName: "",

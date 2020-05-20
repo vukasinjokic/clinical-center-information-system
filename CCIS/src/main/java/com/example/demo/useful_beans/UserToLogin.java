@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.useful_beans;
 
 public class UserToLogin {
     public String username;

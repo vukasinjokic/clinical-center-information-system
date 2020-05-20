@@ -1,9 +1,8 @@
 package com.example.demo.api;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.dto.UserToLogin;
+import com.example.demo.useful_beans.UserToLogin;
 import com.example.demo.dto.UserTokenState;
-import com.example.demo.model.Patient;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.service.UserService;

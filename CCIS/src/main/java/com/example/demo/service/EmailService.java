@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.DoctorDTO;
+import com.example.demo.model.AppointmentRequest;
+import com.example.demo.model.ClinicAdmin;
 import com.example.demo.model.Doctor;
 import com.example.demo.useful_beans.MedicalStaffRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +45,22 @@ public class EmailService {
                        + " je zatrazio " + request.getType() + " od: " + request.getFromDate().toString()+
                         " do: " +request.getToDate().toString() + " datuma.");
         javaMailSender.send(mail);
+    }
+
+    @Async
+    public void alertClinicAdminForAppointmentPatientRequest(List<ClinicAdmin> admins, AppointmentRequest appointmentRequest) {
+        for (ClinicAdmin clinicAdmin : admins) {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo("isamrstim23@gmail.com");
+            mail.setFrom("Clinical-center-information-system@gmail.com");
+            mail.setSubject("Zahtev za lekarski pregled pacijenta");
+            mail.setText("Postovani/a administratore klinike " + clinicAdmin.getFirstName() + " " + clinicAdmin.getLastName()
+                    + ", \n\n Pacijent " +
+                    appointmentRequest.getPatient().getFirstName() + " " + appointmentRequest.getPatient().getLastName()
+                    + " je zatrazio lekarski pregled kod doktora " +
+                    appointmentRequest.getDoctor().getFirstName()+ " " + appointmentRequest.getDoctor().getLastName() +
+                    " na datum " + appointmentRequest.getTime().toString());
+            javaMailSender.send(mail);
+        }
     }
 }

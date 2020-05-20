@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.Doctor;
 import com.example.demo.model.User;
-import com.example.demo.dto.UserToLogin;
+import com.example.demo.useful_beans.UserToLogin;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;

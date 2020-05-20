@@ -86,9 +86,7 @@
                             <td>
                                 <v-btn color="blue"
                                 @click="onClick({
-                                    doctorId: item.id,
-                                    clinicId: item.clinicId,
-                                    appointmentTime: freeAppointment.time
+                                    item
                                 })">
                                     Schedule appointment
                                 </v-btn>
@@ -137,22 +135,24 @@ export default {
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 
-        // TODO: Videti zasto slanje mejla traje dugo
         async onClick(appointmentRequest) {
-            appointmentRequest.patientEmail = localStorage.getItem("user_email");
-            await Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
+            console.log(JSON.stringify(appointmentRequest))
+            console.log(appointmentRequest.item.id)
+            console.log(appointmentRequest.item.clinicId)
+            console.log(appointmentRequest.item.freeAppointments[0].time)
+            // TODO: posalti zahtev na bek
+            await Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", {
+                doctorId: appointmentRequest.id,
+                clinicId: appointmentRequest.clinicId,
+                appointmentTime: appointmentRequest.time
+                // doctorId: item.id,
+                // clinicId: item.clinicId,
+                // appointmentTime: freeAppointment.time
+            })
             .then(response => {
-                if (response.status === 200) {
-                    alert("Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
-                } else {
-                    alert("Unknown error: " + response.status + ". Message: " + response.data);
-                }
-            }).catch(response => {
-                if (response.status >= 400) {
-                    alert("Error: " + response.status + ". Message: " + response.data)
-                } else {
-                    alert("Unknown error: " + response.status + ". Message: " + response.data);
-                }
+                console.log(JSON.stringify(response));
+                console.log(JSON.stringify(response.data));
+                console.log(response.status);
             });
         },
 

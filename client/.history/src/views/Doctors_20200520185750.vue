@@ -137,7 +137,6 @@ export default {
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 
-        // TODO: Videti zasto slanje mejla traje dugo
         async onClick(appointmentRequest) {
             appointmentRequest.patientEmail = localStorage.getItem("user_email");
             await Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
