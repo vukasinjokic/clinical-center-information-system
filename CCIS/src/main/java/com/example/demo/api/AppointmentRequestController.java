@@ -4,6 +4,8 @@ import com.example.demo.dto.AppointmentRequestDTO;
 import com.example.demo.model.AppointmentRequest;
 import com.example.demo.service.AppointmentRequestService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +36,15 @@ public class AppointmentRequestController {
     private AppointmentRequestDTO convertToDTO(AppointmentRequest req){
         AppointmentRequestDTO reqDTO = modelMapper.map(req, AppointmentRequestDTO.class);
         return reqDTO;
+    }
+
+    @DeleteMapping("/deleteRequest/{id}")
+    @PreAuthorize("hasRole( 'CLINIC_ADMIN')")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Integer id){
+        if(appointmentRequestService.deleteRequest(id))
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

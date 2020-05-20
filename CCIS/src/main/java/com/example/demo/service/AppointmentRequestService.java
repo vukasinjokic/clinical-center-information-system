@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentRequestService {
@@ -15,5 +16,16 @@ public class AppointmentRequestService {
 
     public List<AppointmentRequest> getRequests(){
         return appointmentRequestRepository.findAll();
+    }
+
+    public boolean deleteRequest(Integer id){
+        Optional<AppointmentRequest> req = appointmentRequestRepository.findById(id);
+        if(req.isPresent()){
+            appointmentRequestRepository.deleteById(id);
+            return true;
+        }
+        return false;
+
+
     }
 }

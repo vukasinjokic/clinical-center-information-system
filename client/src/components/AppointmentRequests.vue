@@ -15,7 +15,7 @@
 
         </v-data-table>
     <v-dialog v-model="roomsDialog" eager>    
-        <Rooms ref="roomsComponent"></Rooms>
+        <Rooms ref="roomsComponent" @reserved="roomReserved"></Rooms>
     </v-dialog>
     </div>
 </template>
@@ -58,7 +58,7 @@ export default {
         }   
     },
     methods : {
-        ...mapActions('appointmentRequests', ['fetchAppRequests']),
+        ...mapActions('appointmentRequests', ['fetchAppRequests', 'deleteRequest']),
 
         getTime(item){
             if(item.type == 'DOCTOR') return new Date(item.time).toLocaleString();
@@ -69,6 +69,11 @@ export default {
             console.log(request.doctor);
             this.roomsDialog = true;
             this.$refs.roomsComponent.setUpFields(request);
+        },
+
+        roomReserved(request){
+            this.roomsDialog = false;
+            this.deleteRequest(request.id);
         }
 
         

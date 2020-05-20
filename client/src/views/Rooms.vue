@@ -281,7 +281,8 @@ export default {
             });
             let payload = {doctors: doctors, request : this.request, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
             this.handleReservation(payload);
-            console.log(payload);
+            this.dialog = false;
+            this.$emit('reserved', this.request);
         },      
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10,
