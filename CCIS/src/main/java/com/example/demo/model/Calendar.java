@@ -36,7 +36,7 @@ public class Calendar {
     @Column(name = "eventNames")
     private List<String> eventNames;
 
-    public HashMap<String,List<Pair<Date,Date>>> getDates(){
+    public HashMap<String,List<Pair<Date,Date>>> formatDates(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         HashMap<String,List<Pair<Date,Date>>> map = new HashMap<String, List<Pair<Date,Date>>>();
 

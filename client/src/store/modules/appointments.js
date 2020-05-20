@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import axios from 'axios'
 
 const state = {
     appointments: [],
@@ -32,12 +31,6 @@ const getters = {
     }
 };
 
-const config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem("JWT"),
-    }
-  }
-
 const actions = {
     async fetchAppointments({commit}){
        
@@ -45,19 +38,19 @@ const actions = {
         commit('setAppo', response.data);
     },
     async fetchRooms({commit}){
-        const response = await axios.get('http://localhost:8081/appointments/getRooms');
+        const response = await Vue.$axios.get('http://localhost:8081/appointments/getRooms');
         commit('setFreeAppointmentsRooms', response.data);
     },
     async fetchTypes({commit}){
-        const response = await axios.get('http://localhost:8081/appointments/getTypes');
+        const response = await Vue.$axios.get('http://localhost:8081/appointments/getTypes');
         commit('setTypes', response.data);
     },
     async fetchDoctors({commit}, ex_type){
-        const response = await axios.get('http://localhost:8081/appointments/getDoctors/'+ex_type);
+        const response = await Vue.$axios.get('http://localhost:8081/appointments/getDoctors/'+ex_type);
         commit('setDoctors',response.data);
     },
     async saveAppointment({commit}, appo){
-        const response = await axios.post('http://localhost:8081/appointments/addAppointment', appo, config);
+        const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
         commit('newApp', response.data);
     },
 };

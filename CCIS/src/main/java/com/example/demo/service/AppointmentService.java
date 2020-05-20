@@ -69,7 +69,7 @@ public class AppointmentService {
         int d = (int) duration*60*60*1000;
         Date endDate = new Date(startDate.getTime()+d);
         //pair(start, end);
-        List<Pair<Date,Date>> check_dates_list = room.getCalendar().getDates().get(sdf.format(startDate).substring(0,10));
+        List<Pair<Date,Date>> check_dates_list = room.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
         int index = 0;
         if(check_dates_list.size()==0)
             return true;
