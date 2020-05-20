@@ -61,6 +61,16 @@ public class Appointment {
       this.patient = patient;
       this.clinic = clinic;
    }
+   public Appointment( Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic) {
+      this.time = time;
+      this.price = price;
+      this.discount = discount;
+      this.doctor = doctor;
+      this.room = room;
+      this.examinationType = examinationType;
+      this.patient = patient;
+      this.clinic = clinic;
+   }
    public Appointment(Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Clinic clinic) {
       this.time = time;
       this.price = price;

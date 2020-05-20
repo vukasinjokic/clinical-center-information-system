@@ -4,6 +4,7 @@ import static javax.persistence.FetchType.LAZY;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -19,23 +20,26 @@ public class Patient extends User {
    private Clinic clinic;
 
    @OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL},fetch = LAZY)
-   private Collection<Appointment> appointment;
+   private Collection<Appointment> appointments;
 
    public Patient() {
+      this.appointments = new HashSet<Appointment>();
    }
-
-   public Collection<Appointment> getAppointment() {
-      return appointment;
-   }
-
-   public void setAppointment(Collection<Appointment> appointment) {
-      this.appointment = appointment;
-   }
-
    public Patient(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, MedicalRecord medicalRecord, List<Authority> authorities) {
       super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
       this.medicalRecord = medicalRecord;
+      this.appointments = new HashSet<Appointment>();
    }
+
+   public Collection<Appointment> getAppointment() {
+      return appointments;
+   }
+
+   public void setAppointment(Collection<Appointment> appointments) {
+      this.appointments = appointments;
+   }
+
+
 
    public MedicalRecord getMedicalRecord() {
       return medicalRecord;
@@ -51,5 +55,9 @@ public class Patient extends User {
 
    public void setClinic(Clinic clinic) {
       this.clinic = clinic;
+   }
+
+   public void addAppointment(Appointment a){
+      this.appointments.add(a);
    }
 }

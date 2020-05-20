@@ -39,6 +39,8 @@ public class AppointmentRequestDTO {
         this.doctor = doctor;
     }
 
+
+
     public PatientDTO getPatient() {
         return patient;
     }

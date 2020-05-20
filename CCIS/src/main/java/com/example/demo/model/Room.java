@@ -109,4 +109,8 @@ public class Room {
    public void setType(RoomType type) {
       this.type = type;
    }
+
+   public void addAppointment(Appointment appointment){
+      getCalendar().addAppointment(appointment);
+   }
 }

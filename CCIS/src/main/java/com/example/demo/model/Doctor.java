@@ -71,4 +71,9 @@ public class Doctor extends MedicalStaff {
    public void setAppointments(Collection<Appointment> appointments) {
       this.appointments = appointments;
    }
+
+   public void addAppointment(Appointment appointment){
+      appointments.add(appointment);
+      getCalendar().addAppointment(appointment);
+   }
 }

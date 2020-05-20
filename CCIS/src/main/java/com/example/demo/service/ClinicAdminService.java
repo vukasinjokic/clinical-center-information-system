@@ -1,14 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.Repository.AppointmentRepository;
-import com.example.demo.Repository.ClinicAdminRepository;
-import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.*;
 import com.example.demo.dto.DoctorDTO;
-import com.example.demo.model.Appointment;
-import com.example.demo.model.ClinicAdmin;
-import com.example.demo.model.Doctor;
-import com.example.demo.model.Patient;
+import com.example.demo.model.*;
 import com.example.demo.useful_beans.AppointmentToReserve;
+import com.sun.javaws.security.AppPolicy;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +24,13 @@ public class ClinicAdminService {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
     private EmailService emailService;
 
     private final ModelMapper modelMapper = new ModelMapper();
@@ -38,21 +41,43 @@ public class ClinicAdminService {
     }
 
     public void handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
-        emailService.alertDoctorsOperation(appointmentToReserve.getDoctors());
-        //add patient to predefined appointment if it exists
-        //add appointment to doctors calendars
-        //add appointment to room calendar
-        //add room to appointment
-        //main doctor is the last in the list
         Integer patient_id = Integer.parseInt(appointmentToReserve.getRequest().getPatient().getId());
-        Patient patient = patientRepository.getOne(patient_id);
+        Patient patient = patientRepository.findById(patient_id).get();
+
+        Integer doctor_id = Integer.parseInt(appointmentToReserve.getRequest().getDoctor().getId());
+        Doctor doctor = doctorRepository.findById(doctor_id).get();
+
+        Integer room_id = Integer.parseInt(appointmentToReserve.getRoom().getId());
+        Room room = roomRepository.findById(room_id).get();
+
+        Appointment appointment;
         if(appointmentToReserve.getRequest().getPredefAppointment() != null){
-            Integer predef_app_id = Integer.parseInt(appointmentToReserve.getRequest().getPredefAppointment().getId());
-            Appointment predef_app = appointmentRepository.getOne(predef_app_id);
-            predef_app.setPatient(patient);
-
+            Integer appointment_id = Integer.parseInt(appointmentToReserve.getRequest().getId());
+            appointment = appointmentRepository.getOne(appointment_id);
         }
+        else{
+            appointment = new Appointment(appointmentToReserve.getReservedTime(), appointmentToReserve.getRequest().getPrice(), appointmentToReserve.getRequest().getDiscount(), doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
+        }
+        patient.addAppointment(appointment);
+        List<Doctor> doctors = appointmentToReserve.getDoctors().stream().map(doctorDTO -> modelMapper.map(doctorDTO, Doctor.class)).collect(Collectors.toList());
+        addAppointmentToDoctors(appointment, doctors);
+        room.addAppointment(appointment);
+        updateDataBase(appointment, patient, doctors, room);
+        emailService.alertDoctorsOperation(appointmentToReserve.getDoctors(), appointment);
+        emailService.alertPatientOperation(appointment);
+    }
 
+    private void updateDataBase(Appointment appointment, Patient patient, List<Doctor> doctors, Room room){
+        appointmentRepository.save(appointment);
+//        patientRepository.save(patient);
+//        roomRepository.save(room);
+//        doctorRepository.saveAll(doctors);
+    }
+
+    private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors){
+        for(Doctor doctor : doctors){
+            doctor.addAppointment(appointment);
+        }
     }
 
     public List<DoctorDTO> getClinicDoctors(String email){

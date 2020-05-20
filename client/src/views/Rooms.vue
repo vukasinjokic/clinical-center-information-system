@@ -100,7 +100,7 @@
                             <v-row justify="center">
                                 <v-dialog v-model="dialog" persistent max-width="500">
                                 <v-card>
-                                    <v-card-title class="headline">Choose additional doctors to attend operation</v-card-title>
+                                    <v-card-title class="headline">Choose doctors to attend operation</v-card-title>
                                     <v-container fluid>
                                     <v-row align="center">
                                         <v-col sm="100">
@@ -281,6 +281,7 @@ export default {
             });
             let payload = {doctors: doctors, request : this.request, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
             this.handleReservation(payload);
+            console.log(payload);
         },      
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10,

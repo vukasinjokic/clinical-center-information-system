@@ -3,6 +3,8 @@ package com.example.demo.model;
 import javax.persistence.*;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -71,5 +73,18 @@ public class Calendar {
 
     public void setEventNames(List<String> eventNames) {
         this.eventNames = eventNames;
+    }
+
+    public void addAppointment(Appointment appointment){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date startTime = appointment.getTime();
+            ExaminationType exType = appointment.getExaminationType();
+            eventStartDates.add(sdf.parse(sdf.format(startTime)));
+            eventEndDates.add(sdf.parse(sdf.format(new Date(startTime.getTime() + (long)exType.getDuration()))));
+            eventNames.add(exType.getName());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
