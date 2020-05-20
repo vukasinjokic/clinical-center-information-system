@@ -20,7 +20,7 @@
                         v-model="menu2"
                         :close-on-content-click="false"
                         :nudge-right="40"
-                        :return-value.sync="time"
+                        :return-value.sync="duration"
                         transition="scale-transition"
                         offset-y
                         max-width="290px"
@@ -28,7 +28,7 @@
                     >   
                         <template v-slot:activator="{ on }">
                         <v-text-field
-                            v-model="time"
+                            v-model="duration"
                             label="Pick duration"
                             prepend-icon="mdi-access_time"
                             readonly
@@ -100,13 +100,13 @@
                             <v-row justify="center">
                                 <v-dialog v-model="dialog" persistent max-width="500">
                                 <v-card>
-                                    <v-card-title class="headline">Choose doctors to attend operation</v-card-title>
+                                    <v-card-title class="headline">Choose additional doctors to attend operation</v-card-title>
                                     <v-container fluid>
                                     <v-row align="center">
                                         <v-col sm="100">
                                             <v-select
                                             v-model="doctorsSelect"
-                                            :items="Object.keys(clinicDoctorsDict)"
+                                            :items="doctorsForSelect"
                                             :menu-props="{ maxHeight: '400' }"
                                             label="Select"
                                             style="width:500px"
@@ -243,38 +243,44 @@ export default {
             },
             editedIndex: -1,
             typesEx: ["APPOINTMENT","OPERATION"],
-            doctorsSelect: []
+            doctorsSelect: [],
+            mainDoctor: {email: ''},
+            selectedRoom : null
         }
     },
     methods: {
         ...mapActions('room',['fetchRooms','filterRooms', 'fetchClinicDoctors',
-         'alertDoctors','deleteRoom','addRoom', 'updateRoom']),
+         'handleReservation','deleteRoom','addRoom', 'updateRoom']),
 
         dateToString(item){
             var d = new Date(item);
             return d.toString().substring(0,21);
         },
         filter(){
-          this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration, 'type': this.type});         
+          this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration, 'type': this.type ? this.type : ''});         
         },
 
         reserveRoom(room){
+            this.selectedRoom = room;
             if(room.type.toUpperCase().match('OPERATION')){
-                this.reserveOperationRoom(room);
+                this.reserveOperationRoom();
             }
             else{
                 this.reserveAppointmentRoom(room);
             }
         },
-        reserveOperationRoom(room){
+        reserveOperationRoom(){
             this.doctorsSelect = [];
             this.dialog = true;
-            console.log(room);
         },
 
         sendNotification(){
-            console.log(this.clinicDoctorsDict[this.doctorsSelect[0]].email);
-            this.alertDoctors(this.doctorsSelect);
+            let doctors = [];
+            this.doctorsSelect.concat(this.mainDoctor.firstName + ' ' + this.mainDoctor.lastName).forEach(name => {
+                doctors.push(this.clinicDoctorsDict[name]);
+            });
+            let payload = {doctors: doctors, request : this.request, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
+            this.handleReservation(payload);
         },      
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10,
@@ -303,11 +309,39 @@ export default {
                     this.addRoom(this.editedItem);
                 this.close();
             }
+        },
+        setUpFields(request){
+            this.request = request;
+            this.date = request.time;
+            this.mainDoctor = request.doctor;
+            this.duration = this.milisecondsToHours(request.doctor.examinationType.duration);
+        },
+
+        getDoctorsForSelect(){
+            let clinicDoctorsDictCopy = {...this.clinicDoctorsDict};
+            for(let key in clinicDoctorsDictCopy){
+                if(clinicDoctorsDictCopy[key].email.match(this.mainDoctor.email)){
+                    delete clinicDoctorsDictCopy[key];
+                }
+            }
+            return Object.keys(clinicDoctorsDictCopy);
+        },
+
+        milisecondsToHours(durationMilliseconds){
+            var minutes = Math.floor((durationMilliseconds / (1000 * 60)) % 60),
+                hours = Math.floor((durationMilliseconds / (1000 * 60 * 60)) % 24);
+
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            return (hours+ ':' + minutes);
         }
     },
     computed:{ 
         ...mapGetters('room', ['getAllRooms','getAvailableTimes', 'getFilteredRooms', 'getClinicDoctorsDict']),
         
+        doctorsForSelect: function(){
+            return this.getDoctorsForSelect();
+        },
 
         filteredRooms: function(){
             return this.getFilteredRooms();

@@ -13,6 +13,8 @@ import Register from '../views/Register.vue'
 import DoctorPage from '../views/DoctorPage'
 import PatientReview from '../components/PatientReview.vue'
 import VacationRequest from '../components/VacationRequest'
+import ClinicAdminPage from '../views/ClinicAdminPage'
+import AppointmentRequests from '../components/AppointmentRequests'
 
 
 Vue.use(VueRouter);
@@ -61,6 +63,14 @@ const router = new VueRouter({
             {path: 'profile', name: 'UserProfile', component: UserProfile},
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest}
+        ]
+      },
+      {
+        path: '/clinicAdmin',
+        name: 'ClinicAdminPage',
+        component: ClinicAdminPage,
+        children: [
+          {path: 'appointmentRequests', name: 'AppointmentRequests', component: AppointmentRequests},
         ]
       },
       {

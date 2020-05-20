@@ -6,6 +6,7 @@ import com.example.demo.model.ClinicAdmin;
 import com.example.demo.model.Doctor;
 import com.example.demo.service.ClinicAdminService;
 import com.example.demo.service.EmailService;
+import com.example.demo.useful_beans.AppointmentToReserve;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +33,12 @@ public class ClinicAdminController {
         return clinicAdminService.getClinicDoctors(email);
     }
 
-    @PostMapping(path ="/alertDoctorsOperation", consumes = "application/json")
+    @PostMapping(path ="/handleReservation", consumes = "application/json")
 //    @PreAuthorize("hasRole('CLINIC_ADMIN')")
-    public void alertDoctorsOperation(@RequestBody List<DoctorDTO> doctors){
+    public void handleReservation(@RequestBody AppointmentToReserve appointmentToReserve){
 
         try {
-            emailService.alertDoctorsOperation(doctors);
+            clinicAdminService.handleReservation(appointmentToReserve);
         }catch( Exception e ){
             ResponseEntity.status(404);
             System.out.println(e.getMessage());
