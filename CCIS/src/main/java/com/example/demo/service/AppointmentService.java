@@ -49,8 +49,8 @@ public class AppointmentService {
 
 //        if(!appointmentValidation.validateDoctor(getDoctor.getId(),date,getType))
 //            return null;
-        if(!validateRoom(date, getType.getDuration(), getRoom))
-            return null;
+//        if(!validateRoom(date, getType.getDuration(), getRoom))
+//            return null;
 
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {
