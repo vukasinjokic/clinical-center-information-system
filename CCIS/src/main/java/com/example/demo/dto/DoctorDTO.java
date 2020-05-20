@@ -44,6 +44,10 @@ public class DoctorDTO {
         return clinicId;
     }
 
+    public void setClinicId(String id){
+        this.clinicId = id;
+    }
+
     public void setClinicId(Clinic clinic) {
         this.clinicId = clinic.getId().toString();
     }

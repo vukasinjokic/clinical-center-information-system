@@ -60,8 +60,8 @@ public class ClinicAdminController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path ="/alertDoctorsOperation", consumes = "application/json")
-//    @PreAuthorize("hasRole('CLINIC_ADMIN')")
+    @PostMapping(path ="/handleReservation", consumes = "application/json")
+    @PreAuthorize("hasRole('CLINIC_ADMIN')")
     public void handleReservation(@RequestBody AppointmentToReserve appointmentToReserve){
 
         try {

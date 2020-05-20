@@ -85,7 +85,8 @@ const actions = {
 
     async handleReservation({commit}, payload){
         
-        const response = await axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload);
+        const response = await Vue.$axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload);
+        
         console.log(commit);
         console.log(response);
 
@@ -93,11 +94,7 @@ const actions = {
 
     async fetchRooms({commit}){
       
-        let config = {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("JWT"),}
-          }
-        const response = await axios.get("http://localhost:8081/rooms/getRooms", config);
+        const response = await  Vue.$axios.get("http://localhost:8081/rooms/getRooms");
 
         commit('setRooms', response.data);
         commit('setFilteredRooms', response.data);

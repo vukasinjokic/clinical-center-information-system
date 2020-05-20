@@ -103,7 +103,7 @@ public class AppointmentRequestController {
     }
 
     @DeleteMapping("/deleteRequest/{id}")
-    @PreAuthorize("hasRole( 'CLINIC_ADMIN')")
+    @PreAuthorize("hasRole('CLINIC_ADMIN')")
     public ResponseEntity<Void> deleteRoom(@PathVariable Integer id){
         if(appointmentRequestService.deleteRequest(id))
             return new ResponseEntity<>(HttpStatus.OK);

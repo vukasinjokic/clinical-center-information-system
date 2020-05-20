@@ -45,7 +45,7 @@ public class ExaminationTypeService {
             ExaminationType examinationType = findType.get();
             List<Appointment> appointments = appointmentRepository.findByExaminationTypeId(examinationType.getId());
             if(appointments.size() == 0){
-                if(!this.validateUsing(forUpdate.getName())){
+                if(!this.validateUsing(forUpdate)){
                     examinationType.setName(forUpdate.getName());
                     examinationType.setDuration(forUpdate.getDuration());
                     examinationType = examinationTypeRepository.save(examinationType);
@@ -70,13 +70,16 @@ public class ExaminationTypeService {
         return null;
     }
 
-    public boolean validateUsing(String name){
+    public boolean validateUsing(ExaminationType name){
         List<ExaminationType> examinationTypes = examinationTypeRepository.findAll();
         List<ExaminationType> doesExist = examinationTypes.stream()
-                .filter(t -> t.getName().equals(name))
+                .filter(t -> t.getName().equals(name.getName()))
                 .collect(Collectors.toList());
         if(doesExist.size() == 0)
             return false;
+        if(doesExist.get(0).getId() == name.getId()){
+            return false;
+        }
         return true;
     }
 

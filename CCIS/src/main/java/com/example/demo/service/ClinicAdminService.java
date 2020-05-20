@@ -91,6 +91,7 @@ public class ClinicAdminService {
             doctor.addAppointment(appointment);
         }
     }
+
     public List<MedicalStaffRequest> getRequests(){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

@@ -33,7 +33,7 @@ public class EmailService {
             mail.setTo("isamrstim23@gmail.com");
             mail.setFrom("blabla");
             mail.setSubject("Nova operacija zakazana");
-            mail.setText("Postovani/a " + doctor.getFirstName() + ", \n\n Zakazan je "+ appointment.getExaminationType()+ " u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". Pozvani ste da joj prisustvujete. \n\n");
+            mail.setText("Postovani/a " + doctor.getFirstName() + ", \n\n Zakazan je "+ appointment.getExaminationType().getName()+ " u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". Pozvani ste da joj prisustvujete. \n\n");
             javaMailSender.send(mail);
         }
     }
@@ -45,7 +45,7 @@ public class EmailService {
 //        mail.setTo(doctor.getEmail());
         mail.setTo("isamrstim23@gmail.com");
         mail.setFrom("blabla");
-        mail.setSubject("Nova operacija zakazana");
+        mail.setSubject("Nov pregled");
         mail.setText("Postovani/a " + appointment.getPatient().getFirstName() + ", \n\n Odobren je vas zahtev za "+ appointment.getExaminationType().getName() + ". Odrzace se u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". \n\n");
         javaMailSender.send(mail);
     }
