@@ -23,11 +23,18 @@ const actions = {
 
     clinicsSetter({commit}, clinics) {
         commit('setClinics', clinics);
+    },
+
+    async saveClinic({commit}, clinic){
+        const response = await Vue.$axios.post('http://localhost:8081/clinics/addClinic', clinic);
+        commit('newClinic', response.data);
     }
+
 };
 
 const mutations = {
-    setClinics: (state, clinics) => (state.clinics = clinics)
+    setClinics: (state, clinics) => (state.clinics = clinics),
+    newClinic: (state, newClinic) => state.clinics.unshift(newClinic)
 };
 
 const namespaced = true;

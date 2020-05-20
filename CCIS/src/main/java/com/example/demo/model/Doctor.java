@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -21,8 +22,8 @@ public class Doctor extends MedicalStaff {
    @JoinColumn(name = "ex_type_id",nullable = false)
    private ExaminationType examinationType;
 
-   @OneToMany(fetch = FetchType.LAZY)
-   @JoinColumn(name = "doctor_id")
+
+   @OneToMany(mappedBy = "doctor" ,fetch = FetchType.LAZY)
    private Collection<Appointment> appointments;
 
    public Doctor() {

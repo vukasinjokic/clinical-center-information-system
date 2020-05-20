@@ -7,6 +7,7 @@ import userDetails from './modules/userDetails.js';
 import patient from './modules/patient'
 import examination_type from './modules/examination_type'
 import doctors from './modules/doctors';
+import doctor from './modules/doctor'
 
 // load vuex
 Vue.use(Vuex);
@@ -21,5 +22,6 @@ export default new Vuex.Store({
         patient,
         examination_type,
         doctors,
+        doctor
     }
 });

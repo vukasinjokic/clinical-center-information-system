@@ -1,9 +1,11 @@
 <template>
     <div class="home"> 
-        <h1>Room view</h1>
         <div>
         <v-container>
              <v-card>
+                 <v-card-title>
+                     Rooms
+                 </v-card-title>
                 <v-card-title>
                     <v-text-field
                         v-model="search"
@@ -64,50 +66,142 @@
                         </v-date-picker>          
                     </v-menu>
                     <v-spacer></v-spacer>
-                    <v-btn @click="filterRooms">Search</v-btn>
+                    <v-combobox
+                        v-model="type"
+                        :items="types"
+                        label="Select type"
+
+                    >
+
+                    </v-combobox>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="filter">Search</v-btn>
                 </v-card-title>          
                 </v-card>
-                <v-data-table
+                <v-data-table 
                     :ref="table"
                     :headers="headers"
-                    :items="getRoomsTable"
+                    :items="filteredRooms"
                     :items-per-page="5"
                     :expanded.sync="expanded"
                     item-key="name"
                     show-expand
-                    dark grey>
+                    class="blue-grey darken-4 white--text"
+                    dark>
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
                         <tr v-for="it in item.calendar.eventStartDates.length" v-bind:key=it.name>
                             <td>Start date: {{ dateToString(item.calendar.eventStartDates[it-1])}}</td>
                             <td>End date: {{ dateToString(item.calendar.eventEndDates[it-1])}}</td>
                         </tr>
-                        <tr style="background-color:gray" v-if="availableAppointments">
-                            <td >First available appointment : {{dateToString(availableAppointments[item.id])}}</td>
-                            <td style="text-align:center; margin-left:140px;"><v-btn @click="filterRooms" color="blue">Reserve room</v-btn> </td>
-                            
+                        <tr style="background-color:gray" v-if="availableTimes">
+                            <td >First available appointment : {{dateToString(availableTimes[item.id])}}</td>
+                            <td style="text-align:center; margin-left:140px;"><v-btn @click="reserveRoom(item)" color="blue">Reserve room</v-btn> </td>
+                            <v-row justify="center">
+                                <v-dialog v-model="dialog" persistent max-width="500">
+                                <v-card>
+                                    <v-card-title class="headline">Choose doctors to attend operation</v-card-title>
+                                    <v-container fluid>
+                                    <v-row align="center">
+                                        <v-col sm="100">
+                                            <v-select
+                                            v-model="doctorsSelect"
+                                            :items="Object.keys(clinicDoctorsDict)"
+                                            :menu-props="{ maxHeight: '400' }"
+                                            label="Select"
+                                            style="width:500px"
+                                            multiple
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                    </v-container>
+                                    <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" text @click="sendNotification()">Send notification</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                                </v-dialog>
+                            </v-row>
                         </tr>
                      </td>
+                </template>
+                <template v-slot:top>
+                <v-toolbar flat class="blue-grey darken-4 white--text">
+                <v-spacer></v-spacer>
+                <v-dialog v-model="editDialog" max-width="370px">
+                    <template v-slot:activator="{ on }">
+                    <v-btn color="orange lighten-1" dark class="mb-2" v-on="on">New Room</v-btn>
+                    </template>
+                    <v-card>
+                    <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container>
+                        <v-form ref="form">
+                        <v-row>
+                            <v-col cols="12" sm="6" md="12">
+                            <v-text-field 
+                                    label="Room name"
+                                    v-model="editedItem.name"
+                                    :rules="[requiredRule]"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                            <v-text-field  v-model="editedItem.number" label="Room number"
+                                :rules="[numberRule,requiredRule]" >
+                            </v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm= "6" md="8">
+                                <v-select
+                                    :rules="[requiredRule]"
+                                    v-model="editedItem.type"
+                                    :items="typesEx"
+                                    label="Select type">
+                                </v-select>
+                            </v-col>
+                        </v-row>
+                        </v-form>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                        <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                    </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                </v-toolbar>
+                 </template>
+                <template v-slot:item.actions="{ item }">
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="editItem(item)"
+                        >
+                        mdi-pencil
+                        </v-icon>
+                        <v-icon
+                        small
+                        @click="deleteItem(item)"
+                        >
+                        mdi-delete
+                    </v-icon>
                 </template>
                 </v-data-table>
             
         </v-container>
         </div>
-        <div>
-            
-        </div>
+        
     </div> 
 </template>
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
-
+ 
 export default {
     name: 'Rooms',
-    created(){
-        this.fetchRooms();    
-        this.getRooms();    
-    },
+    
 
     data(){
         return {
@@ -121,52 +215,125 @@ export default {
                 {
                     text: 'Clinic', value: 'clinic',fileterable: true
                 },
-                // { 
-                //     text: 'Actions', value: 'actions', sortable: false 
-                // },
+                { 
+                    text: 'Type', value: 'type', sortable: true 
+                },
+                {text: "Actions", value:"actions"}
             ],
             search: "",
             date:"",
+            type:"",
+            types:['Appointment','Operation'],
             expanded: [],
-            rooms: [],
-            availableAppointments : null,
             duration: "00:00",
             menu2: false,
+            dialog: false,
+            editDialog: false,
+            editedItem: {
+                id: "",
+                name: "",
+                number: "",
+                type: ""
+            },
+            defaultItem: {
+                id: "",
+                name: "",
+                number: "",
+                type: ""
+            },
+            editedIndex: -1,
+            typesEx: ["APPOINTMENT","OPERATION"],
+            doctorsSelect: []
         }
     },
     methods: {
-        ...mapActions('room',['fetchRooms', 'getRooms']),
-
-        getRooms(){
-            this.rooms = this.getAllRooms();
-        },
+        ...mapActions('room',['fetchRooms','filterRooms', 'fetchClinicDoctors',
+         'alertDoctors','deleteRoom','addRoom', 'updateRoom']),
 
         dateToString(item){
             var d = new Date(item);
             return d.toString().substring(0,21);
         },
-        filterRooms(){
-          let result = this.getFiltered(this.search, this.date, this.duration);
-          this.availableAppointments = result.availableAppointments;
-          this.rooms = result.rooms;
-          
+        filter(){
+          this.filterRooms({'search': this.search, 'date' : this.date, 'duration' : this.duration, 'type': this.type});         
         },
-        
+
+        reserveRoom(room){
+            if(room.type.toUpperCase().match('OPERATION')){
+                this.reserveOperationRoom(room);
+            }
+            else{
+                this.reserveAppointmentRoom(room);
+            }
+        },
+        reserveOperationRoom(room){
+            this.doctorsSelect = [];
+            this.dialog = true;
+            console.log(room);
+        },
+
+        sendNotification(){
+            console.log(this.clinicDoctorsDict[this.doctorsSelect[0]].email);
+            this.alertDoctors(this.doctorsSelect);
+        },      
         allowedMinutes: m => m % 15 === 0,
-        allowedHours: h => h <= 10
+        allowedHours: h => h <= 10,
+
+        editItem(item){
+            this.editedIndex = this.getAllRooms.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            this.editDialog = true;
+
+        },
+        deleteItem(item){
+            this.deleteRoom(item.id);
+        },
+        close(){
+            this.editDialog = false;
+            this.editedItem = Object.assign({}, this.defaultItem);
+            this.editedIndex = -1;
+            this.$refs.form.reset();
+
+        },
+        save(){
+            if(this.$refs.form.validate()){
+                if(this.editedIndex > -1)
+                    this.updateRoom(this.editedItem);
+                else
+                    this.addRoom(this.editedItem);
+                this.close();
+            }
+        }
     },
     computed:{ 
-        ...mapGetters('room', ['getAllRooms','getFiltered']),
-        getRoomsTable: function(){
-            return (this.getFiltered(this.search,this.date,this.duration)).rooms;
+        ...mapGetters('room', ['getAllRooms','getAvailableTimes', 'getFilteredRooms', 'getClinicDoctorsDict']),
+        
+
+        filteredRooms: function(){
+            return this.getFilteredRooms();
         },
-        // getRooms: function(){
-        //     this.rooms = this.getAllRooms();
-        // },
- 
+
+        availableTimes: function(){
+            return this.getAvailableTimes();
+        },
+
+        clinicDoctorsDict: function(){
+            return this.getClinicDoctorsDict();
+        },
+        formTitle () {
+            return this.editedIndex === -1 ? "Add new room" : "Edit room"
+        },
+        requiredRule(){
+          return (value) => !!value || "Required.";
+        },
+        numberRule(){
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be valid.";
+        },
     },
-
-
+    created(){
+        this.fetchRooms();
+        this.fetchClinicDoctors();
+    },
 }
 </script>
 

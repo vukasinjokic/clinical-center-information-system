@@ -17,7 +17,7 @@ public class ClinicDTO {
     private List<String> doctors;
     private List<String> nurses;
     private List<AppointmentDTO> appointments;
-    private List<String> operationRooms;
+    private List<String> rooms;
 //    private String codebook; //
 
     public void setDTOFields(Clinic clinic){
@@ -26,7 +26,7 @@ public class ClinicDTO {
         this.setDoctors(clinic.getDoctors());
         this.setNurses(clinic.getNurses());
         this.setAppointments(clinic.getAppointments());
-        this.setOperationRooms(clinic.getOperationRooms());
+        this.setRooms(clinic.getRooms());
     }
 
     public String getId() {
@@ -82,6 +82,7 @@ public class ClinicDTO {
     }
 
     public void setDoctors(Collection<Doctor> doctors) {
+        if(doctors == null) return;
         List<String> strDoctors = new ArrayList<>();
 
         for (Doctor doctor : doctors) {
@@ -96,6 +97,7 @@ public class ClinicDTO {
     }
 
     public void setNurses(Collection<Nurse> nurses) {
+        if(nurses == null) return;
         List<String> strNurses = new ArrayList<>();
 
         for (Nurse nurse : nurses) {
@@ -110,6 +112,7 @@ public class ClinicDTO {
     }
 
     public void setAppointments(Collection<Appointment> appointments) {
+        if(appointments == null) return;
         List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
 
         ModelMapper modelMapper = new ModelMapper();
@@ -122,18 +125,19 @@ public class ClinicDTO {
         this.appointments = appointmentDTOS;
     }
 
-    public List<String> getOperationRooms() {
-        return operationRooms;
+    public List<String> getRooms() {
+        return rooms;
     }
 
-    public void setOperationRooms(Collection<OperationRoom> operationRooms) {
+    public void setRooms(Collection<Room> rooms) {
+        if(rooms == null) return;
         List<String> strOperationRooms = new ArrayList<>();
 
-        for (OperationRoom operationRoom : operationRooms) {
-            strOperationRooms.add(operationRoom.getName() + " " + operationRoom.getClinic().getName());
+        for (Room room : rooms) {
+            strOperationRooms.add(room.getName() + " " + room.getClinic().getName());
         }
 
-        this.operationRooms = strOperationRooms;
+        this.rooms = strOperationRooms;
     }
 
 //    public String getCodebook() {

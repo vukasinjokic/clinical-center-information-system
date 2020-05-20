@@ -1,17 +1,25 @@
 <template>
 <div>
     <v-container>
-        <div class="desno" style="margin: 10px">
-            <AddFreeAppointment></AddFreeAppointment>
-        </div>
-        <v-data-table
-                    :headers="headers"
-                    :items="allAppointments"
-                    :items-per-page="5"
-                    item-key="name"
-                    dark grey>
-        </v-data-table>
-        
+        <v-card>
+            <v-card-title>Appointments</v-card-title>
+            
+            <v-data-table
+                        :headers="headers"
+                        :items="allAppointments"
+                        :items-per-page="5"
+                        item-key="name"
+                        class="blue-grey darken-4 white--text"
+                        dark grey>
+             <template v-slot:top>
+                <v-toolbar flat class="blue-grey darken-4 white--text">
+                    <v-spacer></v-spacer>
+                    <AddFreeAppointment style="margin: 10px;"></AddFreeAppointment>
+                </v-toolbar>
+            </template>
+            
+            </v-data-table>
+        </v-card>
     </v-container>
 </div>
 </template>
@@ -49,7 +57,7 @@ export default {
                     text: 'Clinic', value: 'clinic',fileterable: true
                 },
                 {
-                    text: 'Operation room', value: 'operationRoom', fileterable:true            
+                    text: 'Room', value: 'room', fileterable:true            
                 },
                 {
                     text: 'Date', value: 'date',fileterable: true

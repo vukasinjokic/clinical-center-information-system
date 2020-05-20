@@ -6,9 +6,13 @@ import com.example.demo.model.Clinic;
 import com.example.demo.service.ClinicService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +30,7 @@ public class ClinicController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT','CLINIC_CENTER_ADMIN')")
     public List<ClinicsDTO> getAllClinics() {
         List<Clinic> clinics = clinicService.getAllClinics();
 //        List<ClinicDTO> clinicDTOs = new ArrayList<>(clinics.size());
@@ -43,12 +47,19 @@ public class ClinicController {
     }
 
     @GetMapping(path = "{id}")
-    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'CLINIC_CENTER_ADMIN')")
     public ClinicDTO findById(@PathVariable("id") Integer id) {
         Clinic clinic = clinicService.findById(id);
         ClinicDTO clinicDTO = modelMapper.map(clinic, ClinicDTO.class);
         clinicDTO.setDTOFields(clinic);
         return clinicDTO;
+    }
+
+    @PostMapping(path = "/addClinic", consumes = "application/json")
+    @PreAuthorize("hasRole('CLINIC_CENTER_ADMIN')")
+    public ResponseEntity<ClinicDTO> addClinic(@RequestBody ClinicDTO clinicDTO) throws ParseException{
+        Clinic clinic = clinicService.addClinic(clinicDTO);
+        return new ResponseEntity<ClinicDTO>(convertToClinicDTO(clinic), HttpStatus.CREATED);
     }
 
     private ClinicDTO convertToClinicDTO(Clinic clinic){

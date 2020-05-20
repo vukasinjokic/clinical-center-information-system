@@ -1,18 +1,39 @@
 import axios from "axios";
-
+import Vue from 'vue';
 const state = {
-    rooms : [] 
+    rooms : [],
+    filteredRooms : [],
+    availableTimes : null,
+    clinicDoctors: [],
+    //Key: doctors name, Value: doctor
+    clinicDoctorsDict: {}
 };
 
 const getters = {
-    getAllRooms: (state) => () =>{
-        return state.rooms;
-      
+    getAllRooms: (state) => state.rooms,
+
+    getFilteredRooms: (state) => () => {
+        return state.filteredRooms;
     },
 
-    getFiltered: (state) => (search,date,duration) => {
-        let availableAppointments = {};
-        let rooms = state.rooms.filter(room => {
+    getAvailableTimes: (state) => () =>{
+        return state.availableTimes;
+    },
+
+    getClinicDoctorsDict: (state) => () =>{
+        return state.clinicDoctorsDict;
+    }
+};
+
+const actions = {
+    
+
+    filterRooms: ({commit}, payload) => {
+        let search = payload.search;
+        let duration = payload.duration;
+        let date = payload.date == "" ? new Date() : payload.date;
+        let availableTimes = {};
+        let filteredRooms = state.rooms.filter(room => {
             let first = room.name.toUpperCase().match(search.toUpperCase()) || room.number.toUpperCase().match(search.toUpperCase());
             let firstAvailable = null;
             let eventStartDates = room.calendar.eventStartDates.slice();
@@ -52,35 +73,111 @@ const getters = {
                 }
                 
             }
+            showRoom = room.type.toUpperCase().match(payload.type.toUpperCase()) ? true : false;
             if(date == "") showRoom = true;
-            availableAppointments[room.id] = firstAvailable;
+            availableTimes[room.id] = firstAvailable;
             return first  && showRoom;
         });
-        return {'availableAppointments' : availableAppointments, 'rooms': rooms};
-        
-    }
-};
+        if(duration == "00:00") availableTimes = null;   
+        commit('setFilteredRooms', filteredRooms);
+        commit('setAvailableTimes', availableTimes);        
+    },
 
-const actions = {
+    async alertDoctors({commit}, doctorsNames){
+        
+        let doctors = [];
+        doctorsNames.forEach(name => {
+            doctors.push(state.clinicDoctorsDict[name]);
+        });
+        const response = await axios.post("http://localhost:8081/clinicAdmins/alertDoctorsOperation", doctors);
+        console.log(commit);
+        console.log(response);
+
+    },
+
     async fetchRooms({commit}){
       
+        let config = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("JWT"),}
+          }
+        const response = await axios.get("http://localhost:8081/rooms/getRooms", config);
+
+        commit('setRooms', response.data);
+        commit('setFilteredRooms', response.data);
+
+    },
+
+    async fetchClinicDoctors({commit}){
+        
         let config = {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("JWT"),
             }
           }
-        const response = await axios.get("http://localhost:8081/operationRooms/getOperationRooms", config);
+        const response = await axios.get('http://localhost:8081/clinicAdmins/getClinicDoctors/' + localStorage.getItem('user_email'), config);
+        commit('setClinicDoctors', response.data);
+        commit('setClinicDoctorsDict');
 
-        commit('setRooms', response.data);
     },
 
-    getRooms(){
-        return state.rooms;
+    async deleteRoom({commit}, id){
+        try{
+            await Vue.$axios.delete('http://localhost:8081/rooms/deleteRoom/' + id);
+            commit('deletedRoom', id);
+        }catch(error){
+            alert(error.response);
+        }
+    },
+    async addRoom({commit}, room){
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/rooms/addRoom', room);
+            commit('addedRoom', response.data);
+        }catch(error){
+            alert(error.response);
+        }
+    },
+    async updateRoom({commit}, room){
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/rooms/updateRoom', room);
+            commit('updatedRoom', response.data);
+        }catch(error){
+            alert(error.response.status);
+        }
     }
+
 };
 
 const mutations = {
-    setRooms: (state, rooms) => state.rooms = rooms
+    setRooms: (state, rooms) => {
+        state.rooms = rooms
+    },
+    setFilteredRooms: (state, frooms) => {
+        state.filteredRooms = frooms;
+    },
+    setAvailableTimes: (state, times) => {
+        state.availableTimes = times;
+    },
+    setClinicDoctors: (state, doctors) =>{
+        state.clinicDoctors = doctors;
+    },
+    setClinicDoctorsDict: (state) => {
+        state.clinicDoctorsDict = {};
+        state.clinicDoctors.forEach(doctor => {
+            state.clinicDoctorsDict[doctor.firstName + ' ' + doctor.lastName] = doctor;
+        });
+    },
+    deletedRoom(state,id) {
+        const index = state.rooms.findIndex(type => type.id === id);
+        state.rooms.splice(index,1);
+    },
+    addedRoom: (state,room) => state.rooms.push(room),
+
+    updatedRoom (state,room){
+        const index = state.rooms.findIndex(t => t.id === room.id);
+        Object.assign(state.rooms[index], room);
+    }
+    
 };
 
 

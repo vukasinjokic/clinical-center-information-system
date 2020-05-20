@@ -2,7 +2,6 @@ package com.example.demo.dto;
 
 
 import com.example.demo.model.*;
-import org.modelmapper.ModelMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,9 +13,8 @@ public class AppointmentDTO {
     private float discount;
     private String doctor; //
     private String patient;
-    private String operationRoom;
+    private String room;
     private String examinationType;
-    private String medicalRecord; //vrv ne treba
     private String clinic;
 
 
@@ -24,7 +22,7 @@ public class AppointmentDTO {
 
         this.setDoctor(appointment.getDoctor());
         this.setPatient(appointment.getPatient());
-        this.setOperationRoom(appointment.getOperationRoom());
+        this.setRoom(appointment.getRoom());
         this.setExaminationType(appointment.getExaminationType());
         this.setClinic(appointment.getClinic());
         this.setTime(appointment.getTime());
@@ -52,16 +50,21 @@ public class AppointmentDTO {
         this.clinic = clinic;
     }
 
-    public void setOperationRoom(String operationRoom){
-        this.operationRoom = operationRoom;
+    public void setRoom(String room){
+        this.room = room;
     }
 
     public void setPatient(Patient patient){
+        if(patient == null) return;
         this.patient = patient.getLastName() + " " +  patient.getFirstName();
     }
 
-    public void setOperationRoom(OperationRoom or){
-        this.operationRoom = or.getName() + " " + or.getNumber();
+    public void setPatient(String patient) {
+        this.patient = patient;
+    }
+
+    public void setRoom(Room r){
+        this.room = r.getName() + " " + r.getNumber();
     }
 
     public void setExaminationType(ExaminationType et){
@@ -106,8 +109,8 @@ public class AppointmentDTO {
         return patient;
     }
 
-    public String getOperationRoom() {
-        return operationRoom;
+    public String getRoom() {
+        return room;
     }
 
 
@@ -116,9 +119,6 @@ public class AppointmentDTO {
     }
 
 
-    public String getMedicalRecord() {
-        return medicalRecord;
-    }
 
     public String getId() {
         return id;

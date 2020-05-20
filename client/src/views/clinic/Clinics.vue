@@ -28,8 +28,8 @@
                             @click="chosenDate = ''"/>
                         </template>
                         <v-date-picker  v-model="chosenDate"
-                        @input="fromDateMenu = false">           
-                        </v-date-picker>          
+                        @input="fromDateMenu = false">
+                        </v-date-picker>
                     </v-menu>
 
                     <v-spacer></v-spacer>
@@ -41,13 +41,15 @@
                     label="Chose examination type"
                     @click="chosenExamination = ''">
                     </v-select>
-                
+
                     <v-spacer></v-spacer>
 
                     <v-btn @click="setApplyFilters(true)">Apply filters</v-btn>
-                </v-card-title>          
+                </v-card-title>
             </v-card>
-            
+
+            <AddClinic></AddClinic>
+
             <v-data-table
                 :headers="headers"
                 :items="filterClinics"
@@ -55,7 +57,7 @@
                 @click:row="redirect"
                 show-expand
                 dark>
-            
+
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
                         <th>Ime doktora</th>
@@ -77,10 +79,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import AddClinic from '../../components/AddClinic.vue'
 
 
 export default {
     name: "Clinics",
+    components: {
+        AddClinic
+    },
 
     data() {
         return {
@@ -95,6 +101,7 @@ export default {
                 {text: "Address", value: "address"},
                 {text: "Price List", value: "priceList"},
                 {text: "Rating", value: "rating"}
+                {text: "Description", value: "description", width: "25%"}
             ]
         }
     },
@@ -103,16 +110,16 @@ export default {
         ...mapActions("doctors", ["doctorsSetter"]),
 
         ...mapActions("clinics", ["fetchClinics", "fetchFilteredClinics"]),
-        
+
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
 
         ...mapGetters("clinics", ['allClinics', "getFilteredClinics"]),
 
         ...mapGetters("examination_type", ['getTypes']),
-        
+
 
         redirect(clinic) {
-            sessionStorage.setItem("filterDetails", 
+            sessionStorage.setItem("filterDetails",
             JSON.stringify({
                 filterDate: this.chosenDate,
                 filterType: this.chosenExamination,
@@ -150,7 +157,7 @@ export default {
                     if (!foundByName) {
                         return false;
                     }
-                    
+
                     // User does not want to filter by examination name and examination date
                     if (this.chosenExamination === "" && this.chosenDate === "") {
                         return true;
@@ -167,7 +174,7 @@ export default {
                                 } else {
                                     var examinationType = {};
                                     var hours = 0;
-                                    
+
                                     if (this.chosenExamination === "") {
                                         examinationType = doctor.examinationType;
                                         hours = examinationType.duration/3600000;
@@ -181,7 +188,7 @@ export default {
                                     let durationMilliseconds = hours * 1000 * 60 * 60;
 
                                     let eventStartDates = doctor.calendar.eventStartDates.slice();
-                                    let eventEndDates = doctor.calendar.eventEndDates;   
+                                    let eventEndDates = doctor.calendar.eventEndDates;
 
                                     let startSelectedDay = (new Date(this.chosenDate));
                                     startSelectedDay.setHours(7,0,0,0);
@@ -193,12 +200,12 @@ export default {
                                     for (var i = 1; i <= eventStartDates.length; i++) {
                                         let startAppDate = new Date(eventStartDates[i]);
                                         let endAppDate = new Date(eventEndDates[i-1]);
-                                        
-                                        // Can the appointment be set BEFORE the first already set appointment 
+
+                                        // Can the appointment be set BEFORE the first already set appointment
                                         if(i == 1 && new Date(eventStartDates[i-1]).getTime() + durationMilliseconds <= startAppDate.getTime()){
                                             return true;
                                         }
-                                        
+
                                         // Can the appointment be set INBETWEEN already set appointments
                                         if(i < eventStartDates.length && endAppDate.getTime() + durationMilliseconds  <= new Date(eventStartDates[i + 1]).getTime()){
                                             return true;

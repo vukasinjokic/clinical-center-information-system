@@ -12,7 +12,6 @@ public abstract class User implements UserDetails {
    @Id
    @GeneratedValue(strategy=GenerationType.TABLE, generator="ust_seq_user")
    @SequenceGenerator(name = "ust_seq_user", sequenceName = "ust_seq_user", initialValue = 1, allocationSize=1)
-   @Column(name = "id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @Column(name = "username", unique = true, nullable = false)

@@ -9,7 +9,6 @@ public class BusinessHours {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique = true, nullable = false, columnDefinition = "serial")
     private Integer id;
 
     @Column(name="started", unique = false, nullable = false)

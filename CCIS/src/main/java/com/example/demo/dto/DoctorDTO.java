@@ -48,8 +48,12 @@ public class DoctorDTO {
         this.clinicId = clinic.getId().toString();
     }
 
-    private void setClinic(Clinic clinic){
+    public void setClinic(Clinic clinic){
         this.clinic = clinic.getName();
+    }
+
+    public void setClinic(String clinic) {
+        this.clinic = clinic;
     }
 
     public String getId() {

@@ -12,12 +12,11 @@ import static javax.persistence.FetchType.LAZY;
 */
 
 @Entity
-@Table(name = "code_book")
+@Table(name = "code_books")
 public class CodeBook {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name="id", unique = true, nullable = false, columnDefinition = "serial")
    private Integer id;
 
    @ElementCollection(fetch = LAZY)
@@ -57,4 +56,6 @@ public class CodeBook {
    public void setMedications(Map<String, String> medications) {
       this.medications = medications;
    }
+
+
 }
