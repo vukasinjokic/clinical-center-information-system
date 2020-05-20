@@ -8,12 +8,9 @@ import patient from './modules/patient'
 import examination_type from './modules/examination_type'
 import doctors from './modules/doctors';
 import doctor from './modules/doctor'
-<<<<<<< HEAD
 import appointmentRequests from './modules/appointmentRequests'
-=======
 import userProfile from './modules/userProfile'
 import clinicAdmin from './modules/clinicAdmin'
->>>>>>> feature/vacationRequest
 
 // load vuex
 Vue.use(Vuex);
@@ -29,12 +26,8 @@ export default new Vuex.Store({
         examination_type,
         doctors,
         doctor,
-<<<<<<< HEAD
-        appointmentRequests
-
-=======
+        appointmentRequests,
         userProfile,
         clinicAdmin
->>>>>>> feature/vacationRequest
     }
 });
