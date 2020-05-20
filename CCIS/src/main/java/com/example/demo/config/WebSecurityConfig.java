@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userDetailsService),
                         BasicAuthenticationFilter.class);
         // zbog jednostavnosti primera
-        http.csrf().disable();
+//        http.csrf().disable();
     }
 
     // Generalna bezbednost aplikacije
