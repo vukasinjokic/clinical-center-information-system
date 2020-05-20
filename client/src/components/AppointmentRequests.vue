@@ -11,14 +11,8 @@
             <template #item.patientName="{ item }">{{ item.patient.firstName }} {{ item.patient.lastName }}</template>
             <template #item.examinationType="{ item }">{{ item.doctor.examinationType.name }}</template>
             <template #item.times="{ item }" >{{getTime(item)}}</template>
-            <template #item.reserveRoom="{ item }" >
-                <v-btn @click="reserveRoom(item)" color="orange lighten-1" dark>Reserve Room</v-btn>
-                
-                </template>
-            <template #item.denyButton="{ item }" >
-                
-                <v-btn @click="denyRequest(item)" color="red lighten-1" outlined="" dark>Deny</v-btn>
-                </template>
+            <template #item.reserveRoomButton="{ item }" ><v-btn @click="reserveRoom(item)" color="orange lighten-1" dark>Reserve Room</v-btn></template>
+
         </v-data-table>
     <v-dialog v-model="roomsDialog" eager>    
         <Rooms ref="roomsComponent" @reserved="roomReserved"></Rooms>
@@ -55,11 +49,8 @@ export default {
                     text: 'Examination type', value: 'examinationType',fileterable: true
                 },
                 {
-                    text: 'Reserve room', value: 'reserveRoom',fileterable: false
+                    text: 'Action', value: 'reserveRoomButton',fileterable: true
                 },
-                {
-                    text: 'Deny', value: 'denyButton', fileterable: false
-                }
                 
             ],
             roomsDialog : false,
@@ -78,10 +69,6 @@ export default {
             console.log(request.doctor);
             this.roomsDialog = true;
             this.$refs.roomsComponent.setUpFields(request);
-        },
-
-        denyRequest(request){
-            this.deleteRequest(request.id);
         },
 
         roomReserved(request){
