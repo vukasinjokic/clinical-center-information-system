@@ -1,5 +1,5 @@
 <template>
-<div  style="margin: 110px; 10px; 0px; 0px;">
+<div  style="margin: 40px; 10px; 0px; 0px;">
 
     <v-card max-width="450">
         <v-card-title>
@@ -72,7 +72,7 @@
                     
                     <v-col cols="12" sm="6" md="5">
                         <v-btn 
-                            @click="submit" 
+                            @click="send" 
                             style="margin: 15px; 0px; 0px; 30px;" 
                             color="orange lighten-1" dark>Submit</v-btn>
                     </v-col>
@@ -111,7 +111,7 @@ export default {
     methods: {
         ...mapActions('doctor',['sendRequest']),
 
-        submit(){
+        send(){
             if(this.$refs.form.validate()){
                 var req = {
                     fromDate: new Date(this.dateFrom),

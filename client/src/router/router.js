@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 import UserProfile from '../components/UserProfile.vue'
-import Home from '../views/Home'
+import VacationReqReview from '../components/VacationReqReview'
 import Room from '../views/Rooms'
 import Login from '../views/Login'
 import Appointments from '../views/Appointments'
@@ -15,6 +15,7 @@ import PatientReview from '../components/PatientReview.vue'
 import VacationRequest from '../components/VacationRequest'
 import ClinicAdminPage from '../views/ClinicAdminPage'
 import AppointmentRequests from '../components/AppointmentRequests'
+import ScheduleAppointment from '../components/ScheduleAppointment';
 
 
 Vue.use(VueRouter);
@@ -34,9 +35,9 @@ const router = new VueRouter({
       },
       
       {
-        path: '/home',
-        name: 'Home',
-        component: Home
+        path: '/vacRequests',
+        name: 'Vacation Requests',
+        component: VacationReqReview
       },
       {
         path: '/rooms',
@@ -62,7 +63,8 @@ const router = new VueRouter({
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
-            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest}
+            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
+            {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment}
         ]
       },
       {

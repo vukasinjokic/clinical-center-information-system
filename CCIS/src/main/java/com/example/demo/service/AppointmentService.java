@@ -3,8 +3,8 @@ package com.example.demo.service;
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.*;
-import com.example.demo.useful_beans.AppointmentToAdd;
 import com.example.demo.validation.AppointmentValidation;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,6 @@ public class AppointmentService {
 
     private AppointmentValidation appointmentValidation;
 
-    public boolean addAppointment(AppointmentToAdd appointment){
-        return true;
-    }
-
     public List<Appointment> getAllAppointments(){
         return appointmentRepository.findAll();
     }
@@ -53,15 +49,49 @@ public class AppointmentService {
 
 //        if(!appointmentValidation.validateDoctor(getDoctor.getId(),date,getType))
 //            return null;
+        if(!validateRoom(date, getType.getDuration(), getRoom))
+            return null;
 
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {
+            getRoom.getCalendar().getEventStartDates().add(date);
+            getRoom.getCalendar().getEventEndDates().add(new Date(date.getTime()+ (int) getType.getDuration()*3600*1000));
             appointment_to_add = new Appointment(date, appointmentDTO.getPrice(), 0, getDoctor, getRoom, getType, getClinic.get());
             appointmentRepository.save(appointment_to_add);
             return appointment_to_add;
         }
 
         return null;
+    }
+
+    public boolean validateRoom(Date startDate, float duration, Room room){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int d = (int) duration*60*60*1000;
+        Date endDate = new Date(startDate.getTime()+d);
+        //pair(start, end);
+        List<Pair<Date,Date>> check_dates_list = room.getCalendar().getDates().get(sdf.format(startDate).substring(0,10));
+        int index = 0;
+        if(check_dates_list.size()==0)
+            return true;
+        for(int i = 0; i< check_dates_list.size(); i++){
+            if(startDate.after(check_dates_list.get(i).getKey())){
+                if(i < check_dates_list.size()-1){
+                    if(startDate.before(check_dates_list.get(i+1).getKey()) && startDate.after(check_dates_list.get(i).getValue())){
+                        if(endDate.before(check_dates_list.get(i+1).getKey())){
+                            index = i;
+                            return true;
+                        }
+                    }
+                }else{
+                    return true;
+                }
+            }else if(startDate.before(check_dates_list.get(i).getKey())){
+                if(endDate.before(check_dates_list.get(i).getKey()))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
 }

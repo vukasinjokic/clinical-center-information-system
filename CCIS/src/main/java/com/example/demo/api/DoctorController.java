@@ -1,18 +1,18 @@
 package com.example.demo.api;
 
+import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Doctor;
 import com.example.demo.service.DoctorService;
-import com.example.demo.useful_beans.MedicalStaffRequest;
+import com.example.demo.model.MedicalStaffRequest;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
+import java.text.ParseException;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/doctors")
@@ -33,6 +33,16 @@ public class DoctorController {
             return new ResponseEntity<>("OK",HttpStatus.OK);
         }
         return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/scheduleAppointment")
+    @PreAuthorize("hasAnyRole('DOCTOR')")
+    public ResponseEntity<String> scheduleAppointment(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
+        if(doctorService.schedule(appointmentDTO)){
+            return new ResponseEntity<>("OK",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Bad", HttpStatus.BAD_REQUEST);
+
     }
 
     @GetMapping(path = "{id}")

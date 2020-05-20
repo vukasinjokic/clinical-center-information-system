@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Doctor;
-import com.example.demo.useful_beans.MedicalStaffRequest;
+import com.example.demo.model.MedicalStaffRequest;
+import com.example.demo.model.User;
+import org.hibernate.query.criteria.internal.SelectionImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -56,4 +59,28 @@ public class EmailService {
                         " do: " +request.getToDate().toString() + " datuma.");
         javaMailSender.send(mail);
     }
+
+    @Async
+    public void alertStaffForVacation(User admin, MedicalStaffRequest req,String description){
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("isamrstim23@gmail.com");
+        mail.setFrom(admin.getEmail());
+        mail.setSubject("Zahtev za " + req.getType().toString());
+        String mail_text = "";
+
+        if(!description.equals("")){
+            mail_text = String.format("Postovani/a " + "\n\n " +req.getMedicalStaffName() + " " + req.getMedicalStaffLastName()
+                        + " Vas zahtev nije prihvacen uz obrazlozenje admina klinike: " + description);
+        }
+        else
+            mail_text = String.format("Postovani/a " + ",\n\n " + req.getMedicalStaffName() + " vas zahtev je prohvacen.");
+
+        mail.setText(mail_text);
+        javaMailSender.send(mail);
+    }
+
+    public void alertAdminForAppointment(AppointmentDTO AppointmentDTO, Doctor doctor){
+
+    }
+
 }

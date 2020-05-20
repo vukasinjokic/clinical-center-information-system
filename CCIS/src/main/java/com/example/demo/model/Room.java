@@ -36,7 +36,7 @@ public class Room {
    @JoinColumn(name = "clinic_id")
    private Clinic clinic;
 
-   @OneToMany(mappedBy = "room" ,cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+   @OneToMany(mappedBy = "room" ,cascade = {CascadeType.ALL}, fetch = LAZY)
    private Collection<Appointment> appointments;
 
    public Room() {

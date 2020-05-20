@@ -157,7 +157,7 @@ export default {
                     }
 
             this.saveAppointment(newAppointment); 
-            this.dialog = false;
+            this.closeDialog();
           }
         },
         doSome(){

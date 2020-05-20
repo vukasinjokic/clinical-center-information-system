@@ -7,7 +7,12 @@ import userDetails from './modules/userDetails.js';
 import patient from './modules/patient'
 import examination_type from './modules/examination_type'
 import doctor from './modules/doctor'
+<<<<<<< HEAD
 import appointmentRequests from './modules/appointmentRequests'
+=======
+import userProfile from './modules/userProfile'
+import clinicAdmin from './modules/clinicAdmin'
+>>>>>>> feature/vacationRequest
 
 // load vuex
 Vue.use(Vuex);
@@ -22,7 +27,12 @@ export default new Vuex.Store({
         patient,
         examination_type,
         doctor,
+<<<<<<< HEAD
         appointmentRequests
 
+=======
+        userProfile,
+        clinicAdmin
+>>>>>>> feature/vacationRequest
     }
 });
