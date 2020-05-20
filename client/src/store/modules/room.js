@@ -83,13 +83,9 @@ const actions = {
         commit('setAvailableTimes', availableTimes);        
     },
 
-    async alertDoctors({commit}, doctorsNames){
+    async handleReservation({commit}, payload){
         
-        let doctors = [];
-        doctorsNames.forEach(name => {
-            doctors.push(state.clinicDoctorsDict[name]);
-        });
-        const response = await axios.post("http://localhost:8081/clinicAdmins/alertDoctorsOperation", doctors);
+        const response = await axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload);
         console.log(commit);
         console.log(response);
 

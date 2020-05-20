@@ -3,12 +3,14 @@ package com.example.demo.model;
 import javax.persistence.*;
 import java.util.Date;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "appointment_requests")
 public class AppointmentRequest {
    public enum AppointmentReqType {DOCTOR, PATIENT}
    @Id
-   @GeneratedValue
+   @GeneratedValue(strategy = IDENTITY)
    private Integer id;
 
    @ManyToOne
@@ -20,14 +22,14 @@ public class AppointmentRequest {
    private Patient patient;
 
    @Temporal(TemporalType.TIMESTAMP)
-   @Column(name = "time", nullable = false)
+   @Column(name = "time")
    private Date time;
 
-   @Column(name = "price", nullable = false)
-   private float price;
+   @Column(name = "price")
+   private Float price;
 
-   @Column(name = "discount", nullable = false)
-   private float discount;
+   @Column(name = "discount")
+   private Float discount;
 
    @Enumerated(EnumType.STRING)
    @Column(name = "app_req_type", length = 7)
@@ -64,6 +66,10 @@ public class AppointmentRequest {
 
    public void setPredefAppointment(Appointment predefAppointment) {
       this.predefAppointment = predefAppointment;
+      this.doctor = predefAppointment.getDoctor();
+      this.time = predefAppointment.getTime();
+      this.price = predefAppointment.getPrice();
+      this.discount = predefAppointment.getDiscount();
    }
 
    public AppointmentReqType getType() {
@@ -79,6 +85,7 @@ public class AppointmentRequest {
    }
 
    public void setDoctor(Doctor doctor) {
+      if(doctor == null) return;
       this.doctor = doctor;
    }
 
@@ -87,6 +94,7 @@ public class AppointmentRequest {
    }
 
    public void setPatient(Patient patient) {
+      if(patient == null) return;
       this.patient = patient;
    }
 
@@ -95,22 +103,25 @@ public class AppointmentRequest {
    }
 
    public void setTime(Date time) {
+      if(time == null) return;
       this.time = time;
    }
 
-   public float getPrice() {
+   public Float getPrice() {
       return price;
    }
 
-   public void setPrice(float price) {
+   public void setPrice(Float price) {
+      if(price == null) return;
       this.price = price;
    }
 
-   public float getDiscount() {
+   public Float getDiscount() {
       return discount;
    }
 
-   public void setDiscount(float discount) {
+   public void setDiscount(Float discount) {
+      if(discount == null) return;
       this.discount = discount;
    }
 }
