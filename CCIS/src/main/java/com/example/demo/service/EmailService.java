@@ -1,9 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.DoctorDTO;
-import com.example.demo.model.AppointmentRequest;
-import com.example.demo.model.ClinicAdmin;
-import com.example.demo.model.Doctor;
+import com.example.demo.model.*;
 import com.example.demo.useful_beans.MedicalStaffRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -60,6 +58,21 @@ public class EmailService {
                     + " je zatrazio lekarski pregled kod doktora " +
                     appointmentRequest.getDoctor().getFirstName()+ " " + appointmentRequest.getDoctor().getLastName() +
                     " na datum " + appointmentRequest.getTime().toString());
+            javaMailSender.send(mail);
+        }
+    }
+
+    @Async
+    public void alertClinicCenterAdminsForUserRegister(List<ClinicCenterAdmin> clinicCenterAdmins, UserRegisterRequest userRegisterRequest) {
+        for (ClinicCenterAdmin clinicCenterAdmin : clinicCenterAdmins) {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo("isamrstim23@gmail.com");
+            mail.setFrom("Clinical-center-information-system@gmail.com");
+            mail.setSubject("Zahtev za registraciju korisnika");
+            mail.setText("Postovani/a administratore kliničkog centra " + clinicCenterAdmin.getFirstName() + " " + clinicCenterAdmin.getLastName()
+                    + ", \n\n Stigao je zahtev za registraciju neregistrovanog korisnika " +
+                    userRegisterRequest.getFirstName() + " " + userRegisterRequest.getLastName()
+                    + ".\nNeophodno je da taj zahtev odbijete ili potvrdite.");
             javaMailSender.send(mail);
         }
     }

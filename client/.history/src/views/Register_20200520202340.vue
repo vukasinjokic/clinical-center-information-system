@@ -141,14 +141,16 @@ export default {
                     if (response.status === 200) {
                         alert("Vaš zahtev za registraciju je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
                     } else {
+                        console.log(JSON.stringify(response))
                         alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
                     }
                 })
-                .catch(error => {
-                    if (error.response.status >= 400) {
-                        alert("Error: " + error.response.status + ".\nMessage: " + error.response.data)
+                .catch(response => {
+                    if (response.status >= 400) {
+                        alert("Error: " + response.status + ".\nMessage: " + response.data)
                     } else {
-                        alert("Unknown error: " + error.response.status + ".\nMessage: " + error.response.data);
+                        console.log(JSON.stringify(response))
+                        alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
                     }
                 });
             }

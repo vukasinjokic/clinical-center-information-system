@@ -1,6 +1,10 @@
 package com.example.demo.api;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.model.ClinicCenterAdmin;
+import com.example.demo.model.UserRegisterRequest;
+import com.example.demo.service.EmailService;
+import com.example.demo.service.UserRegisterService;
 import com.example.demo.useful_beans.UserToLogin;
 import com.example.demo.dto.UserTokenState;
 import com.example.demo.model.User;
@@ -38,6 +42,12 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRegisterService userRegisterService;
+
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody UserToLogin userToLogin,
                                                                     HttpServletResponse response) {
@@ -70,31 +80,33 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registerPatient")
-    public ResponseEntity registerPatient(@RequestBody UserDTO patientToRegister, UriComponentsBuilder ucBuilder) {
-        patientToRegister.setUsername(patientToRegister.getEmail());
-
+    public ResponseEntity<String> registerPatient(@RequestBody UserRegisterRequest patientToRegister, UriComponentsBuilder ucBuilder) {
         List<User> existUsers = userService.findByEmailOrSocialSecurityNumber(
                 patientToRegister.getEmail(),
                 patientToRegister.getSocialSecurityNumber());
 
         if (existUsers.size() > 2)
-            throw new RuntimeException("Unknown error. This should not happen.");
+            return new ResponseEntity<>("Unknown error. This should not happen.", HttpStatus.BAD_REQUEST);
 
         else if (existUsers.size() == 2)
-            throw new RuntimeException("Both email and social security number are already taken.");
+            return new ResponseEntity<>("Both email and social security number are already taken.", HttpStatus.BAD_REQUEST);
 
         else if (existUsers.size() == 1) {
             if (existUsers.get(0).getEmail().equals(patientToRegister.getEmail()))
-                throw new RuntimeException("Chosen email is already taken.");
+                return new ResponseEntity<>("Chosen email is already taken.", HttpStatus.BAD_REQUEST);
 
             if (existUsers.get(0).getSocialSecurityNumber().equals(patientToRegister.getSocialSecurityNumber()))
-                throw new RuntimeException("Chosen social security number is already taken.");
+                return new ResponseEntity<>("Chosen social security number is already taken.", HttpStatus.BAD_REQUEST);
 
         }
 
-        // TODO: poslati email zahtev
-
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        boolean success = userRegisterService.saveUserRegisterRequest(patientToRegister);
+        if (success) {
+            List<ClinicCenterAdmin> clinicCenterAdmins = userService.findAllClinicCenterAdmins();
+            emailService.alertClinicCenterAdminsForUserRegister(clinicCenterAdmins, patientToRegister);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+        } else
+            return new ResponseEntity<>("Request not saved to database", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

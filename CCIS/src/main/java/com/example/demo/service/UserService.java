@@ -2,10 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserDTO;
-import com.example.demo.model.Authority;
-import com.example.demo.model.MedicalRecord;
-import com.example.demo.model.Patient;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,6 +32,10 @@ public class UserService {
 
     public List<User> findByEmailOrSocialSecurityNumber(String email, String socialSecurityNumber) {
         return userRepository.findByEmailOrSocialSecurityNumber(email, socialSecurityNumber);
+    }
+
+    public List<ClinicCenterAdmin> findAllClinicCenterAdmins() {
+        return userRepository.findAllClinicCenterAdmins();
     }
 
     public Patient registerPatient(UserDTO userToRegister) {

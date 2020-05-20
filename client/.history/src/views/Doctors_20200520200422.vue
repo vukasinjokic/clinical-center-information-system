@@ -147,11 +147,11 @@ export default {
                 } else {
                     alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
                 }
-            }).catch(error => {
-                if (error.response.status >= 400) {
-                    alert("Error: " + error.response.status + ".\nMessage: " + error.response.data)
+            }).catch(response => {
+                if (response.status >= 400) {
+                    alert("Error: " + response.status + ".\nMessage: " + response.data)
                 } else {
-                    alert("Unknown error: " + error.response.status + ".\nMessage: " + error.response.data);
+                    alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
                 }
             });
         },
