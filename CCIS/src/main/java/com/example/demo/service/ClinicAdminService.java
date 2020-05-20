@@ -41,9 +41,6 @@ public class ClinicAdminService {
     @Autowired
     private RoomRepository roomRepository;
 
-    @Autowired
-    private EmailService emailService;
-
     private final ModelMapper modelMapper = new ModelMapper();
 
 
@@ -89,10 +86,12 @@ public class ClinicAdminService {
 //        doctorRepository.saveAll(doctors);
     }
 
-    private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors){
-        for(Doctor doctor : doctors){
+    private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors) {
+        for (Doctor doctor : doctors) {
             doctor.addAppointment(appointment);
         }
+    }
+
     public List<MedicalStaffRequest> getRequests(){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
