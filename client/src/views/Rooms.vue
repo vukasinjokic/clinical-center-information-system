@@ -89,7 +89,7 @@
                     class="blue-grey darken-4 white--text"
                     dark>
                 <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">
+                    <td :colspan="headers.length" v-if="item.calendar != null">
                         <tr v-for="it in item.calendar.eventStartDates.length" v-bind:key=it.name>
                             <td>Start date: {{ dateToString(item.calendar.eventStartDates[it-1])}}</td>
                             <td>End date: {{ dateToString(item.calendar.eventEndDates[it-1])}}</td>
