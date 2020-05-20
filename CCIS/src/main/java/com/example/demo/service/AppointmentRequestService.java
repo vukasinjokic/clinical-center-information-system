@@ -28,4 +28,9 @@ public class AppointmentRequestService {
 
 
     }
+
+    public boolean saveRequest(AppointmentRequest request) {
+        AppointmentRequest appointmentRequest = appointmentRequestRepository.save(request);
+        return appointmentRequest != null;
+    }
 }

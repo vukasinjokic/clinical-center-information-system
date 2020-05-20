@@ -8,7 +8,7 @@ import Appointments from '../views/Appointments'
 import ExaminationTypeReview from '../components/examinationType/ExaminationTypeReview.vue'
 import Calendar from '../views/Calendar'
 import Clinics from '../views/clinic/Clinics.vue'
-import Clinic from '../views/clinic/Clinic.vue'
+import Doctors from '../views/Doctors.vue'
 import Register from '../views/Register.vue'
 import DoctorPage from '../views/DoctorPage'
 import PatientReview from '../components/PatientReview.vue'
@@ -30,7 +30,7 @@ const router = new VueRouter({
       },
       {
         path: '/register',
-        name: Register,
+        name: "Register",
         component: Register
       },
       
@@ -81,9 +81,9 @@ const router = new VueRouter({
         component : Clinics
       },
       {
-        path: '/clinic/:id',
-        name: 'Clinic',
-        component: Clinic
+        path: '/doctors',
+        name: 'Doctors',
+        component: Doctors
       }
     ]
   })

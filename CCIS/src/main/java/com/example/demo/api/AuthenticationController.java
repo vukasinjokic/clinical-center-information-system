@@ -2,11 +2,17 @@ package com.example.demo.api;
 
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.model.ClinicCenterAdmin;
+import com.example.demo.model.UserRegisterRequest;
+import com.example.demo.service.EmailService;
+import com.example.demo.service.UserRegisterService;
+import com.example.demo.useful_beans.UserToLogin;
 import com.example.demo.dto.UserTokenState;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.security.auth.JwtAuthenticationRequest;
 import com.example.demo.useful_beans.ChangePassword;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -39,17 +46,23 @@ public class AuthenticationController {
 //    @Autowired
 //    private CustomUserDetailsService userDetailsService;
 
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRegisterService userRegisterService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
+    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody UserToLogin userToLogin,
                                                                     HttpServletResponse response) {
 
 
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(userToLogin.username,
+                        userToLogin.password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -109,23 +122,41 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/registerPatient")
+    public ResponseEntity<String> registerPatient(@RequestBody UserRegisterRequest patientToRegister, UriComponentsBuilder ucBuilder) {
+        List<User> existUsers = userService.findByEmailOrSocialSecurityNumber(
+                patientToRegister.getEmail(),
+                patientToRegister.getSocialSecurityNumber());
 
-//    // Endpoint za registraciju novog korisnika
-//    @PostMapping("/signup")
-//    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+        if (existUsers.size() > 2)
+            return new ResponseEntity<>("Unknown error. This should not happen.", HttpStatus.BAD_REQUEST);
+
+        else if (existUsers.size() == 2)
+            return new ResponseEntity<>("Both email and social security number are already taken.", HttpStatus.BAD_REQUEST);
+
+        else if (existUsers.size() == 1) {
+            if (existUsers.get(0).getEmail().equals(patientToRegister.getEmail()))
+                return new ResponseEntity<>("Chosen email is already taken.", HttpStatus.BAD_REQUEST);
+
+            if (existUsers.get(0).getSocialSecurityNumber().equals(patientToRegister.getSocialSecurityNumber()))
+                return new ResponseEntity<>("Chosen social security number is already taken.", HttpStatus.BAD_REQUEST);
+
+        }
+
+        boolean success = userRegisterService.saveUserRegisterRequest(patientToRegister);
+        if (success) {
+            List<ClinicCenterAdmin> clinicCenterAdmins = userService.findAllClinicCenterAdmins();
+            emailService.alertClinicCenterAdminsForUserRegister(clinicCenterAdmins, patientToRegister);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+        } else
+            return new ResponseEntity<>("Request not saved to database", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
+
+
 //
-//        User existUser = this.userService.findByUsername(userRequest.getUsername());
-//        if (existUser != null) {
-//            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
-//        }
-//
-//        User user = this.userService.save(userRequest);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-//        return new ResponseEntity<>(user, HttpStatus.CREATED);
-//    }
-//
-//    // U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
 //    @PostMapping(value = "/refresh")
 //    public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
 //

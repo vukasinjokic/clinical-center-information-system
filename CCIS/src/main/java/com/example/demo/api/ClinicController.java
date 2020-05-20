@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.dto.ClinicDTO;
+import com.example.demo.dto.ClinicsDTO;
 import com.example.demo.model.Clinic;
 import com.example.demo.service.ClinicService;
 import org.modelmapper.ModelMapper;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -31,7 +31,7 @@ public class ClinicController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('PATIENT','CLINIC_CENTER_ADMIN')")
-    public List<ClinicDTO> getAllClinics() {
+    public List<ClinicsDTO> getAllClinics() {
         List<Clinic> clinics = clinicService.getAllClinics();
 //        List<ClinicDTO> clinicDTOs = new ArrayList<>(clinics.size());
 //
@@ -42,7 +42,7 @@ public class ClinicController {
 //        return clinicDTOs;
 
         return clinics.stream()
-                .map(this::convertToDTO)
+                .map(this::convertToClinicsDTO)
                 .collect(Collectors.toList());
     }
 
@@ -59,12 +59,18 @@ public class ClinicController {
     @PreAuthorize("hasRole('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<ClinicDTO> addClinic(@RequestBody ClinicDTO clinicDTO) throws ParseException{
         Clinic clinic = clinicService.addClinic(clinicDTO);
-        return new ResponseEntity<ClinicDTO>(convertToDTO(clinic), HttpStatus.CREATED);
+        return new ResponseEntity<ClinicDTO>(convertToClinicDTO(clinic), HttpStatus.CREATED);
     }
 
-    private ClinicDTO convertToDTO(Clinic clinic){
+    private ClinicDTO convertToClinicDTO(Clinic clinic){
         ClinicDTO clinicDTO = modelMapper.map(clinic, ClinicDTO.class);
         clinicDTO.setDTOFields(clinic);
         return clinicDTO;
+    }
+
+    private ClinicsDTO convertToClinicsDTO(Clinic clinic){
+        ClinicsDTO clinicsDTO = modelMapper.map(clinic, ClinicsDTO.class);
+        clinicsDTO.setDTOFields(clinic);
+        return clinicsDTO;
     }
 }

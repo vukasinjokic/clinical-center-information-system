@@ -1,4 +1,4 @@
-import axios from 'axios';
+import Vue from 'vue';
 
 const state = {
     clinics: [],
@@ -8,32 +8,25 @@ const getters = {
     allClinics: (state) => state.clinics
 };
 
-const config = {
-    headers: {
-        Authorization: "Bearer " + localStorage.getItem("JWT"),
-    }
-}
-
 const actions = {
-    async fetchClinics({commit}){          
-        //   let data = {
-        //     'HTTP_CONTENT_LANGUAGE': self.language
-        //   }
-          
-        //   axios.post(URL, data, config).then(...)
-        await axios.get('http://localhost:8081/clinics', config)
+    async fetchClinics({commit}){
+        await Vue.$axios.get('http://localhost:8081/clinics')
         .then(response => {
+            for (let i = 0; i < response.data.length; i++) {
+                var clinic = response.data[i];
+                clinic["filteredDoctors"] = clinic.doctors;
+            }
             commit('setClinics', response.data);
         })
         .catch(() => { alert("Nemate pravo pregleda svih klinika") });
     },
 
-    async clinicsSetter({commit}, clinics) {
+    clinicsSetter({commit}, clinics) {
         commit('setClinics', clinics);
     },
 
     async saveClinic({commit}, clinic){
-        const response = await axios.post('http://localhost:8081/clinics/addClinic', clinic, config);
+        const response = await Vue.$axios.post('http://localhost:8081/clinics/addClinic', clinic);
         commit('newClinic', response.data);
     }
 

@@ -23,6 +23,7 @@ public class DoctorDTO {
     private String phoneNumber;
     private Calendar calendar;
     private String clinic;
+    private String clinicId;
     private String rating;
     private BusinessHours businessHours;
     private ExaminationType examinationType;
@@ -32,10 +33,19 @@ public class DoctorDTO {
         try {
             CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
             setClinic(doctor.getClinic());
+            setClinicId(doctor.getClinic());
         }
         catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String getClinicId() {
+        return clinicId;
+    }
+
+    public void setClinicId(Clinic clinic) {
+        this.clinicId = clinic.getId().toString();
     }
 
     public void setClinic(Clinic clinic){

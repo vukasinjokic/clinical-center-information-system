@@ -24,7 +24,7 @@ public class ExaminationTypeController {
     }
 
     @GetMapping("/getTypes")
-    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN', 'PATIENT')")
     public List<ExaminationType> getExaminationType(){
         return examinationTypeService.findAllTypes();
     }

@@ -51,6 +51,10 @@ public class ClinicAdminService {
         return clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
     }
 
+    public List<ClinicAdmin> getClinicAdminsByClinicId(Integer clinicId) {
+        return clinicAdminRepository.findByClinicId(clinicId);
+    }
+
     public void handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
         Integer patient_id = Integer.parseInt(appointmentToReserve.getRequest().getPatient().getId());
         Patient patient = patientRepository.findById(patient_id).get();

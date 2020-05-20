@@ -33,6 +33,7 @@ export default {
         return {
             user: {
                 id: "",
+                email: "",
                 username : "",
                 password: "",
                 firstName : "",

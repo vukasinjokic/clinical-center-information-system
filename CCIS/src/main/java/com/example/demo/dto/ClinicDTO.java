@@ -133,7 +133,6 @@ public class ClinicDTO {
         if(rooms == null) return;
         List<String> strOperationRooms = new ArrayList<>();
 
-        ModelMapper modelMapper = new ModelMapper();
         for (Room room : rooms) {
             strOperationRooms.add(room.getName() + " " + room.getClinic().getName());
         }

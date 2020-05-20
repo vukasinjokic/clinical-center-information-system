@@ -7,6 +7,8 @@ import com.example.demo.model.Doctor;
 import com.example.demo.model.MedicalStaffRequest;
 import com.example.demo.model.User;
 import org.hibernate.query.criteria.internal.SelectionImplementor;
+import com.example.demo.model.*;
+import com.example.demo.model.MedicalStaffRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -83,4 +85,36 @@ public class EmailService {
 
     }
 
+
+    @Async
+    public void alertClinicAdminForAppointmentPatientRequest(List<ClinicAdmin> admins, AppointmentRequest appointmentRequest) {
+        for (ClinicAdmin clinicAdmin : admins) {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo("isamrstim23@gmail.com");
+            mail.setFrom("Clinical-center-information-system@gmail.com");
+            mail.setSubject("Zahtev za lekarski pregled pacijenta");
+            mail.setText("Postovani/a administratore klinike " + clinicAdmin.getFirstName() + " " + clinicAdmin.getLastName()
+                    + ", \n\n Pacijent " +
+                    appointmentRequest.getPatient().getFirstName() + " " + appointmentRequest.getPatient().getLastName()
+                    + " je zatrazio lekarski pregled kod doktora " +
+                    appointmentRequest.getDoctor().getFirstName()+ " " + appointmentRequest.getDoctor().getLastName() +
+                    " na datum " + appointmentRequest.getTime().toString());
+            javaMailSender.send(mail);
+        }
+    }
+
+    @Async
+    public void alertClinicCenterAdminsForUserRegister(List<ClinicCenterAdmin> clinicCenterAdmins, UserRegisterRequest userRegisterRequest) {
+        for (ClinicCenterAdmin clinicCenterAdmin : clinicCenterAdmins) {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo("isamrstim23@gmail.com");
+            mail.setFrom("Clinical-center-information-system@gmail.com");
+            mail.setSubject("Zahtev za registraciju korisnika");
+            mail.setText("Postovani/a administratore kliničkog centra " + clinicCenterAdmin.getFirstName() + " " + clinicCenterAdmin.getLastName()
+                    + ", \n\n Stigao je zahtev za registraciju neregistrovanog korisnika " +
+                    userRegisterRequest.getFirstName() + " " + userRegisterRequest.getLastName()
+                    + ".\nNeophodno je da taj zahtev odbijete ili potvrdite.");
+            javaMailSender.send(mail);
+        }
+    }
 }

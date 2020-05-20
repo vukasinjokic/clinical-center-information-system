@@ -6,6 +6,7 @@ import clinics from './modules/clinics.js';
 import userDetails from './modules/userDetails.js';
 import patient from './modules/patient'
 import examination_type from './modules/examination_type'
+import doctors from './modules/doctors';
 import doctor from './modules/doctor'
 <<<<<<< HEAD
 import appointmentRequests from './modules/appointmentRequests'
@@ -26,6 +27,7 @@ export default new Vuex.Store({
         userDetails,
         patient,
         examination_type,
+        doctors,
         doctor,
 <<<<<<< HEAD
         appointmentRequests
