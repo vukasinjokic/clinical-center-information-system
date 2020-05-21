@@ -11,7 +11,7 @@ public class AppointmentDTO {
     private String time;
     private float price;
     private float discount;
-    private String doctor; //
+    private DoctorDTO doctor; //trebalo bi doctorDTO
     private String patient;
     private String room;
     private String examinationType;
@@ -19,7 +19,6 @@ public class AppointmentDTO {
 
 
     public void setFields(Appointment appointment){
-
         this.setDoctor(appointment.getDoctor());
         this.setPatient(appointment.getPatient());
         this.setRoom(appointment.getRoom());
@@ -37,10 +36,12 @@ public class AppointmentDTO {
     }
 
     public void setDoctor(Doctor doctor){
-        this.doctor = doctor.getEmail();
-    }
-    public void setDoctor(String doctor){
-        this.doctor = doctor;
+        if(this.doctor == null)
+            this.doctor = new DoctorDTO();
+        this.doctor.setFirstName(doctor.getFirstName());
+        this.doctor.setLastName(doctor.getLastName());
+        this.doctor.setSocialSecurityNumber(doctor.getSocialSecurityNumber());
+        this.doctor.setEmail(doctor.getEmail());
     }
 
     public void setExaminationType(String examinationType) {
@@ -101,7 +102,7 @@ public class AppointmentDTO {
         this.id = id;
     }
 
-    public String getDoctor() {
+    public DoctorDTO getDoctor() {
         return doctor;
     }
 

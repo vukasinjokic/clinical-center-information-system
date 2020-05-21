@@ -429,9 +429,9 @@ insert into business_hours (started, ended) values ('7:00:00', '14:00:00');				-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting examination types -------------------------------------------------------
-insert into examination_types (name, duration) values ('Sistematski pregled', 1000 * 60 * 30);			-- id = 1
-insert into examination_types (name, duration) values ('Ultrazvuk', 1000 * 60 * 60);			-- id = 2
-insert into examination_types (name, duration) values ('Operacija', 1000 * 60 * 90);			-- id = 3
+insert into examination_types (name, duration) values ('Sistematski pregled', 0.5);			-- id = 1
+insert into examination_types (name, duration) values ('Ultrazvuk', 1);			-- id = 2
+insert into examination_types (name, duration) values ('Operacija', 1);			-- id = 3
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

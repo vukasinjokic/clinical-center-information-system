@@ -150,7 +150,7 @@ export default {
                     {
                       time: new Date(this.date + " " + this.time),
                       price: this.price,
-                      doctor: this.doctor,
+                      doctor: {email:this.doctor},
                       room: this.room,
                       examinationType: this.type,
                       clinic: "Ne znam kliniku dok se ne uradi login"
@@ -161,8 +161,8 @@ export default {
           }
         },
         doSome(){
-            var duration = parseInt(this.getTypeDuration(this.type).duration);
-            this.dura = duration/3600000 + "h";
+            var duration = parseFloat(this.getTypeDuration(this.type).duration);
+            this.dura = duration + "h";
             this.fetchDoctors(this.type);
         }
     }

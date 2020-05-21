@@ -5,7 +5,6 @@ import javafx.util.Pair;
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,7 +47,8 @@ public class Calendar {
             }else{
                 List<Pair<Date,Date>> ls = new ArrayList<Pair<Date,Date>>();
                 Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
-                map.get(sdf.format(eventStartDates.get(i)).substring(0,10)).add(pair);
+                ls.add(pair);
+                map.put(sdf.format(eventStartDates.get(i)).substring(0,10), ls);
             }
         }
         return map;
