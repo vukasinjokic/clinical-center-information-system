@@ -34,27 +34,9 @@ const router = new VueRouter({
         component: Register
       },
       
-      {
-        path: '/vacRequests',
-        name: 'Vacation Requests',
-        component: VacationReqReview
-      },
-      {
-        path: '/rooms',
-        name: 'Rooms',
-        component: Room
-      },
-      {
-        path: '/appointments',
-        name: 'Appointments',
-        component : Appointments
-
-      },
-      {
-        path: '/ex_type',
-        name: 'ExaminationType',
-        component : ExaminationTypeReview
-      },
+      
+     
+     
       {
         path: '/doctor',
         name: 'DoctorPage',
@@ -73,6 +55,10 @@ const router = new VueRouter({
         component: ClinicAdminPage,
         children: [
           {path: 'appointmentRequests', name: 'AppointmentRequests', component: AppointmentRequests},
+          {path: 'vacationRequests', name: 'Vacation Requests', component: VacationReqReview },
+          {path: 'rooms', name: 'Rooms', component: Room },
+          {path: 'ex_type', name: 'ExaminationType', component : ExaminationTypeReview },
+          {path: 'appointments', name: 'Appointments', component : Appointments },
         ]
       },
       {

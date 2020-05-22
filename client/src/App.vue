@@ -8,32 +8,7 @@
       app
       class="blue-grey darken-4 white--text"
     >
-      <router-link
-        class="white--text"
-        to="/vacRequests"
-        
-      >
-      Vacation requests</router-link>
-      <v-spacer></v-spacer>
-      <router-link
-        class="white--text"
-        to="/rooms"
-      >Rooms</router-link>
-      <v-spacer></v-spacer>
-        
-      <router-link
-        class="white--text"
-        to="/appointments"
-      >Appointments</router-link>
-      <v-spacer></v-spacer>
       
-      
-      <router-link
-      class="white--text"
-        to="/ex_type"
-      >Examination TYpe</router-link>
-      <v-spacer></v-spacer>
-
       <router-link
       class="white--text"
         to="/clinics"

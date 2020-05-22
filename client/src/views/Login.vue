@@ -59,11 +59,13 @@
 
 <script>
 import axios from 'axios';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
   export default {
     name: "Login",
     computed: {
+        ...mapGetters('userDetails',['getRole']),
+
         requiredRule(){
             return (value) => !!value || "Required.";
         },
@@ -90,7 +92,14 @@ import { mapActions } from 'vuex';
                 if(response.data){
                     this.logIn(response.data);
                     alert("Uspesno logovanje");
-                    this.$router.push('home');
+                    if(this.getRole == "ROLE_DOCTOR"){
+                      this.$router.push('doctor');
+                    }else if(this.getRole == "ROLE_CLINIC_ADMIN"){
+                      this.$router.push('clinicAdmin');
+                    }else{
+                      this.$router.push('home');
+                    }
+
                 }
                 else
                     alert("Neispravan email ime ili lozinka");

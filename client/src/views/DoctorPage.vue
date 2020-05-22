@@ -1,7 +1,7 @@
 <template>
     <div>     
         <v-navigation-drawer width="260" :clipped="clipped" v-model="drawer" enable-resize-watcher app dark class="blue-grey darken-2">
-            <v-divider class="mb-5" />
+            <v-divider class="mb-7" />
             <v-list>
                 <div/>
                 <v-list-item v-for="item in items"
