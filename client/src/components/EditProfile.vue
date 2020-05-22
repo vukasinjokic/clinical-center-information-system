@@ -120,7 +120,6 @@ export default {
         saveProfile(){
             if(this.$refs.form.validate()){
                 this.updateProfile(this.editItem);
-                console.log(this.editItem.id);
                 this.closeDialog();
             }
         },

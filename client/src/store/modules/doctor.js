@@ -1,14 +1,23 @@
 import Vue from 'vue'
 
 const state ={
-
+    doctor_list: [],
 };
 
 const getters = {
-
+    getDoctorList: (state) => state.doctor_list,
 };
 
 const actions = {
+    async fetchDoctors({commit}){
+        try{
+            const response = await Vue.$axios.get('http://localhost:8081/doctors');
+            commit('setDoctors', response.data);
+        }catch(error){
+            commit('alertError', error.response.status);
+        }
+    },
+
     async sendRequest({commit},req){
         const response = await Vue.$axios.post("http://localhost:8081/doctors/sendVacationRequest",req);
         commit('successfullyRequest',response);
@@ -26,6 +35,11 @@ const mutations ={
         console.log(response.data);
         alert("Uspesno poslat zahtev");
     },
+    setDoctors: (state, doctors) => state.doctor_list = doctors,
+
+    alertError(error){
+        alert(error);
+    }
 
 };
 

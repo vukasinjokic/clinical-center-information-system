@@ -1,4 +1,3 @@
-import Vue from 'vue';
 
 const state = {
     doctors: []
@@ -9,13 +8,6 @@ const getters = {
 };
 
 const actions = {
-    async fetchDoctors({commit}){
-        await Vue.$axios.get('http://localhost:8081/doctors')
-        .then(response => {
-            commit('setDoctors', response.data);
-        })
-        .catch(() => { alert("Nemate pravo pregleda svih doktora") });
-    },
 
     doctorsSetter({commit}, doctors) {
         commit('setDoctors', doctors);
