@@ -15,7 +15,8 @@ import PatientReview from '../components/PatientReview.vue'
 import VacationRequest from '../components/VacationRequest'
 import ClinicAdminPage from '../views/ClinicAdminPage'
 import AppointmentRequests from '../components/AppointmentRequests'
-import ScheduleAppointment from '../components/ScheduleAppointment';
+import ScheduleAppointment from '../components/ScheduleAppointment'
+import NursePage from '../views/NursePage'
 
 
 Vue.use(VueRouter);
@@ -65,6 +66,17 @@ const router = new VueRouter({
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
             {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment}
+        ]
+      },
+      {
+        path: '/nurse',
+        name: 'NursePage',
+        component: NursePage,
+        children: [
+            {path: 'patient', name: 'PatientReview', component: PatientReview},
+            {path: 'profile', name: 'UserProfile', component: UserProfile},
+            {path: ':16/calendar', name: 'Calendar', component : Calendar},
+            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest}
         ]
       },
       {
