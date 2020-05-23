@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.ClinicRepository;
 import com.example.demo.Repository.DoctorRepository;
-import com.example.demo.Repository.MedicalStaffRepository;
+import com.example.demo.Repository.MedicalStaffRequestRepository;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.AppointmentRequest;
@@ -28,7 +28,7 @@ public class DoctorService {
     @Autowired
     private ClinicRepository clinicRepository;
     @Autowired
-    private MedicalStaffRepository medicalStaffRepository;
+    private MedicalStaffRequestRepository medicalStaffRequestRepository;
 
     public Doctor findById(Integer id){
         return doctorRepository.findById(id).orElse(null);

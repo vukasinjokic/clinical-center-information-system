@@ -4,11 +4,8 @@ import com.example.demo.Repository.*;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.*;
 import com.example.demo.useful_beans.AppointmentToReserve;
-import com.sun.javaws.security.AppPolicy;
 import com.example.demo.Repository.ClinicAdminRepository;
-import com.example.demo.Repository.MedicalStaffRepository;
-import com.example.demo.dto.DoctorDTO;
-import com.example.demo.model.*;
+import com.example.demo.Repository.MedicalStaffRequestRepository;
 import com.example.demo.useful_beans.DeclineVacRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,7 @@ public class ClinicAdminService {
     @Autowired
     private ClinicAdminRepository clinicAdminRepository;
     @Autowired
-    private MedicalStaffRepository medicalStaffRepository;
+    private MedicalStaffRequestRepository medicalStaffRequestRepository;
     @Autowired
     private EmailService emailService;
 
@@ -104,12 +101,12 @@ public class ClinicAdminService {
     public boolean declineRequest(DeclineVacRequest declineVacRequest){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
-        Optional<MedicalStaffRequest> check_request = medicalStaffRepository.findById(declineVacRequest.id);
+        Optional<MedicalStaffRequest> check_request = medicalStaffRequestRepository.findById(declineVacRequest.id);
 
         if(check_request.isPresent()){
             emailService.alertStaffForVacation(user, check_request.get(),declineVacRequest.description);
             clinicAdmin.getClinic().getMedicalStaffRequests().remove(check_request.get());
-            medicalStaffRepository.deleteById(check_request.get().getId());
+            medicalStaffRequestRepository.deleteById(check_request.get().getId());
             return true;
         }
         return false;
@@ -117,7 +114,7 @@ public class ClinicAdminService {
 
     public boolean AcceptRequest(Integer id){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<MedicalStaffRequest> check_request = medicalStaffRepository.findById(id);
+        Optional<MedicalStaffRequest> check_request = medicalStaffRequestRepository.findById(id);
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
 
         if(check_request.isPresent()){
@@ -125,7 +122,7 @@ public class ClinicAdminService {
 //            medicalStaff.getCalendar().getDates();
             emailService.alertStaffForVacation(user, check_request.get(),"");
             clinicAdmin.getClinic().getMedicalStaffRequests().remove(check_request.get());
-            medicalStaffRepository.deleteById(check_request.get().getId());
+            medicalStaffRequestRepository.deleteById(check_request.get().getId());
             return true;
         }
 
