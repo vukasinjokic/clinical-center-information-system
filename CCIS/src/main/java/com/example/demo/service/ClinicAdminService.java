@@ -71,10 +71,13 @@ public class ClinicAdminService {
             appointment = new Appointment(appointmentToReserve.getReservedTime(), appointmentToReserve.getRequest().getPrice(), appointmentToReserve.getRequest().getDiscount(), doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
         }
         patient.addAppointment(appointment);
-        List<Doctor> doctors = appointmentToReserve.getDoctors().stream().map(doctorDTO -> modelMapper.map(doctorDTO, Doctor.class)).collect(Collectors.toList());
+//        List<Doctor> doctors = appointmentToReserve.getDoctors().stream().map(doctorDTO -> modelMapper.map(doctorDTO, Doctor.class)).collect(Collectors.toList());
+        List<Doctor> doctors = doctorRepository.findAllById(appointmentToReserve.getDoctors().stream().map(doctorDto -> Integer.parseInt(doctorDto.getId())).collect((Collectors.toList())));
         addAppointmentToDoctors(appointment, doctors);
+
         room.addAppointment(appointment);
         updateDataBase(appointment, patient, doctors, room);
+
         emailService.alertDoctorsOperation(appointmentToReserve.getDoctors(), appointment);
         emailService.alertPatientOperation(appointment);
     }
@@ -83,7 +86,7 @@ public class ClinicAdminService {
         appointmentRepository.save(appointment);
 //        patientRepository.save(patient);
 //        roomRepository.save(room);
-//        doctorRepository.saveAll(doctors);
+        doctorRepository.saveAll(doctors);
     }
 
     private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors) {

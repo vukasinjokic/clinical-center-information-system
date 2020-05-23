@@ -24,6 +24,7 @@ public class DoctorDTO {
     private Calendar calendar;
     private String clinic;
     private String clinicId;
+    private String username;
     private String rating;
     private BusinessHours businessHours;
     private ExaminationType examinationType;
@@ -31,13 +32,21 @@ public class DoctorDTO {
 
     public void setFields(Doctor doctor){
         try {
-            CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
+//            CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
             setClinic(doctor.getClinic());
             setClinicId(doctor.getClinic());
         }
         catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getClinicId() {
