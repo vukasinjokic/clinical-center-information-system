@@ -18,7 +18,7 @@ const getters = {
     getExaminationTypes: (state) => state.examinationTypes,
     getExaminationTypeNames: (state)=>{
         var names = [];
-        state.examinationTypes.forEach(type => names.push(type.name));
+        state.examinationTypes.forEach(type => names.push({text: type.name, value: type.id}));
         return names;
     },
     getTypeDuration: (state) => (name) => {

@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.persistence.*;
 import java.sql.Time;
 
@@ -22,6 +25,10 @@ public class BusinessHours {
 
     public BusinessHours(Integer id, Time started, Time ended) {
         this.id = id;
+        this.started = started;
+        this.ended = ended;
+    }
+    public BusinessHours(Time started, Time ended){
         this.started = started;
         this.ended = ended;
     }

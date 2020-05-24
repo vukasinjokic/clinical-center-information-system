@@ -5,10 +5,11 @@
                 <v-btn  v-on="on" @click="changePass" dark >Change password</v-btn>
             </template>
             <v-card>
-                <v-toolbar height="45px" color="orange lighten-1" class="white--text">
-                    <span class="headline">Change password</span>
-                </v-toolbar>
-
+                <v-card-title>
+                    <v-toolbar height="45px" color="orange lighten-1" class="white--text">
+                        <span class="headline">Change password</span>
+                    </v-toolbar>
+                </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-form ref="form">

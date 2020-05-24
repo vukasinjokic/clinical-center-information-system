@@ -7,7 +7,7 @@ import java.util.List;
 public abstract class MedicalStaff extends User {
 
    @OneToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "calendar_id", nullable = false)
+   @JoinColumn(name = "calendar_id", nullable = true)
    private Calendar calendar;
 
    @ManyToOne(fetch = FetchType.LAZY)

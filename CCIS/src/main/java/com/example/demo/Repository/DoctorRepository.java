@@ -16,4 +16,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     @Query("SELECT doctor FROM Doctor doctor JOIN FETCH doctor.clinic WHERE doctor.email = (:email)")
     public Doctor findByEmailAndFetchClinicEagerly(@Param("email") String email);
+
+    @Query("SELECT doctor FROM Doctor doctor JOIN fetch doctor.appointments where doctor.id = (:id)")
+    public Doctor findByIdAndFetchAppointmentsEagerly(@Param("id") Integer id);
 }

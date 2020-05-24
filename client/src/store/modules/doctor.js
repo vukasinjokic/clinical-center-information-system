@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 const state ={
     doctor_list: [],
+    errorMessage: ""
 };
 
 const getters = {
@@ -14,7 +15,27 @@ const actions = {
             const response = await Vue.$axios.get('http://localhost:8081/doctors');
             commit('setDoctors', response.data);
         }catch(error){
+            console.log(error.response.status);
             commit('alertError', error.response.status);
+        }
+    },
+
+    async saveDoctor({commit}, doctor){
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/doctors/saveDoctor', doctor);
+            commit('doctorAdded', response.data);
+        }catch(error){
+            commit('alertError',error.response.data.status);
+        }
+    },
+
+    async deleteDoctor({commit}, id){
+        try{
+            const response = await Vue.$axios.delete('http://localhost:8081/doctors/deleteDoctor'+id);
+            commit('onDeleteDoctor', id);
+            commit('alertError', response.data);
+        }catch(error){
+            commit('alertError', error.response.data);
         }
     },
 
@@ -31,14 +52,22 @@ const actions = {
 };
 
 const mutations ={
+    doctorAdded: (state, doctor) => state.doctor_list.push(doctor),
+
     successfullyRequest(response){
         console.log(response.data);
         alert("Uspesno poslat zahtev");
     },
+
     setDoctors: (state, doctors) => state.doctor_list = doctors,
 
-    alertError(error){
-        alert(error);
+    alertError(state, text){ //ovo cemo prebaciti u errorHandler
+        state.errorMessage = text;
+        alert(text);
+    },
+    onDeleteDoctor(state, id){
+        const index = state.doctor_list.findIndex(doc => doc.id === id);
+        state.doctor_list.splice(index,1);
     }
 
 };

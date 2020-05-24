@@ -12,5 +12,4 @@ public interface ClinicRepository extends JpaRepository<Clinic, Integer> {
     List<Clinic> findAll();
     Optional<Clinic> findByName(String name);
 
-
 }

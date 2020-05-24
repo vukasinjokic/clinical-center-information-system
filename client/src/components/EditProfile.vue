@@ -6,9 +6,11 @@
            <v-btn  v-on="on" @click="edit" dark color="orange lighten-1">Edit Profile</v-btn>
         </template>
         <v-card>
+            <v-card-title>
           <v-toolbar height="45px" color="orange lighten-1" class="white--text">
             <span class="headline">Edit profile</span>
           </v-toolbar>
+            </v-card-title>
           <v-card-text>
             <v-form ref="form">
             <v-container>

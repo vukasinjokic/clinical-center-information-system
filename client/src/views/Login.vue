@@ -3,7 +3,7 @@
   <v-app id="inspire">
     <v-content>
       <v-container
-        class="fill-height"
+        
         fluid
       >
         <v-row
@@ -21,7 +21,7 @@
                   dark
                   flat
                 >
-                  <v-toolbar-title>Login form</v-toolbar-title>       
+                  <v-toolbar-title>Login form class="fill-height"</v-toolbar-title>       
                 </v-toolbar>
                 <v-card-text>
                   <v-form ref="form">

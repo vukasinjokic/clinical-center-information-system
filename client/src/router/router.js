@@ -16,6 +16,8 @@ import VacationRequest from '../components/VacationRequest'
 import ClinicAdminPage from '../views/ClinicAdminPage'
 import AppointmentRequests from '../components/AppointmentRequests'
 import ScheduleAppointment from '../components/ScheduleAppointment';
+import DoctorReview from '../components/doctor/DoctorReview';
+import ClinicProfile from '../components/ClinicProfile';
 
 
 Vue.use(VueRouter);
@@ -59,6 +61,8 @@ const router = new VueRouter({
           {path: 'rooms', name: 'Rooms', component: Room },
           {path: 'ex_type', name: 'ExaminationType', component : ExaminationTypeReview },
           {path: 'appointments', name: 'Appointments', component : Appointments },
+          {path: 'doctors', name: 'Doctors', component : DoctorReview},
+          {path: 'clinicProfile', name: 'ClinicProfile', component: ClinicProfile},
         ]
       },
       {

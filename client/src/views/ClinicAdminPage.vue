@@ -37,7 +37,9 @@ export default {
                 { title: 'Vacation requests', link: '/clinicAdmin/vacationRequests'},
                 { title: 'Rooms', link: '/clinicAdmin/rooms'},
                 { title: 'Examination types', link: '/clinicAdmin/ex_type'},
-                { title: 'Appointments', link: '/clinicAdmin/appointments'}
+                { title: 'Appointments', link: '/clinicAdmin/appointments'},
+                { title: 'Doctors', link: '/clinicAdmin/doctors'},
+                { title: 'CLINIC PROFILE', link: '/clinicAdmin/clinicProfile'}
             ],
             drawer: true
         }   

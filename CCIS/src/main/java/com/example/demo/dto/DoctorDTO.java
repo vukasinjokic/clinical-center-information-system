@@ -25,13 +25,14 @@ public class DoctorDTO {
     private String clinic;
     private String clinicId;
     private String rating;
-    private BusinessHours businessHours;
+    private BusinessHoursDTO businessHours;
     private ExaminationType examinationType;
     private Collection<AppointmentDTO> appointments;
 
     public void setFields(Doctor doctor){
         try {
-            CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
+            if(doctor.getCalendar() != null)
+                CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
             setClinic(doctor.getClinic());
             setClinicId(doctor.getClinic());
         }
@@ -160,11 +161,11 @@ public class DoctorDTO {
         this.rating = rating;
     }
 
-    public BusinessHours getBusinessHours() {
+    public BusinessHoursDTO getBusinessHours() {
         return businessHours;
     }
 
-    public void setBusinessHours(BusinessHours businessHours) {
+    public void setBusinessHours(BusinessHoursDTO businessHours) {
         this.businessHours = businessHours;
     }
 
