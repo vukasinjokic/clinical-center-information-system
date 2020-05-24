@@ -3,12 +3,14 @@ package com.example.demo.api;
 import com.example.demo.dto.ClinicDTO;
 import com.example.demo.dto.ClinicsDTO;
 import com.example.demo.model.Clinic;
+import com.example.demo.model.User;
 import com.example.demo.service.ClinicService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -46,6 +48,26 @@ public class ClinicController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/getClinic")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    public ResponseEntity<ClinicDTO> getClinic(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Clinic clinic = clinicService.findByAdminEmail(user.getEmail());
+        if(clinic != null)
+            return new ResponseEntity<>(modelMapper.map(clinic,ClinicDTO.class), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(path="/updateClinic", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    public ResponseEntity<ClinicDTO> updateClinic(@RequestBody ClinicDTO clinicDTO){
+        Clinic clinic = clinicService.updateClinic(clinicDTO);
+        if(clinic != null){
+            return new ResponseEntity<>(modelMapper.map(clinic,ClinicDTO.class), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping(path = "{id}")
     @PreAuthorize("hasAnyRole('PATIENT', 'CLINIC_CENTER_ADMIN')")
     public ClinicDTO findById(@PathVariable("id") Integer id) {
@@ -54,6 +76,8 @@ public class ClinicController {
         clinicDTO.setDTOFields(clinic);
         return clinicDTO;
     }
+
+
 
     @PostMapping(path = "/addClinic", consumes = "application/json")
     @PreAuthorize("hasRole('CLINIC_CENTER_ADMIN')")

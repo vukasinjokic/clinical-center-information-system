@@ -28,8 +28,9 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @Column(name = "price_list", unique = false)
-   private String priceList;
+   @OneToOne(fetch = EAGER)
+   @JoinColumn(name = "price_list_id")
+   private PriceList priceList;
 
    @Column(name = "rating", unique = false)
    private float rating;
@@ -70,7 +71,7 @@ public class Clinic {
       this.address = address;
    }
 
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests) {
+   public Clinic(String name, String address, String description, PriceList priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -128,11 +129,11 @@ public class Clinic {
       this.description = description;
    }
 
-   public String getPriceList() {
+   public PriceList getPriceList() {
       return priceList;
    }
 
-   public void setPriceList(String priceList) {
+   public void setPriceList(PriceList priceList) {
       this.priceList = priceList;
    }
 

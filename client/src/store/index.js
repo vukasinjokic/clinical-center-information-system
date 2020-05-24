@@ -11,6 +11,7 @@ import doctor from './modules/doctor'
 import appointmentRequests from './modules/appointmentRequests'
 import userProfile from './modules/userProfile'
 import clinicAdmin from './modules/clinicAdmin'
+import clinicProfile from './modules/clinicProfile'
 
 // load vuex
 Vue.use(Vuex);
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         doctor,
         appointmentRequests,
         userProfile,
-        clinicAdmin
+        clinicAdmin,
+        clinicProfile
     }
 });
