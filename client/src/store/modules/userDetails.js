@@ -1,11 +1,15 @@
 import Vue from 'vue';
 
-const state = {
-    user: {
-        email: "",
-        authorities: []   //role je ovde
+const getDefaultState = () => {
+    return {
+        user: {
+            email: "",
+            authorities: []   //role je ovde
+        }
     }
 };
+
+const state = getDefaultState();
 
 const getters = {
     getUser: (state) => state.user,
@@ -28,15 +32,17 @@ const actions = {
         return state.user.email === "" && state.user.authorities.length === 0
     },
 
-    logOut({commit}) {
-        localStorage.removeItem('JWT');
-        localStorage.removeItem('Duration');
-        commit('removeUser');
-    },
-
     userSetter({commit}, user) {
         commit('setUser', user);
     },
+
+    resetUserDetails({commit}) {
+        localStorage.removeItem('JWT');
+        localStorage.removeItem('Duration');
+        localStorage.removeItem('user_email');
+        Vue.$axios.defaults.headers['Authorization'] = "Bearer null";
+        commit("resetState");
+    }
 };
 
 const mutations = {
@@ -45,7 +51,11 @@ const mutations = {
     removeUser: (state) => (
         state.user.email = "",
         state.user.authorities.length = 0
-        )
+        ),
+    
+    resetState(state) {
+        Object.assign(state, getDefaultState());
+    }
 };
 
 const namespaced = true;

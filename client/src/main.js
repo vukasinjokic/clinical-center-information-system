@@ -32,7 +32,7 @@ new Vue({
         
         this.$store.commit('userDetails/setUserEmail', user);
       }
-  }
+  },
 }).$mount('#app')
 
 

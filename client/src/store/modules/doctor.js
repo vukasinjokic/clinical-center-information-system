@@ -1,8 +1,12 @@
 import Vue from 'vue'
 
-const state ={
+const getDefaultState = () => {
+    return {
 
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
 
@@ -19,6 +23,10 @@ const actions = {
         commit('successfullyRequest',response.data);
         console.log(response.data)
     },
+
+    resetDoctor({commit}) {
+        commit("resetState");
+    }
 };
 
 const mutations ={
@@ -27,6 +35,9 @@ const mutations ={
         alert("Uspesno poslat zahtev");
     },
 
+    resetState (state) {
+        Object.assign(state, getDefaultState())
+    }
 };
 
 const namespaced = true;

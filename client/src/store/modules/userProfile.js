@@ -1,8 +1,12 @@
 import Vue from 'vue'
 
-const state = {
-    userProf: null
+const getDefaultState = () => {
+    return {
+        userProf: null
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     getUserProf: (state) => state.userProf,
@@ -25,6 +29,10 @@ const actions = {
             console.log(error);
             commit('alertPasswordChange', "Netacan stari password");
         }
+    },
+
+    resetUserProfile({commit}) {
+        commit("resetState");
     }
 };
 
@@ -32,6 +40,10 @@ const mutations = {
     setUserProf: (state, user) => state.userProf = user, 
     alertPasswordChange(message){
         alert(message);
+    },
+
+    resetState(state) {
+        Object.assign(state, getDefaultState());
     }
 };
 
