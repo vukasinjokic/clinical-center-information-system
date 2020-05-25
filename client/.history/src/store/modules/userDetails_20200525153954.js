@@ -13,7 +13,7 @@ const getters = {
 };
 
 const actions = {
-    logIn({ commit }, data) {
+    async logIn({ commit }, data) {
         localStorage.setItem('JWT', data.accessToken);
         localStorage.setItem('Duration', data.expiresIn);
         localStorage.setItem('user_email', data.email);
@@ -24,17 +24,18 @@ const actions = {
         });
     },
 
-    isLogedIn() {
+    async isLogedIn() {
         return state.user.email === "" && state.user.authorities.length === 0
     },
 
-    logOut({commit}) {
-        localStorage.removeItem('JWT');
-        localStorage.removeItem('Duration');
+    async logOut({commit}) {
+        localStorage.clear();
+        sessionStorage.clear();
+        Vue.$axios.defaults.headers['Authorization'] = "Bearer none";
         commit('removeUser');
     },
 
-    userSetter({commit}, user) {
+    async userSetter({commit}, user) {
         commit('setUser', user);
     },
 };

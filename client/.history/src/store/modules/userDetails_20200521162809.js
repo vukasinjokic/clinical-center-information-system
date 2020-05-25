@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 const state = {
     user: {
         email: "",
@@ -13,28 +11,28 @@ const getters = {
 };
 
 const actions = {
-    logIn({ commit }, data) {
+    async logIn({ commit }, data) {
         localStorage.setItem('JWT', data.accessToken);
+        // Vue.$axios.dfasdf
         localStorage.setItem('Duration', data.expiresIn);
         localStorage.setItem('user_email', data.email);
-        Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
         commit('setUser', {
             email: data.email,
             authorities: data.authorities
         });
     },
 
-    isLogedIn() {
+    async isLogedIn() {
         return state.user.email === "" && state.user.authorities.length === 0
     },
 
-    logOut({commit}) {
+    async logOut({commit}) {
         localStorage.removeItem('JWT');
         localStorage.removeItem('Duration');
         commit('removeUser');
     },
 
-    userSetter({commit}, user) {
+    async userSetter({commit}, user) {
         commit('setUser', user);
     },
 };
