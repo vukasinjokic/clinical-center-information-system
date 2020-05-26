@@ -4,7 +4,7 @@
         <router-view></router-view>  
       </v-content>
     <v-app-bar
-      height="40px"
+      height="35px"
       app
       class="blue-grey darken-4 white--text"
     >
@@ -22,13 +22,8 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
-
-  components: {
-    
-  },
 
   data: () => ({
     //

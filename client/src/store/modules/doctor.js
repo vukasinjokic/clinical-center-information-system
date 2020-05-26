@@ -1,9 +1,14 @@
 import Vue from 'vue'
 
-const state ={
-    doctor_list: [],
-    errorMessage: ""
+
+const getDefaultState = () => {
+    return {
+        doctor_list: [],
+        errorMessage: ""
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     getDoctorList: (state) => state.doctor_list,
@@ -49,6 +54,10 @@ const actions = {
         commit('successfullyRequest',response.data);
         console.log(response.data)
     },
+
+    resetDoctor({commit}) {
+        commit("resetState");
+    }
 };
 
 const mutations ={
@@ -68,8 +77,11 @@ const mutations ={
     onDeleteDoctor(state, id){
         const index = state.doctor_list.findIndex(doc => doc.id === id);
         state.doctor_list.splice(index,1);
-    }
+    },
 
+    resetState (state) {
+        Object.assign(state, getDefaultState())
+    }
 };
 
 const namespaced = true;

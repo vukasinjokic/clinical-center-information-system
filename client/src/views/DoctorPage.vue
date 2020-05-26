@@ -21,7 +21,7 @@
 
             <template v-slot:append>
                 <div class="pa-3">
-                    <v-btn block >Logout</v-btn>
+                    <LogOut/>
                 </div>
             </template>
         </v-navigation-drawer>      
@@ -35,7 +35,13 @@
 </template>
 
 <script>
+import LogOut from "../components/LogOut"
+
 export default {
+    components: {
+        LogOut
+    },
+
     data(){
         return {
             items: [

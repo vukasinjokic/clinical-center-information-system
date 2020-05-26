@@ -19,6 +19,9 @@ import ScheduleAppointment from '../components/ScheduleAppointment';
 import DoctorReview from '../components/doctor/DoctorReview';
 import ClinicProfile from '../components/ClinicProfile';
 
+import NursePage from '../views/NursePage'
+
+
 
 Vue.use(VueRouter);
 
@@ -49,6 +52,17 @@ const router = new VueRouter({
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
             {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment}
+        ]
+      },
+      {
+        path: '/nurse',
+        name: 'NursePage',
+        component: NursePage,
+        children: [
+            {path: 'patient', name: 'PatientReview', component: PatientReview},
+            {path: 'profile', name: 'UserProfile', component: UserProfile},
+            {path: ':16/calendar', name: 'Calendar', component : Calendar},
+            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest}
         ]
       },
       {

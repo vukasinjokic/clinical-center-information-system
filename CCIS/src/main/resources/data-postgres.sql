@@ -359,29 +359,164 @@ insert into calendars (id) values (9);
 insert into calendars (id) values (10);
 insert into calendars (id) values (11);
 insert into calendars (id) values (12);
+
+insert into calendars (id) values (13);
+insert into calendars (id) values (14);
+insert into calendars (id) values (15);
+insert into calendars (id) values (16);
+insert into calendars (id) values (17);
+insert into calendars (id) values (18);
+insert into calendars (id) values (19);
+insert into calendars (id) values (20);
+insert into calendars (id) values (21);
+insert into calendars (id) values (22);
+insert into calendars (id) values (23);
+insert into calendars (id) values (24);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- Inserting event_start_dates ----------------------------------------------------------
--- insert into event_start_dates (calendar_id, event_start_dates) values (1,'2020-05-04 10:00:00');
--- insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-03-04 12:00:00');
--- insert into event_start_dates (calendar_id, event_start_dates) values (1,'2019-03-04 14:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-05-01 08:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-05-01 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-05-02 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-05-03 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-05-04 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (9,'2020-05-05 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (9,'2020-05-06 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (10,'2020-05-07 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (10,'2020-05-08 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (11,'2020-05-09 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (11,'2020-05-10 10:00:00');
+
+
+insert into event_start_dates (calendar_id, event_start_dates) values (12,'2020-05-11 10:00:00');
+------------------------------------------------------------------------------------------------
+-----------------------------------SOBE---------------------------------------------------------
+
+insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-05-01 08:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-05-01 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (14,'2020-05-02 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (15,'2020-05-03 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (16,'2020-05-04 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (17,'2020-05-05 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (18,'2020-05-06 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (19,'2020-05-07 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (20,'2020-05-08 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (21,'2020-05-09 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (22,'2020-05-10 10:00:00');
+
+insert into event_start_dates (calendar_id, event_start_dates) values (23,'2020-05-11 10:00:00');
+
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 --
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -------------------------------------------------- Inserting event_end_dates ------------------------------------------------------------
--- insert into event_end_dates (calendar_id, event_end_dates) values (1, '2020-05-04 11:00:00');
--- insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-04-04 13:00:00');
--- insert into event_end_dates (calendar_id, event_end_dates) values (1, '2019-03-04 15:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-05-01 08:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-05-01 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-05-02 10:30:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-05-03 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-05-04 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (9,'2020-05-05 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (9,'2020-05-06 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (10, '2020-05-07 10:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (10, '2020-05-08 10:30:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (11,'2020-05-09 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (11,'2020-05-10 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (12,'2020-05-11 11:00:00');
+------------------------------------------------------------------------------------------------
+-----------------------------------SOBE---------------------------------------------------------
+
+insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-05-01 08:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-05-01 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (14, '2020-05-02 10:30:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (15,'2020-05-03 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (16,'2020-05-04 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (17,'2020-05-05 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (18,'2020-05-06 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (19, '2020-05-07 10:30:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (20, '2020-05-08 10:30:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (21,'2020-05-09 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (22,'2020-05-10 11:00:00');
+
+insert into event_end_dates (calendar_id, event_end_dates) values (23,'2020-05-11 11:00:00');
+
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -------------------------------------------------- Inserting event_names ----------------------------------------------------------------
--- insert into event_names (calendar_id, event_names) values (1, 'Operacija');
--- insert into event_names (calendar_id, event_names) values (1, 'Hiruski Pregled');
--- insert into event_names (calendar_id, event_names) values (1, 'Ultrazvuk');
+insert into event_names (calendar_id, event_names) values (7, 'Sistematski pregled');
+insert into event_names (calendar_id, event_names) values (7, 'Operacija');
+insert into event_names (calendar_id, event_names) values (7, 'Sistematski pregled');
+
+insert into event_names (calendar_id, event_names) values (8, 'Ultrazvuk');
+insert into event_names (calendar_id, event_names) values (8, 'Ultrazvuk');
+
+insert into event_names (calendar_id, event_names) values (9, 'Operacija');
+insert into event_names (calendar_id, event_names) values (9, 'Operacija');
+
+insert into event_names (calendar_id, event_names) values (10, 'Sistematski pregled');
+insert into event_names (calendar_id, event_names) values (10, 'Sistematski pregled');
+
+insert into event_names (calendar_id, event_names) values (11, 'Ultrazvuk');
+insert into event_names (calendar_id, event_names) values (11, 'Ultrazvuk');
+
+insert into event_names (calendar_id, event_names) values (12, 'Operacija');
+
+------------------------------------------------------------------------------------------------
+-----------------------------------SOBE---------------------------------------------------------
+insert into event_names (calendar_id, event_names) values (13, 'Sistematski pregled');
+insert into event_names (calendar_id, event_names) values (13, 'Operacija');
+
+insert into event_names (calendar_id, event_names) values (14, 'Sistematski pregled');
+
+insert into event_names (calendar_id, event_names) values (15, 'Ultrazvuk');
+
+insert into event_names (calendar_id, event_names) values (16, 'Ultrazvuk');
+
+insert into event_names (calendar_id, event_names) values (17, 'Operacija');
+
+insert into event_names (calendar_id, event_names) values (18, 'Operacija');
+
+insert into event_names (calendar_id, event_names) values (19, 'Sistematski pregled');
+
+insert into event_names (calendar_id, event_names) values (20, 'Sistematski pregled');
+
+insert into event_names (calendar_id, event_names) values (21, 'Ultrazvuk');
+
+insert into event_names (calendar_id, event_names) values (22, 'Ultrazvuk');
+
+insert into event_names (calendar_id, event_names) values (23, 'Operacija');
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -547,18 +682,18 @@ values (nextval('ust_seq_user'), 'pacijent6@gmail.com', 'pacijent6@gmail.com', '
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting rooms -------------------------------------------------------
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 1','100', 1, 1, 'APPOINTMENT');				-- id = 1
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 2','101', 7, 1, 'APPOINTMENT');				-- id = 2
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 3','102', 8, 1, 'APPOINTMENT');				-- id = 3
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 4','103', 8, 1, 'APPOINTMENT');				-- id = 4
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 5','104', 9, 2, 'APPOINTMENT');				-- id = 5
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 6','105', 9, 2, 'APPOINTMENT');				-- id = 6
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 7','106', 10, 2, 'OPERATION');			-- id = 7
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 8','107', 10, 2, 'OPERATION');			-- id = 8
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 9','108', 11, 3, 'OPERATION');			-- id = 9
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 10','109', 11, 3, 'OPERATION');			-- id = 10
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 11','110', 12, 3, 'OPERATION');			-- id = 11
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 12','111', 12, 3, 'OPERATION');			-- id = 12
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 1','100', 13, 1, 'APPOINTMENT');				-- id = 1
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 2','101', 14, 1, 'APPOINTMENT');				-- id = 2
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 3','102', 15, 1, 'APPOINTMENT');				-- id = 3
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 4','103', 16, 1, 'APPOINTMENT');				-- id = 4
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 5','104', 17, 2, 'APPOINTMENT');				-- id = 5
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 6','105', 18, 2, 'APPOINTMENT');				-- id = 6
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 7','106', 19, 2, 'OPERATION');			-- id = 7
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 8','107', 20, 2, 'OPERATION');			-- id = 8
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 9','108', 21, 3, 'OPERATION');			-- id = 9
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 10','109', 22, 3, 'OPERATION');			-- id = 10
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 11','110', 23, 3, 'OPERATION');			-- id = 11
+insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 12','111', 24, 3, 'OPERATION');			-- id = 12
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

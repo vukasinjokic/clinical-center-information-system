@@ -1,11 +1,15 @@
 import Vue from 'vue';
 
-const state = {
-    appointments: [],
-    freeAppointmentRooms: [],
-    examinationTypes: [],
-    doctors: []
+const getDefaultState = () => {
+    return {
+        appointments: [],
+        freeAppointmentRooms: [],
+        examinationTypes: [],
+        doctors: []
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     allAppointments: (state) => state.appointments,
@@ -58,6 +62,10 @@ const actions = {
         const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
         commit('newApp', response.data);
     },
+
+    resetAppointments({commit}) {
+        commit("resetState");
+    }
 };
 
 const mutations = {
@@ -65,7 +73,11 @@ const mutations = {
     setFreeAppointmentsRooms: (state, rooms) => (state.freeAppointmentRooms = rooms),
     setTypes: (state, types) => (state.examinationTypes = types),
     setDoctors: (state,doctors) => (state.doctors = doctors),
-    newApp: (state, newAppointment) => state.appointments.unshift(newAppointment)
+    newApp: (state, newAppointment) => state.appointments.unshift(newAppointment),
+
+    resetState (state) {
+        Object.assign(state, getDefaultState())
+    }
 };
 
 const namespaced = true;

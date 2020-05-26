@@ -27,6 +27,9 @@ export default {
                     text: 'Last name', value: 'lastName', sortable:false
                 },
                 {
+                    text: 'SSNumber', value: 'socialSecurityNumber'
+                },
+                {
                     text: 'Email', value:'email', fileterable: true
                 },
                 {

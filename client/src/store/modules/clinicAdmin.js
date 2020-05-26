@@ -1,8 +1,12 @@
 import Vue from 'vue'
 
-const state = {
-    requests: []
+const getDefaultState = () => {
+    return {
+        requests: []
+    }    
 };
+
+const state = getDefaultState();
 
 const getters = {
     getRequest: (state) => state.requests,
@@ -28,6 +32,10 @@ const actions = {
         }catch(error){
             commit('alertMessage', "Bad request");
         }
+    },
+
+    resetClinicAdmin({commit}) {
+        commit("resetState");
     }
 };  
 
@@ -39,6 +47,10 @@ const mutations = {
     },
     alertMessage(message){
         alert(message);
+    },
+
+    resetState (state) {
+        Object.assign(state, getDefaultState())
     }
 };
 
