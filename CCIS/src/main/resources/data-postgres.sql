@@ -32,8 +32,6 @@ insert into code_books (id) values (1);			-- id = 1
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-insert into price_list (id) values (1);
-
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting diagnoses ----------------------------------------------------------
 insert into diagnoses			-- id = 1
@@ -295,25 +293,25 @@ values (1, 'Skopryl', '1103565');
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting clinics -----------------------------------------------------------
 insert into clinics			-- id = 1
-(name, address, description, price_list_id, rating, code_book_id)
+(name, address, description, rating, code_book_id)
 values ('Poliklinika Sparta', 'Bulevar Evrope 22, Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor,
 		arcu quis iaculis facilisis, purus ipsum vehicula nunc,vitae finibus.',
-	   1, 0.0, 1);
+	    0.0, 1);
 
 insert into clinics			-- id = 2
-(name, address, description, price_list_id, rating, code_book_id)
+(name, address, description,  rating, code_book_id)
 values ('Poliklinika Medicina', 'Bulevar Oslobodjenja 79, Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna turpis,
 		tincidunt in dictum et, fringilla at eros. Pellentesque eu est pharetra, interdum quam a.',
-	   1, 0.0, 1);
+	    0.0, 1);
 
 insert into clinics			-- id = 3
-(name, address, description, price_list_id, rating, code_book_id)
+(name, address, description,  rating, code_book_id)
 values ('Poliklinika Žekić', 'Grčkoškolska 3, Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ante diam, auctor in mauris et,
 		dapibus cursus nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque id.',
-	   1, 0.0, 1);
+	    0.0, 1);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -434,16 +432,17 @@ insert into examination_types (name, duration) values ('Sistematski pregled', 0.
 insert into examination_types (name, duration) values ('Ultrazvuk', 1);			-- id = 2
 insert into examination_types (name, duration) values ('Operacija', 1);			-- id = 3
 -----------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------Inserting price list items-----------------------------------------------------------------------------------
+------------------------------------------------------Inserting price list ----------------------------------------------------------------------------------
+
+insert into price_list (clinic_id) values (1);
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------Inserting into price list item--------------------------------------------
 insert into price_list_item (price, examination_type_id) values (1000, 1);  --id = 1
 insert into price_list_item (price, examination_type_id) values (3000,3);
-------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------Inserting itno price list items--------------------------------------------
+----------------------------------------------------------Pricelist item--------------------------------------------------------------------------------
 insert into price_list_items (price_list_id, items_id) values (1,1);
 insert into price_list_items (price_list_id, items_id) values (1,2);
-------------------------------------------------------------------------------------------------------------------------------------------
-
-
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting doctors -----------------------------------------------------------
 insert into doctors			-- id = 16

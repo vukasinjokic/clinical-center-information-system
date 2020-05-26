@@ -72,10 +72,10 @@ public class RoomService {
         if(try_find.isPresent()){
             Room room = try_find.get();
             List<Appointment> appointments = appointmentRepository.findByRoomId(room.getId());
-            if(appointments.size() == 0){
+//            if(appointments.size() == 0){
                 roomRepository.deleteById(room.getId());
                 return true;
-            }
+//            }
         }
         return false;
     }

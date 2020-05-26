@@ -38,9 +38,63 @@
                             class="blue-grey darken-4 white--text"
                             dark
                             :headers="headers"
-                            :items="getPriceList"
+                            :items="getPriceListItems"
                             :items-per-page="5"
-                            item-key="item.name">
+                            item-key="item.price">
+                        <template v-slot:top>
+                            <v-toolbar flat class="blue-grey darken-4 white--text">
+                                <v-spacer/>
+                            <v-dialog v-model="dialog" max-width="300px">
+                                <template v-slot:activator="{ on }">
+                                <v-btn color="orange lighten-1" @click="variable=true" dark class="mb-2" v-on="on">New item</v-btn>
+                                </template>
+                                <v-card>
+                                    <v-card-title>
+                                        <span class="headline">{{formTitle}}</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <v-container>
+                                            <v-form ref="form">
+                                            <v-col cols="12" sm="6" md="12">
+                                                <v-select
+                                                    :rules="[requiredRule]"
+                                                    v-model="editPriceList.examinationType.name"
+                                                    :items="getExaminationTypeOnlyNames"
+                                                    label="Examination type"
+                                                    :readonly="!variable"
+                                                    >
+                                                </v-select>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="12">
+                                                <v-text-field
+                                                    :rules="[requiredRule]"
+                                                    v-model="editPriceList.price"
+                                                    label="Price">
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="12">
+                                            </v-col>
+                                            </v-form>
+                                        </v-container>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                                        <v-btn color="blue darken-1" text @click="saveListItem">Save</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                            </v-toolbar>
+                        </template>
+                            <template v-slot:item.actions="{ item }">
+                                <v-icon
+                                    small
+                                    class="mr-2"
+                                    @click="editItem(item)"
+                                    >
+                                    mdi-pencil
+                                </v-icon>
+                            </template>
                         </v-data-table>
                     </v-card>
                 </v-col>
@@ -55,29 +109,58 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
     data(){
         return{
+            headers:[
+                {text:"Examination type", value: "examinationType.name"},
+                {text:"Price", value: "price"},
+                {text: "Actions", value: "actions"}
+            ],
             defaultClinic:{
                 id: "",
                 name:"",
                 address: "",
                 description: ""
             },
-            clinic:{
+            editPriceList:{
                 id: "",
-                name:"",
-                address: "",
-                description: ""
+                examinationType:{
+                    id:"",
+                    name:""
+                },
+                price:"",
             },
+            defaultPriceList:{
+                id: "",
+                examinationType:{
+                    id:"",
+                    name:""
+                },
+                price:"",
+            },
+            variable: true,
+            dialog: false,
+            editIndex: -1,
+
         }
     },
     created(){
         this.fetchClinic();
-
+        this.fetchTypes();
+        this.fetchPriceList();
     },
     computed: {
-        ...mapGetters('clinicProfile',['getClinic']),
+        ...mapGetters('clinicProfile',['getClinic','getPriceList','getPriceListItems']),
+        ...mapGetters('appointments', ['getExaminationTypeOnlyNames']),
+
+        formTitle(){
+            return this.editIndex === -1 ? 'New item' : 'Edit item';
+        },
+        requiredRule(){
+            return (value) => !!value || "Required field.";
+        }
     },
     methods: {
-        ...mapActions('clinicProfile',['fetchClinic','updateClinic']),
+        ...mapActions('clinicProfile',['fetchClinic','updateClinic','fetchPriceList','addPriceList','updatePriceList']),
+        ...mapActions('appointments',['fetchTypes']),
 
         saveUpdate(){
             //this.defaultClinic = Object.assign({}, this.getClinic);
@@ -86,6 +169,30 @@ export default {
             this.defaultClinic.description = this.getClinic.description;
             this.defaultClinic.address = this.getClinic.address;
             this.updateClinic(this.defaultClinic);
+        },
+        editItem(item){
+            this.editIndex = this.getPriceListItems.indexOf(item);
+            this.editPriceList = JSON.parse(JSON.stringify(item)); //deep clone
+            this.variable = false;
+            this.dialog = true;
+            
+        },
+        saveListItem(){
+            if(this.$refs.form.validate()){
+                if(this.editIndex > -1){
+                    this.updatePriceList(this.editPriceList);
+                }else{
+                    var newObj = JSON.parse(JSON.stringify(this.editPriceList));
+                    this.addPriceList(newObj);
+                }
+                this.close();
+            }
+        },
+        close(){    
+            this.editIndex = -1;
+            this.dialog = false;
+            this.editPriceList = Object.assign({},this.defaultPriceList);
+            this.$refs.form.reset();
         }
 
     },

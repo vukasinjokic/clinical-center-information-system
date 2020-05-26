@@ -21,6 +21,11 @@ const getters = {
         state.examinationTypes.forEach(type => names.push({text: type.name, value: type.id}));
         return names;
     },
+    getExaminationTypeOnlyNames: (state)=>{
+        var names = [];
+        state.examinationTypes.forEach(type => names.push(type.name));
+        return names;
+    },
     getTypeDuration: (state) => (name) => {
         return state.examinationTypes.find(type => type.name == name);
     },

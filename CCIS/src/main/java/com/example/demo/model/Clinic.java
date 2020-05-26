@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -28,8 +30,8 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @OneToOne(fetch = EAGER)
-   @JoinColumn(name = "price_list_id")
+   @OneToOne(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
+   @LazyToOne(LazyToOneOption.NO_PROXY)
    private PriceList priceList;
 
    @Column(name = "rating", unique = false)
@@ -56,7 +58,7 @@ public class Clinic {
 
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    private Collection<AppointmentRequest> appointmentRequests;
-
+//bilo je eager
    @OneToMany(cascade = {ALL}, fetch = EAGER, orphanRemoval = true)
    private Collection<MedicalStaffRequest> medicalStaffRequests;
 

@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
-import com.example.demo.Repository.ClinicAdminRepository;
-import com.example.demo.Repository.ClinicRepository;
-import com.example.demo.Repository.CodeBookRepository;
+import com.example.demo.Repository.*;
 import com.example.demo.dto.ClinicDTO;
-import com.example.demo.model.Clinic;
-import com.example.demo.model.ClinicAdmin;
+import com.example.demo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +23,12 @@ public class ClinicService {
     private ClinicAdminRepository clinicAdminRepository;
     @Autowired
     private CodeBookRepository codeBookRepository;
+    @Autowired
+    private ExaminationTypeRepository examinationTypeRepository;
+    @Autowired
+    private PriceListItemRepository priceListItemRepository;
+    @Autowired
+    private PriceListRepository priceListRepository;
 
 
     public Clinic findById(Integer id) {
@@ -38,6 +43,53 @@ public class ClinicService {
         Clinic clinic = new Clinic(clinicDTO.getName(), clinicDTO.getDescription(), clinicDTO.getAddress());
         clinicRepository.save(clinic);
         return clinic;
+    }
+
+    public PriceList getPriceList(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
+        Optional<ClinicAdmin> ad = clinicAdminRepository.findById(user.getId());
+        ClinicAdmin admin = ad.get();
+        if(admin != null){
+            Clinic clinic = admin.getClinic();
+            return clinic.getPriceList();
+        }
+        return null;
+    }
+
+    public PriceListItem addPriceListItem(PriceListItem priceListItem){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<ClinicAdmin> ad = clinicAdminRepository.findById(user.getId());
+
+        if(this.DoesExTypeNameExist(priceListItem.getExaminationType().getName(),ad.get()))
+            return null;
+
+        ExaminationType examinationType = examinationTypeRepository.findByName(priceListItem.getExaminationType().getName());
+        priceListItem.setExaminationType(examinationType);
+        if(ad.isPresent()){
+            ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
+            Clinic clinic = admin.getClinic();
+            PriceList priceList = clinic.getPriceList();
+            if(priceList.getId() == null){
+                priceList = new PriceList();
+            }
+            priceList.getItems().add(priceListItem);
+            priceList.setClinic(admin.getClinic());
+            priceListRepository.save(priceList);
+            return priceListItemRepository.save(priceListItem);
+        }
+        return null;
+    }
+
+    public PriceListItem updatePriceListItem(PriceListItem priceListItem){
+        Optional<PriceListItem> findItem = priceListItemRepository.findById(priceListItem.getId());
+        if(findItem.isPresent()){
+            PriceListItem updateItem = findItem.get();
+            updateItem.setPrice(priceListItem.getPrice());
+           // updateItem.setExaminationType(priceListItem.getExaminationType());
+            return priceListItemRepository.save(updateItem);
+        }
+        return null;
     }
 
     public Clinic updateClinic(ClinicDTO clinicDTO){
@@ -63,5 +115,20 @@ public class ClinicService {
     public Clinic findByAdminEmail(String email){
         ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
         return this.findById(admin.getClinic().getId());
+    }
+
+    public boolean DoesExTypeNameExist(String name, ClinicAdmin admin){
+        if(admin.getClinic().getPriceList() == null)
+        {
+            admin.getClinic().setPriceList(new PriceList());
+            return false;
+        }
+        List<PriceListItem> priceListItems = (List<PriceListItem>) admin.getClinic().getPriceList().getItems();
+        Optional<PriceListItem> it = priceListItems.stream()
+                .filter(item -> item.getExaminationType().getName().equals(name))
+                .findAny();
+        if(it.isPresent())
+            return true;
+        return false;
     }
 }

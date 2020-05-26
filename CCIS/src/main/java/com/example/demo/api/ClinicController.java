@@ -2,9 +2,13 @@ package com.example.demo.api;
 
 import com.example.demo.dto.ClinicDTO;
 import com.example.demo.dto.ClinicsDTO;
+import com.example.demo.dto.PriceListDTO;
 import com.example.demo.model.Clinic;
+import com.example.demo.model.PriceList;
+import com.example.demo.model.PriceListItem;
 import com.example.demo.model.User;
 import com.example.demo.service.ClinicService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +63,35 @@ public class ClinicController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/getPriceList")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    public ResponseEntity<PriceListDTO> getPriceList(){
+        PriceList priceList = clinicService.getPriceList();
+        if(priceList != null)
+            return new ResponseEntity<>(new PriceListDTO(priceList), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/addPriceListItem")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    public ResponseEntity<PriceListItem> addPriceListItem(@RequestBody PriceListItem priceListItem){
+        PriceListItem item = clinicService.addPriceListItem(priceListItem);
+        if(item!= null){
+            return new ResponseEntity<>(item, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/updatePriceListItem")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    public ResponseEntity<PriceListItem> updatePriceListItem(@RequestBody PriceListItem priceListItem){
+        PriceListItem item = clinicService.updatePriceListItem(priceListItem);
+        if(item != null){
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping(path="/updateClinic", consumes = "application/json")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
     public ResponseEntity<ClinicDTO> updateClinic(@RequestBody ClinicDTO clinicDTO){
@@ -76,8 +110,6 @@ public class ClinicController {
         clinicDTO.setDTOFields(clinic);
         return clinicDTO;
     }
-
-
 
     @PostMapping(path = "/addClinic", consumes = "application/json")
     @PreAuthorize("hasRole('CLINIC_CENTER_ADMIN')")
