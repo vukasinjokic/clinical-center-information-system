@@ -45,8 +45,7 @@ export default {
         this.fetchPatients();
     },
     computed: {
-        ...mapGetters('patient',['allPatients']),
-        ...mapGetters('userDetails',['getUser'])
+        ...mapGetters('patient',['allPatients'])
     },
     methods:{
         ...mapActions('patient',['fetchPatients'])
