@@ -101,11 +101,28 @@ public class Calendar {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date startTime = appointment.getTime();
             ExaminationType exType = appointment.getExaminationType();
-            eventStartDates.add(sdf.parse(sdf.format(startTime)));
-            eventEndDates.add(sdf.parse(sdf.format(new Date(startTime.getTime() + (long)(exType.getDuration() * 1000 * 60 * 60)))));
-            eventNames.add(exType.getName());
+            addEvent(sdf.parse(sdf.format(startTime)),
+                    sdf.parse(sdf.format(new Date(startTime.getTime() + (long)(exType.getDuration() * 1000 * 60 * 60)))),
+                    exType.getName());
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void addEvent(Date startDate, Date endDate, String eventName){
+        if(startDate.after(eventStartDates.get(eventStartDates.size() - 1))){
+            eventStartDates.add(startDate);
+            eventEndDates.add(endDate);
+            eventNames.add(eventName);
+            return;
+        }
+        for(int i = 0; i != eventStartDates.size(); i++){
+            if(startDate.before(eventStartDates.get(i))){
+                eventStartDates.add(i, startDate);
+                eventEndDates.add(i, endDate);
+                eventNames.add(i, eventName);
+                return;
+            }
         }
     }
 }

@@ -66,18 +66,13 @@ export default {
         },
 
         reserveRoom(request){
-            console.log(request.doctor);
             this.roomsDialog = true;
             this.$refs.roomsComponent.setUpFields(request);
         },
 
-        roomReserved(request){
+        roomReserved(){
             this.roomsDialog = false;
-            this.deleteRequest(request.id);
         }
-
-        
-
         
     },
     computed : {  

@@ -33,6 +33,9 @@ public class ClinicAdminService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private AppointmentRequestRepository appointmentRequestRepository;
+
+    @Autowired
     private PatientRepository patientRepository;
 
     @Autowired
@@ -53,26 +56,28 @@ public class ClinicAdminService {
     }
 
     public void handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
-        Integer patient_id = Integer.parseInt(appointmentToReserve.getRequest().getPatient().getId());
+        AppointmentRequest appointmentRequest = appointmentRequestRepository.findById(appointmentToReserve.getRequestId()).get();
+
+        Integer patient_id = appointmentRequest.getPatient().getId();
         Patient patient = patientRepository.findById(patient_id).get();
 
-        Integer doctor_id = Integer.parseInt(appointmentToReserve.getRequest().getDoctor().getId());
-        Doctor doctor = doctorRepository.findById(doctor_id).get();
+        List<Doctor> doctors = doctorRepository.findAllById(appointmentToReserve.getDoctors().stream().map(doctorDto -> Integer.parseInt(doctorDto.getId())).collect((Collectors.toList())));
+
+        Doctor doctor = doctors.get(doctors.size() - 1);
 
         Integer room_id = Integer.parseInt(appointmentToReserve.getRoom().getId());
         Room room = roomRepository.findById(room_id).get();
 
         Appointment appointment;
-        if(appointmentToReserve.getRequest().getPredefAppointment() != null){
-            Integer appointment_id = Integer.parseInt(appointmentToReserve.getRequest().getId());
+        if(appointmentRequest.getPredefAppointment() != null){
+            Integer appointment_id = appointmentRequest.getPredefAppointment().getId();
             appointment = appointmentRepository.getOne(appointment_id);
         }
         else{
-            appointment = new Appointment(appointmentToReserve.getReservedTime(), appointmentToReserve.getRequest().getPrice(), appointmentToReserve.getRequest().getDiscount(), doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
+            appointment = new Appointment(appointmentToReserve.getReservedTime(), appointmentRequest.getPrice(), appointmentRequest.getDiscount(), doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
         }
         patient.addAppointment(appointment);
 //        List<Doctor> doctors = appointmentToReserve.getDoctors().stream().map(doctorDTO -> modelMapper.map(doctorDTO, Doctor.class)).collect(Collectors.toList());
-        List<Doctor> doctors = doctorRepository.findAllById(appointmentToReserve.getDoctors().stream().map(doctorDto -> Integer.parseInt(doctorDto.getId())).collect((Collectors.toList())));
         addAppointmentToDoctors(appointment, doctors);
 
         room.addAppointment(appointment);
