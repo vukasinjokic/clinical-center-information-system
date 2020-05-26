@@ -1,8 +1,12 @@
 import axios from 'axios'
 
-const state = {
-    appointmentRequests : []
-}
+const getDefaultState = () => {
+    return {
+        appointmentRequests: []
+    }
+} ;
+
+const state = getDefaultState();
 
 const getters = {
     
@@ -30,6 +34,10 @@ const actions = {
             alert(error.response);
         }
     },
+
+    resetAppointmentRequests({commit}) {
+        commit("resetState");
+    }
 }
 
 const mutations = {
@@ -41,6 +49,10 @@ const mutations = {
         const index = state.appointmentRequests.findIndex(type => type.id === id);
         state.appointmentRequests.splice(index,1);
     },
+
+    resetState (state) {
+        Object.assign(state, getDefaultState())
+    }
 }
 const namespaced = true;
 

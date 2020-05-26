@@ -1,9 +1,13 @@
 import Vue from 'vue'
 
-const state = {
-    patients: [],
-    userProfile: null
+const getDefaultState = () => {
+    return {
+        patients: [],
+        userProfile: null  
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     allPatients: (state) => state.patients,
@@ -20,12 +24,20 @@ const actions = {
     async fetchUserProfile({commit}){
         const response = await Vue.$axios.get('http://localhost:8081/auth/userDetails');
         commit('setUserProfile', response.data);
+    },
+
+    resetPatient({commit}) {
+        commit("resetState");
     }
 };
 
 const mutations = {
     setPatients: (state, patients) => state.patients = patients,
     setUserProfile: (state, user) => state.userProfile = user,
+
+    resetState(state) {
+        Object.assign(state, getDefaultState());
+    }
 };
 
 const namespaced = true;

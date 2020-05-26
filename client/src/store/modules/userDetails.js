@@ -1,9 +1,15 @@
-const state = {
-    user: {
-        email: "",
-        authorities: []   //role je ovde
+import Vue from 'vue';
+
+const getDefaultState = () => {
+    return {
+        user: {
+            email: "",
+            authorities: []   //role je ovde
+        }
     }
 };
+
+const state = getDefaultState();
 
 const getters = {
     getUser: (state) => state.user,
@@ -11,29 +17,32 @@ const getters = {
 };
 
 const actions = {
-    async logIn({ commit }, data) {
+    logIn({ commit }, data) {
         localStorage.setItem('JWT', data.accessToken);
         localStorage.setItem('Duration', data.expiresIn);
         localStorage.setItem('user_email', data.email);
+        Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
         commit('setUser', {
             email: data.email,
             authorities: data.authorities
         });
     },
 
-    async isLogedIn() {
+    isLogedIn() {
         return state.user.email === "" && state.user.authorities.length === 0
     },
 
-    async logOut({commit}) {
-        localStorage.removeItem('JWT');
-        localStorage.removeItem('Duration');
-        commit('removeUser');
-    },
-
-    async userSetter({commit}, user) {
+    userSetter({commit}, user) {
         commit('setUser', user);
     },
+
+    resetUserDetails({commit}) {
+        localStorage.removeItem('JWT');
+        localStorage.removeItem('Duration');
+        localStorage.removeItem('user_email');
+        Vue.$axios.defaults.headers['Authorization'] = "Bearer null";
+        commit("resetState");
+    }
 };
 
 const mutations = {
@@ -42,7 +51,11 @@ const mutations = {
     removeUser: (state) => (
         state.user.email = "",
         state.user.authorities.length = 0
-        )
+        ),
+    
+    resetState(state) {
+        Object.assign(state, getDefaultState());
+    }
 };
 
 const namespaced = true;

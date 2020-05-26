@@ -1,8 +1,12 @@
 import Vue from 'vue'
 
-const state = {
-    examination_types: []
+const getDefaultState = () => {
+    return {
+        examination_types: []
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     getTypes: (state) => state.examination_types,
@@ -37,6 +41,10 @@ const actions = {
             alert(error.response.status); //videcemo kako da hendlamo error
         }
         
+    },
+
+    resetExaminationType({commit}) {
+        commit("resetState");
     }
 };
 
@@ -52,6 +60,10 @@ const mutations ={
     updatedType(state,type){
         const index = state.examination_types.findIndex(t => t.id === type.id);
         Object.assign(state.examination_types[index], type);
+    },
+
+    resetState(state) {
+        Object.assign(state, getDefaultState());
     }
 };
 

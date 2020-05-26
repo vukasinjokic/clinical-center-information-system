@@ -316,7 +316,7 @@ export default {
             this.request = request;
             this.date = request.time;
             this.mainDoctor = request.doctor;
-            this.duration = this.milisecondsToHours(request.doctor.examinationType.duration);
+            this.duration = this.floatToHours(request.doctor.examinationType.duration);
         },
 
         getDoctorsForSelect(){
@@ -329,9 +329,9 @@ export default {
             return Object.keys(clinicDoctorsDictCopy);
         },
 
-        milisecondsToHours(durationMilliseconds){
-            var minutes = Math.floor((durationMilliseconds / (1000 * 60)) % 60),
-                hours = Math.floor((durationMilliseconds / (1000 * 60 * 60)) % 24);
+        floatToHours(durationMilliseconds){
+            var minutes = Math.floor((durationMilliseconds * 60) % 60),
+                hours = Math.floor((durationMilliseconds) % 24);
 
             hours = (hours < 10) ? "0" + hours : hours;
             minutes = (minutes < 10) ? "0" + minutes : minutes;

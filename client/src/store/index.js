@@ -16,7 +16,7 @@ import clinicAdmin from './modules/clinicAdmin'
 Vue.use(Vuex);
 
 // create store
-export default new Vuex.Store({
+const store = new Vuex.Store({
     modules: {
         appointments,
         room,
@@ -29,5 +29,28 @@ export default new Vuex.Store({
         appointmentRequests,
         userProfile,
         clinicAdmin
+    },
+
+    actions: {
+        clearStore() {
+            this.dispatch("appointmentRequests/resetAppointmentRequests");
+            this.dispatch("appointments/resetAppointments");
+            this.dispatch("clinicAdmin/resetClinicAdmin");
+            this.dispatch("clinics/resetClinics");
+            this.dispatch("doctor/resetDoctor");
+
+            // TODO: Delete
+            this.dispatch("doctors/resetDoctors");
+
+            this.dispatch("examination_type/resetExaminationType");
+            this.dispatch("patient/resetPatient");
+            this.dispatch("room/resetRoom");
+            this.dispatch("userDetails/resetUserDetails");
+            this.dispatch("userProfile/resetUserProfile");
+
+            localStorage.clear();
+            sessionStorage.clear();
+        }
     }
 });
+export default store;

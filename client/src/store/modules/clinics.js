@@ -1,8 +1,12 @@
 import Vue from 'vue';
 
-const state = {
-    clinics: [],
+const getDefaultState = () => {
+    return {
+        clinics: []
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     allClinics: (state) => state.clinics
@@ -28,13 +32,21 @@ const actions = {
     async saveClinic({commit}, clinic){
         const response = await Vue.$axios.post('http://localhost:8081/clinics/addClinic', clinic);
         commit('newClinic', response.data);
+    },
+
+    resetClinics({commit}) {
+        commit("resetState");
     }
 
 };
 
 const mutations = {
     setClinics: (state, clinics) => (state.clinics = clinics),
-    newClinic: (state, newClinic) => state.clinics.unshift(newClinic)
+    newClinic: (state, newClinic) => state.clinics.unshift(newClinic),
+
+    resetState (state) {
+        Object.assign(state, getDefaultState())
+    }
 };
 
 const namespaced = true;

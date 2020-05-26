@@ -125,3 +125,6 @@ yarn-error.log*
 *.sw?
 
 **/.cache
+
+# History plugin for VSCode
+.history/

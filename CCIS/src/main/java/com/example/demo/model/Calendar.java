@@ -21,18 +21,18 @@ public class Calendar {
     private Integer id;
 
     @ElementCollection
-    @CollectionTable(name = "eventStartDates", joinColumns = @JoinColumn(name = "calendar_id"))
-    @Column(name = "eventStartDates")
+    @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"))
+    @Column(name = "event_start_dates")
     private List<Date> eventStartDates;
 
     @ElementCollection
-    @CollectionTable(name = "eventEndDates", joinColumns = @JoinColumn(name = "calendar_id"))
-    @Column(name = "eventEndDates")
+    @CollectionTable(name = "event_end_dates", joinColumns = @JoinColumn(name = "calendar_id"))
+    @Column(name = "event_end_dates")
     private List<Date> eventEndDates;
 
     @ElementCollection
-    @CollectionTable(name = "eventNames", joinColumns = @JoinColumn(name = "calendar_id"))
-    @Column(name = "eventNames")
+    @CollectionTable(name = "event_names", joinColumns = @JoinColumn(name = "calendar_id"))
+    @Column(name = "event_names")
     private List<String> eventNames;
 
     public HashMap<String,List<Pair<Date,Date>>> formatDates(){
@@ -102,7 +102,7 @@ public class Calendar {
             Date startTime = appointment.getTime();
             ExaminationType exType = appointment.getExaminationType();
             eventStartDates.add(sdf.parse(sdf.format(startTime)));
-            eventEndDates.add(sdf.parse(sdf.format(new Date(startTime.getTime() + (long)exType.getDuration()))));
+            eventEndDates.add(sdf.parse(sdf.format(new Date(startTime.getTime() + (long)(exType.getDuration() * 1000 * 60 * 60)))));
             eventNames.add(exType.getName());
         } catch (ParseException e) {
             e.printStackTrace();
