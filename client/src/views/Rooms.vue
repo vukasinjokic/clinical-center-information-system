@@ -263,13 +263,13 @@ export default {
         reserveRoom(room){
             this.selectedRoom = room;
             if(room.type.toUpperCase().match('OPERATION')){
-                this.reserveOperationRoom();
+                this.showSelectDoctorsDialog();
             }
             else{
-                this.reserveAppointmentRoom(room);
+                this.sendNotification();
             }
         },
-        reserveOperationRoom(){
+        showSelectDoctorsDialog(){
             this.doctorsSelect = [];
             this.dialog = true;
         },
@@ -279,11 +279,15 @@ export default {
             this.doctorsSelect.concat(this.mainDoctor.firstName + ' ' + this.mainDoctor.lastName).forEach(name => {
                 doctors.push(this.clinicDoctorsDict[name]);
             });
-            let payload = {doctors: doctors, request : this.request, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
+            let payload = {doctors: doctors, requestId : this.request.id, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
             this.handleReservation(payload);
             this.dialog = false;
-            this.$emit('reserved', this.request);
-        },      
+            this.$emit('reserved');
+            this.collapseTable();
+        },     
+        collapseTable(){
+            this.$data.expanded = [];
+        },
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10,
 

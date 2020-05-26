@@ -67,6 +67,14 @@ public class RoomService {
         return null;
     }
 
+    public Room getRoom(Integer id){
+        Optional<Room> room = roomRepository.findById(id);
+        if(room.isPresent()){
+            return room.get();
+        }
+        return null;
+    }
+
     public boolean deleteRoom(Integer id){
         Optional<Room> try_find = roomRepository.findById(id);
         if(try_find.isPresent()){
