@@ -283,10 +283,11 @@ export default {
             this.handleReservation(payload);
             this.dialog = false;
             this.$emit('reserved');
-            this.collapseTable();
+            this.resetTable();
         },     
-        collapseTable(){
+        resetTable(){
             this.$data.expanded = [];
+            this.type = null;
         },
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10,

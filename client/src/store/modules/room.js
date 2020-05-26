@@ -1,13 +1,18 @@
 import axios from "axios";
 import Vue from 'vue';
-const state = {
-    rooms : [],
-    filteredRooms : [],
-    availableTimes : null,
-    clinicDoctors: [],
-    //Key: doctors name, Value: doctor
-    clinicDoctorsDict: {}
+
+const getDefaultState = () => {
+    return {
+        rooms : [],
+        filteredRooms : [],
+        availableTimes : null,
+        clinicDoctors: [],
+        //Key: doctors name, Value: doctor
+        clinicDoctorsDict: {}
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     getAllRooms: (state) => state.rooms,
@@ -142,6 +147,10 @@ const actions = {
         }
     },
 
+    resetRoom({commit}) {
+        commit("resetState");
+    }
+
 };
 
 const mutations = {
@@ -177,8 +186,10 @@ const mutations = {
     resetTable: (state) => {
         state.filteredRooms = state.rooms;
         state.availableTimes = null;
+    },
+    resetState(state) {
+        Object.assign(state, getDefaultState());
     }
-    
 };
 
 

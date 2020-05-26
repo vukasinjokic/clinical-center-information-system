@@ -1,8 +1,12 @@
 import Vue from 'vue';
 
-const state = {
-    doctors: []
+const getDefaultState = () => {
+    return {
+        doctors: []    
+    }
 };
+
+const state = getDefaultState();
 
 const getters = {
     getDoctors: (state) => state.doctors
@@ -19,12 +23,19 @@ const actions = {
 
     doctorsSetter({commit}, doctors) {
         commit('setDoctors', doctors);
-    }
+    },
     
+    resetDoctors({commit}) {
+        commit("resetState");
+    }
 };
 
 const mutations = {
-    setDoctors: (state, doctors) => state.doctors = doctors
+    setDoctors: (state, doctors) => state.doctors = doctors,
+
+    resetState(state) {
+        Object.assign(state, getDefaultState());
+    }
 };
 
 const namespaced = true;
