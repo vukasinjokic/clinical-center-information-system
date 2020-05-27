@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
-    List<Doctor> findByExaminationTypeName(String name);
+    List<Doctor> findByExaminationTypeId(Integer id);
     Doctor findByEmail(String email);
 
     @Query("SELECT doctor FROM Doctor doctor JOIN FETCH doctor.clinic WHERE doctor.email = (:email)")

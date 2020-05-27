@@ -39,7 +39,7 @@ public class AppointmentService {
     public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
         ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date date = formatter.parse(appointmentDTO.getDate());
         //apointmentDTO sada ima doctorDTO i tu treba izmena
         Doctor getDoctor = doctorRepository.findByEmail(appointmentDTO.getDoctor().getEmail());
@@ -47,8 +47,7 @@ public class AppointmentService {
         String room_number = appointmentDTO.getRoom().substring(room_len - 3, room_len);
         Room getRoom = roomRepository.findByNumber(room_number);
         Optional<Clinic> getClinic = clinicRepository.findById(user.getClinic().getId());
-        ExaminationType getType = examinationTypeRepository.findByName(appointmentDTO.getExaminationType());
-
+        ExaminationType getType = examinationTypeRepository.findById(Integer.parseInt(appointmentDTO.getExaminationType())).get();
 //        if(!appointmentValidation.validateDoctor(getDoctor.getId(),date,getType))
 //            return null;
         if(!validateRoom(date, getType.getDuration(), getRoom))
@@ -57,9 +56,15 @@ public class AppointmentService {
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {
             getRoom.getCalendar().getEventStartDates().add(date);
-            getRoom.getCalendar().getEventEndDates().add(new Date(date.getTime()+ (int) getType.getDuration()));
+            int duration = Math.round(getType.getDuration()*1000*3600);
+            getRoom.getCalendar().getEventEndDates().add(new Date(date.getTime()+ duration));
             getRoom.getCalendar().getEventNames().add(getType.getName());
-            appointment_to_add = new Appointment(date, appointmentDTO.getPrice(), 0, getDoctor, getRoom, getType, getClinic.get());
+            //Sta ako klinika nema cenovnik
+            float price = getClinic.get().getPriceList().getItems().stream()
+                    .filter(item -> item.getExaminationType().getId() == getType.getId())
+                    .findAny().get().getPrice();
+
+            appointment_to_add = new Appointment(date, price, 0, getDoctor, getRoom, getType, getClinic.get());
 //            getRoom.addAppointment(appointment_to_add);
             appointmentRepository.save(appointment_to_add);
             return appointment_to_add;
@@ -69,15 +74,14 @@ public class AppointmentService {
     }
 
     public boolean validateRoom(Date startDate, float duration, Room room){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        int d = (int) duration;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        int d = (int) duration*3600*1000;
         Date endDate = new Date(startDate.getTime()+d);
         if(room.getCalendar().getEventStartDates() == null){
             room.getCalendar().setEventStartDates(new ArrayList<Date>());
             room.getCalendar().setEventEndDates(new ArrayList<Date>());
             return true;
         }
-
         //pair(start, end);
         List<Pair<Date,Date>> check_dates_list = room.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
         int index = 0;
@@ -91,9 +95,17 @@ public class AppointmentService {
                             index = i;
                             return true;
                         }
-                    }
+                    }else{
+                        continue;
+                }
                 }else{
-                    return true;
+                    if(startDate.after(check_dates_list.get(i).getKey())){
+                        if(startDate.after(check_dates_list.get(i).getValue()))
+                            return true;
+                    }else{ //before
+                        if(endDate.before(check_dates_list.get(i).getKey()))
+                            return true;
+                    }
                 }
             }else if(startDate.before(check_dates_list.get(i).getKey())){
                 if(endDate.before(check_dates_list.get(i).getKey()))

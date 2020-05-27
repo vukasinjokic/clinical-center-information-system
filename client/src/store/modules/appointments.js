@@ -30,8 +30,8 @@ const getters = {
         state.examinationTypes.forEach(type => names.push(type.name));
         return names;
     },
-    getTypeDuration: (state) => (name) => {
-        return state.examinationTypes.find(type => type.name == name);
+    getTypeDuration: (state) => (id) => {
+        return state.examinationTypes.find(type => type.id == id);
     },
     getDoctors: (state) => {
         var doctorsEmail = [];
@@ -59,9 +59,14 @@ const actions = {
         commit('setDoctors',response.data);
     },
     async saveAppointment({commit}, appo){
-        const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
-        commit('newApp', response.data);
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
+            commit('newApp', response.data);
+        }catch(error){
+            alert(error.response.status);
+        }
     },
+   
 
     resetAppointments({commit}) {
         commit("resetState");

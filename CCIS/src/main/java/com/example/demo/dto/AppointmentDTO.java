@@ -76,8 +76,12 @@ public class AppointmentDTO {
         this.clinic = clinic.getName();
     }
 
+    public void setTime(String time){
+        this.time = time;
+    }
+
     public void setTime(Date time){
-        this.time = new SimpleDateFormat("dd-MM-yyyy hh:mm").format(time);
+        this.time = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(time);
     }
 
     public String getClinic() {

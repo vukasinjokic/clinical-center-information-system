@@ -59,6 +59,8 @@ public class DoctorDTO {
     }
 
     public void setClinicId(Clinic clinic) {
+        if(clinic.getId() == null)
+            return;
         this.clinicId = clinic.getId().toString();
     }
 
