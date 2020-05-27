@@ -16,7 +16,9 @@ const getters = {
 
 const actions = {
     async fetchPatients({commit, rootState}) {
-        var email = rootState.userDetails.user.email; // kaze da je email=""
+        console.log(rootState);
+        var email = localStorage.getItem("user_email");
+        // var email = rootState.userDetails.user.email; // kaze da je email=""
         console.log(email);
         const response = await Vue.$axios.get('http://localhost:8081/patients/getPatients/' + email);
         commit('setPatients', response.data);

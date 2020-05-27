@@ -88,12 +88,15 @@ const actions = {
         commit('setAvailableTimes', availableTimes);        
     },
 
-    async handleReservation({commit}, payload){
+    async handleReservation({dispatch, commit}, payload){
         
-        const response = await Vue.$axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload);
-        
-        console.log(commit);
-        console.log(response);
+        await Vue.$axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload);
+        const response = await Vue.$axios.get("http://localhost:8081/rooms/getRoom/" +  payload.room.id);
+        commit('updatedRoom', response.data);
+        dispatch('appointmentRequests/deleteRequest',  payload.requestId, {root : true});
+        commit('resetTable');
+
+
 
     },
 
@@ -180,6 +183,10 @@ const mutations = {
         Object.assign(state.rooms[index], room);
     },
 
+    resetTable: (state) => {
+        state.filteredRooms = state.rooms;
+        state.availableTimes = null;
+    },
     resetState(state) {
         Object.assign(state, getDefaultState());
     }

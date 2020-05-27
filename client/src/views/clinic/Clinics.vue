@@ -184,7 +184,7 @@ export default {
 
                                     if (this.chosenExamination === "") {
                                         examinationType = doctor.examinationType;
-                                        hours = examinationType.duration/3600000;
+                                        hours = examinationType.duration;
                                     } else {
                                         examinationType = this.getTypes().filter(examination => {
                                             return examination.name.match(this.chosenExamination);

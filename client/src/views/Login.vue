@@ -58,14 +58,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { mapActions, mapGetters } from 'vuex';
-
+import Vue from 'vue';
   export default {
     name: "Login",
     computed: {
-        ...mapGetters('userDetails',['getRole']),
-
         requiredRule(){
             return (value) => !!value || "Required.";
         },
@@ -82,19 +78,23 @@ import { mapActions, mapGetters } from 'vuex';
        } 
     },
     methods:{
-        ...mapActions("userDetails", ["logIn"]),
 
         submit(){
           if(this.$refs.form.validate()){
-            axios
+            Vue.$axios
             .post('http://localhost:8081/auth/login', this.user)
             .then(response =>{
                 if(response.data){
-                    this.logIn(response.data);
+                    localStorage.setItem('JWT', response.data.accessToken);
+                    localStorage.setItem('Duration', response.data.expiresIn);
+                    localStorage.setItem('user_email', response.data.email);
+                    localStorage.setItem('user_role', response.data.authorities[0]);
+                    Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
                     alert("Uspesno logovanje");
-                    if(this.getRole == "ROLE_DOCTOR"){
+
+                    if(localStorage.getItem("user_role") == "ROLE_DOCTOR"){
                       this.$router.push('doctor');
-                    }else if(this.getRole == "ROLE_CLINIC_ADMIN"){
+                    }else if(localStorage.getItem("user_role") == "ROLE_CLINIC_ADMIN"){
                       this.$router.push('clinicAdmin');
                     }else{
                       this.$router.push('home');
