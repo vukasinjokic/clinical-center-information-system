@@ -3,7 +3,6 @@ import Vue from 'vue';
 import appointments from './modules/appointments';
 import room from './modules/room';
 import clinics from './modules/clinics.js';
-import userDetails from './modules/userDetails.js';
 import patient from './modules/patient'
 import examination_type from './modules/examination_type'
 import doctors from './modules/doctors';
@@ -22,7 +21,6 @@ const store = new Vuex.Store({
         appointments,
         room,
         clinics,
-        userDetails,
         patient,
         examination_type,
         doctors,
@@ -47,11 +45,11 @@ const store = new Vuex.Store({
             this.dispatch("examination_type/resetExaminationType");
             this.dispatch("patient/resetPatient");
             this.dispatch("room/resetRoom");
-            this.dispatch("userDetails/resetUserDetails");
             this.dispatch("userProfile/resetUserProfile");
 
             localStorage.clear();
             sessionStorage.clear();
+            Vue.$axios.defaults.headers['Authorization'] = "Bearer null";
         }
     }
 });

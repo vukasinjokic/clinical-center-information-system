@@ -810,6 +810,9 @@ values                           (0.0,       1000.0,  '2020-05-11 10:00:00',   '
 
 insert into appointment_requests ( app_req_type,  patient_id, predef_appointment_id)
 values                           (   'PATIENT',             23,              1);
+
+insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
+values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   'DOCTOR',    17,          23,              null);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

@@ -20,10 +20,73 @@ import DoctorReview from '../components/doctor/DoctorReview';
 import ClinicProfile from '../components/ClinicProfile';
 
 import NursePage from '../views/NursePage'
-
+import Unauthorized from "../views/Unauthorized"
+import NotFound from "../views/NotFound"
 
 
 Vue.use(VueRouter);
+
+// TODO: Ovo iskoristiti kada se napravi stranica za administratora klinickog centra
+// const isClinicCenterAdmin = (to, from, next) => {
+//     if (localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN") {
+//       next();
+//       return;
+//     }
+//     next({
+//       name: "Unauthorized"
+//     })
+// };
+
+const isClinicAdmin = (to, from, next) => {
+  if (localStorage.getItem("user_role") === "ROLE_CLINIC_ADMIN") {
+    next();
+    return;
+  }
+  next({
+    name: "Unauthorized"
+  })
+};
+
+const isDoctor = (to, from, next) => {
+  if (localStorage.getItem("user_role") === "ROLE_DOCTOR") {
+    next();
+    return;
+  }
+  next({
+    name: "Unauthorized"
+  })
+};
+
+const isNurse = (to, from, next) => {
+  if (localStorage.getItem("user_role") === "ROLE_NURSE") {
+    next();
+    return;
+  }
+  next({
+    name: "Unauthorized"
+  })
+};
+
+// TODO: Ovo iskoristiti kada se napravi stranica za administratora klinickog centra
+// const isPatient = (to, from, next) => {
+//     if (localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN") {
+//       next();
+//       return;
+//     }
+//     next({
+//       name: "Unauthorized"
+//     })
+// };
+
+const isLogOut = (to, from, next) => {
+    if (!localStorage.getItem("user_role")) {
+      next();
+      return;
+    }
+    next({
+      name: "Unauthorized"
+    })
+};
 
 const router = new VueRouter({
     mode : 'hash',
@@ -31,12 +94,14 @@ const router = new VueRouter({
       {
         path: '/',
         name: Login,
-        component: Login
+        component: Login,
+        beforeEnter: isLogOut
       },
       {
         path: '/register',
         name: "Register",
-        component: Register
+        component: Register,
+        beforeEnter: isLogOut
       },
       
       
@@ -46,6 +111,7 @@ const router = new VueRouter({
         path: '/doctor',
         name: 'DoctorPage',
         component: DoctorPage,
+        beforeEnter: isDoctor,
         children: [
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
@@ -58,6 +124,7 @@ const router = new VueRouter({
         path: '/nurse',
         name: 'NursePage',
         component: NursePage,
+        beforeEnter: isNurse,
         children: [
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
@@ -69,6 +136,7 @@ const router = new VueRouter({
         path: '/clinicAdmin',
         name: 'ClinicAdminPage',
         component: ClinicAdminPage,
+        beforeEnter: isClinicAdmin,
         children: [
           {path: 'appointmentRequests', name: 'AppointmentRequests', component: AppointmentRequests},
           {path: 'vacationRequests', name: 'Vacation Requests', component: VacationReqReview },
@@ -88,6 +156,19 @@ const router = new VueRouter({
         path: '/doctors',
         name: 'Doctors',
         component: Doctors
+      },
+
+      {
+        path: "/401",
+        name: "Unauthorized",
+        component: Unauthorized
+      },
+
+      {
+        path: "/404",
+        alias: "*",
+        name: "NotFound",
+        component: NotFound
       }
     ]
   })

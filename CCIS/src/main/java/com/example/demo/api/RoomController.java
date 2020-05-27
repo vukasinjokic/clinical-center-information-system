@@ -70,6 +70,16 @@ public class RoomController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/getRoom/{room_id}")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN')")
+    public ResponseEntity<RoomDTO> getRoom(@PathVariable Integer room_id){
+        Room room = roomService.getRoom(room_id);
+        if(room != null){
+            return new ResponseEntity<RoomDTO>(convertToDTO(room),HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     private RoomDTO convertToDTO(Room room){
         RoomDTO roomDTO = modelMapper.map(room, RoomDTO.class);
         roomDTO.setDtoFields(room);

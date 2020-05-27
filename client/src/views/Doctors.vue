@@ -168,7 +168,7 @@ export default {
 
         setAppointments(doctor) { 
             doctor["freeAppointments"] = [];
-            var durationMiliseconds = doctor.examinationType.duration;
+            var durationMiliseconds = doctor.examinationType.duration * 3600000;
             var selectedDate = new Date(this.filterDate);
             selectedDate.setHours(7,0,0,0);
 
@@ -290,7 +290,7 @@ export default {
 
                                 if (this.filterType === "") {
                                     examinationType = doctor.examinationType;
-                                    hours = examinationType.duration/3600000;
+                                    hours = examinationType.duration;
                                 } else {
                                     examinationType = this.getTypes().filter(examination => {
                                         return examination.name.match(this.filterType);

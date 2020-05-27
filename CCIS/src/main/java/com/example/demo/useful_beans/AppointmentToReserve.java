@@ -9,16 +9,16 @@ import java.util.List;
 
 public class AppointmentToReserve {
     public List<DoctorDTO> doctors;
-    public AppointmentRequestDTO request;
+    public Integer requestId;
     public Date reservedTime;
     public RoomDTO room;
 
     public AppointmentToReserve() {
     }
 
-    public AppointmentToReserve(List<DoctorDTO> doctors, AppointmentRequestDTO request, Date reservedTime, RoomDTO room) {
+    public AppointmentToReserve(List<DoctorDTO> doctors, Integer request, Date reservedTime, RoomDTO room) {
         this.doctors = doctors;
-        this.request = request;
+        this.requestId = request;
         this.reservedTime = reservedTime;
         this.room = room;
     }
@@ -31,12 +31,12 @@ public class AppointmentToReserve {
         this.doctors = doctors;
     }
 
-    public AppointmentRequestDTO getRequest() {
-        return request;
+    public Integer getRequestId() {
+        return requestId;
     }
 
-    public void setRequest(AppointmentRequestDTO request) {
-        this.request = request;
+    public void setRequestId(Integer request) {
+        this.requestId = request;
     }
 
     public Date getReservedTime() {
