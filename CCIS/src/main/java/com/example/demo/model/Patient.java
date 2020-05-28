@@ -31,11 +31,11 @@ public class Patient extends User {
       this.appointments = new HashSet<Appointment>();
    }
 
-   public Collection<Appointment> getAppointment() {
+   public Collection<Appointment> getAppointments() {
       return appointments;
    }
 
-   public void setAppointment(Collection<Appointment> appointments) {
+   public void setAppointments(Collection<Appointment> appointments) {
       this.appointments = appointments;
    }
 

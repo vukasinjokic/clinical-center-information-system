@@ -522,6 +522,29 @@ insert into event_names (calendar_id, event_names) values (23, 'Operacija');
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------ Inserting calendar appointment ids -----------------------------------------------------
+insert into appointment_ids (calendar_id, appointment_id) values (7, 1);
+insert into appointment_ids (calendar_id, appointment_id) values (7, 2);
+insert into appointment_ids (calendar_id, appointment_id) values (7, 3);
+
+insert into appointment_ids (calendar_id, appointment_id) values (8, 4);
+insert into appointment_ids (calendar_id, appointment_id) values (8, 5);
+
+insert into appointment_ids (calendar_id, appointment_id) values (9, 6);
+insert into appointment_ids (calendar_id, appointment_id) values (9, 7);
+
+insert into appointment_ids (calendar_id, appointment_id) values (10, 8);
+insert into appointment_ids (calendar_id, appointment_id) values (10, 9);
+
+insert into appointment_ids (calendar_id, appointment_id) values (11, 10);
+insert into appointment_ids (calendar_id, appointment_id) values (11, 11);
+
+insert into appointment_ids (calendar_id, appointment_id) values (12, 12);
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting nursers -----------------------------------------------------------
 insert into nurses			-- id = 10
 (id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
@@ -697,54 +720,54 @@ insert into appointments			-- id = 1
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-01 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 			1);
 
-insert into appointments			-- id = 1
+insert into appointments			-- id = 2
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-01 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 			1);
 
-insert into appointments			-- id = 2
+insert into appointments			-- id = 3
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 			1);
 
-insert into appointments			-- id = 3
+insert into appointments			-- id = 4
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 			1);
 
-insert into appointments			-- id = 4
+insert into appointments			-- id = 5
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				1);
 
 
 
 
-insert into appointments			-- id = 5
+insert into appointments			-- id = 6
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 			2);
 
-insert into appointments			-- id = 6
+insert into appointments			-- id = 7
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 		2);
 
 
-insert into appointments			-- id = 7
+insert into appointments			-- id = 8
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 			2);
 
-insert into appointments			-- id = 8
+insert into appointments			-- id = 9
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 			2);
 
 
 
 
-insert into appointments			-- id = 9
+insert into appointments			-- id = 10
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 			3);
 
-insert into appointments			-- id = 10
+insert into appointments			-- id = 11
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 			3);
 
-insert into appointments			-- id = 11
+insert into appointments			-- id = 12
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
 values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3);
 
@@ -806,6 +829,15 @@ values                           (   'PATIENT',             23,              1);
 
 insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
 values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   'DOCTOR',    17,          23,              null);
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------- Inserting prescriptions-------------------------------------------------------
+insert into prescriptions( is_verified) values ('F');
+insert into prescriptions( is_verified) values ('F');
+
+insert into prescriptions_contents(prescription_id, description, medication) values (1, '10mg dnevno', 'Daktanol');
+insert into prescriptions_contents(prescription_id, description, medication) values (2, '100mg svaki drugi dan', 'Omeprol');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

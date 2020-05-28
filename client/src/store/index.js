@@ -11,6 +11,7 @@ import doctor from './modules/doctor'
 import appointmentRequests from './modules/appointmentRequests'
 import userProfile from './modules/userProfile'
 import clinicAdmin from './modules/clinicAdmin'
+import startAppointment from './modules/startAppointment'
 
 // load vuex
 Vue.use(Vuex);
@@ -28,7 +29,8 @@ const store = new Vuex.Store({
         doctor,
         appointmentRequests,
         userProfile,
-        clinicAdmin
+        clinicAdmin,
+        startAppointment
     },
 
     actions: {
@@ -47,6 +49,8 @@ const store = new Vuex.Store({
             this.dispatch("room/resetRoom");
             this.dispatch("userDetails/resetUserDetails");
             this.dispatch("userProfile/resetUserProfile");
+
+            this.dispatch("startAppointment/resetAppointment")
 
             localStorage.clear();
             sessionStorage.clear();

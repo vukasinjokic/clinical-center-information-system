@@ -17,6 +17,7 @@ import ClinicAdminPage from '../views/ClinicAdminPage'
 import AppointmentRequests from '../components/AppointmentRequests'
 import ScheduleAppointment from '../components/ScheduleAppointment'
 import NursePage from '../views/NursePage'
+import StartAppointment from '../components/StartAppointment'
 
 
 Vue.use(VueRouter);
@@ -47,7 +48,8 @@ const router = new VueRouter({
             {path: 'profile', name: 'UserProfile', component: UserProfile},
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
-            {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment}
+            {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment},
+            {path: 'startAppointment', name: 'startAppointment', component: StartAppointment, props : true}
         ]
       },
       {

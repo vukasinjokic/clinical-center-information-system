@@ -84,6 +84,15 @@ public class AppointmentController {
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/getAppointment/{id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<AppointmentDTO> getAppointment(@PathVariable("id") Integer id){
+        Appointment appointment = appointmentService.getAppointment(id);
+        if(appointment == null){return new ResponseEntity<>(HttpStatus.NOT_FOUND);};
+        return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.OK);
+
+    }
+
     public AppointmentDTO convertToDTO(Appointment appointment){
         AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);
         appointmentDTO.setFields(appointment);

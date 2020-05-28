@@ -36,6 +36,10 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
+    public Appointment getAppointment(Integer id){
+        return appointmentRepository.findById(id).get();
+    }
+
     public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
         ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
