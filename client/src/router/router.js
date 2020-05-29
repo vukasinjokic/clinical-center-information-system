@@ -18,7 +18,7 @@ import AppointmentRequests from '../components/AppointmentRequests'
 import ScheduleAppointment from '../components/ScheduleAppointment';
 import DoctorReview from '../components/doctor/DoctorReview';
 import ClinicProfile from '../components/ClinicProfile';
-
+import ChangePassword from '../components/ChangePassword';
 import NursePage from '../views/NursePage'
 import Unauthorized from "../views/Unauthorized"
 import NotFound from "../views/NotFound"
@@ -49,12 +49,24 @@ const isClinicAdmin = (to, from, next) => {
 
 const isDoctor = (to, from, next) => {
   if (localStorage.getItem("user_role") === "ROLE_DOCTOR") {
-    next();
-    return;
+    if(localStorage.getItem("is_password_changed") == 'true'){
+      next();
+      return;
+    }else{
+      if(from.path === '/'){
+        next({path: '/change-password'});
+        return;
+      }else{
+        next();
+      }
+    }
+    
   }
-  next({
-    name: "Unauthorized"
-  })
+  else{
+    next({
+      name: "Unauthorized"
+    })
+  }
 };
 
 const isNurse = (to, from, next) => {
@@ -104,9 +116,6 @@ const router = new VueRouter({
         beforeEnter: isLogOut
       },
       
-      
-     
-     
       {
         path: '/doctor',
         name: 'DoctorPage',
@@ -156,6 +165,11 @@ const router = new VueRouter({
         path: '/doctors',
         name: 'Doctors',
         component: Doctors
+      },
+      {
+        path: '/change-password',
+        name: 'ChangePassword',
+        component: ChangePassword
       },
 
       {

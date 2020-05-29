@@ -110,6 +110,12 @@ public class Calendar {
     }
 
     private void addEvent(Date startDate, Date endDate, String eventName){
+        if(eventStartDates.size() == 0){
+            eventStartDates.add(startDate);
+            eventEndDates.add(endDate);
+            eventNames.add(eventName);
+            return;
+        }
         if(startDate.after(eventStartDates.get(eventStartDates.size() - 1))){
             eventStartDates.add(startDate);
             eventEndDates.add(endDate);

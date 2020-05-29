@@ -4,6 +4,7 @@ import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.*;
 import com.example.demo.validation.AppointmentValidation;
+import com.example.demo.validation.DoctorValidation;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +31,7 @@ public class AppointmentService {
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
 
-    private AppointmentValidation appointmentValidation;
+    private DoctorValidation doctorValidation = new DoctorValidation();
 
     public List<Appointment> getAllAppointments(){
         return appointmentRepository.findAll();
@@ -39,7 +40,7 @@ public class AppointmentService {
     public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
         ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = formatter.parse(appointmentDTO.getDate());
         //apointmentDTO sada ima doctorDTO i tu treba izmena
         Doctor getDoctor = doctorRepository.findByEmail(appointmentDTO.getDoctor().getEmail());
@@ -48,28 +49,25 @@ public class AppointmentService {
         Room getRoom = roomRepository.findByNumber(room_number);
         Optional<Clinic> getClinic = clinicRepository.findById(user.getClinic().getId());
         ExaminationType getType = examinationTypeRepository.findById(Integer.parseInt(appointmentDTO.getExaminationType())).get();
-//        if(!appointmentValidation.validateDoctor(getDoctor.getId(),date,getType))
-//            return null;
+
+        if(!doctorValidation.validateDoctorBusy(date, getType.getDuration(),getDoctor))
+            return null;
         if(!validateRoom(date, getType.getDuration(), getRoom))
             return null;
 
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {
-            getRoom.getCalendar().getEventStartDates().add(date);
-            int duration = Math.round(getType.getDuration()*1000*3600);
-            getRoom.getCalendar().getEventEndDates().add(new Date(date.getTime()+ duration));
-            getRoom.getCalendar().getEventNames().add(getType.getName());
-            //Sta ako klinika nema cenovnik
+            //Sta ako klinika nema cenovnik (vratimo bad request)
             float price = getClinic.get().getPriceList().getItems().stream()
                     .filter(item -> item.getExaminationType().getId() == getType.getId())
                     .findAny().get().getPrice();
 
             appointment_to_add = new Appointment(date, price, 0, getDoctor, getRoom, getType, getClinic.get());
-//            getRoom.addAppointment(appointment_to_add);
+            getRoom.addAppointment(appointment_to_add);
+            getDoctor.addAppointment(appointment_to_add);
             appointmentRepository.save(appointment_to_add);
             return appointment_to_add;
         }
-
         return null;
     }
 
@@ -82,17 +80,16 @@ public class AppointmentService {
             room.getCalendar().setEventEndDates(new ArrayList<Date>());
             return true;
         }
-        //pair(start, end);
         List<Pair<Date,Date>> check_dates_list = room.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
-        int index = 0;
         if(check_dates_list == null)
             return true;
         for(int i = 0; i< check_dates_list.size(); i++){
             if(startDate.after(check_dates_list.get(i).getKey())){
+                if(startDate.before(check_dates_list.get(i).getValue()))
+                    return false;
                 if(i < check_dates_list.size()-1){
                     if(startDate.before(check_dates_list.get(i+1).getKey()) && startDate.after(check_dates_list.get(i).getValue())){
                         if(endDate.before(check_dates_list.get(i+1).getKey())){
-                            index = i;
                             return true;
                         }
                     }else{
@@ -110,9 +107,10 @@ public class AppointmentService {
             }else if(startDate.before(check_dates_list.get(i).getKey())){
                 if(endDate.before(check_dates_list.get(i).getKey()))
                     return true;
+                else
+                    return false;
             }
         }
-
         return false;
     }
 

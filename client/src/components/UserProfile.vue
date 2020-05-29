@@ -48,7 +48,6 @@
         </v-card>
         <v-spacer/>
         <EditProfile></EditProfile>
-        <ChangePassword></ChangePassword>
         
         </div>
 </template>
@@ -56,11 +55,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import EditProfile from './EditProfile'
-import ChangePassword from './ChangePassword'
 
 export default {
     name:'UserProfile',
-    components: {EditProfile, ChangePassword},
+    components: {EditProfile},
     data(){
         return{
            

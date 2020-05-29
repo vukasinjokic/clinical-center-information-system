@@ -89,6 +89,7 @@ import Vue from 'vue';
                     localStorage.setItem('Duration', response.data.expiresIn);
                     localStorage.setItem('user_email', response.data.email);
                     localStorage.setItem('user_role', response.data.authorities[0]);
+                    localStorage.setItem('is_password_changed', response.data.passwordChanged);
                     Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
                     alert("Uspesno logovanje");
 

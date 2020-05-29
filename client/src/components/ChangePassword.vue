@@ -1,9 +1,6 @@
 <template>
     <v-row justify="center">
-        <v-dialog v-model="dialogPass" persistent max-width="350px">
-            <template v-slot:activator="{ on }">
-                <v-btn  v-on="on" @click="changePass" dark >Change password</v-btn>
-            </template>
+        
             <v-card>
                 <v-card-title>
                     <v-toolbar height="45px" color="orange lighten-1" class="white--text">
@@ -42,7 +39,7 @@
                 </v-card-actions>
 
             </v-card>
-        </v-dialog>
+     
     </v-row>
 </template>
 
@@ -57,7 +54,11 @@ export default {
             confirmPass: ""
         }
     },
+    created(){
+        this.fetchUserProf();
+    },
     computed: {
+        //mora da se fetchujeee
         ...mapGetters('userProfile', ['getUserProf']),
 
         passwordMatch(){
@@ -69,7 +70,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('userProfile',['changePassword']),
+        ...mapActions('userProfile',['changePassword','fetchUserProf']),
 
         closeDialog(){
             this.dialogPass = false;
@@ -82,7 +83,11 @@ export default {
                     old : this.oldPass,
                     new_pass : this.newPass
                 }
-                this.changePassword(passForm);
+                this.changePassword(passForm)
+                    .then(() => {
+                        this.$router.push('/doctor')
+                    .catch(() => {}); // https://github.com/vuejs/vue-router/issues/2881#issuecomment-520554378
+                    });
 
                 this.closeDialog();
             }

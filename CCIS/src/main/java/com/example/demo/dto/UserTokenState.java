@@ -9,17 +9,19 @@ public class UserTokenState {
 
     private List<String> authorities;
     private String email;
+    private boolean isPasswordChanged;
 
     public UserTokenState() {
         this.accessToken = null;
         this.expiresIn = null;
     }
 
-    public UserTokenState(String accessToken, long expiresIn, List<String> authorities, String email) {
+    public UserTokenState(String accessToken, long expiresIn, List<String> authorities, String email, boolean isPasswordChanged) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.authorities = authorities;
         this.email = email;
+        this.isPasswordChanged = isPasswordChanged;
     }
 
     public String getAccessToken() {
@@ -52,5 +54,13 @@ public class UserTokenState {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isPasswordChanged() {
+        return isPasswordChanged;
+    }
+
+    public void setPasswordChanged(boolean passwordChanged) {
+        isPasswordChanged = passwordChanged;
     }
 }

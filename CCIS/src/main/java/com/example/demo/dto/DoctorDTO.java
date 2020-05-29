@@ -26,6 +26,7 @@ public class DoctorDTO {
     private String clinicId;
     private String username;
     private String rating;
+    private Boolean passwordChanged;
     private BusinessHoursDTO businessHours;
     private ExaminationType examinationType;
     private Collection<AppointmentDTO> appointments;
@@ -195,4 +196,15 @@ public class DoctorDTO {
     public void setAppointments(Collection<AppointmentDTO> appointments) {
         this.appointments = appointments;
     }
+
+
+    public Boolean isPasswordChanged() {
+        return this.passwordChanged;
+    }
+
+    public void setPasswordChanged(Boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
+    }
 }
+
+

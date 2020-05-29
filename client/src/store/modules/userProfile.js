@@ -25,11 +25,17 @@ const actions = {
         try{
             await Vue.$axios.post('http://localhost:8081/auth/changePassword', passForm);
             commit('alertPasswordChange', "Successfully.");
+            //promeni localstorage.
+  
         }catch(error){
             console.log(error);
             commit('alertPasswordChange', "Netacan stari password");
         }
     },
+    // changeRoute({commit}){
+    //     //this.$router.push('doctor');
+    //     commit('alertPasswordChange',"DObrodosli")
+    // },
 
     resetUserProfile({commit}) {
         commit("resetState");

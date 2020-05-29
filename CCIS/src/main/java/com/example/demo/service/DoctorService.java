@@ -87,6 +87,7 @@ public class DoctorService {
 
         Doctor newDoctor = new Doctor();
 
+        //businessHours u novu funkciju
         BusinessHours businessHours = new BusinessHours();
         LocalTime startTime = LocalTime.parse(doctorDTO.getBusinessHours().getStarted());
         businessHours.setStarted(Time.valueOf(startTime));
@@ -94,7 +95,16 @@ public class DoctorService {
         businessHours.setEnded(Time.valueOf(endTime));
         Optional<ExaminationType> examinationType = examinationTypeRepository.findById(doctorDTO.getExaminationType().getId());
 
+        setDoctorFields(newDoctor, doctorDTO);
+
         businessHoursRepository.save(businessHours); //videcemo da pretrazimo postojece pa dodelimo
+        newDoctor.setBusinessHours(businessHours);
+        newDoctor.setClinic(admin.getClinic());
+        newDoctor.setExaminationType(examinationType.get());
+        return doctorRepository.save(newDoctor);
+    }
+
+    private void setDoctorFields(Doctor newDoctor, DoctorDTO doctorDTO){
         newDoctor.setUsername(doctorDTO.getEmail());
         newDoctor.setEmail(doctorDTO.getEmail());
         newDoctor.setPassword(doctorDTO.getPassword());
@@ -104,11 +114,7 @@ public class DoctorService {
         newDoctor.setSocialSecurityNumber(doctorDTO.getSocialSecurityNumber());
         newDoctor.setCity(doctorDTO.getCity());
         newDoctor.setAddress(doctorDTO.getAddress());
-        newDoctor.setBusinessHours(businessHours);
-        newDoctor.setClinic(admin.getClinic());
         newDoctor.setCountry(doctorDTO.getCountry());
-        newDoctor.setExaminationType(examinationType.get());
-        return doctorRepository.save(newDoctor);
     }
 
     public boolean sendRequest(MedicalStaffRequest request){
@@ -134,6 +140,9 @@ public class DoctorService {
         Patient patient = patientRepository.findByEmail(appointmentDTO.getPatient());
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
 
+        Date startDate = formatter.parse(appointmentDTO.getDate());
+//        if(!doctorValidation.validateDoctorBusy(startDate,))
+
         if(patient == null)
             return false;
 
@@ -144,7 +153,6 @@ public class DoctorService {
         request.setType(AppointmentRequest.AppointmentReqType.DOCTOR);
 
         Doctor get_doctor_clinic = doctorRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
-
         get_doctor_clinic.getClinic().getAppointmentRequests().add(request);
 
         clinicRepository.save(get_doctor_clinic.getClinic());
