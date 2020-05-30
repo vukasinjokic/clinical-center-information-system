@@ -51,6 +51,10 @@ public class DoctorValidation {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         int d = (int) duration*3600*1000;
         Date endDate = new Date(startDate.getTime()+d);
+
+        if(isDoctorOnVacation(doctor,startDate,endDate))
+            return false;
+
         if(doctor.getCalendar().getEventStartDates() == null){
             doctor.getCalendar().setEventStartDates(new ArrayList<Date>());
             doctor.getCalendar().setEventEndDates(new ArrayList<Date>());
@@ -100,4 +104,14 @@ public class DoctorValidation {
         return true;
     }
 
+    public boolean isDoctorOnVacation(Doctor doctor, Date start, Date end){
+        if(doctor.getCalendar().getVacationDates().size() != 0){
+            Date startVacation = doctor.getCalendar().getVacationDates().get(0);
+            Date endVacation = doctor.getCalendar().getVacationDates().get(1);
+            if(start.after(startVacation) && start.before(endVacation))
+                return true;
+        }
+
+        return false;
+    }
 }

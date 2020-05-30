@@ -21,6 +21,11 @@ public class Calendar {
     private Integer id;
 
     @ElementCollection
+    @CollectionTable(name = "vataction_dates", joinColumns = @JoinColumn(name = "calendar_id"))
+    @Column(name = "vacation_dates")
+    private List<Date> vacationDates;
+
+    @ElementCollection
     @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"))
     @Column(name = "event_start_dates")
     private List<Date> eventStartDates;
@@ -96,6 +101,14 @@ public class Calendar {
         this.eventNames = eventNames;
     }
 
+    public List<Date> getVacationDates() {
+        return vacationDates;
+    }
+
+    public void setVacationDates(List<Date> vacationDates) {
+        this.vacationDates = vacationDates;
+    }
+
     public void addAppointment(Appointment appointment){
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -107,6 +120,11 @@ public class Calendar {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addVacationDates(MedicalStaffRequest medicalStaffRequest){
+        this.getVacationDates().add(medicalStaffRequest.getFromDate());
+        this.getVacationDates().add(medicalStaffRequest.getToDate());
     }
 
     private void addEvent(Date startDate, Date endDate, String eventName){

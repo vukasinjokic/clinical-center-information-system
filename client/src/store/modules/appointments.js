@@ -63,7 +63,7 @@ const actions = {
             const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
             commit('newApp', response.data);
         }catch(error){
-            alert("Doktor ili soba su zauzeti u zadato vreme.");
+            alert("Doktor ili soba su zauzeti u zadato vreme."); // moze i da je doktor na odmoru
         }
     },
    

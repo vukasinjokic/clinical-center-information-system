@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-container style="width:60%">
+        <v-container style="width:70%">
             <v-card>
                 <v-card-title>
                     Confirm vacation Requests

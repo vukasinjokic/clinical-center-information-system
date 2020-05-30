@@ -14,6 +14,10 @@ public abstract class MedicalStaff extends User {
    @JoinColumn(name = "clinic_id")
    private Clinic clinic;
 
+   public void addVacationDates(MedicalStaffRequest medicalStaffRequest){
+      calendar.addVacationDates(medicalStaffRequest);
+   }
+
    public MedicalStaff() {
    }
 

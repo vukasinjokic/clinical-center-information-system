@@ -90,7 +90,7 @@ export default {
                 this.changePassword(passForm)
                     .then(() => {
                         this.$router.push('/doctor')
-                    .catch(() => {}); // https://github.com/vuejs/vue-router/issues/2881#issuecomment-520554378
+                    .catch(() => {}); 
                     });
 
                 this.closeDialog();
