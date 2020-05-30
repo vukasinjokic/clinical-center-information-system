@@ -2,7 +2,8 @@ import Vue from 'vue'
 
 const getDefaultState = () => {
     return {
-        userProf: null
+        userProf: null,
+        message: ""
     }
 };
 
@@ -26,7 +27,7 @@ const actions = {
             await Vue.$axios.post('http://localhost:8081/auth/changePassword', passForm);
             commit('alertPasswordChange', "Successfully.");
             //promeni localstorage.
-  
+            localStorage.setItem('is_password_changed', true);
         }catch(error){
             console.log(error);
             commit('alertPasswordChange', "Netacan stari password");
@@ -44,7 +45,8 @@ const actions = {
 
 const mutations = {
     setUserProf: (state, user) => state.userProf = user, 
-    alertPasswordChange(message){
+    alertPasswordChange(state, message){
+        state.message = message;
         alert(message);
     },
 

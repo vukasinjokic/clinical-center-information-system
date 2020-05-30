@@ -154,6 +154,8 @@ const router = new VueRouter({
           {path: 'appointments', name: 'Appointments', component : Appointments },
           {path: 'doctors', name: 'Doctors', component : DoctorReview},
           {path: 'clinicProfile', name: 'ClinicProfile', component: ClinicProfile},
+          {path: 'profile', name: 'UserProfile', component: UserProfile},
+
         ]
       },
       {
