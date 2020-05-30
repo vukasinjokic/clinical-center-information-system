@@ -12,6 +12,7 @@ import appointmentRequests from './modules/appointmentRequests'
 import userProfile from './modules/userProfile'
 import clinicAdmin from './modules/clinicAdmin'
 import startAppointment from './modules/startAppointment'
+import calendar from './modules/calendar'
 
 // load vuex
 Vue.use(Vuex);
@@ -30,7 +31,8 @@ const store = new Vuex.Store({
         appointmentRequests,
         userProfile,
         clinicAdmin,
-        startAppointment
+        startAppointment,
+        calendar
     },
 
     actions: {
@@ -50,7 +52,8 @@ const store = new Vuex.Store({
             this.dispatch("userDetails/resetUserDetails");
             this.dispatch("userProfile/resetUserProfile");
 
-            this.dispatch("startAppointment/resetAppointment")
+            this.dispatch("startAppointment/resetAppointment");
+            this.dispatch("calendar/resetCalendar");
 
             localStorage.clear();
             sessionStorage.clear();

@@ -5,12 +5,10 @@ import com.example.demo.Repository.ExaminationTypeRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.RoomDTO;
-import com.example.demo.model.Appointment;
-import com.example.demo.model.Doctor;
-import com.example.demo.model.ExaminationType;
-import com.example.demo.model.Room;
+import com.example.demo.model.*;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.service.RoomService;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -91,6 +89,14 @@ public class AppointmentController {
         if(appointment == null){return new ResponseEntity<>(HttpStatus.NOT_FOUND);};
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.OK);
 
+    }
+
+    @GetMapping(path = "/getCodebook/{appointment_id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<CodeBook> getCodebookFromAppointmentClinic(@PathVariable("appointment_id") Integer appointment_id){
+        CodeBook codebook = appointmentService.getCodebookFromAppointmentClinic(appointment_id);
+        if(codebook == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<CodeBook>(codebook, HttpStatus.OK);
     }
 
     public AppointmentDTO convertToDTO(Appointment appointment){

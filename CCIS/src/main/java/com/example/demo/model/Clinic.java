@@ -49,7 +49,7 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Patient> patients;
 
-   @ManyToOne( fetch = LAZY, cascade = {ALL})
+   @ManyToOne( fetch = EAGER, cascade = {ALL})
    @JoinColumn(name = "code_book_id")
    private CodeBook codeBook;
 

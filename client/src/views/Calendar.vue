@@ -80,7 +80,7 @@
               <v-btn
                 text
                 color="primary"
-                @click="startAppointment"
+                @click="startAppointmentButtonClicked"
               >
                 Start appointment
               </v-btn>
@@ -94,7 +94,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions, mapGetters } from 'vuex'
+
   export default {
     data: () => ({
       type: 'month',
@@ -109,70 +110,21 @@ import axios from "axios";
         { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
       ],
       value: '',
-      events: [],
-      eventStartDates: [],
-      eventEndDates: [],
-      appointmentIds: [],
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: [],
     }),
-    created() {
-       
-        axios
-        .get("http://localhost:8081/doctors/calendar/"+localStorage.getItem('user_email'))
-        .then(response => {
-            response.data.eventStartDates.forEach(date => {
-                let eventStartDate= new Date(date)
-                let formatted_date = eventStartDate.getFullYear() + "-" + (eventStartDate.getMonth() + 1) + "-" + eventStartDate.getDate() + " " + eventStartDate.getHours() + ":" + eventStartDate.getMinutes();
-                this.eventStartDates.push(formatted_date)
-            }); 
-            response.data.eventEndDates.forEach(date => {
-                let eventEndDate= new Date(date)
-                let formatted_date = eventEndDate.getFullYear() + "-" + (eventEndDate.getMonth() + 1) + "-" + eventEndDate.getDate() + " " + eventEndDate.getHours() + ":" + eventEndDate.getMinutes();
-                this.eventEndDates.push(formatted_date)
-            }); 
-            this.names = response.data.eventNames;
-            this.appointmentIds = response.data.appointmentIds;
-            this.getEvents();
-        })
 
-
-    },
+    
     methods: {
-      startAppointment(){
-        console.log(this.selectedEvent);
-        let appointmentId = this.selectedEvent.appointmentId;
-        this.$router.replace({name:'startAppointment', params:{appointmentId}});
+      ...mapActions('calendar',['fetchCalendar','startAppointment']),
+
+      startAppointmentButtonClicked(){
+        this.startAppointment(this.selectedEvent.appointmentId);
+        this.$router.replace({name:'startAppointment'});
+
       },
-      getEvents () {
-        const events = []
-
-        // const min = new Date(`${start.date}T00:00:00`)
-        // const max = new Date(`${end.date}T23:59:59`)
-
-        for (let i = 0; i < this.names.length; i++) {
-        //   const allDay = this.rnd(0, 3) === 0
-        //   const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-        //   const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        //   const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        //   const second = new Date(first.getTime() + secondTimestamp)
-
-          events.push({
-            name: this.names[i],
-            // start: this.formatDate(first, !allDay),
-            // end: this.formatDate(second, !allDay),
-            start: this.eventStartDates[i],
-            end: this.eventEndDates[i],
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            appointmentId : this.appointmentIds[i]
-          })
-        }
-
-        this.events = events
-      },
+      
       getEventColor (event) {
         return event.color
       },
@@ -192,14 +144,18 @@ import axios from "axios";
 
         nativeEvent.stopPropagation()
       },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
+      
+    },
+    computed : {
+      ...mapGetters('calendar', ['getEvents']),
+
+      events : function() {
+        return this.getEvents();
       },
-      formatDate (a, withTime) {
-        return withTime
-          ? `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
-          : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`
-      },
+
+    },
+    created() {
+          this.fetchCalendar();
     },
   }
 </script>

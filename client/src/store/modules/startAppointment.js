@@ -2,7 +2,9 @@ import Vue from 'vue';
 
 const getDefaultState = () => {
     return {
-        appointment : null
+        appointmentId : null,
+        appointment : null,
+        codebook : null
     }
 };
 
@@ -11,6 +13,12 @@ const state = getDefaultState();
 const getters = {
     getAppointment : (state) => () => {
         return state.appointment;
+    },
+    getCodebook : (state) => () => {
+        return state.codebook;
+    },
+    getAppointmentId : (state) => () => {
+        return state.appointmentId;
     }
 };
 
@@ -19,10 +27,21 @@ const actions = {
         commit("resetState");
     },
 
-    async fetchAppointment({commit}, appointmentId){
-        const response = await Vue.$axios.get("http://localhost:8081/appointments/getAppointment/" + appointmentId);
+    async fetchAppointment({commit}, appId){
+        const response = await Vue.$axios.get("http://localhost:8081/appointments/getAppointment/" + (appId ? appId : this.getAppointmentId));
         commit('setAppointment', response.data);
+    },
+
+    async fetchCodebook({commit}, appId){
+        const response = await Vue.$axios.get("http://localhost:8081/appointments/getCodebook/" +  (appId ? appId : this.getAppointmentId));
+        commit('setCodebook', response.data);
+    },
+
+    setInitialAppointmentId({commit}, initialAppointmentId){
+        commit('setAppointmentId', initialAppointmentId);
     }
+
+    
 };
 
 const mutations = {
@@ -31,6 +50,8 @@ const mutations = {
         Object.assign(state, getDefaultState())
     },
     setAppointment : (state, appointment) => (state.appointment = appointment),
+    setCodebook : (state, codebook) => (state.codebook = codebook),
+    setAppointmentId : (state, id) => (state.appointmentId = id),
 };
 
 const namespaced = true;

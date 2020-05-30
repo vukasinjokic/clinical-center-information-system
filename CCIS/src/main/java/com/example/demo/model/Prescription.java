@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -24,16 +25,21 @@ public class Prescription {
     @Column(name = "description")
     private Map<String, String> content;
 
+    @ManyToOne(fetch = EAGER)
+    @JoinColumn(name = "medical_record_id")
+    private MedicalRecord medicalRecord;
+
     @Type(type = "true_false")
     private boolean isVerified;
 
     public Prescription() {
     }
 
-    public Prescription(Integer id, Map<String, String> content, boolean isVerified) {
+    public Prescription(Integer id, Map<String, String> content, boolean isVerified, MedicalRecord medicalRecord) {
         this.id = id;
         this.content = content;
         this.isVerified = isVerified;
+        this.medicalRecord = medicalRecord;
     }
 
     public Integer getId() {
@@ -58,5 +64,13 @@ public class Prescription {
 
     public void setVerified(boolean verified) {
         isVerified = verified;
+    }
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
     }
 }

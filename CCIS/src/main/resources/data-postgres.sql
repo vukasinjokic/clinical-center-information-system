@@ -114,6 +114,10 @@ values (1, 'Kuga', 'A209');
 insert into diagnoses			-- id = 20
 (code_book_id, description, code)
 values (1, 'Antraks', 'A22');
+
+insert into diagnoses			-- id = 21
+(code_book_id, description, code)
+values (1, 'Opsti pregled', 'Z00');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -622,18 +626,44 @@ values (nextval('ust_seq_user'), 'doktor6@gmail.com', 'doktor6@gmail.com', 'dokt
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
+-----------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------- Inserting patients -----------------------------------------------------------
+insert into patients			-- id = 22
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
+values (nextval('ust_seq_user'), 'pacijent1@gmail.com', 'pacijent1@gmail.com', 'pacijent', 'Ljubiša', 'Ljubišić', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1);
+
+insert into patients			-- id = 23
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
+values (nextval('ust_seq_user'), 'pacijent2@gmail.com', 'pacijent2@gmail.com', 'pacijent', 'Ana', 'Anić', 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 1);
+
+insert into patients			-- id = 24
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
+values (nextval('ust_seq_user'), 'pacijent3@gmail.com', 'pacijent3@gmail.com', 'pacijent', 'Milica', 'Milicić', 'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141',1);
+
+insert into patients			-- id = 25
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number,clinic_id)
+values (nextval('ust_seq_user'), 'pacijent4@gmail.com', 'pacijent4@gmail.com', 'pacijent', 'Gordana', 'Gordanović', 'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 2);
+
+insert into patients			-- id = 26
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, clinic_id)
+values (nextval('ust_seq_user'), 'pacijent5@gmail.com', 'pacijent5@gmail.com', 'pacijent', 'Olja', 'Oljić', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161',2);
+
+insert into patients			-- id = 27
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number,clinic_id)
+values (nextval('ust_seq_user'), 'pacijent6@gmail.com', 'pacijent6@gmail.com', 'pacijent', 'Milena', 'Milenić', 'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 2);
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting medical records -------------------------------------------------------
-insert into medical_records (id) values (1);			-- id = 1
-insert into medical_records (id) values (2);			-- id = 2
-insert into medical_records (id) values (3);			-- id = 3
-insert into medical_records (id) values (4);			-- id = 4
-insert into medical_records (id) values (5);			-- id = 5
-insert into medical_records (id) values (6);			-- id = 6
+insert into medical_records (patient_id) values (22);			-- id = 1
+insert into medical_records (patient_id) values (23);			-- id = 2
+insert into medical_records (patient_id) values (24);			-- id = 3
+insert into medical_records (patient_id) values (25);			-- id = 4
+insert into medical_records (patient_id) values (26);			-- id = 5
+insert into medical_records (patient_id) values (27);			-- id = 6
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting histories ----------------------------------------------------------
@@ -663,35 +693,6 @@ insert into histories (medical_record_id, history) values (6, 'Turbekoloza nerno
 insert into histories (medical_record_id, history) values (6, 'Kuga');													-- id = 19
 insert into histories (medical_record_id, history) values (6, 'Antraks');												-- id = 20
 insert into histories (medical_record_id, history) values (6, 'Kolera');												-- id = 21
------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------- Inserting patients -----------------------------------------------------------
-insert into patients			-- id = 22
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent1@gmail.com', 'pacijent1@gmail.com', 'pacijent', 'Ljubiša', 'Ljubišić', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1,1);
-
-insert into patients			-- id = 23
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent2@gmail.com', 'pacijent2@gmail.com', 'pacijent', 'Ana', 'Anić', 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 2,1);
-
-insert into patients			-- id = 24
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent3@gmail.com', 'pacijent3@gmail.com', 'pacijent', 'Milica', 'Milicić', 'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141', 3,1);
-
-insert into patients			-- id = 25
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id,clinic_id)
-values (nextval('ust_seq_user'), 'pacijent4@gmail.com', 'pacijent4@gmail.com', 'pacijent', 'Gordana', 'Gordanović', 'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 4, 2);
-
-insert into patients			-- id = 26
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent5@gmail.com', 'pacijent5@gmail.com', 'pacijent', 'Olja', 'Oljić', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161', 5,2);
-
-insert into patients			-- id = 27
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, medical_record_id,clinic_id)
-values (nextval('ust_seq_user'), 'pacijent6@gmail.com', 'pacijent6@gmail.com', 'pacijent', 'Milena', 'Milenić', 'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 6,2);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

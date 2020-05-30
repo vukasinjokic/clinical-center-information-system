@@ -29,6 +29,8 @@ public class AppointmentService {
     private ClinicRepository clinicRepository;
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
+    @Autowired
+    private CodeBookRepository codeBookRepository;
 
     private AppointmentValidation appointmentValidation;
 
@@ -108,4 +110,9 @@ public class AppointmentService {
         return false;
     }
 
+    public CodeBook getCodebookFromAppointmentClinic(Integer appointment_id) {
+        //TODO make custom query
+        Appointment appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id).get();
+        return appointment.getClinic().getCodeBook();
+    }
 }
