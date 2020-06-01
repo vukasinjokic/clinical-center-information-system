@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>This is PatientPage.vue</h1>
         <v-navigation-drawer width="260" v-model="drawer" :clipped="clipped" enable-resize-watcher app dark class="blue-grey darken-2">
             <v-divider class="mb-7"/>
             <v-list>
@@ -47,12 +46,10 @@ export default {
     data(){
         return {
             items: [
-                { title: 'Patient', link: '/doctor/patient', icon: 'mdi-clipboard-outline' },
-                { title: 'Zapocinjanje pregleda', link: '/doctor/', icon:'mdi-check' },
-                { title: 'Work calendar', link: '/doctor/:16/calendar', icon: 'mdi-calendar' },
-                { title: 'Create request for vacation', link: '/doctor/vacationRequest',icon:'mdi-airplane' },
-                { title: 'Profile', link: '/doctor/profile', icon: 'mdi-account' },
-                { title: 'Zakazivanje pregleda/operacija', link: '/doctor/scheduleApp', icon: 'mdi-arrow-down-bold-box' },
+                { title: 'Klinike', link: '/patient/clinics', icon: 'mdi-hospital' },
+                { title: 'Istorija pregleda', link: '/patient/appointmentsForPatient', icon:'mdi-history' },
+                { title: 'Medicinski karton', link: '/patient/medicalRecord', icon: 'mdi-menu' },
+                { title: 'Profil', link: '/patient/profile', icon: 'mdi-account' },
             ],
             drawer: true
         }   

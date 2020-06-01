@@ -20,6 +20,8 @@ import NursePage from '../views/NursePage'
 import PatientPage from '../views/PatientPage'
 import Unauthorized from "../views/Unauthorized"
 import NotFound from "../views/NotFound"
+import AppointmentsForPatient from '../components/AppointmentsForPatient'
+import MedicalRecord from '../components/MedicalRecord'
 
 Vue.use(VueRouter);
 
@@ -143,7 +145,10 @@ const router = new VueRouter({
         component: PatientPage,
         beforeEnter: isPatient,
         children: [
-          {path: "clinics", name: "Clinics", component: Clinics}
+          {path: "clinics", name: "Clinics", component: Clinics},
+          {path: "appointmentsForPatient", name: "AppointmentsForPatient", component: AppointmentsForPatient},
+          {path: "medicalRecord", name: "MedicalRecord", component: MedicalRecord},
+          {path: 'profile', name: 'UserProfile', component: UserProfile},
         ]
       },
       {
