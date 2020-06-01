@@ -114,4 +114,14 @@ public class DoctorValidation {
 
         return false;
     }
+
+    public boolean checkBusinessHours(Doctor doctor, Date start, Date end){
+        Date startBusinessHours = doctor.getBusinessHours().getStarted();
+        Date endBusinessHours = doctor.getBusinessHours().getEnded();
+        //mozda bi tu moglo i equals
+        if(start.after(startBusinessHours) && start.before(endBusinessHours))
+            if(end.before(endBusinessHours))
+                return true;
+        return false;
+    }
 }
