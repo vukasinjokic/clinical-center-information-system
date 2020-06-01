@@ -17,6 +17,7 @@ import ClinicAdminPage from '../views/ClinicAdminPage'
 import AppointmentRequests from '../components/AppointmentRequests'
 import ScheduleAppointment from '../components/ScheduleAppointment'
 import NursePage from '../views/NursePage'
+import PatientPage from '../views/PatientPage'
 import Unauthorized from "../views/Unauthorized"
 import NotFound from "../views/NotFound"
 
@@ -63,16 +64,15 @@ const isNurse = (to, from, next) => {
   })
 };
 
-// TODO: Ovo iskoristiti kada se napravi stranica za administratora klinickog centra
-// const isPatient = (to, from, next) => {
-//     if (localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN") {
-//       next();
-//       return;
-//     }
-//     next({
-//       name: "Unauthorized"
-//     })
-// };
+const isPatient = (to, from, next) => {
+    if (localStorage.getItem("user_role") === "ROLE_PATIENT") {
+      next();
+      return;
+    }
+    next({
+      name: "Unauthorized"
+    })
+};
 
 const isLogOut = (to, from, next) => {
     if (!localStorage.getItem("user_role")) {
@@ -89,7 +89,7 @@ const router = new VueRouter({
     routes: [
       {
         path: '/',
-        name: Login,
+        name: "Login",
         component: Login,
         beforeEnter: isLogOut
       },
@@ -99,10 +99,6 @@ const router = new VueRouter({
         component: Register,
         beforeEnter: isLogOut
       },
-      
-      
-     
-     
       {
         path: '/doctor',
         name: 'DoctorPage',
@@ -142,9 +138,13 @@ const router = new VueRouter({
         ]
       },
       {
-        path: '/clinics',
-        name: 'Clinics',
-        component : Clinics
+        path: "/patient",
+        name: "PatientPage",
+        component: PatientPage,
+        beforeEnter: isPatient,
+        children: [
+          {path: "clinics", name: "Clinics", component: Clinics}
+        ]
       },
       {
         path: '/doctors',
