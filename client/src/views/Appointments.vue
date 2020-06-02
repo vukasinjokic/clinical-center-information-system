@@ -11,10 +11,10 @@
                         item-key="name"
                         class="blue-grey darken-4 white--text"
                         dark grey>
-             <template v-if="isClinicAdmin" v-slot:top>
-                <v-toolbar v-if="isClinicAdmin" flat class="blue-grey darken-4 white--text">
+             <template v-slot:top>
+                <v-toolbar flat class="blue-grey darken-4 white--text">
                     <v-spacer></v-spacer>
-                    <AddFreeAppointment v-if="isClinicAdmin" style="margin: 10px;"></AddFreeAppointment>
+                    <AddFreeAppointment style="margin: 10px;"></AddFreeAppointment>
                 </v-toolbar>
             </template>
             
@@ -78,13 +78,7 @@ export default {
         addAppointment(){
             console.log("Implementiraj");
         },
-
-        isClinicAdmin() {
-            console.log("nemanja")
-            return localStorage.getItem("user_role") == "ROLE_CLINIC_ADMIN"
-        }
-    },
-    
+    }
 }
 </script>
 <style>

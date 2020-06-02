@@ -37,10 +37,15 @@ const getters = {
 
 const actions = {
     async fetchAppointments({commit}){
-       
         const response = await Vue.$axios.get('http://localhost:8081/appointments/getAppointments');
         commit('setAppo', response.data);
     },
+
+    async fetchPatientAppointments({commit}, mail){
+        const response = await Vue.$axios.post('http://localhost:8081/appointments/getPatientAppointments', {mail});
+        commit('setAppo', response.data);
+    },
+
     async fetchRooms({commit}){
         const response = await Vue.$axios.get('http://localhost:8081/appointments/getRooms');
         commit('setFreeAppointmentsRooms', response.data);

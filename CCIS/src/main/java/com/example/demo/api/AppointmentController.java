@@ -2,13 +2,14 @@ package com.example.demo.api;
 
 import com.example.demo.Repository.DoctorRepository;
 import com.example.demo.Repository.ExaminationTypeRepository;
+import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.RoomDTO;
 import com.example.demo.model.*;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.service.RoomService;
-import org.aspectj.apache.bcel.classfile.Code;
+import com.example.demo.useful_beans.UserData;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,10 +30,15 @@ public class AppointmentController {
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
     private final AppointmentService appointmentService;
     private final RoomService roomService;
     private ModelMapper modelMapper = new ModelMapper();
 
+    @Autowired
     public AppointmentController(AppointmentService appointmentService, RoomService roomService){
         this.appointmentService = appointmentService;
         this.roomService = roomService;
@@ -46,6 +52,18 @@ public class AppointmentController {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    @PostMapping("/getPatientAppointments")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<AppointmentDTO> getPatientAppointments(@RequestBody UserData userData) {
+        Patient patient = patientRepository.findByEmail(userData.mail);
+        List<Appointment> allAppointments = appointmentService.getPatientAppointments(patient.getId());
+
+        return allAppointments.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     //operation rooms for free appointment
     @GetMapping("/getRooms")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")

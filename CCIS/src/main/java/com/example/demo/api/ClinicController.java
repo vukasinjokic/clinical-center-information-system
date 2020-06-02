@@ -33,14 +33,6 @@ public class ClinicController {
     @PreAuthorize("hasAnyRole('PATIENT','CLINIC_CENTER_ADMIN')")
     public List<ClinicsDTO> getAllClinics() {
         List<Clinic> clinics = clinicService.getAllClinics();
-//        List<ClinicDTO> clinicDTOs = new ArrayList<>(clinics.size());
-//
-//        for (int i = 0; i < clinics.size(); i++) {
-//            clinicDTOs.add(convertToDTO(clinics.get(i)));
-//        }
-//
-//        return clinicDTOs;
-
         return clinics.stream()
                 .map(this::convertToClinicsDTO)
                 .collect(Collectors.toList());

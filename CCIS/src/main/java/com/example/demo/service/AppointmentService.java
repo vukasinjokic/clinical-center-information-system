@@ -38,6 +38,10 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
+    public List<Appointment> getPatientAppointments(Integer patientId) {
+        return appointmentRepository.findByPatientId(patientId);
+    }
+
     public Appointment getAppointment(Integer id){
         return appointmentRepository.findById(id).get();
     }
