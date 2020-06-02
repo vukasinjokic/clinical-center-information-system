@@ -15,44 +15,43 @@ const getters = {
 };
 
 const actions = {
-    async fetchDoctors({commit}){
+    async fetchDoctors({commit, dispatch}){
         try{
             const response = await Vue.$axios.get('http://localhost:8081/doctors');
             commit('setDoctors', response.data);
         }catch(error){
             console.log(error.response.status);
-            commit('alertError', error.response.status);
+            dispatch('snackbar/showError', "Nesto se cudno desava", {root: true});
         }
     },
 
-    async saveDoctor({commit}, doctor){
+    async saveDoctor({commit, dispatch}, doctor){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/doctors/saveDoctor', doctor);
             commit('doctorAdded', response.data);
+            dispatch('snackbar/showSuccess', "Uspesno dodat doktor", {root: true});
         }catch(error){
-            commit('alertError',error.response.data.status);
+            dispatch('snackbar/showError',"Neki error", {root: true});
         }
     },
 
-    async deleteDoctor({commit}, id){
+    async deleteDoctor({commit, dispatch}, id){
         try{
             const response = await Vue.$axios.delete('http://localhost:8081/doctors/deleteDoctor'+id);
             commit('onDeleteDoctor', id);
-            commit('alertError', response.data);
+            dispatch('snackbar/showSuccess', response.data, {root: true});
         }catch(error){
-            commit('alertError', error.response.data);
+            dispatch('snackbar/showError', error.response.data, {root: true});
         }
     },
 
-    async sendRequest({commit},req){
-        const response = await Vue.$axios.post("http://localhost:8081/doctors/sendVacationRequest",req);
-        commit('successfullyRequest',response);
+    async sendRequest({dispatch},req){
+        await Vue.$axios.post("http://localhost:8081/doctors/sendVacationRequest",req);
+        dispatch('snackbar/showSuccess',"Uspesno poslat zahtev",{ root: true });
     },
-    async scheduleAppointment({commit}, appo){
-        console.log("schedule");
+    async scheduleAppointment({dispatch}, appo){
         const response = await Vue.$axios.post('http://localhost:8081/doctors/scheduleAppointment', appo);
-        commit('successfullyRequest',response.data);
-        console.log(response.data)
+        dispatch('snackbar/showSuccess',response.data, {root: true});
     },
 
     resetDoctor({commit}) {

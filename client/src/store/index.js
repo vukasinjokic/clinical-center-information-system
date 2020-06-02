@@ -11,6 +11,7 @@ import appointmentRequests from './modules/appointmentRequests'
 import userProfile from './modules/userProfile'
 import clinicAdmin from './modules/clinicAdmin'
 import clinicProfile from './modules/clinicProfile'
+import snackbar from './modules/snackbar'
 
 // load vuex
 Vue.use(Vuex);
@@ -28,7 +29,8 @@ const store = new Vuex.Store({
         appointmentRequests,
         userProfile,
         clinicAdmin,
-        clinicProfile
+        clinicProfile,
+        snackbar
     },
 
     actions: {

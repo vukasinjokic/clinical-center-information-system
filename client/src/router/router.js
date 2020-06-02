@@ -60,7 +60,6 @@ const isDoctor = (to, from, next) => {
         next();
       }
     }
-    
   }
   else{
     next({

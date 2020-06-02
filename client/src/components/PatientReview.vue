@@ -9,12 +9,12 @@
             item-key="item.email"
         >
         </v-data-table>
+        <v-spacer></v-spacer>
 </div>
 </template>
 
 <script>
 import {mapGetters,mapActions} from 'vuex';
-
 export default {
     name: "PatientReview",
     data(){
