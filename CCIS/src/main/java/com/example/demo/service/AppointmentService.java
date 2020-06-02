@@ -4,7 +4,7 @@ import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.*;
 import com.example.demo.validation.AppointmentValidation;
-//import javafx.util.Pair;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
