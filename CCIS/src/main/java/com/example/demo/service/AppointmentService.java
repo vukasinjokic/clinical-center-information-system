@@ -29,11 +29,17 @@ public class AppointmentService {
     private ClinicRepository clinicRepository;
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
+    @Autowired
+    private CodeBookRepository codeBookRepository;
 
     private AppointmentValidation appointmentValidation;
 
     public List<Appointment> getAllAppointments(){
         return appointmentRepository.findAll();
+    }
+
+    public Appointment getAppointment(Integer id){
+        return appointmentRepository.findById(id).get();
     }
 
     public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
@@ -51,8 +57,8 @@ public class AppointmentService {
 
 //        if(!appointmentValidation.validateDoctor(getDoctor.getId(),date,getType))
 //            return null;
-//        if(!validateRoom(date, getType.getDuration(), getRoom))
-//            return null;
+        if(!validateRoom(date, getType.getDuration(), getRoom))
+            return null;
 
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {
@@ -68,40 +74,45 @@ public class AppointmentService {
         return null;
     }
 
-//    public boolean validateRoom(Date startDate, float duration, Room room){
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        int d = (int) duration;
-//        Date endDate = new Date(startDate.getTime()+d);
-//        if(room.getCalendar().getEventStartDates() == null){
-//            room.getCalendar().setEventStartDates(new ArrayList<Date>());
-//            room.getCalendar().setEventEndDates(new ArrayList<Date>());
-//            return true;
-//        }
-//
-//        //pair(start, end);
-//        List<Pair<Date,Date>> check_dates_list = room.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
-//        int index = 0;
-//        if(check_dates_list == null)
-//            return true;
-//        for(int i = 0; i< check_dates_list.size(); i++){
-//            if(startDate.after(check_dates_list.get(i).getKey())){
-//                if(i < check_dates_list.size()-1){
-//                    if(startDate.before(check_dates_list.get(i+1).getKey()) && startDate.after(check_dates_list.get(i).getValue())){
-//                        if(endDate.before(check_dates_list.get(i+1).getKey())){
-//                            index = i;
-//                            return true;
-//                        }
-//                    }
-//                }else{
-//                    return true;
-//                }
-//            }else if(startDate.before(check_dates_list.get(i).getKey())){
-//                if(endDate.before(check_dates_list.get(i).getKey()))
-//                    return true;
-//            }
-//        }
-//
-//        return false;
-//    }
+    public boolean validateRoom(Date startDate, float duration, Room room){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int d = (int) duration;
+        Date endDate = new Date(startDate.getTime()+d);
+        if(room.getCalendar().getEventStartDates() == null){
+            room.getCalendar().setEventStartDates(new ArrayList<Date>());
+            room.getCalendar().setEventEndDates(new ArrayList<Date>());
+            return true;
+        }
 
+        //pair(start, end);
+        List<Pair<Date,Date>> check_dates_list = room.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
+        int index = 0;
+        if(check_dates_list == null)
+            return true;
+        for(int i = 0; i< check_dates_list.size(); i++){
+            if(startDate.after(check_dates_list.get(i).getKey())){
+                if(i < check_dates_list.size()-1){
+                    if(startDate.before(check_dates_list.get(i+1).getKey()) && startDate.after(check_dates_list.get(i).getValue())){
+                        if(endDate.before(check_dates_list.get(i+1).getKey())){
+                            index = i;
+                            return true;
+                        }
+                    }
+                }else{
+                    return true;
+                }
+            }else if(startDate.before(check_dates_list.get(i).getKey())){
+                if(endDate.before(check_dates_list.get(i).getKey()))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    public CodeBook getCodebookFromAppointmentClinic(Integer appointment_id) {
+        //TODO make custom query
+        Appointment appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id).get();
+        return appointment.getClinic().getCodeBook();
+    }
 }

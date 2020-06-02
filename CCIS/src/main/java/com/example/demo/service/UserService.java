@@ -60,7 +60,7 @@ public class UserService {
         patient.setAuthorities(auth);
 
         patient.setMedicalRecord(null);
-        patient.setAppointment(null);
+        patient.setAppointments(null);
 
         patient = this.userRepository.save(patient);
         return patient;

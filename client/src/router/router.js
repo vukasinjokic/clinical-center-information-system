@@ -23,6 +23,8 @@ import Unauthorized from "../views/Unauthorized"
 import NotFound from "../views/NotFound"
 import AppointmentsForPatient from '../components/AppointmentsForPatient'
 import MedicalRecord from '../components/MedicalRecord'
+import StartAppointment from '../components/StartAppointment'
+
 
 Vue.use(VueRouter);
 
@@ -112,7 +114,8 @@ const router = new VueRouter({
             {path: 'profile', name: 'UserProfile', component: UserProfile},
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
-            {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment}
+            {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment},
+            {path: 'startAppointment', name: 'startAppointment', component: StartAppointment, props : true}
         ]
       },
       {

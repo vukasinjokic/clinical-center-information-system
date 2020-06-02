@@ -4,7 +4,7 @@ import com.example.demo.Repository.*;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.*;
 import com.example.demo.useful_beans.AppointmentToReserve;
-//import com.sun.javaws.security.AppPolicy;
+import com.sun.javaws.security.AppPolicy;
 import com.example.demo.Repository.ClinicAdminRepository;
 import com.example.demo.Repository.MedicalStaffRepository;
 import com.example.demo.dto.DoctorDTO;
