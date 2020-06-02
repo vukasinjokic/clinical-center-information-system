@@ -16,6 +16,7 @@ public class AppointmentDTO {
     private String room;
     private String examinationType;
     private String clinic;
+    private String report;
 
 
     public void setFields(Appointment appointment){
@@ -42,6 +43,14 @@ public class AppointmentDTO {
         this.doctor.setLastName(doctor.getLastName());
         this.doctor.setSocialSecurityNumber(doctor.getSocialSecurityNumber());
         this.doctor.setEmail(doctor.getEmail());
+    }
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
     }
 
     public void setExaminationType(String examinationType) {

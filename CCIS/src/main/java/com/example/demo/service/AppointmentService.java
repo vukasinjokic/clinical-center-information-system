@@ -29,11 +29,17 @@ public class AppointmentService {
     private ClinicRepository clinicRepository;
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
+    @Autowired
+    private CodeBookRepository codeBookRepository;
 
     private AppointmentValidation appointmentValidation;
 
     public List<Appointment> getAllAppointments(){
         return appointmentRepository.findAll();
+    }
+
+    public Appointment getAppointment(Integer id){
+        return appointmentRepository.findById(id).get();
     }
 
     public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
@@ -104,4 +110,9 @@ public class AppointmentService {
         return false;
     }
 
+    public CodeBook getCodebookFromAppointmentClinic(Integer appointment_id) {
+        //TODO make custom query
+        Appointment appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id).get();
+        return appointment.getClinic().getCodeBook();
+    }
 }
