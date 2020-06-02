@@ -5,7 +5,6 @@ import room from './modules/room';
 import clinics from './modules/clinics.js';
 import patient from './modules/patient'
 import examination_type from './modules/examination_type'
-import doctors from './modules/doctors';
 import doctor from './modules/doctor'
 import appointmentRequests from './modules/appointmentRequests'
 import userProfile from './modules/userProfile'
@@ -22,7 +21,6 @@ const store = new Vuex.Store({
         clinics,
         patient,
         examination_type,
-        doctors,
         doctor,
         appointmentRequests,
         userProfile,
@@ -36,10 +34,6 @@ const store = new Vuex.Store({
             this.dispatch("clinicAdmin/resetClinicAdmin");
             this.dispatch("clinics/resetClinics");
             this.dispatch("doctor/resetDoctor");
-
-            // TODO: Delete
-            this.dispatch("doctors/resetDoctors");
-
             this.dispatch("examination_type/resetExaminationType");
             this.dispatch("patient/resetPatient");
             this.dispatch("room/resetRoom");

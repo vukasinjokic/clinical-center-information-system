@@ -134,9 +134,9 @@ export default {
         }
     },
     methods: {
-        async submit() {
+        submit() {
             if (this.$refs.registerForm.validate()) {
-                await axios.post('http://localhost:8081/auth/registerPatient', this.user)
+                axios.post('http://localhost:8081/auth/registerPatient', this.user)
                 .then(response => {
                     if (response.status === 200) {
                         alert("Vaš zahtev za registraciju je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")

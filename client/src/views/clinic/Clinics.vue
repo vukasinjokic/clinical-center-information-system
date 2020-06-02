@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-container>
-            <v-card>
-                <v-form ref="form">
+            <v-form ref="form">
+                <v-card>
                     <v-card-title>
                         <v-text-field
                         v-model="filterWord"
@@ -51,8 +51,8 @@
 
                         <v-btn @click="validate">Apply filters</v-btn>
                     </v-card-title>
-                </v-form>
-            </v-card>
+                </v-card>
+            </v-form>
 
             <AddClinic></AddClinic>
 
@@ -112,8 +112,6 @@ export default {
     },
 
     methods: {
-        ...mapActions("doctors", ["doctorsSetter"]),
-
         ...mapActions("clinics", ["fetchClinics", "fetchFilteredClinics"]),
 
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
