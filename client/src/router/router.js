@@ -150,13 +150,13 @@ const router = new VueRouter({
         beforeEnter: isPatient,
         children: [
           {path: "clinics", name: "ClinicsForPatient", component: ClinicsForPatient},
-          {path: "appointmentsForPatient", name: "AppointmentsForPatient", component: AppointmentsForPatient},
+          {path: "appointments", name: "AppointmentsForPatient", component: AppointmentsForPatient},
           {path: "medicalRecord", name: "MedicalRecord", component: MedicalRecord},
           {path: 'profile', name: 'UserProfile', component: UserProfile},
           {path: 'doctors', name: 'Doctors', component: Doctors}
         ]
       },
-      {path: "clinics", name: "Clinics", component: Clinics},
+      {path: "/clinics", name: "Clinics", component: Clinics},
       {
         path: "/401",
         name: "Unauthorized",

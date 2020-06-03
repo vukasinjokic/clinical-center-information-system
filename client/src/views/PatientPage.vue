@@ -47,7 +47,7 @@ export default {
         return {
             items: [
                 { title: 'Klinike', link: '/patient/clinics', icon: 'mdi-hospital' },
-                { title: 'Istorija pregleda', link: '/patient/appointmentsForPatient', icon:'mdi-history' },
+                { title: 'Istorija pregleda', link: '/patient/appointments', icon:'mdi-history' },
                 { title: 'Medicinski karton', link: '/patient/medicalRecord', icon: 'mdi-menu' },
                 { title: 'Profil', link: '/patient/profile', icon: 'mdi-account' },
             ],

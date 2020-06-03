@@ -5,12 +5,17 @@
                 <v-card-title>Istorija pregleda i operacija</v-card-title>
                 
                 <v-data-table
-                            :headers="headers"
-                            :items="allAppointments"
-                            :items-per-page="5"
-                            item-key="name"
-                            class="blue-grey darken-4 white--text"
-                            dark grey>
+                :headers="headers"
+                :items="allAppointments"
+                :items-per-page="5"
+                class="blue-grey darken-4 white--text"
+                dark grey>
+                    <template v-slot:item.doctor="{ item }">
+                        {{item.doctor.firstName + " " + item.doctor.lastName}}
+                    </template>
+                    <template v-slot:item.grade="{ item }">
+                        <GradeDialog  color="blue" v-bind:doctor="item.doctor"/>
+                    </template>
                 </v-data-table>
             </v-card>
         </v-container>
@@ -19,19 +24,27 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
+import GradeDialog from "./GradeDialog";
+
 export default {
     name: "AppointmentsForPatient",
+
+    components: {
+        GradeDialog
+    },
+
     data(){
         return {
+            nemanja: "nemanja",
             headers:[
-                 {
+                {
                     text: 'Discount', value: 'discount',fileterable: true
                 },
                 {
                     text: 'Price', value: 'price', fileterable:true            
                 },
                 {
-                    text: 'Doctor', value: 'doctor.email',fileterable: true
+                    text: 'Doctor', value: 'doctor',fileterable: true
                 },
                 { 
                     text: 'Patient', value: 'patient',fileterable: true
@@ -46,8 +59,11 @@ export default {
                     text: 'Date', value: 'date',fileterable: true
                 },
                 { 
-                    text: 'Examination type', value: 'examinationType'
+                    text: 'Examination type', value: 'examinationType', fileterable: true
                 },
+                { 
+                    text: 'Grade', value: 'grade', sortable: false
+                }
             ]
         }
     },
