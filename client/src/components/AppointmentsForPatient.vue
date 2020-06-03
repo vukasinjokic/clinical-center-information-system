@@ -2,8 +2,16 @@
     <div>
         <v-container>
             <v-card>
-                <v-card-title>Istorija pregleda i operacija</v-card-title>
-                
+                <v-card-title justify="left">
+                    Istorija pregleda i operacija
+
+                    <v-spacer></v-spacer>
+                    <v-card-actions>
+                        <GradeDoctor  color="blue" v-bind:doctors="getDoctors"/>
+                        <GradeClinic  color="blue" v-bind:clinics="getClinics"/>
+                    </v-card-actions>
+                </v-card-title>
+
                 <v-data-table
                 :headers="headers"
                 :items="allAppointments"
@@ -13,9 +21,6 @@
                     <template v-slot:item.doctor="{ item }">
                         {{item.doctor.firstName + " " + item.doctor.lastName}}
                     </template>
-                    <template v-slot:item.grade="{ item }">
-                        <GradeDialog  color="blue" v-bind:doctor="item.doctor"/>
-                    </template>
                 </v-data-table>
             </v-card>
         </v-container>
@@ -24,18 +29,19 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-import GradeDialog from "./GradeDialog";
+import GradeDoctor from "./GradeDoctor";
+import GradeClinic from "./GradeClinic";
 
 export default {
     name: "AppointmentsForPatient",
 
     components: {
-        GradeDialog
+        GradeDoctor,
+        GradeClinic
     },
 
     data(){
         return {
-            nemanja: "nemanja",
             headers:[
                 {
                     text: 'Discount', value: 'discount',fileterable: true
@@ -60,9 +66,6 @@ export default {
                 },
                 { 
                     text: 'Examination type', value: 'examinationType', fileterable: true
-                },
-                { 
-                    text: 'Grade', value: 'grade', sortable: false
                 }
             ]
         }
@@ -70,8 +73,44 @@ export default {
     created(){
         this.fetchPatientAppointments(localStorage.getItem('user_email'));
     },
-    computed: mapGetters('appointments',['allAppointments']),
     
+    computed:  {
+        ...mapGetters('appointments',['allAppointments']),
+
+        getClinics() {
+            var ids = [];
+            var clinics = [];
+            this.allAppointments.forEach(appointment => {
+                // Avoid duplicates
+                if (!ids.includes(appointment.doctor.clinicId)) {
+                    ids.push(appointment.doctor.clinicId);
+                    clinics.push({
+                        id: appointment.doctor.clinicId,
+                        name: appointment.doctor.clinic,
+                    })   
+                }
+            });
+            return clinics;
+        },
+
+        getDoctors() {
+            var ids = [];
+            var doctors = [];
+            this.allAppointments.forEach(appointment => {
+                // Avoid duplicates
+                if (!ids.includes(appointment.doctor.id)) {
+                    ids.push(appointment.doctor.id);
+                    doctors.push({
+                        id: appointment.doctor.id,
+                        mail: appointment.doctor.email,
+                        fullName: appointment.doctor.firstName + " " + appointment.doctor.lastName
+                    })
+                }
+            });
+            return doctors;
+        }
+    },
+
     methods:{
         ...mapActions('appointments', ['fetchPatientAppointments']),
     },

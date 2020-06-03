@@ -38,6 +38,12 @@ public class DoctorService {
         return doctorRepository.findByEmail(email);
     }
 
+    public boolean gradeDoctor(Doctor doctor, float newRating) {
+        doctor.setRating((doctor.getRating() + newRating) / 2);
+        doctor = doctorRepository.save(doctor);
+        return doctor != null;
+    }
+
     public boolean sendRequest(MedicalStaffRequest request){
 
         Doctor user = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

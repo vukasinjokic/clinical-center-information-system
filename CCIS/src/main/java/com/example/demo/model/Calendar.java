@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 import javax.persistence.*;
 import java.text.ParseException;
@@ -40,24 +40,24 @@ public class Calendar {
     @Column(name = "appointment_id")
     private List<Integer> appointmentIds;
 
-    public HashMap<String,List<Pair<Date,Date>>> formatDates(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        HashMap<String,List<Pair<Date,Date>>> map = new HashMap<String, List<Pair<Date,Date>>>();
-
-        for(int i = 0; i<eventStartDates.size(); i++){
-            if(map.containsKey(sdf.format(eventStartDates.get(i)).substring(0,10))){
-                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
-                map.get(sdf.format(eventStartDates.get(i)).substring(0,10)).add(pair);
-
-            }else{
-                List<Pair<Date,Date>> ls = new ArrayList<Pair<Date,Date>>();
-                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
-                ls.add(pair);
-                map.put(sdf.format(eventStartDates.get(i)).substring(0,10), ls);
-            }
-        }
-        return map;
-    }
+//    public HashMap<String,List<Pair<Date,Date>>> formatDates(){
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        HashMap<String,List<Pair<Date,Date>>> map = new HashMap<String, List<Pair<Date,Date>>>();
+//
+//        for(int i = 0; i<eventStartDates.size(); i++){
+//            if(map.containsKey(sdf.format(eventStartDates.get(i)).substring(0,10))){
+//                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
+//                map.get(sdf.format(eventStartDates.get(i)).substring(0,10)).add(pair);
+//
+//            }else{
+//                List<Pair<Date,Date>> ls = new ArrayList<Pair<Date,Date>>();
+//                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
+//                ls.add(pair);
+//                map.put(sdf.format(eventStartDates.get(i)).substring(0,10), ls);
+//            }
+//        }
+//        return map;
+//    }
 
     public Calendar() {
     }
