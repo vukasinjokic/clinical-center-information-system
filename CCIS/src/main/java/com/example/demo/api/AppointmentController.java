@@ -2,15 +2,14 @@ package com.example.demo.api;
 
 import com.example.demo.Repository.DoctorRepository;
 import com.example.demo.Repository.ExaminationTypeRepository;
+import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.RoomDTO;
-import com.example.demo.model.Appointment;
-import com.example.demo.model.Doctor;
-import com.example.demo.model.ExaminationType;
-import com.example.demo.model.Room;
+import com.example.demo.model.*;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.service.RoomService;
+import com.example.demo.useful_beans.UserData;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,10 +30,15 @@ public class AppointmentController {
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
     private final AppointmentService appointmentService;
     private final RoomService roomService;
     private ModelMapper modelMapper = new ModelMapper();
 
+    @Autowired
     public AppointmentController(AppointmentService appointmentService, RoomService roomService){
         this.appointmentService = appointmentService;
         this.roomService = roomService;
@@ -48,6 +52,18 @@ public class AppointmentController {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    @PostMapping("/getPatientAppointments")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<AppointmentDTO> getPatientAppointments(@RequestBody UserData userData) {
+        Patient patient = patientRepository.findByEmail(userData.mail);
+        List<Appointment> allAppointments = appointmentService.getPatientAppointments(patient.getId());
+
+        return allAppointments.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     //operation rooms for free appointment
     @GetMapping("/getRooms")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
@@ -82,6 +98,23 @@ public class AppointmentController {
         if(appointment == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/getAppointment/{id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<AppointmentDTO> getAppointment(@PathVariable("id") Integer id){
+        Appointment appointment = appointmentService.getAppointment(id);
+        if(appointment == null){return new ResponseEntity<>(HttpStatus.NOT_FOUND);};
+        return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.OK);
+
+    }
+
+    @GetMapping(path = "/getCodebook/{appointment_id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<CodeBook> getCodebookFromAppointmentClinic(@PathVariable("appointment_id") Integer appointment_id){
+        CodeBook codebook = appointmentService.getCodebookFromAppointmentClinic(appointment_id);
+        if(codebook == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<CodeBook>(codebook, HttpStatus.OK);
     }
 
     public AppointmentDTO convertToDTO(Appointment appointment){

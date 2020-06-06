@@ -49,7 +49,7 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Patient> patients;
 
-   @ManyToOne( fetch = LAZY, cascade = {ALL})
+   @ManyToOne( fetch = EAGER, cascade = {ALL})
    @JoinColumn(name = "code_book_id")
    private CodeBook codeBook;
 
@@ -58,6 +58,9 @@ public class Clinic {
 
    @OneToMany(cascade = {ALL}, fetch = EAGER, orphanRemoval = true)
    private Collection<MedicalStaffRequest> medicalStaffRequests;
+
+   @OneToMany(cascade = {ALL}, fetch = LAZY)
+   private Collection<Prescription> prescriptions;
 
    public Clinic() {
    }
@@ -70,7 +73,7 @@ public class Clinic {
       this.address = address;
    }
 
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests) {
+   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -81,6 +84,7 @@ public class Clinic {
       this.rooms = rooms;
       this.codeBook = codeBook;
       this.appointmentRequests = appointmentRequests;
+      this.prescriptions = prescriptions;
    }
 
    public Integer getId() {
@@ -93,6 +97,14 @@ public class Clinic {
 
    public void setMedicalStaffRequests(Collection<MedicalStaffRequest> medicalStaffRequests) {
       this.medicalStaffRequests = medicalStaffRequests;
+   }
+
+   public Collection<Prescription> getPrescriptions() {
+      return prescriptions;
+   }
+
+   public void setPrescriptions(Collection<Prescription> prescriptions) {
+      this.prescriptions = prescriptions;
    }
 
    public Collection<AppointmentRequest> getAppointmentRequests() {

@@ -84,7 +84,6 @@ public class AppointmentRequestController {
             boolean success = appointmentRequestService.saveRequest(appointmentRequest);
             if (success) {
                 List<ClinicAdmin> clinicAdmins = clinicAdminService.getClinicAdminsByClinicId(clinic.getId());
-                // TODO: Videti zašto traje dugo
                 emailService.alertClinicAdminForAppointmentPatientRequest(clinicAdmins, appointmentRequest);
 
                 return new ResponseEntity<>("OK", HttpStatus.OK);

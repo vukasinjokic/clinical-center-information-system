@@ -5,11 +5,12 @@ import room from './modules/room';
 import clinics from './modules/clinics.js';
 import patient from './modules/patient'
 import examination_type from './modules/examination_type'
-import doctors from './modules/doctors';
 import doctor from './modules/doctor'
 import appointmentRequests from './modules/appointmentRequests'
 import userProfile from './modules/userProfile'
 import clinicAdmin from './modules/clinicAdmin'
+import startAppointment from './modules/startAppointment'
+import calendar from './modules/calendar'
 
 // load vuex
 Vue.use(Vuex);
@@ -22,11 +23,12 @@ const store = new Vuex.Store({
         clinics,
         patient,
         examination_type,
-        doctors,
         doctor,
         appointmentRequests,
         userProfile,
-        clinicAdmin
+        clinicAdmin,
+        startAppointment,
+        calendar
     },
 
     actions: {
@@ -36,14 +38,13 @@ const store = new Vuex.Store({
             this.dispatch("clinicAdmin/resetClinicAdmin");
             this.dispatch("clinics/resetClinics");
             this.dispatch("doctor/resetDoctor");
-
-            // TODO: Delete
-            this.dispatch("doctors/resetDoctors");
-
             this.dispatch("examination_type/resetExaminationType");
             this.dispatch("patient/resetPatient");
             this.dispatch("room/resetRoom");
             this.dispatch("userProfile/resetUserProfile");
+
+            this.dispatch("startAppointment/resetAppointment");
+            this.dispatch("calendar/resetCalendar");
 
             localStorage.clear();
             sessionStorage.clear();

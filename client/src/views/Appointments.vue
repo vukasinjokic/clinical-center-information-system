@@ -77,9 +77,8 @@ export default {
         ...mapActions('appointments', ['fetchAppointments']),
         addAppointment(){
             console.log("Implementiraj");
-        }
-    },
-    
+        },
+    }
 }
 </script>
 <style>
