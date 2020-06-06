@@ -35,7 +35,12 @@ export default {
                 this.$router.push({
                     name: "PatientPage"
                 });
-            } else {
+            } else if (user_role == null) {
+                this.$router.push({
+                    name: "Login"
+                });
+            }
+            else {
                 alert("Something went wrong. This should not happen.")
                 // this.$store.dispatch("clearStore")
                 // this.$router.push("/");

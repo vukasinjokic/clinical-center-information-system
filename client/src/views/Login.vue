@@ -97,10 +97,13 @@ import Vue from 'vue';
                       this.$router.push('doctor');
                     }else if(localStorage.getItem("user_role") == "ROLE_CLINIC_ADMIN"){
                       this.$router.push('clinicAdmin');
+                    }else if (localStorage.getItem("user_role") === "ROLE_PATIENT") {
+                      this.$router.push({
+                        name: "PatientPage"
+                      })
                     }else{
                       this.$router.push('home');
                     }
-
                 }
                 else
                     alert("Neispravan email ime ili lozinka");

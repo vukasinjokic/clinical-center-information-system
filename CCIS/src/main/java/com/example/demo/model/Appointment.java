@@ -46,11 +46,14 @@ public class Appointment {
    @JoinColumn(name = "clinic_id")
    private Clinic clinic;
 
+   @Column(name = "report")
+   private String report;
+
 
    public Appointment() {
    }
 
-   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic) {
+   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic, String report) {
       this.id = id;
       this.time = time;
       this.price = price;
@@ -60,6 +63,7 @@ public class Appointment {
       this.examinationType = examinationType;
       this.patient = patient;
       this.clinic = clinic;
+      this.report = report;
    }
    public Appointment( Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic) {
       this.time = time;
@@ -79,6 +83,14 @@ public class Appointment {
       this.room = room;
       this.examinationType = examinationType;
       this.clinic = clinic;
+   }
+
+   public String getReport() {
+      return report;
+   }
+
+   public void setReport(String report) {
+      this.report = report;
    }
 
    public Clinic getClinic() {

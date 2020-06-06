@@ -104,7 +104,7 @@ public class DoctorService {
         return doctorRepository.save(newDoctor);
     }
 
-    private void setDoctorFields(Doctor newDoctor, DoctorDTO doctorDTO){
+    private void setDoctorFields(Doctor newDoctor, DoctorDTO doctorDTO) {
         newDoctor.setUsername(doctorDTO.getEmail());
         newDoctor.setEmail(doctorDTO.getEmail());
         newDoctor.setPassword(doctorDTO.getPassword());
@@ -115,6 +115,11 @@ public class DoctorService {
         newDoctor.setCity(doctorDTO.getCity());
         newDoctor.setAddress(doctorDTO.getAddress());
         newDoctor.setCountry(doctorDTO.getCountry());
+    }
+    public boolean gradeDoctor(Doctor doctor, float newRating) {
+        doctor.setRating((doctor.getRating() + newRating) / 2);
+        doctor = doctorRepository.save(doctor);
+        return doctor != null;
     }
 
     public boolean sendRequest(MedicalStaffRequest request){

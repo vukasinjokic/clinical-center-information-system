@@ -16,6 +16,7 @@ public class AppointmentDTO {
     private String room;
     private String examinationType;
     private String clinic;
+    private String report;
 
 
     public void setFields(Appointment appointment){
@@ -38,10 +39,21 @@ public class AppointmentDTO {
     public void setDoctor(Doctor doctor){
         if(this.doctor == null)
             this.doctor = new DoctorDTO();
+        this.doctor.setId(doctor.getId().toString());
         this.doctor.setFirstName(doctor.getFirstName());
         this.doctor.setLastName(doctor.getLastName());
         this.doctor.setSocialSecurityNumber(doctor.getSocialSecurityNumber());
         this.doctor.setEmail(doctor.getEmail());
+        this.doctor.setClinic(doctor.getClinic().getName());
+        this.doctor.setClinicId(doctor.getClinic().getId().toString());
+    }
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
     }
 
     public void setExaminationType(String examinationType) {

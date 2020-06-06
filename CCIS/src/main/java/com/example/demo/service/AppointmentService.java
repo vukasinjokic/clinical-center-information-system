@@ -30,11 +30,21 @@ public class AppointmentService {
     private ClinicRepository clinicRepository;
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
+    @Autowired
+    private CodeBookRepository codeBookRepository;
 
     private DoctorValidation doctorValidation = new DoctorValidation();
 
     public List<Appointment> getAllAppointments(){
         return appointmentRepository.findAll();
+    }
+
+    public List<Appointment> getPatientAppointments(Integer patientId) {
+        return appointmentRepository.findByPatientId(patientId);
+    }
+
+    public Appointment getAppointment(Integer id){
+        return appointmentRepository.findById(id).get();
     }
 
     public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
@@ -113,5 +123,4 @@ public class AppointmentService {
         }
         return false;
     }
-
 }

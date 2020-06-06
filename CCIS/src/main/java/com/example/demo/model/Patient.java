@@ -11,8 +11,7 @@ import java.util.List;
 @Table(name = "patients")
 public class Patient extends User {
 
-   @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "medical_record_id")
+   @OneToOne(mappedBy = "patient" ,fetch = LAZY)
    private MedicalRecord medicalRecord;
 
    @ManyToOne(fetch = LAZY)
@@ -31,11 +30,11 @@ public class Patient extends User {
       this.appointments = new HashSet<Appointment>();
    }
 
-   public Collection<Appointment> getAppointment() {
+   public Collection<Appointment> getAppointments() {
       return appointments;
    }
 
-   public void setAppointment(Collection<Appointment> appointments) {
+   public void setAppointments(Collection<Appointment> appointments) {
       this.appointments = appointments;
    }
 

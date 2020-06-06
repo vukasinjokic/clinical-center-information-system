@@ -39,6 +39,12 @@ public class ClinicService {
         return clinicRepository.findAll();
     }
 
+    public boolean gradeClinic(Clinic clinic, float newRating) {
+        clinic.setRating((clinic.getRating() + newRating) / 2);
+        clinic = clinicRepository.save(clinic);
+        return clinic != null;
+    }
+
     public Clinic addClinic(ClinicDTO clinicDTO) throws ParseException{
         Clinic clinic = new Clinic(clinicDTO.getName(), clinicDTO.getDescription(), clinicDTO.getAddress());
         clinicRepository.save(clinic);
