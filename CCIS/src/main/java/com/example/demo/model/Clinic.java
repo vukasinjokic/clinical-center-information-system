@@ -31,8 +31,9 @@ public class Clinic {
    @Column(name = "price_list", unique = false)
    private String priceList;
 
-   @Column(name = "rating", unique = false)
-   private float rating;
+   @OneToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "rating_id", unique = false, nullable = false)
+   private Rating rating;
 
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Doctor> doctors;
@@ -73,7 +74,7 @@ public class Clinic {
       this.address = address;
    }
 
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
+   public Clinic(String name, String address, String description, String priceList, Rating rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -148,11 +149,11 @@ public class Clinic {
       this.priceList = priceList;
    }
 
-   public float getRating() {
+   public Rating getRating() {
       return rating;
    }
 
-   public void setRating(float rating) {
+   public void setRating(Rating rating) {
       this.rating = rating;
    }
 

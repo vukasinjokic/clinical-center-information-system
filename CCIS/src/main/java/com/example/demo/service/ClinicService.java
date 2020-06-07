@@ -31,7 +31,8 @@ public class ClinicService {
     }
 
     public boolean gradeClinic(Clinic clinic, float newRating) {
-        clinic.setRating((clinic.getRating() + newRating) / 2);
+        // TODO: change
+        clinic.getRating().setAverageGrade((clinic.getRating().getAverageGrade() + newRating) / 2);
         clinic = clinicRepository.save(clinic);
         return clinic != null;
     }

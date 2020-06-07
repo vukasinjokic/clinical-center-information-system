@@ -296,27 +296,139 @@ values (1, 'Skopryl', '1103565');
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------- Inserting ratings -----------------------------------------------------------
+-- Doctors ratings
+insert into ratings(average_grade) values (9.5);            -- id = 1, doctorId = 16
+insert into ratings(average_grade) values (7.5);            -- id = 2, doctorId = 17
+insert into ratings(average_grade) values (5.5);            -- id = 3, doctorId = 18
+insert into ratings(average_grade) values (6.5);            -- id = 4, doctorId = 19
+insert into ratings(average_grade) values (8.5);            -- id = 5, doctorId = 20
+insert into ratings(average_grade) values (10.0);            -- id = 6, doctorId = 21
+
+-- Clinics ratings
+insert into ratings(average_grade) values (8.5);            -- id = 7, clinicId = 1
+insert into ratings(average_grade) values (4.0);            -- id = 8, clinicId = 2
+insert into ratings(average_grade) values (8.0);            -- id = 9, clinicId = 3
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------- Inserting patient_ids ---------------------------------------------------------
+-- doctorId = 16
+insert into patient_ids(rating_id, patient_id) values (1, 22);
+insert into patient_ids(rating_id, patient_id) values (1, 23);
+
+-- doctorId = 17
+insert into patient_ids(rating_id, patient_id) values (2, 24);
+insert into patient_ids(rating_id, patient_id) values (2, 25);
+
+-- doctorId = 18
+insert into patient_ids(rating_id, patient_id) values (3, 26);
+insert into patient_ids(rating_id, patient_id) values (3, 27);
+
+-- doctorId = 19
+insert into patient_ids(rating_id, patient_id) values (4, 22);
+insert into patient_ids(rating_id, patient_id) values (4, 23);
+
+-- doctorId = 20
+insert into patient_ids(rating_id, patient_id) values (5, 24);
+insert into patient_ids(rating_id, patient_id) values (5, 25);
+
+-- doctorId = 21
+insert into patient_ids(rating_id, patient_id) values (6, 26);
+
+
+-- clinicId = 1
+insert into patient_ids(rating_id, patient_id) values (7, 22);
+insert into patient_ids(rating_id, patient_id) values (7, 23);
+insert into patient_ids(rating_id, patient_id) values (7, 24);
+insert into patient_ids(rating_id, patient_id) values (7, 25);
+
+-- clinicId = 2
+insert into patient_ids(rating_id, patient_id) values (8, 26);
+insert into patient_ids(rating_id, patient_id) values (8, 27);
+insert into patient_ids(rating_id, patient_id) values (8, 22);
+insert into patient_ids(rating_id, patient_id) values (8, 23);
+
+-- clinicId = 3
+insert into patient_ids(rating_id, patient_id) values (9, 24);
+insert into patient_ids(rating_id, patient_id) values (9, 25);
+insert into patient_ids(rating_id, patient_id) values (9, 26);
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------- Inserting grades ------------------------------------------------------------
+-- doctorId = 16
+insert into grades(rating_id, grade) values (1, 10);
+insert into grades(rating_id, grade) values (1, 9);
+
+-- doctorId = 17
+insert into grades(rating_id, grade) values (2, 8);
+insert into grades(rating_id, grade) values (2, 7);
+
+-- doctorId = 18
+insert into grades(rating_id, grade) values (3, 6);
+insert into grades(rating_id, grade) values (3, 5);
+
+-- doctorId = 19
+insert into grades(rating_id, grade) values (4, 6);
+insert into grades(rating_id, grade) values (4, 7);
+
+-- doctorId = 20
+insert into grades(rating_id, grade) values (5, 8);
+insert into grades(rating_id, grade) values (5, 9);
+
+-- doctorId = 21
+insert into grades(rating_id, grade) values (6, 10);
+
+
+
+-- clinicId = 1
+insert into grades(rating_id, grade) values (7, 10);
+insert into grades(rating_id, grade) values (7, 9);
+insert into grades(rating_id, grade) values (7, 8);
+insert into grades(rating_id, grade) values (7, 7);
+
+-- clinicId = 2
+insert into grades(rating_id, grade) values (8, 6);
+insert into grades(rating_id, grade) values (8, 5);
+insert into grades(rating_id, grade) values (8, 5);
+insert into grades(rating_id, grade) values (8, 4);
+
+-- clinicId = 3
+insert into grades(rating_id, grade) values (9, 7);
+insert into grades(rating_id, grade) values (9, 8);
+insert into grades(rating_id, grade) values (9, 9);
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting clinics -----------------------------------------------------------
 insert into clinics			-- id = 1
-(name, address, description, price_list, rating, code_book_id)
+(name, address, description, price_list, rating_id, code_book_id)
 values ('Poliklinika Sparta', 'Bulevar Evrope 22, Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor,
 		arcu quis iaculis facilisis, purus ipsum vehicula nunc,vitae finibus.',
-	   '1000', 0.0, 1);
+	   '1000', 7, 1);
 
 insert into clinics			-- id = 2
-(name, address, description, price_list, rating, code_book_id)
+(name, address, description, price_list, rating_id, code_book_id)
 values ('Poliklinika Medicina', 'Bulevar Oslobodjenja 79, Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna turpis,
 		tincidunt in dictum et, fringilla at eros. Pellentesque eu est pharetra, interdum quam a.',
-	   '1250', 0.0, 1);
+	   '1250', 8, 1);
 
 insert into clinics			-- id = 3
-(name, address, description, price_list, rating, code_book_id)
+(name, address, description, price_list, rating_id, code_book_id)
 values ('Poliklinika Žekić', 'Grčkoškolska 3, Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ante diam, auctor in mauris et,
 		dapibus cursus nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque id.',
-	   '1500', 0.0, 1);
+	   '1500', 9, 1);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -601,28 +713,28 @@ insert into examination_types (name, duration) values ('Operacija', 1);			-- id 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting doctors -----------------------------------------------------------
 insert into doctors			-- id = 16
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor1@gmail.com', 'doktor1@gmail.com', 'doktor', 'Duško', 'Dušković', 'Nepoznata 34', 'Prokuplje', 'Srbija', '0641234567', '36363636363', 7, 0.0, 1, 1, 1);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
+values (nextval('ust_seq_user'), 'doktor1@gmail.com', 'doktor1@gmail.com', 'doktor', 'Duško', 'Dušković', 'Nepoznata 34', 'Prokuplje', 'Srbija', '0641234567', '36363636363', 7, 1, 1, 1, 1);
 
 insert into doctors			-- id = 17
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor2@gmail.com', 'doktor2@gmail.com', 'doktor', 'Vesna', 'Vesnić', 'Nepoznata 35', 'Smederevo', 'Srbija', '0641234567', '37373737373', 8, 0.0, 2, 2, 1);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
+values (nextval('ust_seq_user'), 'doktor2@gmail.com', 'doktor2@gmail.com', 'doktor', 'Vesna', 'Vesnić', 'Nepoznata 35', 'Smederevo', 'Srbija', '0641234567', '37373737373', 8, 2, 2, 2, 1);
 
 insert into doctors			-- id = 18
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor3@gmail.com', 'doktor3@gmail.com', 'doktor', 'Ivan', 'Ivanović', 'Nepoznata 36', 'Jagodina', 'Srbija', '0641234567', '38383838383', 9, 0.0, 3, 3, 2);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
+values (nextval('ust_seq_user'), 'doktor3@gmail.com', 'doktor3@gmail.com', 'doktor', 'Ivan', 'Ivanović', 'Nepoznata 36', 'Jagodina', 'Srbija', '0641234567', '38383838383', 9, 3, 3, 3, 2);
 
 insert into doctors			-- id = 19
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor4@gmail.com', 'doktor4@gmail.com', 'doktor', 'Zorana', 'Zoranović', 'Nepoznata 37', 'Bor', 'Srbija', '0641234567', '39393939393', 10, 0.0, 4, 1, 2);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
+values (nextval('ust_seq_user'), 'doktor4@gmail.com', 'doktor4@gmail.com', 'doktor', 'Zorana', 'Zoranović', 'Nepoznata 37', 'Bor', 'Srbija', '0641234567', '39393939393', 10, 4, 4, 1, 2);
 
 insert into doctors			-- id = 20
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor5@gmail.com', 'doktor5@gmail.com', 'doktor', 'Zoran', 'Zorić', 'Nepoznata 38', 'Šabac', 'Srbija', '0641234567', '40404040404', 11, 0.0, 5, 2, 3);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
+values (nextval('ust_seq_user'), 'doktor5@gmail.com', 'doktor5@gmail.com', 'doktor', 'Zoran', 'Zorić', 'Nepoznata 38', 'Šabac', 'Srbija', '0641234567', '40404040404', 11, 5, 5, 2, 3);
 
 insert into doctors			-- id = 21
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor6@gmail.com', 'doktor6@gmail.com', 'doktor', 'Goran', 'Gorić', 'Nepoznata 39', 'Pančevo', 'Srbija', '0641234567', '41414141414', 12, 0.0, 3, 3, 3);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
+values (nextval('ust_seq_user'), 'doktor6@gmail.com', 'doktor6@gmail.com', 'doktor', 'Goran', 'Gorić', 'Nepoznata 39', 'Pančevo', 'Srbija', '0641234567', '41414141414', 12, 6, 3, 3, 3);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -719,58 +831,58 @@ insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala
 --------------------------------------------------------- Inserting appointments --------------------------------------------------------
 insert into appointments			-- id = 1
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-01 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 			1, 'F');
+values ('2020-05-01 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 			1, 'T');
 
 insert into appointments			-- id = 2
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-01 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 			1, 'F');
+values ('2020-05-01 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 			1, 'T');
 
 insert into appointments			-- id = 3
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 			1, 'F');
+values ('2020-05-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 			1, 'T');
 
 insert into appointments			-- id = 4
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 			1, 'F');
+values ('2020-05-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 			1, 'T');
 
 insert into appointments			-- id = 5
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				1, 'F');
+values ('2020-05-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,				1, 'T');
 
 
 
 
 insert into appointments			-- id = 6
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 			2, 'F');
+values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 			2, 'T');
 
 insert into appointments			-- id = 7
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 		2, 'F');
+values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 		2, 'T');
 
 
 insert into appointments			-- id = 8
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 			2, 'F');
+values ('2020-05-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 			2, 'T');
 
 insert into appointments			-- id = 9
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 			2, 'F');
+values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 			2, 'T');
 
 
 
 
 insert into appointments			-- id = 10
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 			3, 'F');
+values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 			3, 'T');
 
 insert into appointments			-- id = 11
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 			3, 'F');
+values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 			3, 'T');
 
 insert into appointments			-- id = 12
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3, 'F');
+values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3, 'T');
 
 -- insert into appointments			-- id = 12
 -- 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)

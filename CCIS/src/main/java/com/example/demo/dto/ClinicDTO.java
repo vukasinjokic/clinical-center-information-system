@@ -22,7 +22,7 @@ public class ClinicDTO {
 
     public void setDTOFields(Clinic clinic){
         this.setId(clinic.getId());
-        this.setRating(clinic.getRating());
+        this.setRating(clinic.getRating().getAverageGrade());
         this.setDoctors(clinic.getDoctors());
         this.setNurses(clinic.getNurses());
         this.setAppointments(clinic.getAppointments());

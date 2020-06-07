@@ -39,7 +39,8 @@ public class DoctorService {
     }
 
     public boolean gradeDoctor(Doctor doctor, float newRating) {
-        doctor.setRating((doctor.getRating() + newRating) / 2);
+        // TODO: change
+        doctor.getRating().setAverageGrade((doctor.getRating().getAverageGrade() + newRating) / 2);
         doctor = doctorRepository.save(doctor);
         return doctor != null;
     }

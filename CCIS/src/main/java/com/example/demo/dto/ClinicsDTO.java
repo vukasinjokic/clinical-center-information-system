@@ -26,6 +26,7 @@ public class ClinicsDTO {
 
     public void setDTOFields(Clinic clinic) {
         setDoctors(clinic.getDoctors());
+        setRating(clinic.getRating().getAverageGrade().toString());
     }
 
     public String getId() {
