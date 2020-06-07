@@ -13,6 +13,7 @@ import clinicProfile from './modules/clinicProfile'
 import snackbar from './modules/snackbar'
 import startAppointment from './modules/startAppointment'
 import calendar from './modules/calendar'
+import businessReport from './modules/businessReport'
 
 // load vuex
 Vue.use(Vuex);
@@ -32,7 +33,8 @@ const store = new Vuex.Store({
         clinicProfile,
         snackbar,
         startAppointment,
-        calendar
+        calendar, 
+        businessReport
     },
 
     actions: {
@@ -49,6 +51,7 @@ const store = new Vuex.Store({
 
             this.dispatch("startAppointment/resetAppointment");
             this.dispatch("calendar/resetCalendar");
+            this.dispatch("businessReport/resetBusinessReport");
 
             localStorage.clear();
             sessionStorage.clear();

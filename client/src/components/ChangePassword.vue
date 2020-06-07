@@ -89,9 +89,8 @@ export default {
                 }
                 this.changePassword(passForm)
                     .then(() => {
-                        this.$router.push('/doctor')
-                    .catch(() => {}); 
-                    });
+                        this.$router.push('/doctor'); 
+                    }).catch(() => {});
 
                 this.closeDialog();
             }

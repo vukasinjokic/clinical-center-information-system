@@ -22,15 +22,14 @@ const actions = {
         const response = await Vue.$axios.post('http://localhost:8081/auth/updateProfile',editItem);
         commit('setUserProf', response.data);
     },
-    async changePassword({commit}, passForm){
+    async changePassword({dispatch}, passForm){
         try{
             await Vue.$axios.post('http://localhost:8081/auth/changePassword', passForm);
-            commit('alertPasswordChange', "Successfully.");
+            dispatch('snackbar/showSuccess', "Successfully changed.", {root:true});
             localStorage.setItem('is_password_changed', true);
-            // 
         }catch(error){
-            console.log(error);
-            commit('alertPasswordChange', "Netacan stari password");
+            dispatch('snackbar/showError', "Netacan stari password", {root:true});
+            throw error;
         }
     },
 

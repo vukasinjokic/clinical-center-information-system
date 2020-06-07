@@ -63,12 +63,13 @@ const actions = {
         const response = await Vue.$axios.get('http://localhost:8081/appointments/getDoctors/'+ex_type);
         commit('setDoctors',response.data);
     },
-    async saveAppointment({commit}, appo){
+    async saveAppointment({commit,dispatch}, appo){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
             commit('newApp', response.data);
+            dispatch('snackbar/showSuccess', 'Uspesno dodat slobodan pregled', {root: true});
         }catch(error){
-            alert("Doktor ili soba su zauzeti u zadato vreme."); // moze i da je doktor na odmoru
+            dispatch('snackbar/showWarning',"Doktor ili soba su zauzeti u zadato vreme.",{root:true}); // moze i da je doktor na odmoru
         }
     },
    

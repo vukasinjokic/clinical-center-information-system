@@ -63,6 +63,11 @@ public class ClinicService {
         return null;
     }
 
+    public float getClinicRating(String email){
+        ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
+        return clinicAdmin.getClinic().getRating();
+    }
+
     public PriceListItem addPriceListItem(PriceListItem priceListItem){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<ClinicAdmin> ad = clinicAdminRepository.findById(user.getId());

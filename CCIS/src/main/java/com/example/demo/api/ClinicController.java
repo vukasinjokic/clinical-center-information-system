@@ -45,6 +45,13 @@ public class ClinicController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/getRating/{email}")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    public ResponseEntity getRating(@PathVariable String email){
+        float rating = clinicService.getClinicRating(email);
+        return ResponseEntity.ok().body(rating);
+    }
+
     @GetMapping("/getClinic")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
     public ResponseEntity<ClinicDTO> getClinic(){

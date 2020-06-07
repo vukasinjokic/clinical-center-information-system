@@ -139,11 +139,7 @@ export default {
             this.dialog = false;
             this.$refs.form.reset();
         },
-        save(){
-          console.log(this.time);
-          var t = new Date(this.date + " " + this.time);
-          var datetime = new Intl.DateTimeFormat('en-US').format(t);
-          console.log(datetime);  
+        save(){ 
           if(this.$refs.form.validate()){
             var newAppointment = 
                     {

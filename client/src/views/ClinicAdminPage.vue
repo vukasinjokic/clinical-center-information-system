@@ -63,6 +63,7 @@ export default {
     data(){
         return {
             items: [
+                { title: 'Business report', link: '/clinicAdmin/businessReport'},
                 { title: 'Appointment requests', link: '/clinicAdmin/appointmentRequests' },
                 { title: 'Vacation requests', link: '/clinicAdmin/vacationRequests'},
                 { title: 'Rooms', link: '/clinicAdmin/rooms'},

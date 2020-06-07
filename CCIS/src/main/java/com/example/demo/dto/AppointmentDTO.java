@@ -11,12 +11,13 @@ public class AppointmentDTO {
     private String time;
     private float price;
     private float discount;
-    private DoctorDTO doctor; //trebalo bi doctorDTO
+    public DoctorDTO doctor; //trebalo bi doctorDTO
     private String patient;
     private String room;
     private String examinationType;
     private String clinic;
     private String report;
+
 
 
     public void setFields(Appointment appointment){
@@ -134,8 +135,6 @@ public class AppointmentDTO {
     public String getExaminationType() {
         return examinationType;
     }
-
-
 
     public String getId() {
         return id;

@@ -137,12 +137,6 @@ export default {
     },
 
     methods: {
-<<<<<<< HEAD
-        ...mapGetters("doctors", ["getDoctors"]),
-        ...mapActions("doctors", ["doctorsSetter"]),
-
-=======
->>>>>>> develop
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 

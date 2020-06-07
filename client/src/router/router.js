@@ -27,7 +27,7 @@ import NotFound from "../views/NotFound"
 import AppointmentsForPatient from '../components/AppointmentsForPatient'
 import MedicalRecord from '../components/MedicalRecord'
 import StartAppointment from '../components/StartAppointment'
-
+import BusinessReport from '../components/BusinessReport'
 
 
 Vue.use(VueRouter);
@@ -152,6 +152,7 @@ const router = new VueRouter({
         component: ClinicAdminPage,
         beforeEnter: isClinicAdmin,
         children: [
+          {path: 'businessReport', name: 'BusinessReport', component: BusinessReport},
           {path: 'appointmentRequests', name: 'AppointmentRequests', component: AppointmentRequests},
           {path: 'vacationRequests', name: 'Vacation Requests', component: VacationReqReview },
           {path: 'rooms', name: 'Rooms', component: Room },

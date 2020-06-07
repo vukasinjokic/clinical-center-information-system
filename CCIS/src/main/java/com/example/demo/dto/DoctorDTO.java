@@ -15,7 +15,7 @@ public class DoctorDTO {
     private String password;
     private String firstName;
     private String lastName;
-    private String email;
+    public String email;
     private String city;
     private String address;
     private String country;
@@ -205,6 +205,7 @@ public class DoctorDTO {
     public void setPasswordChanged(Boolean passwordChanged) {
         this.passwordChanged = passwordChanged;
     }
+    public DoctorDTO(){}
 }
 
 
