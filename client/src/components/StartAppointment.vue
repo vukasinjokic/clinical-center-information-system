@@ -34,7 +34,7 @@
                             <v-row>
                                 <v-btn color="blue-grey darken-3" outlined="true" @click="prescriptionDialog = true">Make prescription</v-btn>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue-grey darken-3" outlined="true">Schedule another appointment</v-btn>
+                                <v-btn color="blue-grey darken-3" outlined="true" @click="scheduleAnotherAppBtnClicked">Schedule another appointment</v-btn>
                             </v-row>
                         </v-col>
                         <v-col></v-col>
@@ -112,16 +112,19 @@
             </v-card>
         </v-dialog>
         </v-container>
-        {{medication}} {{description}}
+        <v-dialog v-model="scheduleAppDialog" width="55%" eager>    
+            <ScheduleAppointment style="width:100%" ref="scheduleAppComponent" @scheduled="schedulingFinished"></ScheduleAppointment>
+        </v-dialog>
     </div>
 </template> 
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
+import ScheduleAppointment from './ScheduleAppointment'
 
 export default {
     components: {
-        
+        ScheduleAppointment
     },
     data(){
         return {
@@ -137,11 +140,21 @@ export default {
                 {text : "Medicine Name", value : 'medicineName'},
                 {text : "Description", value : 'description'},
 
-            ]
+            ],
+            scheduleAppDialog : false
         }   
     },
     methods : {
-        ...mapActions('startAppointment', ['fetchAppointment', 'fetchCodebook', 'handleFinishAppointment']),
+        ...mapActions('startAppointment', ['fetchAppointment', 'fetchCodebook', 'handleFinishAppointment', 'fetchPatientEmail']),
+
+        scheduleAnotherAppBtnClicked(){
+            this.scheduleAppDialog = true;
+            this.$refs.scheduleAppComponent.setPatientEmail(this.getPatientEmail())
+        },
+
+        schedulingFinished(){
+            this.scheduleAppDialog = false;
+        },
 
         saveMedication(){
             this.prescription.push({code : this.medication[0], medicineName : this.medication[1], description : this.description});
@@ -156,12 +169,13 @@ export default {
                 diagnosis : this.diagnosis[0] + ' ' + this.diagnosis[1],
                 report : this.report, 
                 prescriptionToAdd : this.prescription
-            })
+            });
+            this.$router.replace(':16/calendar');
         }
         
     },
     computed : {
-        ...mapGetters('startAppointment', ['getAppointment', 'getCodebook', 'getAppointmentId']),
+        ...mapGetters('startAppointment', ['getAppointment', 'getCodebook', 'getAppointmentId', 'getPatientEmail']),
 
         appointment : function() {
             return this.getAppointment();
@@ -171,12 +185,17 @@ export default {
         },
         appointmentId : function() {
             return this.getAppointmentId();
+        },
+
+        patientEmail : function() {
+            return this.getPatinetEmail();
         }
 
     },
     created(){
         this.fetchAppointment(this.appointmentId); 
-        this.fetchCodebook(this.appointmentId);   
+        this.fetchCodebook(this.appointmentId);
+        this.fetchPatientEmail(this.appointmentId);
     }
 
 
@@ -185,4 +204,5 @@ export default {
 </script>
 
 <style>
+
 </style>

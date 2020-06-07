@@ -118,6 +118,14 @@ public class AppointmentController {
         return new ResponseEntity<CodeBook>(codebook, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/getPatientEmail/{appointment_id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity getPatientEmail(@PathVariable("appointment_id") Integer appointment_id){
+        String email = appointmentService.getPatinetEmail(appointment_id);
+        if(email == null) return ResponseEntity.badRequest().body("No email found");
+        return ResponseEntity.ok(email);
+    }
+
     @PostMapping(path = "/handleAppointmentFinish", consumes = "application/json")
     @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity handleAppointmentFinish(@RequestBody AppointmentToFinish appointmentToFinish){
