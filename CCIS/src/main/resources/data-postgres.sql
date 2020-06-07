@@ -841,6 +841,23 @@ insert into prescriptions_contents(prescription_id, description, medication) val
 insert into prescriptions_contents(prescription_id, description, medication) values (2, '100mg svaki drugi dan', 'Omeprol');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------- Inserting registration requests -------------------------------------------------------
+insert into user_register_request
+( email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
+values ( 'pacijent7@gmail.com', 'pacijent', 'Milorad', 'Radic', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '678678678');
+
+
+insert into user_register_request
+( email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
+values ( 'pacijent8@gmail.com', 'pacijent', 'Kris', 'Kristic', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '876876876');
+
+insert into user_register_request
+( email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
+values ( 'pacijent9@gmail.com', 'pacijent', 'Radoje', 'Radic', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '098098098');
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting text here ----------------------------------------------------------
