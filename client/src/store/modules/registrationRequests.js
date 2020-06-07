@@ -22,16 +22,30 @@ const actions = {
         commit('setregistrationRequests', response.data);
     },
 
-    async deleteRequest({commit}, id){
+    async handleDenyingRequest({commit}, id){
         try{
             await Vue.$axios.delete('http://localhost:8081/registrationRequests/deleteRequest/' + id);
             commit('deletedRequest', id);
+            alert("Successfuly deleted request");
         }catch(error){
             alert(error.response);
         }
     },
 
-    resetregistrationRequests({commit}) {
+    async handleAcceptingRequest({commit}, id){
+        try{
+            await Vue.$axios.post("http://localhost:8081/registrationRequests/handleAcceptingRequest/" + id);
+            commit('deletedRequest', id);
+            // dispatch('snackBar/showSuccess', "Successfuly regitered user", {root : true});
+            alert("Succesfult registered user");
+        }
+        catch(error){
+            // dispatch('snackbar/showError', error.response, {root : true});
+            alert("Request doesn't exist");
+        }
+    },
+
+    resetRegistrationRequests({commit}) {
         commit("resetState");
     }
 }

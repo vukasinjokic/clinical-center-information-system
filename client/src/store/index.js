@@ -47,7 +47,7 @@ const store = new Vuex.Store({
 
             this.dispatch("startAppointment/resetAppointment");
             this.dispatch("calendar/resetCalendar");
-            this.dispatch("registrationReqeusts/resetAppointmentRequests");
+            this.dispatch("registrationReqeusts/resetRegistrationRequests");
 
             localStorage.clear();
             sessionStorage.clear();

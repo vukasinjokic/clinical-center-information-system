@@ -62,21 +62,17 @@ export default {
         }   
     },
     methods : {
-        ...mapActions('registrationRequests', ['fetchRegRequests', 'deleteRequest']),
+        ...mapActions('registrationRequests', ['fetchRegRequests', 'handleAcceptingRequest', 'handleDenyingRequest']),
 
-        getTime(item){
-            if(item.type == 'DOCTOR') return new Date(item.time).toLocaleString();
-            return new Date(item.predefregistration.date).toLocaleString();
+        acceptRequest(request){
+            this.handleAcceptingRequest(request.id);
         },
 
-        reserveRoom(request){
-            this.roomsDialog = true;
-            this.$refs.roomsComponent.setUpFields(request);
-        },
-
-        roomReserved(){
-            this.roomsDialog = false;
+        denyRequest(request){
+            this.handleDenyingRequest(request.id);
         }
+
+
         
     },
     computed : {  

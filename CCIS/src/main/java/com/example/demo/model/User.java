@@ -72,6 +72,21 @@ public abstract class User implements UserDetails {
       this.authorities = authorities;
    }
 
+   public User( String username, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
+      this.username = username;
+      this.email = email;
+      this.password = password;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.city = city;
+      this.country = country;
+      this.phoneNumber = phoneNumber;
+      this.socialSecurityNumber = socialSecurityNumber;
+      this.lastPasswordResetDate = lastPasswordResetDate;
+      this.authorities = authorities;
+   }
+
    public Integer getId() {
       return id;
    }
