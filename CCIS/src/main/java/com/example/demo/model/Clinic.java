@@ -31,7 +31,7 @@ public class Clinic {
    @Column(name = "price_list", unique = false)
    private String priceList;
 
-   @OneToOne(fetch = FetchType.EAGER)
+   @OneToOne(fetch = LAZY)
    @JoinColumn(name = "rating_id", unique = false, nullable = false)
    private Rating rating;
 

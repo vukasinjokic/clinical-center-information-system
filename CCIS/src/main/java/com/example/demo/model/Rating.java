@@ -28,7 +28,7 @@ public class Rating {
     @ElementCollection
     @CollectionTable(name = "grades", joinColumns = @JoinColumn(name = "rating_id"))
     @Column(name = "grade")
-    private List<Integer> grades;
+    private List<Float> grades;
 
     @Column(name = "average_grade", unique = false, nullable = false)
     private Float averageGrade;
@@ -36,10 +36,31 @@ public class Rating {
     public Rating() {
     }
 
-    public Rating(List<Integer> patientIds, List<Integer> grades, Float averageGrade) {
+    public Rating(List<Integer> patientIds, List<Float> grades, Float averageGrade) {
         this.patientIds = patientIds;
         this.grades = grades;
         this.averageGrade = averageGrade;
+    }
+
+    public void calculateAverageGrade() {
+        Float sum = 0f;
+        for (Float grade : grades)
+            sum += grade;
+        sum /= grades.size();
+        sum = (float) Math.round(sum * 100);
+        sum /= 100;
+        averageGrade = sum;
+    }
+
+    public void setGrade(Integer patientId, Float newGrade) {
+        int patientIndex = patientIds.indexOf(patientId);
+        if (patientIndex == -1) {
+            patientIds.add(patientId);
+            grades.add(newGrade);
+        } else {
+            grades.set(patientIndex, newGrade);
+        }
+        calculateAverageGrade();
     }
 
     public Integer getId() {
@@ -58,11 +79,11 @@ public class Rating {
         this.patientIds = patientIds;
     }
 
-    public List<Integer> getGrades() {
+    public List<Float> getGrades() {
         return grades;
     }
 
-    public void setGrades(List<Integer> grades) {
+    public void setGrades(List<Float> grades) {
         this.grades = grades;
     }
 

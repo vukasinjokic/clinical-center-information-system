@@ -4,11 +4,13 @@ import com.example.demo.Repository.ClinicRepository;
 import com.example.demo.Repository.DoctorRepository;
 import com.example.demo.Repository.MedicalStaffRepository;
 import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.RatingRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.AppointmentRequest;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
 import com.example.demo.model.MedicalStaffRequest;
+import com.example.demo.model.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class DoctorService {
     @Autowired
     private ClinicRepository clinicRepository;
     @Autowired
+    private RatingRepository ratingRepository;
+    @Autowired
     private MedicalStaffRepository medicalStaffRepository;
 
     public Doctor findById(Integer id){
@@ -38,11 +42,11 @@ public class DoctorService {
         return doctorRepository.findByEmail(email);
     }
 
-    public boolean gradeDoctor(Doctor doctor, float newRating) {
-        // TODO: change
-        doctor.getRating().setAverageGrade((doctor.getRating().getAverageGrade() + newRating) / 2);
-        doctor = doctorRepository.save(doctor);
-        return doctor != null;
+    public boolean gradeDoctor(Doctor doctor, Integer patientId, float newGrade) {
+        Rating doctorRating = doctor.getRating();
+        doctorRating.setGrade(patientId, newGrade);
+        doctorRating = ratingRepository.save(doctorRating);
+        return doctorRating != null;
     }
 
     public boolean sendRequest(MedicalStaffRequest request){

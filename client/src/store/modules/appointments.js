@@ -41,9 +41,12 @@ const actions = {
         commit('setAppo', response.data);
     },
 
-    async fetchPatientAppointments({commit}, mail){
+    async fetchPatientFinishedAppointments({commit}, mail){
         const response = await Vue.$axios.post('http://localhost:8081/appointments/getPatientAppointments', {mail});
-        commit('setAppo', response.data);
+        var finishedAppointments = response.data.filter(appointment => {
+            return appointment.finished;
+        })
+        commit('setAppo', finishedAppointments);
     },
 
     async fetchRooms({commit}){

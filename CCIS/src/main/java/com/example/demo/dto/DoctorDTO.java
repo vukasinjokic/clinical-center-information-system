@@ -35,6 +35,7 @@ public class DoctorDTO {
 //            CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
             setClinic(doctor.getClinic());
             setClinicId(doctor.getClinic());
+            setRating(doctor.getRating().getAverageGrade().toString());
         }
         catch(Exception e){
             e.printStackTrace();

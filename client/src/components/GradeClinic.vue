@@ -23,7 +23,7 @@
                         </v-row>
                         <v-row cols="12" sm="6">
                             <v-rating
-                            v-model="newRating"
+                            v-model="newGrade"
                             v-bind:length="10"
                             color="yellow darken-3"
                             background-color="grey darken-1"
@@ -55,7 +55,7 @@ export default {
     data() {
         return {     
             id: 0,
-            newRating: 10,
+            newGrade: 10,
             dialog: false
         }
     },
@@ -67,9 +67,10 @@ export default {
         },
         save(){
             if (this.$refs.form.validate()) {
-                Vue.$axios.post("http://localhost:8081/grades/gradeClinic", {
-                    id: new Number(this.id),
-                    newRating: this.newRating
+                Vue.$axios.post("http://localhost:8081/clinics/gradeClinic", {
+                    itemId: new Number(this.id),
+                    newGrade: this.newGrade,
+                    patientEmail: localStorage.getItem("user_email")
                 })
                 this.closeDialog();
             }
