@@ -4,7 +4,10 @@ const getDefaultState = () => {
     return {
         appointmentId : null,
         appointment : null,
-        codebook : null
+        codebook : {
+            diagnoses : [],
+            medications : []
+        }
     }
 };
 
@@ -35,6 +38,12 @@ const actions = {
     async fetchCodebook({commit}, appId){
         const response = await Vue.$axios.get("http://localhost:8081/appointments/getCodebook/" +  (appId ? appId : this.getAppointmentId));
         commit('setCodebook', response.data);
+    },
+
+    async handleFinishAppointment({commit}, appointmentToFinish){
+        const response = await Vue.$axios.post("http://localhost:8081/appointments/handleAppointmentFinish", appointmentToFinish);
+        console.log(commit);
+        console.log(response);
     },
 
     setInitialAppointmentId({commit}, initialAppointmentId){

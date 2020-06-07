@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.*;
+import com.example.demo.useful_beans.AppointmentToFinish;
+import com.example.demo.useful_beans.MedicineForPrescription;
 import com.example.demo.validation.AppointmentValidation;
 //import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class AppointmentService {
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
-    private CodeBookRepository codeBookRepository;
+    private PatientRepository patientRepository;
 
     private AppointmentValidation appointmentValidation;
 
@@ -119,4 +121,23 @@ public class AppointmentService {
         Appointment appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id).get();
         return appointment.getClinic().getCodeBook();
     }
+
+    public boolean handleAppointmentFinish(AppointmentToFinish appointmentToFinish) {
+        Appointment appointment = appointmentRepository.findById(appointmentToFinish.appointmentId).get();
+        if(appointment != null){
+            appointment.setReport(appointmentToFinish.report);
+            Prescription prescription = new Prescription(appointmentToFinish.prescriptionToAdd);
+            MedicalRecord mr = appointment.getPatient().getMedicalRecord();
+            mr.addAppointment(appointment);
+            mr.addPrescription(prescription);
+            appointment.getClinic().addPrescription(prescription);
+            appointment.setFinished(true);
+            appointmentRepository.save(appointment);
+            patientRepository.save(appointment.getPatient());
+            return true;
+        }
+        return false;
+
+    }
+
 }
