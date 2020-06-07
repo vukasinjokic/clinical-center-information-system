@@ -3,15 +3,16 @@ package com.example.demo.service;
 import com.example.demo.Repository.*;
 import com.example.demo.dto.ClinicDTO;
 import com.example.demo.model.*;
+import com.example.demo.useful_beans.ChartAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.Calendar;
 
 @Service
 public class ClinicService {
@@ -66,6 +67,88 @@ public class ClinicService {
     public float getClinicRating(String email){
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
         return clinicAdmin.getClinic().getRating();
+    }
+
+    public List<ChartAppointment> makeChartAppointment(String period, String admin_email){
+        List<ChartAppointment> chart;
+        Date date = new Date();
+        ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(admin_email);
+
+        if(period.equals("DAILY")){
+            chart = makeDailyChart(date, clinicAdmin.getClinic());
+        }else if(period.equals("MONTHLY")){
+            chart = makeMonthlyChart(date, clinicAdmin.getClinic());
+        }else{
+            chart = makeYearlyChart(date, clinicAdmin.getClinic());
+        }
+        return chart;
+    }
+
+    public List<ChartAppointment> makeDailyChart(Date nowDate, Clinic clinic){
+        List<ChartAppointment> dailyChart = new ArrayList<ChartAppointment>();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar2 = GregorianCalendar.getInstance();
+        HashMap<String, Integer> mapa = new HashMap<String, Integer>();
+
+        for(Appointment app : clinic.getAppointments()){
+            if(fmt.format(nowDate).equals(fmt.format(app.getTime()))){
+                calendar2.setTime(app.getTime());
+                if(mapa.containsKey(calendar2.get(Calendar.HOUR_OF_DAY)+"h")){
+                    mapa.put(calendar2.get(Calendar.HOUR_OF_DAY) + "h", mapa.get(calendar2.get(Calendar.HOUR_OF_DAY)+"h") + 1);
+                }else
+                    mapa.put(calendar2.get(Calendar.HOUR_OF_DAY) + "h", 1);
+            }
+        }
+        for(int i = 0; i < 24; i++){
+            String a = i + "h";
+            if(!mapa.containsKey(a)){
+                mapa.put(a, 0);
+            }
+        }
+        for(Map.Entry<String, Integer> entry : mapa.entrySet()){
+            ChartAppointment chart = new ChartAppointment();
+            chart.x = entry.getKey();
+            chart.y = entry.getValue();
+            dailyChart.add(chart);
+        }
+        Collections.sort(dailyChart);
+        return dailyChart;
+    }
+
+    public List<ChartAppointment> makeMonthlyChart(Date nowDate, Clinic clinic){
+        List<ChartAppointment> dailyChart = new ArrayList<ChartAppointment>();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMM");
+        Calendar calendar2 = GregorianCalendar.getInstance();
+        HashMap<String, Integer> mapa = new HashMap<String, Integer>();
+
+        for(Appointment app : clinic.getAppointments()){
+            if(fmt.format(nowDate).equals(fmt.format(app.getTime()))){
+                calendar2.setTime(app.getTime());
+                if(mapa.containsKey(calendar2.get(Calendar.DAY_OF_MONTH)+".")){
+                    mapa.put(calendar2.get(Calendar.DAY_OF_MONTH) + "." , mapa.get(calendar2.get(Calendar.DAY_OF_MONTH)+".") + 1);
+                }else
+                    mapa.put(calendar2.get(Calendar.DAY_OF_MONTH) + ".", 1);
+            }
+        }
+        for(int i = 0; i < 31; i++){
+            String a = i + ".";
+            if(!mapa.containsKey(a)){
+                mapa.put(a, 0);
+            }
+        }
+        for(Map.Entry<String, Integer> entry : mapa.entrySet()){
+            ChartAppointment chart = new ChartAppointment();
+            chart.x = entry.getKey();
+            chart.y = entry.getValue();
+            dailyChart.add(chart);
+        }
+        Collections.sort(dailyChart);
+        return dailyChart;
+
+    }
+
+    public List<ChartAppointment> makeYearlyChart(Date nowDate, Clinic clinic){
+        return null;
     }
 
     public PriceListItem addPriceListItem(PriceListItem priceListItem){

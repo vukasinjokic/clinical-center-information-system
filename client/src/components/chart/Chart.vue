@@ -1,11 +1,27 @@
 <template>
+<div>
+    <v-row>
+    <v-col cols="12" md="3">
+      <span>Choose period </span>
+    </v-col>  
+    <v-col cols="12" md="4">
+      <v-select 
+          solo
+          v-model="selected"
+          :items="items"
+          @change="updateChart">
+      </v-select>
+    </v-col>
+    </v-row>
     <div id="chart">
        <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
     </div>
+</div>
 </template>
 
 <script>
 import VueApexCharts from 'vue-apexcharts'
+import Vue from 'vue'
 export default {
   name: "Chart",
     components: {
@@ -13,9 +29,12 @@ export default {
     },
     data(){
         return{
-            series: [{
-              name: "Desktops",
-              data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+          items: ["DAILY","MONTHLY","YEARLY"],
+          selected: "MONTHLY",
+          series: [{
+            name: "Number of appointments", 
+            data: [{x:"Jan", y:22}, {x:"Jana", y:41}, {x:"Jadn", y:35}, {x:"Jan", y:51},
+             {x:"Jafn", y:45}, {x:"Jgan", y:62}, {x:"Jaaan", y:69}, {x:"Jan", y:91}, {x:"Jan", y:148},{x:"ds", y:0}]
           }],
           chartOptions: {
             chart: {
@@ -32,7 +51,7 @@ export default {
               curve: 'straight'
             },
             title: {
-              text: 'Product Trends by Month',
+              text: 'Number of appointments by ' + this.timePeriod(),
               align: 'left'
             },
             grid: {
@@ -42,10 +61,36 @@ export default {
               },
             },
             xaxis: {
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
             }
-        }
+          },
+      }
+    },
+    computed: {
+      
+    },
+    methods: {
+        timePeriod(){
+          if(this.selected === "DAILY")
+            return "Day";
+          else if(this.selected === "MONTHLY")
+            return "Month"
+          else
+            return "Year"
+        },
+        updateChart(){
+          let message = "Number of appointments by " + this.timePeriod();
+          this.chartOptions.title = {text: message};
+          const email = localStorage.getItem('user_email'); 
+          Vue.$axios.get('http://localhost:8081/clinics/getAppointments/' + this.selected + "/"+email)
+            .then(response => {
+              this.series = [{data: response.data}];
+            })
+            .catch(err =>{
+              alert(err.data);
+            });
+
         }
     }
+    
 }
 </script>

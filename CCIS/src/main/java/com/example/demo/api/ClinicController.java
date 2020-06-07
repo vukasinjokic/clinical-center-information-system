@@ -8,6 +8,7 @@ import com.example.demo.model.PriceList;
 import com.example.demo.model.PriceListItem;
 import com.example.demo.model.User;
 import com.example.demo.service.ClinicService;
+import com.example.demo.useful_beans.ChartAppointment;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,15 @@ public class ClinicController {
     public ResponseEntity getRating(@PathVariable String email){
         float rating = clinicService.getClinicRating(email);
         return ResponseEntity.ok().body(rating);
+    }
+
+    @GetMapping("/getAppointments/{period}/{email}")
+    @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
+    public ResponseEntity getAppointments(@PathVariable String period, @PathVariable String email){
+        List<ChartAppointment> chart = clinicService.makeChartAppointment(period, email);
+        if(chart != null)
+            return ResponseEntity.ok().body(chart);
+        return ResponseEntity.badRequest().body("nesto lose");
     }
 
     @GetMapping("/getClinic")
