@@ -32,7 +32,7 @@ public class AppointmentService {
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
-    private PatientRepository patientRepository;
+    private CalendarRepository calendarRepository;
 
     private AppointmentValidation appointmentValidation;
 
@@ -126,8 +126,15 @@ public class AppointmentService {
             MedicalRecord mr = appointment.getPatient().getMedicalRecord();
             mr.addAppointment(appointment);
             mr.addPrescription(prescription);
+
+            Calendar calendar = appointmentRepository.findDoctorsCalendarFromAppointment(appointmentToFinish.appointmentId);
+            calendar.removeEventByAppointmentId(appointmentToFinish.appointmentId);
+
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);
+
+
+//            calendarRepository.save(calendar);
             appointmentRepository.save(appointment);
             return true;
         }

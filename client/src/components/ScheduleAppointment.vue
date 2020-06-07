@@ -128,6 +128,7 @@ export default {
                     patient: this.email
                 }
                 this.scheduleAppointment(obj);
+                this.$emit('scheduled');
             }
         },
 

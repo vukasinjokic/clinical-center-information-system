@@ -113,7 +113,7 @@
         </v-dialog>
         </v-container>
         <v-dialog v-model="scheduleAppDialog" width="55%" eager>    
-            <ScheduleAppointment style="width:100%" ref="scheduleAppComponent"></ScheduleAppointment>
+            <ScheduleAppointment style="width:100%" ref="scheduleAppComponent" @scheduled="schedulingFinished"></ScheduleAppointment>
         </v-dialog>
     </div>
 </template> 
@@ -152,6 +152,10 @@ export default {
             this.$refs.scheduleAppComponent.setPatientEmail(this.getPatientEmail())
         },
 
+        schedulingFinished(){
+            this.scheduleAppDialog = false;
+        },
+
         saveMedication(){
             this.prescription.push({code : this.medication[0], medicineName : this.medication[1], description : this.description});
             this.medication = null;
@@ -165,7 +169,8 @@ export default {
                 diagnosis : this.diagnosis[0] + ' ' + this.diagnosis[1],
                 report : this.report, 
                 prescriptionToAdd : this.prescription
-            })
+            });
+            this.$router.replace(':16/calendar');
         }
         
     },

@@ -1,6 +1,7 @@
 package com.example.demo.Repository;
 
 import com.example.demo.model.Appointment;
+import com.example.demo.model.Calendar;
 import com.example.demo.model.CodeBook;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
 
     @Query("select appointment.patient.email FROM Appointment appointment where appointment.id = (:id)")
     String findPatientEmailFromAppointment(@Param("id") Integer id);
+
+    @Query("select appointment.doctor.calendar from Appointment appointment where appointment.id = (:id)")
+    Calendar findDoctorsCalendarFromAppointment(@Param("id") Integer id);
 }
