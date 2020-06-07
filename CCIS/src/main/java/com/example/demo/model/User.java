@@ -90,7 +90,7 @@ public abstract class User implements UserDetails {
       this.socialSecurityNumber = socialSecurityNumber;
       this.lastPasswordResetDate = lastPasswordResetDate;
       this.authorities = authorities;
-
+   }
    public Boolean isPasswordChanged() {
       return passwordChanged;
    }
