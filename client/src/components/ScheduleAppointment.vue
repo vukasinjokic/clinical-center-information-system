@@ -1,6 +1,6 @@
 <template>
-    <div style="padding: 35px; 0px; 0px; 50px">
-        <v-card width="55%">
+    <div  style="padding: 35px, 0px, 0px, 50px; width:55%" >
+        <v-card >
             <v-card-title>Postupak zakazivanja pregleda i operacija</v-card-title>
             <v-text>
                 <v-container>
@@ -129,6 +129,10 @@ export default {
                 }
                 this.scheduleAppointment(obj);
             }
+        },
+
+        setPatientEmail(email){
+            this.email = email;
         }
     },
 }

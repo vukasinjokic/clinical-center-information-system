@@ -129,11 +129,13 @@ public class AppointmentService {
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);
             appointmentRepository.save(appointment);
-            patientRepository.save(appointment.getPatient());
             return true;
         }
         return false;
 
     }
 
+    public String getPatinetEmail(Integer appointment_id) {
+        return appointmentRepository.findPatientEmailFromAppointment(appointment_id);
+    }
 }
