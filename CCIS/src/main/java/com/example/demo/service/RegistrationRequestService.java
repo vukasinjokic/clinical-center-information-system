@@ -28,6 +28,9 @@ public class RegistrationRequestService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     public List<UserRegisterRequest> getRequests() {
         return registrationRequestRepository.findAll();
     }
@@ -44,9 +47,10 @@ public class RegistrationRequestService {
         return false;
     }
 
-    public boolean deleteRequest(Integer id) {
+    public boolean handleDeleteRequest(Integer id, String message) {
         Optional<UserRegisterRequest> req = registrationRequestRepository.findById(id);
         if(req.isPresent()){
+            emailService.alertDeniedUser(req.get().getEmail(), message);
             registrationRequestRepository.deleteById(id);
             return true;
         }

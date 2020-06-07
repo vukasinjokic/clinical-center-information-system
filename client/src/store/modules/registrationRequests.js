@@ -22,10 +22,11 @@ const actions = {
         commit('setregistrationRequests', response.data);
     },
 
-    async handleDenyingRequest({commit}, id){
+    async handleDenyingRequest({commit}, requestToDeny){
         try{
-            await Vue.$axios.delete('http://localhost:8081/registrationRequests/deleteRequest/' + id);
-            commit('deletedRequest', id);
+            let message = requestToDeny.message;
+            await Vue.$axios.post('http://localhost:8081/registrationRequests/deleteRequest/' + requestToDeny.requestId, message);
+            commit('deletedRequest', requestToDeny.reqiestId);
             alert("Successfuly deleted request");
         }catch(error){
             alert(error.response);

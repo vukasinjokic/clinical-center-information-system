@@ -36,10 +36,10 @@ public class RegistrationRequestsController {
         return ResponseEntity.badRequest().body("Accepted request doesn't exist");
     }
 
-    @DeleteMapping("/deleteRequest/{id}")
+    @PostMapping("/deleteRequest/{id}")
     @PreAuthorize("hasRole('CLINIC_CENTER_ADMIN')")
-    public ResponseEntity deleteRequest(@PathVariable Integer id){
-        if(registrationRequestService.deleteRequest(id)){
+    public ResponseEntity handleDeleteRequest(@PathVariable Integer id, @RequestBody String message){
+        if(registrationRequestService.handleDeleteRequest(id, message)){
             return ResponseEntity.ok("Success");
         }
         return ResponseEntity.badRequest().body("Cannot delete request because it doesn't exist");

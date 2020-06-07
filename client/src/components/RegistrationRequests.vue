@@ -13,7 +13,7 @@
                             mdi-checkbox-marked-circle
                             </v-icon>
                         </v-btn>
-                        <v-btn color="red" @click="denyRequest(item)" dark>
+                        <v-btn color="red" @click="openMessageDialogForRequest(item)" dark>
                             <v-icon class="mr-1">
                             mdi-cancel
                             </v-icon>
@@ -21,6 +21,24 @@
             </template>
 
         </v-data-table>
+        <v-dialog v-model="dialog" width="50%">
+            <v-card>
+                <v-card-title>Write message</v-card-title>
+                <v-text>
+                    <v-container>
+                        <v-textarea
+                        v-model="message"
+                        filled
+                        label="Why did you deny the request"
+                        auto-grow
+                        ></v-textarea>
+                        
+                        <v-btn color="orange lighten-1" dark @click="denyRequest">Finish</v-btn>
+                        
+                    </v-container>
+                </v-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -57,7 +75,9 @@ export default {
                 
                 
             ],
-            roomsDialog : false,
+            dialog : false,
+            message : '',
+            requestToDeny : null
             
         }   
     },
@@ -68,8 +88,16 @@ export default {
             this.handleAcceptingRequest(request.id);
         },
 
-        denyRequest(request){
-            this.handleDenyingRequest(request.id);
+        openMessageDialogForRequest(request){
+            this.message = '';
+            this.dialog = true;
+            this.requestToDeny = request;
+            //this.handleDenyingRequest(request.id);
+        },
+
+        denyRequest(){
+            this.dialog = false;
+            this.handleDenyingRequest({ requestId : this.requestToDeny.id, message : this.message} );
         }
 
 
