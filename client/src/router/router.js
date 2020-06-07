@@ -24,20 +24,21 @@ import NotFound from "../views/NotFound"
 import AppointmentsForPatient from '../components/AppointmentsForPatient'
 import MedicalRecord from '../components/MedicalRecord'
 import StartAppointment from '../components/StartAppointment'
+import RegistrationRequests from '../components/RegistrationRequests'
+import ClinicCenterAdminPage from '../views/ClinicCenterAdminPage'
 
 
 Vue.use(VueRouter);
 
-// TODO: Ovo iskoristiti kada se napravi stranica za administratora klinickog centra
-// const isClinicCenterAdmin = (to, from, next) => {
-//     if (localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN") {
-//       next();
-//       return;
-//     }
-//     next({
-//       name: "Unauthorized"
-//     })
-// };
+const isClinicCenterAdmin = (to, from, next) => {
+    if (localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN") {
+      next();
+      return;
+    }
+    next({
+      name: "Unauthorized"
+    })
+};
 
 const isClinicAdmin = (to, from, next) => {
   if (localStorage.getItem("user_role") === "ROLE_CLINIC_ADMIN") {
@@ -141,6 +142,15 @@ const router = new VueRouter({
           {path: 'rooms', name: 'Rooms', component: Room },
           {path: 'ex_type', name: 'ExaminationType', component : ExaminationTypeReview },
           {path: 'appointments', name: 'Appointments', component : Appointments },
+        ]
+      },
+      {
+        path: '/clinicCenterAdmin',
+        name: 'ClinicCenterAdminPage',
+        component: ClinicCenterAdminPage,
+        beforeEnter: isClinicCenterAdmin,
+        children: [
+          {path: 'registrationRequests', name: 'registrationRequests', component: RegistrationRequests},
         ]
       },
       {

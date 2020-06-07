@@ -72,4 +72,24 @@ public class MedicalRecord {
    public void setAppointments(Collection<Appointment> appointments) {
       this.appointments = appointments;
    }
+
+   public Patient getPatient() {
+      return patient;
+   }
+
+   public void setPatient(Patient patient) {
+      this.patient = patient;
+   }
+
+   public void addPrescription(Prescription p){
+      if(prescriptions == null) prescriptions = new ArrayList<Prescription>();
+      prescriptions.add(p);
+      p.setMedicalRecord(this);
+   }
+
+
+    public void addAppointment(Appointment appointment) {
+       if(appointments == null) appointments = new ArrayList<>();
+       appointments.add(appointment);
+    }
 }

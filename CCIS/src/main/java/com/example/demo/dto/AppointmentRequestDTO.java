@@ -59,7 +59,7 @@ public class AppointmentRequestDTO {
         this.time = time;
     }
 
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 
@@ -68,7 +68,7 @@ public class AppointmentRequestDTO {
         this.price = price;
     }
 
-    public float getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
 

@@ -353,4 +353,9 @@ public class Clinic {
          rooms.clear();
    }
 
+   public void addPrescription(Prescription p){
+      if(this.prescriptions == null) prescriptions = new ArrayList<Prescription>();
+      prescriptions.add(p);
+   }
+
 }

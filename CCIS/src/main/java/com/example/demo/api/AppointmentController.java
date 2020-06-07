@@ -10,6 +10,7 @@ import com.example.demo.model.*;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.service.RoomService;
 import com.example.demo.useful_beans.UserData;
+import com.example.demo.useful_beans.AppointmentToFinish;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -116,6 +117,24 @@ public class AppointmentController {
         if(codebook == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<CodeBook>(codebook, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/getPatientEmail/{appointment_id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity getPatientEmail(@PathVariable("appointment_id") Integer appointment_id){
+        String email = appointmentService.getPatinetEmail(appointment_id);
+        if(email == null) return ResponseEntity.badRequest().body("No email found");
+        return ResponseEntity.ok(email);
+    }
+
+    @PostMapping(path = "/handleAppointmentFinish", consumes = "application/json")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity handleAppointmentFinish(@RequestBody AppointmentToFinish appointmentToFinish){
+        if(appointmentService.handleAppointmentFinish(appointmentToFinish)){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
 
     public AppointmentDTO convertToDTO(Appointment appointment){
         AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);

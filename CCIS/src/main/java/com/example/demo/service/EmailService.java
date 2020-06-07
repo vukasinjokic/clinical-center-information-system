@@ -117,4 +117,15 @@ public class EmailService {
             javaMailSender.send(mail);
         }
     }
+
+    @Async
+    public void alertDeniedUser(String email, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("isamrstim23@gmail.com");
+//        mail.setTo(email);
+        mail.setFrom("Clinical-center-information-system@gmail.com");
+        mail.setSubject("Odbijen zahtev za registraciju");
+        mail.setText(message);
+        javaMailSender.send(mail);
+    }
 }

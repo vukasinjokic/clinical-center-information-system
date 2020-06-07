@@ -4,7 +4,11 @@ const getDefaultState = () => {
     return {
         appointmentId : null,
         appointment : null,
-        codebook : null
+        codebook : {
+            diagnoses : [],
+            medications : []
+        },
+        patientEmail : '',
     }
 };
 
@@ -19,6 +23,9 @@ const getters = {
     },
     getAppointmentId : (state) => () => {
         return state.appointmentId;
+    },
+    getPatientEmail : (state) => () => {
+        return state.patientEmail;
     }
 };
 
@@ -37,6 +44,17 @@ const actions = {
         commit('setCodebook', response.data);
     },
 
+    async handleFinishAppointment({commit}, appointmentToFinish){
+        const response = await Vue.$axios.post("http://localhost:8081/appointments/handleAppointmentFinish", appointmentToFinish);
+        console.log(commit);
+        console.log(response);
+    },
+
+    async fetchPatientEmail({commit}, appId){
+        const response = await Vue.$axios.get("http://localhost:8081/appointments/getPatientEmail/" +  (appId ? appId : this.getAppointmentId));
+        commit('setPatientEmail', response.data);
+    },
+
     setInitialAppointmentId({commit}, initialAppointmentId){
         commit('setAppointmentId', initialAppointmentId);
     }
@@ -52,6 +70,7 @@ const mutations = {
     setAppointment : (state, appointment) => (state.appointment = appointment),
     setCodebook : (state, codebook) => (state.codebook = codebook),
     setAppointmentId : (state, id) => (state.appointmentId = id),
+    setPatientEmail: (state, email) => (state.patientEmail = email)
 };
 
 const namespaced = true;
