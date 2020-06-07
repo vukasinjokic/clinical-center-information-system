@@ -75,7 +75,7 @@ public class AuthenticationController {
         for (GrantedAuthority authority : user.getAuthorities())
             strAuthorities.add(authority.getAuthority());
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, strAuthorities, user.getEmail()));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, strAuthorities, user.getEmail(),user.isPasswordChanged()));
     }
 
     @GetMapping("/userDetails")
@@ -115,6 +115,7 @@ public class AuthenticationController {
             if(!user.getPassword().equals(changePassword.getOld()))
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+            user.setPasswordChanged(true);
             user.setPassword(changePassword.getNew_pass());
             userRepository.save(user);
             return new ResponseEntity<>(HttpStatus.OK);

@@ -16,6 +16,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
 
     List<Appointment> findByRoomId(Integer id);
 
+    List<Appointment> findByDoctorId(Integer id);
     List<Appointment> findByPatientId(Integer id);
 
     @Query("SELECT appointment FROM Appointment appointment JOIN FETCH appointment.clinic WHERE appointment.id = (:id)")

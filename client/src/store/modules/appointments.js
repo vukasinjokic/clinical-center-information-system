@@ -22,11 +22,16 @@ const getters = {
     getExaminationTypes: (state) => state.examinationTypes,
     getExaminationTypeNames: (state)=>{
         var names = [];
+        state.examinationTypes.forEach(type => names.push({text: type.name, value: type.id}));
+        return names;
+    },
+    getExaminationTypeOnlyNames: (state)=>{
+        var names = [];
         state.examinationTypes.forEach(type => names.push(type.name));
         return names;
     },
-    getTypeDuration: (state) => (name) => {
-        return state.examinationTypes.find(type => type.name == name);
+    getTypeDuration: (state) => (id) => {
+        return state.examinationTypes.find(type => type.id == id);
     },
     getDoctors: (state) => {
         var doctorsEmail = [];
@@ -58,10 +63,16 @@ const actions = {
         const response = await Vue.$axios.get('http://localhost:8081/appointments/getDoctors/'+ex_type);
         commit('setDoctors',response.data);
     },
-    async saveAppointment({commit}, appo){
-        const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
-        commit('newApp', response.data);
+    async saveAppointment({commit,dispatch}, appo){
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/appointments/addAppointment', appo);
+            commit('newApp', response.data);
+            dispatch('snackbar/showSuccess', 'Uspesno dodat slobodan pregled', {root: true});
+        }catch(error){
+            dispatch('snackbar/showWarning',"Doktor ili soba su zauzeti u zadato vreme.",{root:true}); // moze i da je doktor na odmoru
+        }
     },
+   
 
     resetAppointments({commit}) {
         commit("resetState");

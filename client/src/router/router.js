@@ -16,7 +16,10 @@ import PatientReview from '../components/PatientReview.vue'
 import VacationRequest from '../components/VacationRequest'
 import ClinicAdminPage from '../views/ClinicAdminPage'
 import AppointmentRequests from '../components/AppointmentRequests'
-import ScheduleAppointment from '../components/ScheduleAppointment'
+import ScheduleAppointment from '../components/ScheduleAppointment';
+import DoctorReview from '../components/doctor/DoctorReview';
+import ClinicProfile from '../components/ClinicProfile';
+import ChangePassword from '../components/ChangePassword';
 import NursePage from '../views/NursePage'
 import PatientPage from '../views/PatientPage'
 import Unauthorized from "../views/Unauthorized"
@@ -26,6 +29,7 @@ import MedicalRecord from '../components/MedicalRecord'
 import StartAppointment from '../components/StartAppointment'
 import RegistrationRequests from '../components/RegistrationRequests'
 import ClinicCenterAdminPage from '../views/ClinicCenterAdminPage'
+import BusinessReport from '../components/BusinessReport'
 
 
 Vue.use(VueRouter);
@@ -52,12 +56,23 @@ const isClinicAdmin = (to, from, next) => {
 
 const isDoctor = (to, from, next) => {
   if (localStorage.getItem("user_role") === "ROLE_DOCTOR") {
-    next();
-    return;
+    if(localStorage.getItem("is_password_changed") == 'true'){
+      next();
+      return;
+    }else{
+      if(from.path === '/'){
+        next({path: '/change-password'});
+        return;
+      }else{
+        next();
+      }
+    }
   }
-  next({
-    name: "Unauthorized"
-  })
+  else{
+    next({
+      name: "Unauthorized"
+    })
+  }
 };
 
 const isNurse = (to, from, next) => {
@@ -105,6 +120,7 @@ const router = new VueRouter({
         component: Register,
         beforeEnter: isLogOut
       },
+      
       {
         path: '/doctor',
         name: 'DoctorPage',
@@ -137,11 +153,16 @@ const router = new VueRouter({
         component: ClinicAdminPage,
         beforeEnter: isClinicAdmin,
         children: [
+          {path: 'businessReport', name: 'BusinessReport', component: BusinessReport},
           {path: 'appointmentRequests', name: 'AppointmentRequests', component: AppointmentRequests},
           {path: 'vacationRequests', name: 'Vacation Requests', component: VacationReqReview },
           {path: 'rooms', name: 'Rooms', component: Room },
           {path: 'ex_type', name: 'ExaminationType', component : ExaminationTypeReview },
           {path: 'appointments', name: 'Appointments', component : Appointments },
+          {path: 'doctors', name: 'Doctors', component : DoctorReview},
+          {path: 'clinicProfile', name: 'ClinicProfile', component: ClinicProfile},
+          {path: 'profile', name: 'UserProfile', component: UserProfile},
+
         ]
       },
       {
@@ -166,7 +187,13 @@ const router = new VueRouter({
           {path: 'doctors', name: 'Doctors', component: Doctors}
         ]
       },
+      {
+        path: '/change-password',
+        name: 'ChangePassword',
+        component: ChangePassword
+      },
       {path: "/clinics", name: "Clinics", component: Clinics},
+ 
       {
         path: "/401",
         name: "Unauthorized",

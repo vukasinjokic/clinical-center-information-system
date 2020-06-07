@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -28,8 +30,9 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @Column(name = "price_list", unique = false)
-   private String priceList;
+   @OneToOne(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
+   @LazyToOne(LazyToOneOption.NO_PROXY)
+   private PriceList priceList;
 
    @Column(name = "rating", unique = false)
    private float rating;
@@ -55,7 +58,7 @@ public class Clinic {
 
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    private Collection<AppointmentRequest> appointmentRequests;
-
+//bilo je eager
    @OneToMany(cascade = {ALL}, fetch = EAGER, orphanRemoval = true)
    private Collection<MedicalStaffRequest> medicalStaffRequests;
 
@@ -65,15 +68,14 @@ public class Clinic {
    public Clinic() {
    }
 
-
-
    public Clinic(String name, String description, String address){
       this.name = name;
       this.description = description;
       this.address = address;
    }
-
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
+   public Clinic(String name, String address, String description, PriceList priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests) {
+   }
+   public Clinic(String name, String address, String description, PriceList priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -140,11 +142,11 @@ public class Clinic {
       this.description = description;
    }
 
-   public String getPriceList() {
+   public PriceList getPriceList() {
       return priceList;
    }
 
-   public void setPriceList(String priceList) {
+   public void setPriceList(PriceList priceList) {
       this.priceList = priceList;
    }
 

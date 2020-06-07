@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 //import javafx.util.Pair;
 
+import javafx.util.Pair;
+
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,11 @@ public class Calendar {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
+
+    @ElementCollection
+    @CollectionTable(name = "vataction_dates", joinColumns = @JoinColumn(name = "calendar_id"))
+    @Column(name = "vacation_dates")
+    private List<Date> vacationDates;
 
     @ElementCollection
     @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"))
@@ -40,24 +47,24 @@ public class Calendar {
     @Column(name = "appointment_id")
     private List<Integer> appointmentIds;
 
-//    public HashMap<String,List<Pair<Date,Date>>> formatDates(){
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        HashMap<String,List<Pair<Date,Date>>> map = new HashMap<String, List<Pair<Date,Date>>>();
-//
-//        for(int i = 0; i<eventStartDates.size(); i++){
-//            if(map.containsKey(sdf.format(eventStartDates.get(i)).substring(0,10))){
-//                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
-//                map.get(sdf.format(eventStartDates.get(i)).substring(0,10)).add(pair);
-//
-//            }else{
-//                List<Pair<Date,Date>> ls = new ArrayList<Pair<Date,Date>>();
-//                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
-//                ls.add(pair);
-//                map.put(sdf.format(eventStartDates.get(i)).substring(0,10), ls);
-//            }
-//        }
-//        return map;
-//    }
+    public HashMap<String,List<Pair<Date,Date>>> formatDates(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        HashMap<String,List<Pair<Date,Date>>> map = new HashMap<String, List<Pair<Date,Date>>>();
+
+        for(int i = 0; i<eventStartDates.size(); i++){
+            if(map.containsKey(sdf.format(eventStartDates.get(i)).substring(0,10))){
+                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
+                map.get(sdf.format(eventStartDates.get(i)).substring(0,10)).add(pair);
+
+            }else{
+                List<Pair<Date,Date>> ls = new ArrayList<Pair<Date,Date>>();
+                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
+                ls.add(pair);
+                map.put(sdf.format(eventStartDates.get(i)).substring(0,10), ls);
+            }
+        }
+        return map;
+    }
 
     public Calendar() {
     }
@@ -110,6 +117,14 @@ public class Calendar {
         this.eventNames = eventNames;
     }
 
+    public List<Date> getVacationDates() {
+        return vacationDates;
+    }
+
+    public void setVacationDates(List<Date> vacationDates) {
+        this.vacationDates = vacationDates;
+    }
+
     public void addAppointment(Appointment appointment){
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -124,6 +139,19 @@ public class Calendar {
         }
     }
 
+    public void addVacationDates(MedicalStaffRequest medicalStaffRequest){
+        this.getVacationDates().add(medicalStaffRequest.getFromDate());
+        this.getVacationDates().add(medicalStaffRequest.getToDate());
+    }
+
+    private void addEvent(Date startDate, Date endDate, String eventName) {
+        if (eventStartDates.size() == 0) {
+            eventStartDates.add(startDate);
+            eventEndDates.add(endDate);
+            eventNames.add(eventName);
+            return;
+        }
+    }
     private void addEvent(Date startDate, Date endDate, String eventName, Integer appointmentId){
         if(startDate.after(eventStartDates.get(eventStartDates.size() - 1))){
             eventStartDates.add(startDate);

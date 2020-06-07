@@ -15,7 +15,7 @@ public class DoctorDTO {
     private String password;
     private String firstName;
     private String lastName;
-    private String email;
+    public String email;
     private String city;
     private String address;
     private String country;
@@ -26,15 +26,17 @@ public class DoctorDTO {
     private String clinicId;
     private String username;
     private String rating;
-    private BusinessHours businessHours;
+    private Boolean passwordChanged;
+    private BusinessHoursDTO businessHours;
     private ExaminationType examinationType;
     private Collection<AppointmentDTO> appointments;
 
     public void setFields(Doctor doctor){
         try {
+//            if(doctor.getCalendar() != null)
 //            CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
-            setClinic(doctor.getClinic());
-            setClinicId(doctor.getClinic());
+                setClinic(doctor.getClinic());
+                setClinicId(doctor.getClinic());
         }
         catch(Exception e){
             e.printStackTrace();
@@ -58,6 +60,8 @@ public class DoctorDTO {
     }
 
     public void setClinicId(Clinic clinic) {
+        if(clinic.getId() == null)
+            return;
         this.clinicId = clinic.getId().toString();
     }
 
@@ -169,11 +173,11 @@ public class DoctorDTO {
         this.rating = rating;
     }
 
-    public BusinessHours getBusinessHours() {
+    public BusinessHoursDTO getBusinessHours() {
         return businessHours;
     }
 
-    public void setBusinessHours(BusinessHours businessHours) {
+    public void setBusinessHours(BusinessHoursDTO businessHours) {
         this.businessHours = businessHours;
     }
 
@@ -192,4 +196,16 @@ public class DoctorDTO {
     public void setAppointments(Collection<AppointmentDTO> appointments) {
         this.appointments = appointments;
     }
+
+
+    public Boolean isPasswordChanged() {
+        return this.passwordChanged;
+    }
+
+    public void setPasswordChanged(Boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
+    }
+    public DoctorDTO(){}
 }
+
+

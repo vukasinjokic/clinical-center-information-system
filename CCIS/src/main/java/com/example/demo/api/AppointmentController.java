@@ -81,10 +81,10 @@ public class AppointmentController {
         return examinationTypeRepository.findAll();
     }
 
-    @GetMapping(path="/getDoctors/{ex_type_name}")
+    @GetMapping(path="/getDoctors/{ex_type_id}")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public List<DoctorDTO> getDoctorsByExType(@PathVariable("ex_type_name") String ex_type_name){
-        List<Doctor> doctors = doctorRepository.findByExaminationTypeName(ex_type_name);
+    public List<DoctorDTO> getDoctorsByExType(@PathVariable("ex_type_id") Integer ex_type_id){
+        List<Doctor> doctors = doctorRepository.findByExaminationTypeId(ex_type_id);
 
         return doctors.stream()
                 .map(this::convertToDTO)
@@ -97,7 +97,8 @@ public class AppointmentController {
         //validacija ide u service
         Appointment appointment = appointmentService.saveAppointment(appointmentDTO);
         if(appointment == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().header("Soba je zauzeta").body(new AppointmentDTO());
+
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.CREATED);
     }
 

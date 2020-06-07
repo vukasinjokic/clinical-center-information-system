@@ -1,6 +1,6 @@
 <template>
     <div id="register">
-        <v-container >
+        <v-container style="width:70%">
         <v-card class="elevation-12">
               <v-toolbar
                 color="primary"

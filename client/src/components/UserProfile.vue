@@ -1,13 +1,18 @@
 <template>
     <div>
-        <v-card max-width="344"
+        <v-card max-width="444"
             class="mx-auto">
-            <v-list-item>
+            <v-card-title>
+                <v-toolbar color="orange lighten-1" dark> 
+                <v-list-item>
                 <v-list-item-avatar color="grey"></v-list-item-avatar>
                 <v-list-item-content>
-                    <v-list-item-title class="headline">Profile</v-list-item-title>
+                    <v-list-item-title class="headline">User profile</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+              </v-toolbar>
+            </v-card-title>
+            
             <v-list-item>
                 <v-list-item-title>Email: </v-list-item-title>
                 <v-list-item-title v-text="getUserProf.username"/>
@@ -43,7 +48,6 @@
         </v-card>
         <v-spacer/>
         <EditProfile></EditProfile>
-        <ChangePassword></ChangePassword>
         
         </div>
 </template>
@@ -51,11 +55,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import EditProfile from './EditProfile'
-import ChangePassword from './ChangePassword'
 
 export default {
     name:'UserProfile',
-    components: {EditProfile, ChangePassword},
+    components: {EditProfile},
     data(){
         return{
            

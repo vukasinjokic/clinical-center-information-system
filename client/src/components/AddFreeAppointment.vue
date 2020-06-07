@@ -65,13 +65,7 @@
                       v-model="dura" 
                       ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field 
-                      :rules="[durationRule,requiredRule]" 
-                      label="Price" type="float"
-                      v-model="price" 
-                      required></v-text-field>
-                </v-col>
+                
                 <v-col cols="12" sm="6">
                   <v-select
                     v-model="room"
@@ -98,6 +92,7 @@
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text v-on:click="closeDialog">Close</v-btn>
             <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                {{time}}
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -144,11 +139,11 @@ export default {
             this.dialog = false;
             this.$refs.form.reset();
         },
-        save(){
+        save(){ 
           if(this.$refs.form.validate()){
             var newAppointment = 
                     {
-                      time: new Date(this.date + " " + this.time),
+                      time: this.date + " " + this.time,
                       price: this.price,
                       doctor: {email:this.doctor},
                       room: this.room,

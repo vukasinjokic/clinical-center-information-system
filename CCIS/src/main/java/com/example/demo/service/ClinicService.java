@@ -1,15 +1,18 @@
 package com.example.demo.service;
 
-import com.example.demo.Repository.ClinicRepository;
-import com.example.demo.Repository.CodeBookRepository;
+import com.example.demo.Repository.*;
 import com.example.demo.dto.ClinicDTO;
-import com.example.demo.model.Clinic;
+import com.example.demo.model.*;
+import com.example.demo.useful_beans.ChartAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.Calendar;
 
 @Service
 public class ClinicService {
@@ -17,9 +20,16 @@ public class ClinicService {
 
     @Autowired
     private ClinicRepository clinicRepository;
-
+    @Autowired
+    private ClinicAdminRepository clinicAdminRepository;
     @Autowired
     private CodeBookRepository codeBookRepository;
+    @Autowired
+    private ExaminationTypeRepository examinationTypeRepository;
+    @Autowired
+    private PriceListItemRepository priceListItemRepository;
+    @Autowired
+    private PriceListRepository priceListRepository;
 
 
     public Clinic findById(Integer id) {
@@ -40,5 +50,179 @@ public class ClinicService {
         Clinic clinic = new Clinic(clinicDTO.getName(), clinicDTO.getDescription(), clinicDTO.getAddress());
         clinicRepository.save(clinic);
         return clinic;
+    }
+
+    public PriceList getPriceList(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
+        Optional<ClinicAdmin> ad = clinicAdminRepository.findById(user.getId());
+        ClinicAdmin admin = ad.get();
+        if(admin != null){
+            Clinic clinic = admin.getClinic();
+            return clinic.getPriceList();
+        }
+        return null;
+    }
+
+    public float getClinicRating(String email){
+        ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
+        return clinicAdmin.getClinic().getRating();
+    }
+
+    public List<ChartAppointment> makeChartAppointment(String period, String admin_email){
+        List<ChartAppointment> chart;
+        Date date = new Date();
+        ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(admin_email);
+
+        if(period.equals("DAILY")){
+            chart = makeDailyChart(date, clinicAdmin.getClinic());
+        }else if(period.equals("MONTHLY")){
+            chart = makeMonthlyChart(date, clinicAdmin.getClinic());
+        }else{
+            chart = makeYearlyChart(date, clinicAdmin.getClinic());
+        }
+        return chart;
+    }
+
+    public List<ChartAppointment> makeDailyChart(Date nowDate, Clinic clinic){
+        List<ChartAppointment> dailyChart = new ArrayList<ChartAppointment>();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar2 = GregorianCalendar.getInstance();
+        HashMap<String, Integer> mapa = new HashMap<String, Integer>();
+
+        for(Appointment app : clinic.getAppointments()){
+            if(fmt.format(nowDate).equals(fmt.format(app.getTime()))){
+                calendar2.setTime(app.getTime());
+                if(mapa.containsKey(calendar2.get(Calendar.HOUR_OF_DAY)+"h")){
+                    mapa.put(calendar2.get(Calendar.HOUR_OF_DAY) + "h", mapa.get(calendar2.get(Calendar.HOUR_OF_DAY)+"h") + 1);
+                }else
+                    mapa.put(calendar2.get(Calendar.HOUR_OF_DAY) + "h", 1);
+            }
+        }
+        for(int i = 0; i < 24; i++){
+            String a = i + "h";
+            if(!mapa.containsKey(a)){
+                mapa.put(a, 0);
+            }
+        }
+        for(Map.Entry<String, Integer> entry : mapa.entrySet()){
+            ChartAppointment chart = new ChartAppointment();
+            chart.x = entry.getKey();
+            chart.y = entry.getValue();
+            dailyChart.add(chart);
+        }
+        Collections.sort(dailyChart);
+        return dailyChart;
+    }
+
+    public List<ChartAppointment> makeMonthlyChart(Date nowDate, Clinic clinic){
+        List<ChartAppointment> dailyChart = new ArrayList<ChartAppointment>();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMM");
+        Calendar calendar2 = GregorianCalendar.getInstance();
+        HashMap<String, Integer> mapa = new HashMap<String, Integer>();
+
+        for(Appointment app : clinic.getAppointments()){
+            if(fmt.format(nowDate).equals(fmt.format(app.getTime()))){
+                calendar2.setTime(app.getTime());
+                if(mapa.containsKey(calendar2.get(Calendar.DAY_OF_MONTH)+".")){
+                    mapa.put(calendar2.get(Calendar.DAY_OF_MONTH) + "." , mapa.get(calendar2.get(Calendar.DAY_OF_MONTH)+".") + 1);
+                }else
+                    mapa.put(calendar2.get(Calendar.DAY_OF_MONTH) + ".", 1);
+            }
+        }
+        for(int i = 0; i < 31; i++){
+            String a = i + ".";
+            if(!mapa.containsKey(a)){
+                mapa.put(a, 0);
+            }
+        }
+        for(Map.Entry<String, Integer> entry : mapa.entrySet()){
+            ChartAppointment chart = new ChartAppointment();
+            chart.x = entry.getKey();
+            chart.y = entry.getValue();
+            dailyChart.add(chart);
+        }
+        Collections.sort(dailyChart);
+        return dailyChart;
+
+    }
+
+    public List<ChartAppointment> makeYearlyChart(Date nowDate, Clinic clinic){
+        return null;
+    }
+
+    public PriceListItem addPriceListItem(PriceListItem priceListItem){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<ClinicAdmin> ad = clinicAdminRepository.findById(user.getId());
+
+        if(this.DoesExTypeNameExist(priceListItem.getExaminationType().getName(),ad.get()))
+            return null;
+
+        ExaminationType examinationType = examinationTypeRepository.findByName(priceListItem.getExaminationType().getName());
+        priceListItem.setExaminationType(examinationType);
+        if(ad.isPresent()){
+            ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
+            Clinic clinic = admin.getClinic();
+            PriceList priceList = clinic.getPriceList();
+            if(priceList.getId() == null){
+                priceList = new PriceList();
+            }
+            priceList.getItems().add(priceListItem);
+            priceList.setClinic(admin.getClinic());
+            priceListRepository.save(priceList);
+            return priceListItemRepository.save(priceListItem);
+        }
+        return null;
+    }
+
+    public PriceListItem updatePriceListItem(PriceListItem priceListItem){
+        Optional<PriceListItem> findItem = priceListItemRepository.findById(priceListItem.getId());
+        if(findItem.isPresent()){
+            PriceListItem updateItem = findItem.get();
+            updateItem.setPrice(priceListItem.getPrice());
+           // updateItem.setExaminationType(priceListItem.getExaminationType());
+            return priceListItemRepository.save(updateItem);
+        }
+        return null;
+    }
+
+    public Clinic updateClinic(ClinicDTO clinicDTO){
+        Optional<Clinic> find_clinic = clinicRepository.findById(Integer.parseInt(clinicDTO.getId()));
+        //validiraj ime
+        List<Clinic> clinics = getAllClinics();
+        Optional<Clinic> clinicOptional = clinics.stream().filter(clinic -> clinic.getName().equals(clinicDTO.getName())).findFirst();
+        if(find_clinic.isPresent()){
+            Clinic clinic = find_clinic.get();
+            if(!clinicDTO.equals(clinic.getName())){
+                if(clinicOptional.isPresent())
+                    return null;
+            }
+
+            clinic.setName(clinicDTO.getName());
+            clinic.setAddress(clinicDTO.getAddress());
+            clinic.setDescription(clinicDTO.getDescription());
+            return clinicRepository.save(clinic);
+        }
+        return null;
+    }
+
+    public Clinic findByAdminEmail(String email){
+        ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
+        return this.findById(admin.getClinic().getId());
+    }
+
+    public boolean DoesExTypeNameExist(String name, ClinicAdmin admin){
+        if(admin.getClinic().getPriceList() == null)
+        {
+            admin.getClinic().setPriceList(new PriceList());
+            return false;
+        }
+        List<PriceListItem> priceListItems = (List<PriceListItem>) admin.getClinic().getPriceList().getItems();
+        Optional<PriceListItem> it = priceListItems.stream()
+                .filter(item -> item.getExaminationType().getName().equals(name))
+                .findAny();
+        if(it.isPresent())
+            return true;
+        return false;
     }
 }
