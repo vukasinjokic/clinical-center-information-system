@@ -59,4 +59,11 @@ public class Patient extends User {
    public void addAppointment(Appointment a){
       this.appointments.add(a);
    }
+
+   public void removeAppointment(Appointment a){
+      if(a == null) return;
+      if(appointments.contains(a)){
+         appointments.remove(a);
+      }
+   }
 }

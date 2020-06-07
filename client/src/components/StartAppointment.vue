@@ -41,7 +41,7 @@
                         <v-col md="3" offset-md="8">
                             <v-spacer></v-spacer>
                             <v-btn
-                                color="orange lighten-1" dark >Submit report</v-btn>
+                                color="orange lighten-1" dark @click="finishBtnClicked()">Finish</v-btn>
                         </v-col>
                     </v-form>
                 </v-container>
@@ -141,13 +141,22 @@ export default {
         }   
     },
     methods : {
-        ...mapActions('startAppointment', ['fetchAppointment', 'fetchCodebook']),
+        ...mapActions('startAppointment', ['fetchAppointment', 'fetchCodebook', 'handleFinishAppointment']),
 
         saveMedication(){
             this.prescription.push({code : this.medication[0], medicineName : this.medication[1], description : this.description});
             this.medication = null;
             this.description = '';
             this.addMedicineDialog = false;
+        },
+
+        finishBtnClicked(){
+            this.handleFinishAppointment({
+                appointmentId : this.getAppointmentId(),
+                diagnosis : this.diagnosis[0] + ' ' + this.diagnosis[1],
+                report : this.report, 
+                prescriptionToAdd : this.prescription
+            })
         }
         
     },

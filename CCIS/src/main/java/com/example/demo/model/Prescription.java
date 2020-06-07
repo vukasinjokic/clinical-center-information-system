@@ -1,9 +1,11 @@
 package com.example.demo.model;
 
+import com.example.demo.useful_beans.MedicineForPrescription;
 import org.hibernate.annotations.Type;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +35,15 @@ public class Prescription {
     private boolean isVerified;
 
     public Prescription() {
+        this.isVerified = false;
+    }
+
+    public Prescription(List<MedicineForPrescription> medicine){
+        this.isVerified = false;
+        this.content = new HashMap<String, String>();
+        for(MedicineForPrescription m : medicine){
+            this.content.put(m.code + " " + m.medicineName, m.description);
+        }
     }
 
     public Prescription(Integer id, Map<String, String> content, boolean isVerified, MedicalRecord medicalRecord) {
