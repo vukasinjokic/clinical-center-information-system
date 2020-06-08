@@ -62,7 +62,7 @@ public class Clinic {
    @OneToMany(cascade = {ALL}, fetch = EAGER, orphanRemoval = true)
    private Collection<MedicalStaffRequest> medicalStaffRequests;
 
-   @OneToMany(cascade = {ALL}, fetch = LAZY)
+   @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Prescription> prescriptions;
 
    public Clinic() {
@@ -360,4 +360,13 @@ public class Clinic {
       prescriptions.add(p);
    }
 
+   public void removePersciptionById(Integer id) {
+      if(this.prescriptions == null) return;
+      for(Prescription p : prescriptions){
+         if(p.getId() == id) {
+            prescriptions.remove(p);
+            return;
+         }
+      }
+   }
 }

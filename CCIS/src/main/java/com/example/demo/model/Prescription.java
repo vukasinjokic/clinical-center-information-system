@@ -34,6 +34,14 @@ public class Prescription {
     @Type(type = "true_false")
     private boolean isVerified;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "nurse_id")
+    private Nurse nurse;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_id")
+    private Clinic clinic;
+
     public Prescription() {
         this.isVerified = false;
     }
@@ -46,11 +54,29 @@ public class Prescription {
         }
     }
 
-    public Prescription(Integer id, Map<String, String> content, boolean isVerified, MedicalRecord medicalRecord) {
+    public Prescription(Integer id, Map<String, String> content, boolean isVerified, MedicalRecord medicalRecord, Nurse nurse, Clinic clinic) {
         this.id = id;
         this.content = content;
         this.isVerified = isVerified;
         this.medicalRecord = medicalRecord;
+        this.nurse = nurse;
+        this.clinic = clinic;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    public Nurse getNurse() {
+        return nurse;
+    }
+
+    public void setNurse(Nurse nurse) {
+        this.nurse = nurse;
     }
 
     public Integer getId() {
