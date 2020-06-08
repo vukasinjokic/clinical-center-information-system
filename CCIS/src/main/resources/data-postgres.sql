@@ -32,6 +32,7 @@ insert into code_books (id) values (1);			-- id = 1
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting diagnoses ----------------------------------------------------------
 insert into diagnoses			-- id = 1
@@ -775,12 +776,12 @@ values (nextval('ust_seq_user'), 'pacijent6@gmail.com', 'pacijent6@gmail.com', '
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting medical records -------------------------------------------------------
-insert into medical_records (patient_id) values (22);			-- id = 1
-insert into medical_records (patient_id) values (23);			-- id = 2
-insert into medical_records (patient_id) values (24);			-- id = 3
-insert into medical_records (patient_id) values (25);			-- id = 4
-insert into medical_records (patient_id) values (26);			-- id = 5
-insert into medical_records (patient_id) values (27);			-- id = 6
+insert into medical_records (patient_id, weight, height, left_eye, right_eye, blood_type) values (22, '80.0 kg', '180.0 cm', '0 D',   '0 D',   'A+');			-- id = 1
+insert into medical_records (patient_id, weight, height, left_eye, right_eye, blood_type) values (23, '70.0 kg', '170.0 cm', '-1 D', '-1 D',   'B-');			-- id = 2
+insert into medical_records (patient_id, weight, height, left_eye, right_eye, blood_type) values (24, '60.0 kg', '160.0 cm', '1 D',   '1 D',   'AB+');			-- id = 3
+insert into medical_records (patient_id, weight, height, left_eye, right_eye, blood_type) values (25, '50.0 kg', '150.0 cm', '0.5 D', '1 D',   'O-');			-- id = 4
+insert into medical_records (patient_id, weight, height, left_eye, right_eye, blood_type) values (26, '75.0 kg', '175.0 cm', '-2 D', '-1.5 D', 'A-');			-- id = 5
+insert into medical_records (patient_id, weight, height, left_eye, right_eye, blood_type) values (27, '85.0 kg', '185.0 cm', '0 D',   '0 D',   'O+');			-- id = 6
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -880,15 +881,15 @@ values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 
 
 insert into appointments			-- id = 10
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 			3, 'T');
+values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 			3, 'F');
 
 insert into appointments			-- id = 11
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 			3, 'T');
+values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 			3, 'F');
 
 insert into appointments			-- id = 12
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3, 'T');
+values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3, 'F');
 
 -- insert into appointments			-- id = 12
 -- 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
@@ -952,30 +953,21 @@ values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   '
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting prescriptions-------------------------------------------------------
-insert into prescriptions( is_verified) values ('F');
-insert into prescriptions( is_verified) values ('F');
+insert into prescriptions(medical_record_id, is_verified) values (1, 'F');       -- id = 1
+insert into prescriptions(medical_record_id, is_verified) values (2, 'F');       -- id = 2
+insert into prescriptions(medical_record_id, is_verified) values (3, 'F');       -- id = 3
+insert into prescriptions(medical_record_id, is_verified) values (4, 'F');       -- id = 4
+insert into prescriptions(medical_record_id, is_verified) values (5, 'F');       -- id = 5
+insert into prescriptions(medical_record_id, is_verified) values (6, 'F');       -- id = 6
 
 insert into prescriptions_contents(prescription_id, description, medication) values (1, '10mg dnevno', 'Daktanol');
 insert into prescriptions_contents(prescription_id, description, medication) values (2, '100mg svaki drugi dan', 'Omeprol');
+insert into prescriptions_contents(prescription_id, description, medication) values (3, '10mg dnevno', 'Daktanol');
+insert into prescriptions_contents(prescription_id, description, medication) values (4, '100mg svaki drugi dan', 'Omeprol');
+insert into prescriptions_contents(prescription_id, description, medication) values (5, '10mg dnevno', 'Daktanol');
+insert into prescriptions_contents(prescription_id, description, medication) values (6, '100mg svaki drugi dan', 'Omeprol');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------- Inserting registration requests -------------------------------------------------------
-insert into user_register_request
-( email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
-values ( 'pacijent7@gmail.com', 'pacijent', 'Milorad', 'Radic', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '678678678');
-
-
-insert into user_register_request
-( email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
-values ( 'pacijent8@gmail.com', 'pacijent', 'Kris', 'Kristic', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '876876876');
-
-insert into user_register_request
-( email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
-values ( 'pacijent9@gmail.com', 'pacijent', 'Radoje', 'Radic', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '098098098');
------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting text here ----------------------------------------------------------

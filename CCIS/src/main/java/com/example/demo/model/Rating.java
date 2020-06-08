@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -34,6 +35,8 @@ public class Rating {
     private Float averageGrade;
 
     public Rating() {
+        patientIds = new ArrayList<>();
+        grades = new ArrayList<>();
     }
 
     public Rating(List<Integer> patientIds, List<Float> grades, Float averageGrade) {

@@ -30,11 +30,11 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @OneToOne(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
+   @OneToOne(mappedBy = "clinic", cascade = {ALL}, fetch = EAGER)
    @LazyToOne(LazyToOneOption.NO_PROXY)
    private PriceList priceList;
 
-   @OneToOne(fetch = LAZY)
+   @OneToOne(fetch = EAGER)
    @JoinColumn(name = "rating_id", unique = false, nullable = false)
    private Rating rating;
 

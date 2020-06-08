@@ -2,11 +2,15 @@ package com.example.demo.dto;
 
 import com.example.demo.model.Clinic;
 import com.example.demo.model.Doctor;
+import com.example.demo.model.PriceList;
+import com.example.demo.model.PriceListItem;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ClinicsDTO {
 
@@ -16,7 +20,7 @@ public class ClinicsDTO {
     private String name;
     private String address;
     private String description;
-    private String priceList;
+    private Map<String, Float> priceList = new HashMap<>();
     private String rating;
     private List<DoctorDTO> doctors = new ArrayList<>();
 
@@ -25,6 +29,7 @@ public class ClinicsDTO {
     }
 
     public void setDTOFields(Clinic clinic) {
+        setPriceListMap(clinic.getPriceList());
         setDoctors(clinic.getDoctors());
         setRating(clinic.getRating().getAverageGrade().toString());
     }
@@ -61,11 +66,18 @@ public class ClinicsDTO {
         this.description = description;
     }
 
-    public String getPriceList() {
+    public Map<String, Float> getPriceList() {
         return priceList;
     }
 
-    public void setPriceList(String priceList) {
+    public void setPriceListMap(PriceList priceList) {
+        if (priceList == null)
+            return;
+        for (PriceListItem item : priceList.getItems())
+            this.priceList.put(item.getExaminationType().getName(), item.getPrice());
+    }
+
+    public void setPriceList(Map<String, Float> priceList) {
         this.priceList = priceList;
     }
 
