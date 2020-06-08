@@ -26,6 +26,7 @@ import MedicalRecord from '../components/MedicalRecord'
 import StartAppointment from '../components/StartAppointment'
 import RegistrationRequests from '../components/RegistrationRequests'
 import ClinicCenterAdminPage from '../views/ClinicCenterAdminPage'
+import ValidatePerscriptions from '../components/ValidatePerscriptions'
 
 
 Vue.use(VueRouter);
@@ -128,7 +129,8 @@ const router = new VueRouter({
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
-            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest}
+            {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
+            {path: 'validatePerscriptions', name: 'ValidatePerscriptions', component: ValidatePerscriptions}
         ]
       },
       {

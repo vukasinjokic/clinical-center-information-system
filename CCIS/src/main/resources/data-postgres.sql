@@ -834,10 +834,14 @@ values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   '
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting prescriptions-------------------------------------------------------
-insert into prescriptions( is_verified) values ('F');
-insert into prescriptions( is_verified) values ('F');
+insert into prescriptions( is_verified, medical_record_id) values ('F', 1);
+insert into prescriptions( is_verified, medical_record_id) values ('F', 2);
+
+insert into clinics_prescriptions(prescriptions_id, clinic_id) values (1, 1);
+insert into clinics_prescriptions(prescriptions_id, clinic_id) values (2, 1);
 
 insert into prescriptions_contents(prescription_id, description, medication) values (1, '10mg dnevno', 'Daktanol');
+insert into prescriptions_contents(prescription_id, description, medication) values (1, '50mg nedeljno', 'Katopil');
 insert into prescriptions_contents(prescription_id, description, medication) values (2, '100mg svaki drugi dan', 'Omeprol');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------

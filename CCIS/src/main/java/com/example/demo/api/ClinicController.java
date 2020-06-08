@@ -2,7 +2,9 @@ package com.example.demo.api;
 
 import com.example.demo.dto.ClinicDTO;
 import com.example.demo.dto.ClinicsDTO;
+import com.example.demo.dto.PrescriptionDTO;
 import com.example.demo.model.Clinic;
+import com.example.demo.model.Prescription;
 import com.example.demo.service.ClinicService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,15 @@ public class ClinicController {
         ClinicDTO clinicDTO = modelMapper.map(clinic, ClinicDTO.class);
         clinicDTO.setDTOFields(clinic);
         return clinicDTO;
+    }
+
+    @GetMapping("/getPerscriptions")
+    @PreAuthorize("hasRole('NURSE')")
+    public List<PrescriptionDTO> getPerscriptions() {
+        List<Prescription> prescriptions = clinicService.getClinicsPerscriptions();
+        return prescriptions.stream()
+                .map(prescription -> {return modelMapper.map(prescription, PrescriptionDTO.class);})
+                .collect(Collectors.toList());
     }
 
     @PostMapping(path = "/addClinic", consumes = "application/json")

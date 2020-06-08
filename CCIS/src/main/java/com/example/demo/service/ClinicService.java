@@ -4,7 +4,11 @@ import com.example.demo.Repository.ClinicRepository;
 import com.example.demo.Repository.CodeBookRepository;
 import com.example.demo.dto.ClinicDTO;
 import com.example.demo.model.Clinic;
+import com.example.demo.model.ClinicAdmin;
+import com.example.demo.model.Nurse;
+import com.example.demo.model.Prescription;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -40,5 +44,10 @@ public class ClinicService {
         Clinic clinic = new Clinic(clinicDTO.getName(), clinicDTO.getDescription(), clinicDTO.getAddress());
         clinicRepository.save(clinic);
         return clinic;
+    }
+
+    public List<Prescription> getClinicsPerscriptions() {
+        Nurse nurse = (Nurse) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return clinicRepository.getClinicsPerscriptions(nurse.getClinic().getId());
     }
 }

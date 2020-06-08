@@ -102,7 +102,10 @@ import Vue from 'vue';
                       this.$router.push({
                         name: "PatientPage"
                       })
-                    }else{
+                    }else if(localStorage.getItem("user_role") === "ROLE_NURSE"){
+                      this.$router.push('nurse');
+                    }                    
+                    else{
                       this.$router.push('home');
                     }
                 }
