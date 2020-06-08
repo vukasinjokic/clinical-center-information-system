@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-//import javafx.util.Pair;
-
 import javafx.util.Pair;
 
 import javax.persistence.*;

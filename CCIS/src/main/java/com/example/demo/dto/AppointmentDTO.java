@@ -17,6 +17,7 @@ public class AppointmentDTO {
     private String examinationType;
     private String clinic;
     private String report;
+    private boolean finished;
 
 
 
@@ -140,4 +141,11 @@ public class AppointmentDTO {
         return id;
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 }

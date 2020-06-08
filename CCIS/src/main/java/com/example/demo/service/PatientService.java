@@ -20,4 +20,8 @@ public class PatientService {
     public List<Patient> getPatients(String clinic_name){
         return patientRepository.findByClinicName(clinic_name);
     }
+
+    public Patient findByEmail(String patientEmail){
+        return patientRepository.findByEmail(patientEmail);
+    }
 }

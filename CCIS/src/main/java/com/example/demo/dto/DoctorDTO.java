@@ -31,12 +31,15 @@ public class DoctorDTO {
     private ExaminationType examinationType;
     private Collection<AppointmentDTO> appointments;
 
+    public DoctorDTO(){}
+
     public void setFields(Doctor doctor){
         try {
 //            if(doctor.getCalendar() != null)
 //            CalendarDTO.setUpCalendar(doctor.getCalendar().getId(), calendar, doctor.getAppointments());
-                setClinic(doctor.getClinic());
-                setClinicId(doctor.getClinic());
+            setClinic(doctor.getClinic());
+            setClinicId(doctor.getClinic());
+            setRating(doctor.getRating().getAverageGrade().toString());
         }
         catch(Exception e){
             e.printStackTrace();
@@ -205,7 +208,6 @@ public class DoctorDTO {
     public void setPasswordChanged(Boolean passwordChanged) {
         this.passwordChanged = passwordChanged;
     }
-    public DoctorDTO(){}
 }
 
 
