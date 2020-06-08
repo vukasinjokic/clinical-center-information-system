@@ -9,8 +9,12 @@ import doctor from './modules/doctor'
 import appointmentRequests from './modules/appointmentRequests'
 import userProfile from './modules/userProfile'
 import clinicAdmin from './modules/clinicAdmin'
+import clinicProfile from './modules/clinicProfile'
+import snackbar from './modules/snackbar'
 import startAppointment from './modules/startAppointment'
 import calendar from './modules/calendar'
+import registrationRequests from './modules/registrationRequests'
+import businessReport from './modules/businessReport'
 
 // load vuex
 Vue.use(Vuex);
@@ -27,8 +31,13 @@ const store = new Vuex.Store({
         appointmentRequests,
         userProfile,
         clinicAdmin,
+        clinicProfile,
+        snackbar,
         startAppointment,
-        calendar
+
+        calendar,
+        registrationRequests,
+        businessReport
     },
 
     actions: {
@@ -45,6 +54,8 @@ const store = new Vuex.Store({
 
             this.dispatch("startAppointment/resetAppointment");
             this.dispatch("calendar/resetCalendar");
+            this.dispatch("registrationReqeusts/resetRegistrationRequests");
+            this.dispatch("businessReport/resetBusinessReport");
 
             localStorage.clear();
             sessionStorage.clear();

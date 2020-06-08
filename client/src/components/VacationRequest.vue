@@ -81,14 +81,17 @@
             </v-container>
         </v-card-text>
     </v-card>
+    
+        <Snackbar></Snackbar>
 
 </div>
 </template>
 
 <script>
 import {mapActions} from 'vuex';
+import Snackbar from '../components/global/Snackbar'
 export default {
-    
+    components: {Snackbar},
     data(){
         return{
             fromDateMenu: false,

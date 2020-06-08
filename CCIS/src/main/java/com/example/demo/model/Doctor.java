@@ -23,7 +23,8 @@ public class Doctor extends MedicalStaff {
    private ExaminationType examinationType;
 
 
-   @OneToMany(mappedBy = "doctor" ,fetch = FetchType.LAZY)
+   @OneToMany(mappedBy = "doctor" ,fetch = FetchType.LAZY,cascade = CascadeType.ALL,
+           orphanRemoval = true)
    private Collection<Appointment> appointments;
 
    public Doctor() {

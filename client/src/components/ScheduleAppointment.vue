@@ -22,7 +22,7 @@
                             <v-text-field
                                 :rules="[requiredRule]"
                                 v-model="time"
-                                label="Pick duration"
+                                label="Pick time"
                                 prepend-icon="mdi-timer"
                                 readonly
                                 v-on="on"

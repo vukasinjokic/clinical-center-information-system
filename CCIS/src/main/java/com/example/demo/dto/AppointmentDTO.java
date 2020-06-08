@@ -11,13 +11,14 @@ public class AppointmentDTO {
     private String time;
     private float price;
     private float discount;
-    private DoctorDTO doctor; //trebalo bi doctorDTO
+    public DoctorDTO doctor; //trebalo bi doctorDTO
     private String patient;
     private String room;
     private String examinationType;
     private String clinic;
     private String report;
     private boolean finished;
+
 
 
     public void setFields(Appointment appointment){
@@ -89,8 +90,12 @@ public class AppointmentDTO {
         this.clinic = clinic.getName();
     }
 
+    public void setTime(String time){
+        this.time = time;
+    }
+
     public void setTime(Date time){
-        this.time = new SimpleDateFormat("dd-MM-yyyy hh:mm").format(time);
+        this.time = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(time);
     }
 
     public String getClinic() {
@@ -131,8 +136,6 @@ public class AppointmentDTO {
     public String getExaminationType() {
         return examinationType;
     }
-
-
 
     public String getId() {
         return id;

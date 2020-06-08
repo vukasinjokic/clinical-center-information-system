@@ -1,14 +1,11 @@
 <template>
     <v-row justify="center">
-        <v-dialog v-model="dialogPass" persistent max-width="350px">
-            <template v-slot:activator="{ on }">
-                <v-btn  v-on="on" @click="changePass" dark >Change password</v-btn>
-            </template>
-            <v-card>
-                <v-toolbar height="45px" color="orange lighten-1" class="white--text">
-                    <span class="headline">Change password</span>
-                </v-toolbar>
-
+            <v-card style="width: 40%">
+                <v-card-title>
+                    <v-toolbar height="45px" color="orange lighten-1" class="white--text">
+                        <span class="headline">Change password</span>
+                    </v-toolbar>
+                </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-form ref="form">
@@ -36,12 +33,12 @@
 
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                    <v-btn color="red darken-1"  text v-on:click="closeDialog">Close</v-btn>
+                    <v-btn color="red darken-1"  text v-on:click="closeDialog">Back to Homepage</v-btn>
                     <v-btn color="green darken-1" text @click="savePassword">Save</v-btn>
                 </v-card-actions>
 
             </v-card>
-        </v-dialog>
+     
     </v-row>
 </template>
 
@@ -56,7 +53,11 @@ export default {
             confirmPass: ""
         }
     },
+    created(){
+        this.fetchUserProf();
+    },
     computed: {
+        //mora da se fetchujeee
         ...mapGetters('userProfile', ['getUserProf']),
 
         passwordMatch(){
@@ -68,11 +69,16 @@ export default {
     },
 
     methods: {
-        ...mapActions('userProfile',['changePassword']),
+        ...mapActions('userProfile',['changePassword','fetchUserProf']),
 
         closeDialog(){
+            const role = localStorage.getItem("user_role");
             this.dialogPass = false;
             this.$refs.form.reset();
+            if(role === 'ROLE_CLINIC_ADMIN'){
+                this.$router.push('/clinicAdmin');
+            }else
+                this.$router.push('/doctor');
         },
         savePassword(){
             if(this.$refs.form.validate()){
@@ -81,7 +87,10 @@ export default {
                     old : this.oldPass,
                     new_pass : this.newPass
                 }
-                this.changePassword(passForm);
+                this.changePassword(passForm)
+                    .then(() => {
+                        this.$router.push('/doctor'); 
+                    }).catch(() => {});
 
                 this.closeDialog();
             }

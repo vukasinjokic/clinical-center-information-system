@@ -4,7 +4,7 @@
         <router-view></router-view>  
       </v-content>
     <v-app-bar
-      height="40px"
+      height="35px"
       app
       class="blue-grey darken-4 white--text"
     >
@@ -12,14 +12,15 @@
       <v-toolbar-title class="white--text">Clinic center</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
-   
+    <Snackbar></Snackbar>
   </v-app>
 </template>
 
 <script>
+import Snackbar from './components/global/Snackbar'
 export default {
   name: 'App',
-
+  components: {Snackbar},
   data: () => ({
     //
   }),

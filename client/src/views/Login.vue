@@ -3,7 +3,7 @@
   <v-app id="inspire">
     <v-content>
       <v-container
-        class="fill-height"
+        
         fluid
       >
         <v-row
@@ -21,7 +21,7 @@
                   dark
                   flat
                 >
-                  <v-toolbar-title>Login form</v-toolbar-title>       
+                  <v-toolbar-title>Login form class="fill-height"</v-toolbar-title>       
                 </v-toolbar>
                 <v-card-text>
                   <v-form ref="form">
@@ -89,6 +89,7 @@ import Vue from 'vue';
                     localStorage.setItem('Duration', response.data.expiresIn);
                     localStorage.setItem('user_email', response.data.email);
                     localStorage.setItem('user_role', response.data.authorities[0]);
+                    localStorage.setItem('is_password_changed', response.data.passwordChanged);
                     Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
                     alert("Uspesno logovanje");
 
@@ -96,6 +97,8 @@ import Vue from 'vue';
                       this.$router.push('doctor');
                     }else if(localStorage.getItem("user_role") == "ROLE_CLINIC_ADMIN"){
                       this.$router.push('clinicAdmin');
+                    }else if(localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN"){
+                      this.$router.push('clinicCenterAdmin');
                     }else if (localStorage.getItem("user_role") === "ROLE_PATIENT") {
                       this.$router.push({
                         name: "PatientPage"

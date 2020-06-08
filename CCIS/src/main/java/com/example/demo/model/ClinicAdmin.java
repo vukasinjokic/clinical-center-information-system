@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 
@@ -11,8 +13,8 @@ import java.util.List;
 public class ClinicAdmin extends User {
 
    @ManyToOne(fetch = FetchType.LAZY)
-   @JsonIgnore
    @JoinColumn(name = "clinic_id",nullable = false)
+   @LazyToOne(LazyToOneOption.NO_PROXY)
    private Clinic clinic;
 
    public ClinicAdmin() {
