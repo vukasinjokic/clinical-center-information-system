@@ -99,24 +99,14 @@ public class ClinicService {
                     mapa.put(calendar2.get(Calendar.HOUR_OF_DAY) + "h", 1);
             }
         }
-        for(int i = 0; i < 24; i++){
-            String a = i + "h";
-            if(!mapa.containsKey(a)){
-                mapa.put(a, 0);
-            }
-        }
-        for(Map.Entry<String, Integer> entry : mapa.entrySet()){
-            ChartAppointment chart = new ChartAppointment();
-            chart.x = entry.getKey();
-            chart.y = entry.getValue();
-            dailyChart.add(chart);
-        }
+        this.fillMap(mapa, "h", 25);
+        this.fillChartList(mapa, dailyChart);
         Collections.sort(dailyChart);
         return dailyChart;
     }
 
     public List<ChartAppointment> makeMonthlyChart(Date nowDate, Clinic clinic){
-        List<ChartAppointment> dailyChart = new ArrayList<ChartAppointment>();
+        List<ChartAppointment> monthlyChart = new ArrayList<ChartAppointment>();
         SimpleDateFormat fmt = new SimpleDateFormat("yyyyMM");
         Calendar calendar2 = GregorianCalendar.getInstance();
         HashMap<String, Integer> mapa = new HashMap<String, Integer>();
@@ -130,25 +120,59 @@ public class ClinicService {
                     mapa.put(calendar2.get(Calendar.DAY_OF_MONTH) + ".", 1);
             }
         }
-        for(int i = 0; i < 31; i++){
-            String a = i + ".";
-            if(!mapa.containsKey(a)){
-                mapa.put(a, 0);
-            }
-        }
-        for(Map.Entry<String, Integer> entry : mapa.entrySet()){
-            ChartAppointment chart = new ChartAppointment();
-            chart.x = entry.getKey();
-            chart.y = entry.getValue();
-            dailyChart.add(chart);
-        }
-        Collections.sort(dailyChart);
-        return dailyChart;
+        this.fillMap(mapa, ".", 31);
+        this.fillChartList(mapa,monthlyChart);
 
+        Collections.sort(monthlyChart);
+        return monthlyChart;
     }
 
     public List<ChartAppointment> makeYearlyChart(Date nowDate, Clinic clinic){
-        return null;
+        List<ChartAppointment> yearlyChart = new ArrayList<ChartAppointment>();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
+        Calendar calendar2 = GregorianCalendar.getInstance();
+        HashMap<String, Integer> mapa = new HashMap<String, Integer>();
+
+        for(Appointment app : clinic.getAppointments()){
+            if(fmt.format(nowDate).equals(fmt.format(app.getTime()))){
+                calendar2.setTime(app.getTime());
+                if(mapa.containsKey(calendar2.get(Calendar.MONTH )+".")){
+                    mapa.put(calendar2.get(Calendar.MONTH) + "." , mapa.get(calendar2.get(Calendar.MONTH)+".") + 1);
+                }else
+                    mapa.put(calendar2.get(Calendar.MONTH) + ".", 1);
+            }
+        }
+        this.fillMap(mapa,".", 13);
+        this.fillChartList(mapa,yearlyChart);
+
+        Collections.sort(yearlyChart);
+        this.makeMonths(yearlyChart);
+        return yearlyChart;
+
+    }
+    private void makeMonths(List<ChartAppointment> yearlyChart){
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
+            for(int i = 0; i<yearlyChart.size(); i++){
+                yearlyChart.get(i).x = months[i];
+            }
+    }
+
+    private void fillMap(HashMap<String, Integer> chartMap, String assign, int numberOfIteration){
+        for(int i = 1; i < numberOfIteration; i++) {
+            String a = i + assign;
+            if (!chartMap.containsKey(a)) {
+                chartMap.put(a, 0);
+            }
+        }
+    }
+
+    private void fillChartList(HashMap<String, Integer> chartMap, List<ChartAppointment> chartList){
+        for(Map.Entry<String, Integer> entry : chartMap.entrySet()){
+            ChartAppointment chart = new ChartAppointment();
+            chart.x = entry.getKey();
+            chart.y = entry.getValue();
+            chartList.add(chart);
+        }
     }
 
     public PriceListItem addPriceListItem(PriceListItem priceListItem){

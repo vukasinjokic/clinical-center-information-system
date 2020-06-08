@@ -13,11 +13,8 @@ import clinicProfile from './modules/clinicProfile'
 import snackbar from './modules/snackbar'
 import startAppointment from './modules/startAppointment'
 import calendar from './modules/calendar'
-<<<<<<< HEAD
 import registrationRequests from './modules/registrationRequests'
-=======
 import businessReport from './modules/businessReport'
->>>>>>> feature/3.4-11/businessReport
 
 // load vuex
 Vue.use(Vuex);

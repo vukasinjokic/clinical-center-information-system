@@ -30,11 +30,10 @@ export default {
     data(){
         return{
           items: ["DAILY","MONTHLY","YEARLY"],
-          selected: "MONTHLY",
+          selected: "DAILY",
           series: [{
             name: "Number of appointments", 
-            data: [{x:"Jan", y:22}, {x:"Jana", y:41}, {x:"Jadn", y:35}, {x:"Jan", y:51},
-             {x:"Jafn", y:45}, {x:"Jgan", y:62}, {x:"Jaaan", y:69}, {x:"Jan", y:91}, {x:"Jan", y:148},{x:"ds", y:0}]
+            data: []
           }],
           chartOptions: {
             chart: {
@@ -51,7 +50,7 @@ export default {
               curve: 'straight'
             },
             title: {
-              text: 'Number of appointments by ' + this.timePeriod(),
+              text: 'Number of appointments by ',
               align: 'left'
             },
             grid: {
@@ -65,8 +64,8 @@ export default {
           },
       }
     },
-    computed: {
-      
+    created() {
+      this.updateChart();
     },
     methods: {
         timePeriod(){
@@ -78,8 +77,7 @@ export default {
             return "Year"
         },
         updateChart(){
-          let message = "Number of appointments by " + this.timePeriod();
-          this.chartOptions.title = {text: message};
+          
           const email = localStorage.getItem('user_email'); 
           Vue.$axios.get('http://localhost:8081/clinics/getAppointments/' + this.selected + "/"+email)
             .then(response => {

@@ -726,11 +726,11 @@ insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala
 --------------------------------------------------------- Inserting appointments --------------------------------------------------------
 insert into appointments			-- id = 1
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-07-07 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 			1, 'F');
+values ('2020-06-08 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 			1, 'F');
 
 insert into appointments			-- id = 2
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
-values ('2020-07-07 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 			1, 'F');
+values ('2020-06-08 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 			1, 'F');
 
 insert into appointments			-- id = 3
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
