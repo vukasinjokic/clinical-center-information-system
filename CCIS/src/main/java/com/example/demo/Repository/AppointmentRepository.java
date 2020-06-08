@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,4 +28,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
 
     @Query("select appointment.doctor.calendar from Appointment appointment where appointment.id = (:id)")
     Calendar findDoctorsCalendarFromAppointment(@Param("id") Integer id);
+
+    List<Appointment> findAllByClinicIdAndTimeBetweenAndFinished(
+            @Param("clinicId") Integer clinicId,
+            @Param("dateFrom") Date dateFrom,
+            @Param("dateTo")Date dateTo,
+            @Param("finished")Boolean finished);
 }

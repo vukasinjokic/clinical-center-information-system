@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 const getDefaultState = () => {
     return {
-        userProf: null,
+        userProf: {},
         message: ""
     }
 };

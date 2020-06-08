@@ -15,7 +15,7 @@
             
             <v-list-item>
                 <v-list-item-title>Email: </v-list-item-title>
-                <v-list-item-title v-text="getUserProf.username"/>
+                <v-list-item-title v-text="getUserProf.email"/>
             </v-list-item>
             <v-list-item>
                 <v-list-item-title>Ime: </v-list-item-title>

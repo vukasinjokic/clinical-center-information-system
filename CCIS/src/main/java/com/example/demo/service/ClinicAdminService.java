@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,6 +112,25 @@ public class ClinicAdminService {
 
     }
 
+    public float getProfit(String email, String dateFrom, String dateTo) throws ParseException {
+        ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmail(email);
+        Integer clinicId = clinicAdmin.getClinic().getId();
+        Date startDate = parseFromStringToDate(dateFrom);
+        Date endDate = parseFromStringToDate(dateTo);
+        List<Appointment> appointments = appointmentRepository.findAllByClinicIdAndTimeBetweenAndFinished(clinicId,startDate,endDate, true);
+
+        return this.CalculateProfit(appointments);
+    }
+
+    private float CalculateProfit(List<Appointment> appointments){
+        float ret = 0;
+        for(Appointment ap : appointments){
+            float priceWithDiscount = ap.getPrice() - ap.getPrice()*ap.getDiscount()/100;
+            ret = ret + priceWithDiscount;
+        }
+        return ret;
+    }
+
     public boolean declineRequest(DeclineVacRequest declineVacRequest){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
@@ -152,5 +174,9 @@ public class ClinicAdminService {
     private DoctorDTO convertToDTO(Doctor doctor){
         DoctorDTO doctorDTO = modelMapper.map(doctor, DoctorDTO.class);
         return doctorDTO;
+    }
+    private Date parseFromStringToDate(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf. parse(date);
     }
 }

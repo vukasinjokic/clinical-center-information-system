@@ -3,11 +3,7 @@ import Vue from 'vue';
 const getDefaultState = () => {
     return {
         rating: 0,
-        series: [{
-            name: "Desktops", 
-            data: [{x:"Jan", y:22}, {x:"Jana", y:41}, {x:"Jadn", y:35}, {x:"Jan", y:51},
-             {x:"Jafn", y:45}, {x:"Jgan", y:62}, {x:"Jaaan", y:69}, {x:"Jan", y:91}, {x:"Jan", y:148}]
-          }],
+        profit: 0
     }
 };
 
@@ -15,7 +11,7 @@ const state = getDefaultState();
 
 const getters = {
     getRating: (state) => state.rating,
-    getSeries: (state) => state.series
+    getProfit: (state) => state.profit
 };
 
 const actions = {
@@ -25,7 +21,13 @@ const actions = {
         commit('setRating', response.data);
     },
 
-    
+    async getClinicProfit({commit}, dates){
+        const email = localStorage.getItem('user_email');
+        const response = await Vue.$axios
+            .get('http://localhost:8081/clinicAdmins/getProfit?email='+ email +
+                    '&dateFrom='+dates.dateFrom+'&dateTo='+dates.dateTo);
+        commit('setProfit', response.data);
+    },
 
     resetBusinessReport({commit}) {
         commit("resetState");
@@ -35,6 +37,9 @@ const actions = {
 const mutations = {
     setRating(state, rating){
         state.rating = rating;
+    },
+    setProfit(state, profit){
+        state.profit = profit;
     },
     resetState (state) {
         Object.assign(state, getDefaultState())

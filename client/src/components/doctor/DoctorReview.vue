@@ -1,6 +1,6 @@
 <template>
     <div>
-    <v-container style="width: 90%">
+    <v-container style="width: 94%">
         <v-card>
             <v-card-title> Doctors
                 <v-spacer></v-spacer>

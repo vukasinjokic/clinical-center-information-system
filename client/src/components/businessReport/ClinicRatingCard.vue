@@ -5,7 +5,7 @@
                 <v-row>
                 <v-col cols="12" md="5" sm="5">
                     <div class="text-start v-card--material__heading mb-n6 v-sheet theme--dark elevation-6 
-                    success pa-7" style="max-height: 90px; width: auto;">
+                    primary pa-7" style="max-height: 90px; width: auto;">
                     <i aria-hidden="true" 
                     class="v-icon notranslate mdi mdi-star theme--dark" style="font-size: 32px;"></i>
                     </div>

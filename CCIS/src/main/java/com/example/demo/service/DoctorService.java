@@ -43,7 +43,9 @@ public class DoctorService {
     }
 
     public List<Doctor> findAllDoctors(){
-        return doctorRepository.findAll();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<ClinicAdmin> clinicAdmin =  clinicAdminRepository.findById(user.getId());
+        return (List<Doctor>) clinicAdmin.get().getClinic().getDoctors();
     }
 
     public Doctor findByEmail(String email){

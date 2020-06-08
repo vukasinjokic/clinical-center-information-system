@@ -29,7 +29,7 @@ import MedicalRecord from '../components/MedicalRecord'
 import StartAppointment from '../components/StartAppointment'
 import RegistrationRequests from '../components/RegistrationRequests'
 import ClinicCenterAdminPage from '../views/ClinicCenterAdminPage'
-import BusinessReport from '../components/BusinessReport'
+import BusinessReport from '../components/businessReport/BusinessReport'
 
 
 Vue.use(VueRouter);

@@ -1,12 +1,13 @@
 <template>
 <div>
     <v-row>
-    <v-col cols="12" md="3">
-      <span>Choose period </span>
+    <v-col md="3" style="margin-top:10px">
+      <span class="subtitle font-weight-regular">Choose period:</span>
     </v-col>  
-    <v-col cols="12" md="4">
-      <v-select 
-          solo
+    <v-col cols="12" md="3">
+      <v-select   
+          dense
+          outlined
           v-model="selected"
           :items="items"
           @change="updateChart">
@@ -77,7 +78,6 @@ export default {
             return "Year"
         },
         updateChart(){
-          
           const email = localStorage.getItem('user_email'); 
           Vue.$axios.get('http://localhost:8081/clinics/getAppointments/' + this.selected + "/"+email)
             .then(response => {
@@ -86,7 +86,6 @@ export default {
             .catch(err =>{
               alert(err.data);
             });
-
         }
     }
     
