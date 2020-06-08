@@ -49,14 +49,7 @@ public class ClinicController {
         return clinicDTO;
     }
 
-    @GetMapping("/getPerscriptions")
-    @PreAuthorize("hasRole('NURSE')")
-    public List<PrescriptionDTO> getPerscriptions() {
-        List<Prescription> prescriptions = clinicService.getClinicsPerscriptions();
-        return prescriptions.stream()
-                .map(prescription -> {return modelMapper.map(prescription, PrescriptionDTO.class);})
-                .collect(Collectors.toList());
-    }
+
 
     @PostMapping(path = "/addClinic", consumes = "application/json")
     @PreAuthorize("hasRole('CLINIC_CENTER_ADMIN')")

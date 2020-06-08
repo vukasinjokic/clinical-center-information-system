@@ -9,12 +9,12 @@
             >
                 <template #item.content="{item}"><span style="white-space: pre;">{{formatContent(item.content)}}</span></template>
                 <template #item.actions="{ item }" >
-                        <v-btn class="ma-2" color="success" @click="acceptRequest(item)">
+                        <v-btn class="ma-2" color="success" @click="acceptPerscription(item)">
                                 <v-icon  class="mr-1">
                                 mdi-checkbox-marked-circle
                                 </v-icon>
                             </v-btn>
-                            <v-btn color="red" @click="openMessageDialogForRequest(item)" dark>
+                            <v-btn color="red" @click="denyPerscription(item)" dark>
                                 <v-icon class="mr-1">
                                 mdi-cancel
                                 </v-icon>
@@ -50,7 +50,7 @@ export default {
         ...mapActions('perscriptions', ['fetchPerscriptions', 'handleAcceptingPerscription', 'handleDenyingPerscription']),
 
         acceptPerscription(perscription){
-            this.handleAcceptingPerscriptions(perscription.id);
+            this.handleAcceptingPerscription(perscription.id);
         },
 
 

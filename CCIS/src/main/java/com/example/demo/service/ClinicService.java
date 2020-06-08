@@ -46,8 +46,5 @@ public class ClinicService {
         return clinic;
     }
 
-    public List<Prescription> getClinicsPerscriptions() {
-        Nurse nurse = (Nurse) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return clinicRepository.getClinicsPerscriptions(nurse.getClinic().getId());
-    }
+
 }

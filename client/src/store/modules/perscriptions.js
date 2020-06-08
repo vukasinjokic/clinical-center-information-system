@@ -18,13 +18,13 @@ const getters = {
 
 const actions = {
     async fetchPerscriptions({commit}){
-        const response = await Vue.$axios.get("http://localhost:8081/clinics/getPerscriptions");
+        const response = await Vue.$axios.get("http://localhost:8081/perscriptions/getPerscriptions");
         commit('setPerscriptions', response.data);
     },
 
     async handleDenyingPerscription({commit}, id){
         try{
-            await Vue.$axios.post('http://localhost:8081/perscriptions/deletePerscription/' + id);
+            await Vue.$axios.delete('http://localhost:8081/perscriptions/deletePerscription/' + id);
             commit('deletedPerscription', id);
             alert("Successfuly deleted perscription");
         }catch(error){
@@ -36,8 +36,8 @@ const actions = {
         try{
             await Vue.$axios.post("http://localhost:8081/perscriptions/handleAcceptingPerscription/" + id);
             commit('deletedPerscription', id);
-            // dispatch('snackBar/showSuccess', "Successfuly regitered user", {root : true});
-            alert("Successfuly registered user");
+            // dispatch('snackBar/showSuccess', "Successfuly verified prescription", {root : true});
+            alert("Successfuly verified prescription");
         }
         catch(error){
             // dispatch('snackbar/showError', error.response, {root : true});
