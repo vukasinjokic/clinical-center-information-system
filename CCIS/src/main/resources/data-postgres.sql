@@ -550,31 +550,30 @@ insert into appointment_ids (calendar_id, appointment_id) values (12, 12);
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting nursers -----------------------------------------------------------
 insert into nurses			-- id = 10
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values (nextval('ust_seq_user'), 'sestra1@gmail.com', 'sestra1@gmail.com', 'sestra', 'Ljubica', 'Ljuvinčić', 'Nepoznata 19', 'Knjaževac', 'Srbija', '0641234567', '10101010101', 1, 1);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id, is_password_changed)
+values (nextval('ust_seq_user'), 'sestra1@gmail.com', 'sestra1@gmail.com', 'sestra', 'Ljubica', 'Ljuvinčić', 'Nepoznata 19', 'Knjaževac', 'Srbija', '0641234567', '10101010101', 1, 1, 'T');
 
 insert into nurses			-- id = 11
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values (nextval('ust_seq_user'), 'sestra2@gmail.com', 'sestra2@gmail.com', 'sestra', 'Marijana', 'Marijanović', 'Nepoznata 20', 'Kruševac', 'Srbija', '0641234567', '20202020202', 2, 1);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id, is_password_changed)
+values (nextval('ust_seq_user'), 'sestra2@gmail.com', 'sestra2@gmail.com', 'sestra', 'Marijana', 'Marijanović', 'Nepoznata 20', 'Kruševac', 'Srbija', '0641234567', '20202020202', 2, 1, 'T');
 
 insert into nurses			-- id = 12
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values (nextval('ust_seq_user'), 'sestra3@gmail.com', 'sestra3@gmail.com', 'sestra', 'Marina', 'Marinić', 'Nepoznata 21', 'Mladenovac', 'Srbija', '0641234567', '21212121212', 3, 2);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id, is_password_changed)
+values (nextval('ust_seq_user'), 'sestra3@gmail.com', 'sestra3@gmail.com', 'sestra', 'Marina', 'Marinić', 'Nepoznata 21', 'Mladenovac', 'Srbija', '0641234567', '21212121212', 3, 2, 'T');
 
 insert into nurses			-- id = 13
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values (nextval('ust_seq_user'), 'sestra4@gmail.com', 'sestra4@gmail.com', 'sestra', 'Dušan', 'Dušanović', 'Nepoznata 22', 'Niš', 'Srbija', '0641234567', '23232323232', 4, 2);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id, is_password_changed)
+values (nextval('ust_seq_user'), 'sestra4@gmail.com', 'sestra4@gmail.com', 'sestra', 'Dušan', 'Dušanović', 'Nepoznata 22', 'Niš', 'Srbija', '0641234567', '23232323232', 4, 2, 'T');
 
 insert into nurses			-- id = 14
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values (nextval('ust_seq_user'), 'sestra5@gmail.com', 'sestra5@gmail.com', 'sestra', 'Marko', 'Marković', 'Nepoznata 23', 'Gornji Milanovac', 'Srbija', '0641234567', '24242424242', 5, 3);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id, is_password_changed)
+values (nextval('ust_seq_user'), 'sestra5@gmail.com', 'sestra5@gmail.com', 'sestra', 'Marko', 'Marković', 'Nepoznata 23', 'Gornji Milanovac', 'Srbija', '0641234567', '24242424242', 5, 3, 'T');
 
 insert into nurses			-- id = 15
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id)
-values (nextval('ust_seq_user'), 'sestra6@gmail.com', 'sestra6@gmail.com', 'sestra', 'Aljoša', 'Aljošić', 'Nepoznata 24', 'Donji Milanovac', 'Srbija', '0641234567', '252525252', 6, 3);
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, calendar_id, clinic_id, is_password_changed)
+values (nextval('ust_seq_user'), 'sestra6@gmail.com', 'sestra6@gmail.com', 'sestra', 'Aljoša', 'Aljošić', 'Nepoznata 24', 'Donji Milanovac', 'Srbija', '0641234567', '252525252', 6, 3, 'T');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
-
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------- Inserting business hours -------------------------------------------------------
@@ -841,10 +840,14 @@ values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   '
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting prescriptions-------------------------------------------------------
-insert into prescriptions( is_verified) values ('F');
-insert into prescriptions( is_verified) values ('F');
+insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('F', 1, 1);
+insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('F', 2, 1);
+insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('T', 2, 1);
+-- insert into clinics_prescriptions(prescriptions_id, clinic_id) values (1, 1);
+-- insert into clinics_prescriptions(prescriptions_id, clinic_id) values (2, 1);
 
 insert into prescriptions_contents(prescription_id, description, medication) values (1, '10mg dnevno', 'Daktanol');
+insert into prescriptions_contents(prescription_id, description, medication) values (1, '50mg nedeljno', 'Katopil');
 insert into prescriptions_contents(prescription_id, description, medication) values (2, '100mg svaki drugi dan', 'Omeprol');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------

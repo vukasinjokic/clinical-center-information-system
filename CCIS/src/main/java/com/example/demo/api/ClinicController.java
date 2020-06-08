@@ -7,6 +7,9 @@ import com.example.demo.model.Clinic;
 import com.example.demo.model.PriceList;
 import com.example.demo.model.PriceListItem;
 import com.example.demo.model.User;
+import com.example.demo.dto.PrescriptionDTO;
+import com.example.demo.model.Clinic;
+import com.example.demo.model.Prescription;
 import com.example.demo.service.ClinicService;
 import com.example.demo.useful_beans.ChartAppointment;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -119,6 +122,8 @@ public class ClinicController {
         clinicDTO.setDTOFields(clinic);
         return clinicDTO;
     }
+
+
 
     @PostMapping(path = "/addClinic", consumes = "application/json")
     @PreAuthorize("hasRole('CLINIC_CENTER_ADMIN')")

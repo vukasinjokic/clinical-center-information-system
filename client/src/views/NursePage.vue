@@ -49,7 +49,7 @@ export default {
                 { title: 'Work calendar', link: '/nurse/:16/calendar', icon: 'mdi-calendar' },
                 { title: 'Create request for vacation', link: '/nurse/vacationRequest',icon:'mdi-airplane' },
                 { title: 'Profile', link: '/nurse/profile', icon: 'mdi-account' },
-                { title: 'Validate Perscription', link: '/nurse/perscriptions', icon: 'mdi-ballot-outline' },
+                { title: 'Validate Perscription', link: '/nurse/validatePerscriptions', icon: 'mdi-ballot-outline' },
 
             ],
             drawer: true

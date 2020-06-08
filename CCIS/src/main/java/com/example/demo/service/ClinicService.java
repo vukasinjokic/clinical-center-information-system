@@ -4,6 +4,10 @@ import com.example.demo.Repository.*;
 import com.example.demo.dto.ClinicDTO;
 import com.example.demo.model.*;
 import com.example.demo.useful_beans.ChartAppointment;
+import com.example.demo.model.Clinic;
+import com.example.demo.model.ClinicAdmin;
+import com.example.demo.model.Nurse;
+import com.example.demo.model.Prescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,7 +55,6 @@ public class ClinicService {
         clinicRepository.save(clinic);
         return clinic;
     }
-
     public PriceList getPriceList(){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
