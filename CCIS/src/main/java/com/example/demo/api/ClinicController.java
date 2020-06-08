@@ -40,7 +40,7 @@ public class ClinicController {
         this.clinicService = clinicService;
     }
 
-    @GetMapping
+    @GetMapping("/getClinics")
     @PreAuthorize("hasAnyRole('PATIENT','CLINIC_CENTER_ADMIN')")
     public List<ClinicsDTO> getAllClinics() {
         List<Clinic> clinics = clinicService.getAllClinics();
