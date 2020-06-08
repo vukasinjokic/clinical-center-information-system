@@ -173,7 +173,9 @@ const router = new VueRouter({
         component: ClinicCenterAdminPage,
         beforeEnter: isClinicCenterAdmin,
         children: [
-          {path: 'registrationRequests', name: 'registrationRequests', component: RegistrationRequests},
+          {path: 'registrationRequests', name: 'registrationRequests', component: RegistrationRequests},        
+          {path: "clinics", name: "Clinics", component: Clinics},
+          {path: 'registerAdmins', name: "Register",component: Register},
         ]
       },
       {
@@ -194,7 +196,6 @@ const router = new VueRouter({
         name: 'ChangePassword',
         component: ChangePassword
       },
-      {path: "/clinics", name: "Clinics", component: Clinics},
  
       {
         path: "/401",

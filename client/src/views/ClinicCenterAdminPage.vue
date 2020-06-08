@@ -46,6 +46,8 @@ export default {
         return {
             items: [
                 { title: 'Registration Requests', link: '/clinicCenterAdmin/registrationRequests', icon: 'mdi-clipboard-outline' },
+                { title: 'Clinics', link: "/clinicCenterAdmin/clinics", icon: 'mdi-hospital-box-outline'},
+                { title: 'Register admins', link: '/clinicCenterAdmin/registerAdmins', icon: 'mdi-account-plus-outline'}
             ],
             drawer: true
         }   

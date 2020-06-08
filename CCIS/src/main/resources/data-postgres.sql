@@ -12,16 +12,16 @@ insert into authorities (name) values ('ROLE_PATIENT');                       --
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting clinic center admins ----------------------------------------------------
 insert into clinic_center_admins			-- id = 1
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
-values (nextval('ust_seq_user'), 'nikola@gmail.com', 'nikola@gmail.com', 'superadmin', 'Nikola', 'Stojanović', 'Nepoznata 1', 'Orašac', 'Srbija', '0641234567', '11111111111');
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, is_password_changed)
+values (nextval('ust_seq_user'), 'nikola@gmail.com', 'nikola@gmail.com', 'superadmin', 'Nikola', 'Stojanović', 'Nepoznata 1', 'Orašac', 'Srbija', '0641234567', '11111111111', 'T');
 
 insert into clinic_center_admins			-- id = 2
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
-values (nextval('ust_seq_user'), 'vukasin@gmail.com', 'vukasin@gmail.com', 'superadmin', 'Vukašin', 'Jokić', 'Nepoznata 2', 'Vršac', 'Srbija', '0641234567', '22222222222');
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, is_password_changed)
+values (nextval('ust_seq_user'), 'vukasin@gmail.com', 'vukasin@gmail.com', 'superadmin', 'Vukašin', 'Jokić', 'Nepoznata 2', 'Vršac', 'Srbija', '0641234567', '22222222222', 'T');
 
 insert into clinic_center_admins			-- id = 3
-(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number)
-values (nextval('ust_seq_user'), 'nemanja@gmail.com', 'nemanja@gmail.com', 'superadmin', 'Nemanja', 'Jevtić', 'Nepoznata 3', 'Dobrinci', 'Srbija', '0641234567', '33333333333');
+(id, username, email, password, first_name, last_name, address, city, country, phone_number, social_security_number, is_password_changed)
+values (nextval('ust_seq_user'), 'nemanja@gmail.com', 'nemanja@gmail.com', 'superadmin', 'Nemanja', 'Jevtić', 'Nepoznata 3', 'Dobrinci', 'Srbija', '0641234567', '33333333333', 'T');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

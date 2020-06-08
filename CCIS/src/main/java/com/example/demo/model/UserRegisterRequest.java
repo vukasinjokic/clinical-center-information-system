@@ -38,13 +38,16 @@ public class UserRegisterRequest {
     @Column(name = "social_security_number")
     private String socialSecurityNumber;
 
+    @Column(name = "clinic_id")
+    private Integer clinicId;
+
     public UserRegisterRequest() {
 
     }
 
     public UserRegisterRequest(String email, String password, String firstName, String lastName,
                                String address, String city, String country, String phoneNumber,
-                               String socialSecurityNumber) {
+                               String socialSecurityNumber, Integer clinicId) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -54,6 +57,7 @@ public class UserRegisterRequest {
         this.country = country;
         this.phoneNumber = phoneNumber;
         this.socialSecurityNumber = socialSecurityNumber;
+        this.clinicId = clinicId;
     }
 
     public Integer getId() {
@@ -62,6 +66,14 @@ public class UserRegisterRequest {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getClinicId() {
+        return clinicId;
+    }
+
+    public void setClinicId(Integer clinicId) {
+        this.clinicId = clinicId;
     }
 
     public String getEmail() {
