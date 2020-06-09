@@ -3,6 +3,7 @@ package com.example.demo.api;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
+import com.example.demo.dto.MedicalRecordDTO;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
@@ -101,6 +102,15 @@ public class DoctorController {
         DoctorDTO doctorDTO = modelMapper.map(doctor,DoctorDTO.class);
         doctorDTO.setFields(doctor);
         return doctorDTO.getCalendar();
+    }
+
+    @PostMapping("/updateMedicalRecord")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity updateMedicalRecord(@RequestBody MedicalRecordDTO recordToUpdate){
+        if(doctorService.updateMedicalRecord(recordToUpdate)){
+            return ResponseEntity.ok("Successfully updated patient's medical record");
+        }
+        return ResponseEntity.badRequest().body("Something went wrong. Can't update patients medical record");
     }
 
     @PostMapping("/gradeDoctor")

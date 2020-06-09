@@ -118,8 +118,8 @@
         <v-dialog v-model="scheduleAppDialog" width="55%" eager>    
             <ScheduleAppointment style="width:100%" ref="scheduleAppComponent" @scheduled="schedulingFinished"></ScheduleAppointment>
         </v-dialog>
-        <v-dialog v-model="medicalRecordDialog" width="80%">
-            <MedicalRecord ref="medicalRecordComponent" viewMode="doctor" v-bind:patientEmail="patientEmail"></MedicalRecord>
+        <v-dialog v-model="medicalRecordDialog"  width="80%">
+            <MedicalRecord ref="medicalRecordComponent" viewMode="doctor" @closeRecordDialog="medicalRecordDialog = false" v-bind:patientEmail="patientEmail"></MedicalRecord>
         </v-dialog>
         
     </div>

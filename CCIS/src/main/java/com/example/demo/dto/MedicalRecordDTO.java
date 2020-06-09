@@ -12,7 +12,7 @@ import java.util.Map;
 public class MedicalRecordDTO {
     private static ModelMapper modelMapper = new ModelMapper();
 
-    private String id;
+    private Integer id;
     private String weight;
     private String height;
     private String leftEye;
@@ -32,11 +32,11 @@ public class MedicalRecordDTO {
         setPrescriptionsFromMedicalRecord(medicalRecord);
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

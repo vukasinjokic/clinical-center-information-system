@@ -7,7 +7,8 @@ const getDefaultState = () => {
         medicalRecord: {
             reports: [],
             prescriptions: []
-        }
+        },
+        recordBackup: {}
     }
 };
 
@@ -16,7 +17,8 @@ const state = getDefaultState();
 const getters = {
     allPatients: (state) => state.patients,
     getUserProfile: (state) => state.userProfile,
-    getMedicalRecord: (state) => state.medicalRecord
+    getMedicalRecord: (state) => state.medicalRecord,
+    getRecordBackup: (state) => state.recordBackup
 };
 
 const actions = {
@@ -31,12 +33,19 @@ const actions = {
 
     async fetchMedicalRecord({commit}, email) {
         const response = await Vue.$axios.get('http://localhost:8081/patients/medicalRecord/' + email);
-        commit("setMedicalRecord", response.data);
+        commit("setMedicalRecord", JSON.parse(JSON.stringify(response.data)));
+        commit("setRecordBackup", JSON.parse(JSON.stringify(response.data)));
     },
     
     async fetchUserProfile({commit}){
         const response = await Vue.$axios.get('http://localhost:8081/auth/userDetails');
         commit('setUserProfile', response.data);
+    },
+
+    
+
+    resetMedicalRecord({commit}, record){
+        commit("setMedicalRecord", JSON.parse(JSON.stringify(record)));
     },
 
     resetPatient({commit}) {
@@ -47,7 +56,10 @@ const actions = {
 const mutations = {
     setPatients: (state, patients) => state.patients = patients,
     setUserProfile: (state, user) => state.userProfile = user,
-    setMedicalRecord: (state, medicalRecord) => state.medicalRecord = medicalRecord,
+    setMedicalRecord: (state, medicalRecord) => {
+        state.medicalRecord = medicalRecord
+    },
+    setRecordBackup: (state, backup) => state.recordBackup = backup,
 
     resetState(state) {
         Object.assign(state, getDefaultState());
