@@ -706,17 +706,45 @@ insert into examination_types (name, duration) values ('Sistematski pregled', 0.
 insert into examination_types (name, duration) values ('Ultrazvuk', 1);			-- id = 2
 insert into examination_types (name, duration) values ('Operacija', 1);			-- id = 3
 -----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------Inserting price list ----------------------------------------------------------------------------------
-
-insert into price_list (clinic_id) values (1);
-
+insert into price_list (clinic_id) values (1);          -- id = 1
+insert into price_list (clinic_id) values (2);          -- id = 2
+insert into price_list (clinic_id) values (3);          -- id = 3
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------Inserting into price list item--------------------------------------------
-insert into price_list_item (price, examination_type_id) values (1000, 1);  --id = 1
-insert into price_list_item (price, examination_type_id) values (3000,3);
+insert into price_list_item (price, examination_type_id) values (1000, 1);  -- id = 1
+insert into price_list_item (price, examination_type_id) values (2000, 2);  -- id = 2
+insert into price_list_item (price, examination_type_id) values (3000, 3);  -- id = 3
+
+insert into price_list_item (price, examination_type_id) values (500,  1);  -- id = 4
+insert into price_list_item (price, examination_type_id) values (1500, 2);  -- id = 5
+insert into price_list_item (price, examination_type_id) values (2500, 3);  -- id = 6
+
+insert into price_list_item (price, examination_type_id) values (1500, 1);  -- id = 7
+insert into price_list_item (price, examination_type_id) values (2500, 2);  -- id = 8
+insert into price_list_item (price, examination_type_id) values (3500, 3);  -- id = 9
 ----------------------------------------------------------Pricelist item--------------------------------------------------------------------------------
-insert into price_list_items (price_list_id, items_id) values (1,1);
-insert into price_list_items (price_list_id, items_id) values (1,2);
+insert into price_list_items (price_list_id, items_id) values (1, 1);        -- id = 1
+insert into price_list_items (price_list_id, items_id) values (1, 2);        -- id = 2
+insert into price_list_items (price_list_id, items_id) values (1, 3);        -- id = 3
+
+insert into price_list_items (price_list_id, items_id) values (2, 4);        -- id = 4
+insert into price_list_items (price_list_id, items_id) values (2, 5);        -- id = 5
+insert into price_list_items (price_list_id, items_id) values (2, 6);        -- id = 6
+
+insert into price_list_items (price_list_id, items_id) values (3, 7);        -- id = 7
+insert into price_list_items (price_list_id, items_id) values (3, 8);        -- id = 8
+insert into price_list_items (price_list_id, items_id) values (3, 9);        -- id = 9
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting doctors -----------------------------------------------------------
 insert into doctors			-- id = 16

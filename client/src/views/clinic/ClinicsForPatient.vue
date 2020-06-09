@@ -62,15 +62,21 @@
                 show-expand
                 dark>
 
+                <template v-slot:item.priceList="{ item }">
+                    {{item.priceList}}
+                </template>
+                
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
                         <th>Ime doktora</th>
                         <th>Prezime doktora</th>
                         <th>Tip pregleda</th>
+                        <th>Cena pregleda</th>
                         <tr v-for="doctor in item.filteredDoctors" v-bind:key=doctor.name>
                             <td>{{doctor.firstName}}</td>
                             <td>{{doctor.lastName}}</td>
                             <td>{{doctor.examinationType.name}}</td>
+                            <td>{{doctor.price}}</td>
                         </tr>
                     </td>
                 </template>
@@ -98,9 +104,8 @@ export default {
             headers: [
                 {text: "Name", value: "name"},
                 {text: "Address", value: "address"},
-                {text: "Price List", value: "priceList"},
                 {text: "Rating", value: "rating"},
-                {text: "Description", value: "description", width: "25%"}
+                {text: "Description", value: "description", width: "40%"}
             ]
         }
     },
@@ -159,6 +164,9 @@ export default {
                 // Reset state of button and perform filter
                 this.setApplyFilters(false);
                 return this.allClinics().filter(clinic => {
+                    console.log("clinic id:", clinic.id);
+                    console.log("pricelist:", JSON.stringify(clinic.priceList));
+                    
                     // Does user input matches clinic name?
                     if (clinic.name.toLowerCase().match(this.filterWord.toLowerCase())) {
                         // Filter doctors in current clinic
