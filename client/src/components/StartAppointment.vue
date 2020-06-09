@@ -119,7 +119,7 @@
             <ScheduleAppointment style="width:100%" ref="scheduleAppComponent" @scheduled="schedulingFinished"></ScheduleAppointment>
         </v-dialog>
         <v-dialog v-model="medicalRecordDialog" width="55%">
-            <MedicalRecord ref="medicalRecordComponent"></MedicalRecord>
+            <MedicalRecord ref="medicalRecordComponent" viewMode="doctor" v-bind:patientEmail="patientEmail"></MedicalRecord>
         </v-dialog>
         
     </div>
@@ -163,8 +163,7 @@ export default {
         },
 
         medicalRecordBtnClicked(){
-            medicalRecordDialog = true;
-            this.$refs.setUpPatient(this.patientEmail);
+            this.medicalRecordDialog = true;
         },
 
         schedulingFinished(){
@@ -203,7 +202,7 @@ export default {
         },
 
         patientEmail : function() {
-            return this.getPatinetEmail();
+            return this.getPatientEmail();
         }
 
     },

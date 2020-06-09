@@ -74,7 +74,7 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     name: "MedicalRecord",
-
+    props : ['viewMode', 'patientEmail'],
     data() {
         return {
             historyHeaders: [
@@ -86,11 +86,17 @@ export default {
                 {text: "Times", value: "time"},
                 {text: "Verified", value: "verified"}
             ],
+            
         }
     },
 
     methods: {
-        ...mapActions("patient", ["fetchMedicalRecord"])
+        ...mapActions("patient", ["fetchMedicalRecord"]),
+        
+        setUpComponentForDoctor(patient_email){
+            this.viewMode = 'doctor';
+            this.patientEmail = patient_email;
+        }
     },
 
     computed: {
@@ -143,8 +149,13 @@ export default {
         },
     },
 
-    created() {
-        this.fetchMedicalRecord();
+    mounted() {
+        if(this.viewMode === 'patient'){
+            this.fetchMedicalRecord(localStorage.getItem("user_email"));
+        }
+        else{
+            this.fetchMedicalRecord(this.patientEmail);
+        }
     }
 }
 </script>
