@@ -31,6 +31,7 @@ import RegistrationRequests from '../components/RegistrationRequests'
 import ClinicCenterAdminPage from '../views/ClinicCenterAdminPage'
 import BusinessReport from '../components/businessReport/BusinessReport'
 import ValidatePerscriptions from '../components/ValidatePerscriptions'
+import InstantHomeRedirect from '../views/InstantHomeRedirect'
 
 
 Vue.use(VueRouter);
@@ -106,11 +107,26 @@ const isLogOut = (to, from, next) => {
     })
 };
 
+const isLogIn = (to, from, next) => {
+  if (localStorage.getItem("user_role")) {
+    next();
+    return;
+  }
+  next({
+    name: "Unauthorized"
+  })
+};
+
 const router = new VueRouter({
     mode : 'hash',
     routes: [
       {
         path: '/',
+        name: "InstantHomeRedirect",
+        component: InstantHomeRedirect,
+      },
+      {
+        path: '/login',
         name: "Login",
         component: Login,
         beforeEnter: isLogOut
@@ -194,7 +210,8 @@ const router = new VueRouter({
       {
         path: '/change-password',
         name: 'ChangePassword',
-        component: ChangePassword
+        component: ChangePassword,
+        beforeEnter: isLogIn,
       },
  
       {

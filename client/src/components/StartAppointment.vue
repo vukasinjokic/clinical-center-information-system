@@ -163,7 +163,7 @@ export default {
         },
 
         medicalRecordBtnClicked(){
-            medicalRecordDialog = true;
+            this.medicalRecordDialog = true;
             this.$refs.setUpPatient(this.patientEmail);
         },
 

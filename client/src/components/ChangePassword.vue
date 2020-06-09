@@ -82,13 +82,11 @@ export default {
         ...mapActions('userProfile',['changePassword','fetchUserProf']),
 
         closeDialog(){
-            const role = localStorage.getItem("user_role");
             this.dialogPass = false;
             this.$refs.form.reset();
-            if(role === 'ROLE_CLINIC_ADMIN'){
-                this.$router.push('/clinicAdmin');
-            }else
-                this.$router.push('/doctor');
+            this.$router.push({
+                name: "InstantHomeRedirect"
+            });
         },
         savePassword(){
             if(this.$refs.form.validate()){
