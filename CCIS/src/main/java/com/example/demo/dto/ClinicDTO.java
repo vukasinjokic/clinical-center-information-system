@@ -22,7 +22,7 @@ public class ClinicDTO {
 
     public void setDTOFields(Clinic clinic){
         this.setId(clinic.getId());
-        this.setRating(clinic.getRating().getAverageGrade());
+        this.setRating(clinic.getRating());
         this.setDoctors(clinic.getDoctors());
         this.setNurses(clinic.getNurses());
         this.setAppointments(clinic.getAppointments());
@@ -73,8 +73,8 @@ public class ClinicDTO {
         return rating;
     }
 
-    public void setRating(float rating) {
-        this.rating = Float.toString(rating);
+    public void setRating(Rating rating) {
+        this.rating = rating.getAverageGrade().toString();
     }
 
     public List<String> getDoctors() {

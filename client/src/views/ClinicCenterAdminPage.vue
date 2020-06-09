@@ -18,14 +18,9 @@
                     </v-list-item-content>
                 </v-list-item> 
             </v-list>
-
-            <template v-slot:append>
-                <div class="pa-3">
-                    <LogOut/>
-                </div>
-            </template>
         </v-navigation-drawer>      
          
+         <CustomToolbar/>
         <v-content style="padding: 6px 0px 0px 6px">
             <v-container fluid>
                 <router-view></router-view>
@@ -35,11 +30,11 @@
 </template>
 
 <script>
-import LogOut from "../components/LogOut"
+import CustomToolbar from "../components/CustomToolbar"
 
 export default {
     components: {
-        LogOut
+        CustomToolbar
     },
 
     data(){

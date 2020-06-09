@@ -4,6 +4,7 @@ import com.example.demo.model.Clinic;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.PriceList;
 import com.example.demo.model.PriceListItem;
+import com.example.demo.model.Rating;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class ClinicsDTO {
     public void setDTOFields(Clinic clinic) {
         setPriceListMap(clinic.getPriceList());
         setDoctors(clinic.getDoctors());
-        setRating(clinic.getRating().getAverageGrade().toString());
+        setRating(clinic.getRating());
     }
 
     public String getId() {
@@ -85,8 +86,8 @@ public class ClinicsDTO {
         return rating;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setRating(Rating rating) {
+        this.rating = rating.getAverageGrade().toString();
     }
 
     public List<DoctorDTO> getDoctors() {
