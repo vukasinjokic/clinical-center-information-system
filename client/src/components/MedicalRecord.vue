@@ -6,65 +6,93 @@
                     <v-row cols="12" sm = "6">
                         <v-col>
                             <v-text-field
-                            v-model="getWeight"
+                            v-model="getMedicalRecord.weight"
                             label="Weight"
                             show-details
-                            readonly>
+                            v-bind:readonly="viewMode != 'doctor'">
                             </v-text-field>
                         </v-col>
                         <v-col>
                             <v-text-field
-                            v-model="getHeight"
+                            v-model="getMedicalRecord.height"
                             label="Height"
                             show-details
-                            readonly>
+                            v-bind:readonly="viewMode != 'doctor'">
                             </v-text-field>
                         </v-col>
                         <v-col>
                             <v-text-field
-                            v-model="getBloodType"
+                            v-model="getMedicalRecord.bloodType"
                             label="Blood type"
                             show-details
-                            readonly>
+                            v-bind:readonly="viewMode != 'doctor'">
                             </v-text-field>
                         </v-col>
                         <v-col>
                             <v-text-field
-                            v-model="getLeftEye"
+                            v-model="getMedicalRecord.leftEye"
                             label="Left eye diopter"
                             show-details
-                            readonly>
+                            v-bind:readonly="viewMode != 'doctor'">
                             </v-text-field>
                         </v-col>
                         <v-col>
                             <v-text-field
-                            v-model="getRightEye"
+                            v-model="getMedicalRecord.rightEye"
                             label="Right eye diopter"
                             show-details
-                            readonly>
+                            v-bind:readonly="viewMode != 'doctor'">
                             </v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col sm = "4">
+                        <v-col >
                             <v-data-table
                             :headers="historyHeaders"
                             :items="getHistoryItems"
-                            class="blue-grey darken-4 white--text"
-                            dark>
+                            class="grey lighten-4"
+                            >
+
+                            <template v-slot:item.history="props" v-if="viewMode == 'doctor'">
+                                <v-edit-dialog 
+                                :return-value.sync="props.item.history"
+                                @save="save(props.item)"
+                                @cancel="cancel"
+                                @open="!isCurrentDoctorAuthor(props.item)"
+                                @close="close"
+                                > {{ props.item.history }}
+                                <template v-slot:input v-if="editMode">
+                                    <v-text-field
+                                    v-model="props.item.history"
+                                    label="Edit"
+                                    counter
+                                    ></v-text-field>
+                                </template>
+                                </v-edit-dialog>
+                            </template>
+
                             </v-data-table>
                         </v-col>
                         <v-col>
                             <v-data-table
                             :headers="prescriptionHeaders"
                             :items="getPrescriptionItems"
-                            class="blue-grey darken-4 white--text"
-                            dark>
+                            class="grey lighten-4"
+                            >
                             </v-data-table>
                         </v-col>
                     </v-row>
+                    <v-row>
+            
+            </v-row>
                 </v-container>
             </v-card-title>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="orange lighten-1" text outlined @click="cancelUpdate" v-if="viewMode == 'doctor'">Cancel</v-btn>
+                <v-btn color="orange lighten-1" dark @click="updateMedicalRecord" v-if="viewMode == 'doctor'">Update</v-btn>
+            
+            </v-card-actions>
         </v-card>
     </div>
 </template>
@@ -74,7 +102,7 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     name: "MedicalRecord",
-
+    props : ['viewMode', 'patientEmail'],
     data() {
         return {
             historyHeaders: [
@@ -86,21 +114,54 @@ export default {
                 {text: "Times", value: "time"},
                 {text: "Verified", value: "verified"}
             ],
+            editMode : false,
+            
+            backup : '',
+            
         }
     },
 
     methods: {
-        ...mapActions("patient", ["fetchMedicalRecord"])
+        ...mapActions("patient", ["fetchMedicalRecord", "resetMedicalRecord"]),
+        ...mapActions("snackbar", ["showWarning"]),
+        ...mapActions("doctor", ["updateRecord"]),
+        
+        cancelUpdate(){
+            this.resetMedicalRecord(this.getRecordBackup);
+            this.$emit('closeRecordDialog');
+        },
+
+        updateMedicalRecord(){
+            this.updateRecord(this.getMedicalRecord);
+            this.$emit('closeRecordDialog')
+        },
+
+        save(item){
+            this.getMedicalRecord.reports[item.history] = this.getMedicalRecord.reports[this.backup];
+            delete this.getMedicalRecord.reports[this.backup];
+            this.backup = '';
+
+        },
+
+        isCurrentDoctorAuthor(item){
+            this.editMode = this.getMedicalRecord.reports[item.history] === localStorage.getItem("user_email") || (this.backup == item.history && this.getMedicalRecord.reports[this.backup] === localStorage.getItem("user_email"));
+            if(!this.editMode)
+                this.showWarning("You can't edit reports you didn't write");  
+            else{
+                this.backup = item.history;
+            }         
+        }
     },
 
     computed: {
-        ...mapGetters("patient", ["getMedicalRecord"]),
+        ...mapGetters("patient", ["getMedicalRecord", "getRecordBackup"]),
 
         getHistoryItems() {
             var items = [];
-            this.getMedicalRecord.history.forEach(element => {
+            let keys = Object.keys(this.getMedicalRecord.reports);
+            keys.forEach(key => {
                 items.push({
-                    history: element
+                    history: key
                 });
             });
             return items;
@@ -143,8 +204,13 @@ export default {
         },
     },
 
-    created() {
-        this.fetchMedicalRecord();
+    mounted() {
+        if(this.viewMode === 'doctor'){
+            this.fetchMedicalRecord(this.patientEmail);
+        }
+        else{
+            this.fetchMedicalRecord(localStorage.getItem("user_email"));
+        }
     }
 }
 </script>

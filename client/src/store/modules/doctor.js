@@ -54,6 +54,16 @@ const actions = {
         dispatch('snackbar/showSuccess',response.data, {root: true});
     },
 
+    async updateRecord({dispatch}, record){
+        Vue.$axios.post('http://localhost:8081/doctors/updateMedicalRecord', record)
+        .then(response => {
+            dispatch("snackbar/showSuccess", response.data, {root:true});
+        })
+        .catch(err => {
+            dispatch("snackbar/showError", err.data, {root:true});
+        })
+    },
+
     resetDoctor({commit}) {
         commit("resetState");
     }

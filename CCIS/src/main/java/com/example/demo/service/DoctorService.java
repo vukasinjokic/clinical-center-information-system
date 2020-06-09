@@ -7,6 +7,7 @@ import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.RatingRepository;
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
+import com.example.demo.dto.MedicalRecordDTO;
 import com.example.demo.model.AppointmentRequest;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
@@ -49,7 +50,9 @@ public class DoctorService {
     @Autowired
     private RatingRepository ratingRepository;
     @Autowired
-    private MedicalStaffRepository medicalStaffRepository;
+    private MedicalRecordRepository medicalRecordRepository;
+
+
 
     private DoctorValidation doctorValidation = new DoctorValidation();
     public Doctor findById(Integer id){
@@ -181,4 +184,19 @@ public class DoctorService {
         return true;
     }
 
+    public boolean updateMedicalRecord(MedicalRecordDTO recordToUpdate) {
+        Optional<MedicalRecord> recordOptional = medicalRecordRepository.findById(recordToUpdate.getId());
+        if(recordOptional.isPresent()){
+            MedicalRecord record = recordOptional.get();
+            record.setReports(recordToUpdate.getReports());
+            record.setBloodType(recordToUpdate.getBloodType());
+            record.setHeight(recordToUpdate.getHeight());
+            record.setLeftEye(recordToUpdate.getLeftEye());
+            record.setRightEye(recordToUpdate.getRightEye());
+            record.setWeight(recordToUpdate.getWeight());
+            medicalRecordRepository.save(record);
+            return true;
+        }
+        return false;
+    }
 }

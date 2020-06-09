@@ -786,32 +786,32 @@ insert into medical_records (patient_id, weight, height, left_eye, right_eye, bl
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting histories ----------------------------------------------------------
-insert into histories (medical_record_id, history) values (1, 'Kolera');												-- id = 1
-insert into histories (medical_record_id, history) values (1, 'Tifusna groznica i paratifusna groznica');				-- id = 2
-insert into histories (medical_record_id, history) values (1, 'Trbušni tifus');											-- id = 3
+insert into reports (medical_record_id, report, doctor_email) values (1, 'Kolera', 'doktor1@gmail.com');												-- id = 1
+insert into reports (medical_record_id, report, doctor_email) values (1, 'Tifusna groznica i paratifusna groznica', 'doktor2@gmail.com');				-- id = 2
+insert into reports (medical_record_id, report, doctor_email) values (1, 'Trbušni tifus', 'doktor2@gmail.com');											-- id = 3
 
-insert into histories (medical_record_id, history) values (2, 'Paratifus A');											-- id = 4
-insert into histories (medical_record_id, history) values (2, 'Infekcije uzrokovane salmonelama');						-- id = 5
-insert into histories (medical_record_id, history) values (2, 'Zapaljenje tankog creva uzrokovanog salmonelama');		-- id = 6
+insert into reports (medical_record_id, report, doctor_email) values (2, 'Paratifus A', 'doktor1@gmail.com');											-- id = 4
+insert into reports (medical_record_id, report, doctor_email) values (2, 'Infekcije uzrokovane salmonelama', 'doktor3@gmail.com');						-- id = 5
+insert into reports (medical_record_id, report, doctor_email) values (2, 'Zapaljenje tankog creva uzrokovanog salmonelama', 'doktor3@gmail.com');		-- id = 6
 
-insert into histories (medical_record_id, history) values (3, 'Šigeloza');												-- id = 7
-insert into histories (medical_record_id, history) values (3, 'Botulizam');												-- id = 8
-insert into histories (medical_record_id, history) values (3, 'Trovanje hranom');										-- id = 9
+insert into reports (medical_record_id, report, doctor_email) values (3, 'Šigeloza', 'doktor1@gmail.com');												-- id = 7
+insert into reports (medical_record_id, report, doctor_email) values (3, 'Botulizam', 'doktor1@gmail.com');												-- id = 8
+insert into reports (medical_record_id, report, doctor_email) values (3, 'Trovanje hranom', 'doktor1@gmail.com');										-- id = 9
 
-insert into histories (medical_record_id, history) values (4, 'Amibijaza');												-- id = 10
-insert into histories (medical_record_id, history) values (4, 'Apsces jetre prouzrokovan amebama');						-- id = 11
-insert into histories (medical_record_id, history) values (4, 'Amebijaza kože');										-- id = 12
+insert into reports (medical_record_id, report, doctor_email) values (4, 'Amibijaza', 'doktor2@gmail.com');												-- id = 10
+insert into reports (medical_record_id, report, doctor_email) values (4, 'Apsces jetre prouzrokovan amebama', 'doktor2@gmail.com');						-- id = 11
+insert into reports (medical_record_id, report, doctor_email) values (4, 'Amebijaza kože', 'doktor2@gmail.com');										-- id = 12
 
-insert into histories (medical_record_id, history) values (5, 'Ostale crevne infekcije uzrokovane protozoama');			-- id = 13
-insert into histories (medical_record_id, history) values (5, 'Balantidijaza');											-- id = 14
-insert into histories (medical_record_id, history) values (5, 'Đardijaza');												-- id = 15
-insert into histories (medical_record_id, history) values (5, 'Kriptosporidijaza');										-- id = 16
+insert into reports (medical_record_id, report, doctor_email) values (5, 'Ostale crevne infekcije uzrokovane protozoama', 'doktor4@gmail.com');			-- id = 13
+insert into reports (medical_record_id, report, doctor_email) values (5, 'Balantidijaza', 'doktor4@gmail.com');											-- id = 14
+insert into reports (medical_record_id, report, doctor_email) values (5, 'Đardijaza', 'doktor4@gmail.com');												-- id = 15
+insert into reports (medical_record_id, report, doctor_email) values (5, 'Kriptosporidijaza', 'doktor4@gmail.com');										-- id = 16
 
-insert into histories (medical_record_id, history) values (6, 'Izosporijaza');											-- id = 17
-insert into histories (medical_record_id, history) values (6, 'Turbekoloza nernog sistema');							-- id = 18
-insert into histories (medical_record_id, history) values (6, 'Kuga');													-- id = 19
-insert into histories (medical_record_id, history) values (6, 'Antraks');												-- id = 20
-insert into histories (medical_record_id, history) values (6, 'Kolera');												-- id = 21
+insert into reports (medical_record_id, report, doctor_email) values (6, 'Izosporijaza', 'doktor5@gmail.com');											-- id = 17
+insert into reports (medical_record_id, report, doctor_email) values (6, 'Turbekoloza nernog sistema', 'doktor5@gmail.com');							-- id = 18
+insert into reports (medical_record_id, report, doctor_email) values (6, 'Kuga', 'doktor5@gmail.com');													-- id = 19
+insert into reports (medical_record_id, report, doctor_email) values (6, 'Antraks', 'doktor5@gmail.com');												-- id = 20
+insert into reports (medical_record_id, report, doctor_email) values (6, 'Kolera', 'doktor5@gmail.com');												-- id = 21
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

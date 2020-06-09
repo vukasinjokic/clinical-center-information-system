@@ -36,7 +36,7 @@
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue-grey darken-3" outlined="true" @click="scheduleAnotherAppBtnClicked">Schedule another appointment</v-btn>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue-grey darken-3" outlined="true" @click="medicalRecordBtnClicked">Patients medical record</v-btn>
+                                <v-btn color="blue-grey darken-3" outlined="true" @click="medicalRecordDialog = true">Patients medical record</v-btn>
                             
                             </v-row>
                         </v-col>
@@ -118,8 +118,8 @@
         <v-dialog v-model="scheduleAppDialog" width="55%" eager>    
             <ScheduleAppointment style="width:100%" ref="scheduleAppComponent" @scheduled="schedulingFinished"></ScheduleAppointment>
         </v-dialog>
-        <v-dialog v-model="medicalRecordDialog" width="55%">
-            <MedicalRecord ref="medicalRecordComponent"></MedicalRecord>
+        <v-dialog v-model="medicalRecordDialog"  width="80%">
+            <MedicalRecord ref="medicalRecordComponent" viewMode="doctor" @closeRecordDialog="medicalRecordDialog = false" v-bind:patientEmail="patientEmail"></MedicalRecord>
         </v-dialog>
         
     </div>
@@ -162,11 +162,6 @@ export default {
             this.$refs.scheduleAppComponent.setPatientEmail(this.getPatientEmail())
         },
 
-        medicalRecordBtnClicked(){
-            medicalRecordDialog = true;
-            this.$refs.setUpPatient(this.patientEmail);
-        },
-
         schedulingFinished(){
             this.scheduleAppDialog = false;
         },
@@ -203,7 +198,7 @@ export default {
         },
 
         patientEmail : function() {
-            return this.getPatinetEmail();
+            return this.getPatientEmail();
         }
 
     },

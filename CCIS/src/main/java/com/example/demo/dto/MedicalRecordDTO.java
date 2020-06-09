@@ -6,22 +6,24 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MedicalRecordDTO {
     private static ModelMapper modelMapper = new ModelMapper();
 
-    private String id;
+    private Integer id;
     private String weight;
     private String height;
     private String leftEye;
     private String rightEye;
     private String bloodType;
-    private Collection<String> history;
+    private Map<String,String> reports;
     private Collection<AppointmentDTO> appointments;
     private Collection<PrescriptionDTO> prescriptions;
 
     public MedicalRecordDTO() {
-        history = new ArrayList<>();
+        reports = new HashMap<String,String>();
         appointments = new ArrayList<>();
         prescriptions = new ArrayList<>();
     }
@@ -30,11 +32,11 @@ public class MedicalRecordDTO {
         setPrescriptionsFromMedicalRecord(medicalRecord);
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -78,12 +80,12 @@ public class MedicalRecordDTO {
         this.bloodType = bloodType;
     }
 
-    public Collection<String> getHistory() {
-        return history;
+    public Map<String, String> getReports() {
+        return reports;
     }
 
-    public void setHistory(Collection<String> history) {
-        this.history = history;
+    public void setReports(Map<String, String> reports) {
+        this.reports = reports;
     }
 
     public Collection<AppointmentDTO> getAppointments() {
