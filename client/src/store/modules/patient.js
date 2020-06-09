@@ -5,7 +5,7 @@ const getDefaultState = () => {
         patients: [],
         userProfile: null,
         medicalRecord: {
-            history: [],
+            reports: [],
             prescriptions: []
         }
     }

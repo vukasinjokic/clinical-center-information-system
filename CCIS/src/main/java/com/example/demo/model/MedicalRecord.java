@@ -32,9 +32,10 @@ public class MedicalRecord {
    private Patient patient;
 
    @ElementCollection
-   @CollectionTable(name = "histories", joinColumns = @JoinColumn(name = "medical_record_id"))
-   @Column(name = "history")
-   private Collection<String> history;
+   @CollectionTable(name = "reports", joinColumns = @JoinColumn(name = "medical_record_id"))
+   @MapKeyColumn(name = "report")
+   @Column(name = "doctor_email")
+   private Map<String, String> reports;
 
    @OneToMany(cascade = CascadeType.ALL, fetch = LAZY)
    @JoinColumn(name = "medical_record_id")
@@ -46,11 +47,11 @@ public class MedicalRecord {
 
 
    public MedicalRecord() {
-      this.history = new HashSet<String>();
+      this.reports = new HashMap<String, String>();
    }
 
-   public MedicalRecord(Collection<String> history, Collection<Appointment> appointments, Collection<Prescription> prescriptions, Patient patient) {
-      this.history = history;
+   public MedicalRecord(Map<String,String> reports, Collection<Appointment> appointments, Collection<Prescription> prescriptions, Patient patient) {
+      this.reports = reports;
       this.appointments = appointments;
       this.prescriptions = prescriptions;
       this.patient = patient;
@@ -64,12 +65,12 @@ public class MedicalRecord {
       this.prescriptions = prescriptions;
    }
 
-   public Collection<String> getHistory() {
-      return history;
+   public Map<String, String> getReports() {
+      return reports;
    }
 
-   public void setHistory(Collection<String> history) {
-      this.history = history;
+   public void setReports(Map<String, String> reports) {
+      this.reports = reports;
    }
 
    public Integer getId() {

@@ -6,6 +6,8 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MedicalRecordDTO {
     private static ModelMapper modelMapper = new ModelMapper();
@@ -16,12 +18,12 @@ public class MedicalRecordDTO {
     private String leftEye;
     private String rightEye;
     private String bloodType;
-    private Collection<String> history;
+    private Map<String,String> reports;
     private Collection<AppointmentDTO> appointments;
     private Collection<PrescriptionDTO> prescriptions;
 
     public MedicalRecordDTO() {
-        history = new ArrayList<>();
+        reports = new HashMap<String,String>();
         appointments = new ArrayList<>();
         prescriptions = new ArrayList<>();
     }
@@ -78,12 +80,12 @@ public class MedicalRecordDTO {
         this.bloodType = bloodType;
     }
 
-    public Collection<String> getHistory() {
-        return history;
+    public Map<String, String> getReports() {
+        return reports;
     }
 
-    public void setHistory(Collection<String> history) {
-        this.history = history;
+    public void setReports(Map<String, String> reports) {
+        this.reports = reports;
     }
 
     public Collection<AppointmentDTO> getAppointments() {

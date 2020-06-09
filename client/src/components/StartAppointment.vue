@@ -36,7 +36,7 @@
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue-grey darken-3" outlined="true" @click="scheduleAnotherAppBtnClicked">Schedule another appointment</v-btn>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue-grey darken-3" outlined="true" @click="medicalRecordBtnClicked">Patients medical record</v-btn>
+                                <v-btn color="blue-grey darken-3" outlined="true" @click="medicalRecordDialog = true">Patients medical record</v-btn>
                             
                             </v-row>
                         </v-col>
@@ -118,7 +118,7 @@
         <v-dialog v-model="scheduleAppDialog" width="55%" eager>    
             <ScheduleAppointment style="width:100%" ref="scheduleAppComponent" @scheduled="schedulingFinished"></ScheduleAppointment>
         </v-dialog>
-        <v-dialog v-model="medicalRecordDialog" width="55%">
+        <v-dialog v-model="medicalRecordDialog" width="80%">
             <MedicalRecord ref="medicalRecordComponent" viewMode="doctor" v-bind:patientEmail="patientEmail"></MedicalRecord>
         </v-dialog>
         
@@ -160,10 +160,6 @@ export default {
         scheduleAnotherAppBtnClicked(){
             this.scheduleAppDialog = true;
             this.$refs.scheduleAppComponent.setPatientEmail(this.getPatientEmail())
-        },
-
-        medicalRecordBtnClicked(){
-            this.medicalRecordDialog = true;
         },
 
         schedulingFinished(){

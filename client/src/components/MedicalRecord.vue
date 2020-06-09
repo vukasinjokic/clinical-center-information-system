@@ -46,7 +46,7 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col sm = "4">
+                        <v-col >
                             <v-data-table
                             :headers="historyHeaders"
                             :items="getHistoryItems"
@@ -104,9 +104,10 @@ export default {
 
         getHistoryItems() {
             var items = [];
-            this.getMedicalRecord.history.forEach(element => {
+            let keys = Object.keys(this.getMedicalRecord.reports);
+            keys.forEach(key => {
                 items.push({
-                    history: element
+                    history: key
                 });
             });
             return items;
@@ -150,11 +151,11 @@ export default {
     },
 
     mounted() {
-        if(this.viewMode === 'patient'){
-            this.fetchMedicalRecord(localStorage.getItem("user_email"));
+        if(this.viewMode === 'doctor'){
+            this.fetchMedicalRecord(this.patientEmail);
         }
         else{
-            this.fetchMedicalRecord(this.patientEmail);
+            this.fetchMedicalRecord(localStorage.getItem("user_email"));
         }
     }
 }
