@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-        <v-card width="55%" v-if="appointment">
+        <v-card width="81%" v-if="appointment">
             <v-card-title>{{appointment.examinationType}}</v-card-title>
             <v-text>
                 <v-container>
@@ -35,10 +35,13 @@
                                 <v-btn color="blue-grey darken-3" outlined="true" @click="prescriptionDialog = true">Make prescription</v-btn>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue-grey darken-3" outlined="true" @click="scheduleAnotherAppBtnClicked">Schedule another appointment</v-btn>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue-grey darken-3" outlined="true" @click="medicalRecordBtnClicked">Patients medical record</v-btn>
+                            
                             </v-row>
                         </v-col>
                         <v-col></v-col>
-                        <v-col md="3" offset-md="8">
+                        <v-col md="5" offset-md="10">
                             <v-spacer></v-spacer>
                             <v-btn
                                 color="orange lighten-1" dark @click="finishBtnClicked()">Finish</v-btn>
@@ -115,16 +118,22 @@
         <v-dialog v-model="scheduleAppDialog" width="55%" eager>    
             <ScheduleAppointment style="width:100%" ref="scheduleAppComponent" @scheduled="schedulingFinished"></ScheduleAppointment>
         </v-dialog>
+        <v-dialog v-model="medicalRecordDialog" width="55%">
+            <MedicalRecord ref="medicalRecordComponent"></MedicalRecord>
+        </v-dialog>
+        
     </div>
 </template> 
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import ScheduleAppointment from './ScheduleAppointment'
+import MedicalRecord from './MedicalRecord'
 
 export default {
     components: {
-        ScheduleAppointment
+        ScheduleAppointment,
+        MedicalRecord
     },
     data(){
         return {
@@ -132,6 +141,7 @@ export default {
             report : '',
             prescriptionDialog : false,
             addMedicineDialog : false,
+            medicalRecordDialog : false,
             prescription : [],
             medication : null,
             description : '',
@@ -150,6 +160,11 @@ export default {
         scheduleAnotherAppBtnClicked(){
             this.scheduleAppDialog = true;
             this.$refs.scheduleAppComponent.setPatientEmail(this.getPatientEmail())
+        },
+
+        medicalRecordBtnClicked(){
+            medicalRecordDialog = true;
+            this.$refs.setUpPatient(this.patientEmail);
         },
 
         schedulingFinished(){

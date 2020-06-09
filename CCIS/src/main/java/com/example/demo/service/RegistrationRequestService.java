@@ -4,9 +4,11 @@ import com.example.demo.Repository.AppointmentRequestRepository;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.RegistrationRequestRepository;
 import com.example.demo.model.Authority;
+import com.example.demo.model.Nurse;
 import com.example.demo.model.Patient;
 import com.example.demo.model.UserRegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

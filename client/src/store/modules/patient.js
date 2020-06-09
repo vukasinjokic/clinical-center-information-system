@@ -34,7 +34,7 @@ const actions = {
         const response = await Vue.$axios.get('http://localhost:8081/patients/medicalRecord/' + email);
         commit("setMedicalRecord", response.data);
     },
-
+    
     async fetchUserProfile({commit}){
         const response = await Vue.$axios.get('http://localhost:8081/auth/userDetails');
         commit('setUserProfile', response.data);

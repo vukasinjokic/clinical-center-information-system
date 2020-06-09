@@ -133,8 +133,9 @@ public class AppointmentService {
     }
 
     public boolean handleAppointmentFinish(AppointmentToFinish appointmentToFinish) {
-        Appointment appointment = appointmentRepository.findById(appointmentToFinish.appointmentId).get();
-        if(appointment != null){
+        Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentToFinish.appointmentId);
+        if(appointmentOptional.isPresent()){
+            Appointment appointment = appointmentOptional.get();
             appointment.setReport(appointmentToFinish.report);
             Prescription prescription = new Prescription(appointmentToFinish.prescriptionToAdd);
             MedicalRecord mr = appointment.getPatient().getMedicalRecord();
@@ -147,8 +148,6 @@ public class AppointmentService {
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);
 
-
-//            calendarRepository.save(calendar);
             appointmentRepository.save(appointment);
             return true;
         }
