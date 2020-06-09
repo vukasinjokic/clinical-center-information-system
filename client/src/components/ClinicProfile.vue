@@ -100,13 +100,16 @@
                 </v-col>
             </v-row>
         </v-container>
-        
+        <Map v-bind:coords="coords"></Map>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import axios from 'axios'
+import Map from './Map'
 export default {
+    components: {Map},
     data(){
         return{
             headers:[
@@ -139,13 +142,16 @@ export default {
             variable: true,
             dialog: false,
             editIndex: -1,
-
+            apiKey: 'dbf9f437-0f1f-4042-ac07-0f253547667f',
+            coords: [20.457273,44.787197]
         }
     },
     created(){
         this.fetchClinic();
         this.fetchTypes();
         this.fetchPriceList();
+        this.getCoordinates();
+        // console.log(this.coords);
     },
     computed: {
         ...mapGetters('clinicProfile',['getClinic','getPriceList','getPriceListItems']),
@@ -156,7 +162,8 @@ export default {
         },
         requiredRule(){
             return (value) => !!value || "Required field.";
-        }
+        },
+        
     },
     methods: {
         ...mapActions('clinicProfile',['fetchClinic','updateClinic','fetchPriceList','addPriceList','updatePriceList']),
@@ -169,6 +176,7 @@ export default {
             this.defaultClinic.description = this.getClinic.description;
             this.defaultClinic.address = this.getClinic.address;
             this.updateClinic(this.defaultClinic);
+            this.getCoordinates();
         },
         editItem(item){
             this.editIndex = this.getPriceListItems.indexOf(item);
@@ -193,6 +201,27 @@ export default {
             this.dialog = false;
             this.editPriceList = Object.assign({},this.defaultPriceList);
             this.$refs.form.reset();
+        },
+        
+        getCoordinates(){
+            var self = this;
+            var arr = this.getClinic.address.split(" ");
+            var new_address = "";
+            for(let i = 0; i<arr.length; i++){
+                if(i != arr.length-1)
+                    new_address = new_address + arr[i] + "+";
+                else
+                    new_address = new_address + arr[i];
+            }
+            
+            console.log(new_address);
+            axios
+            .get(`https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${this.apiKey}&geocode=${new_address}`)
+            .then(response =>{
+                var possition = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+                var array = possition.split(" ");
+                self.coords = array;
+            });
         }
 
     },

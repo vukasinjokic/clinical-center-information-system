@@ -38,12 +38,11 @@ const actions = {
         }
     },
 
-    async updateClinic({commit}, clinic_obj){
+    async updateClinic({commit, dispatch}, clinic_obj){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/clinics/updateClinic', clinic_obj);
             commit('setClinic', response.data);
-            alert("Uspesno azurirano.");
-
+            dispatch('snackbar/showSuccess',"Uspesna izmena klinike",{root: true});
         }catch(error){
             //commit('setClinic', state.clinic);
             alert(error.response.status);
@@ -54,7 +53,6 @@ const actions = {
         try{
             const response = await Vue.$axios.post('http://localhost:8081/clinics/updatePriceListItem', priceListItem);
             commit('commitListItem', response.data);
-        
         }catch(error){
             alert("Vec postoji stavka cenovnika");
         }

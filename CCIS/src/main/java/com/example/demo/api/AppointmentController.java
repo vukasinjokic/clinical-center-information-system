@@ -91,7 +91,7 @@ public class AppointmentController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(path = "/addAppointment", consumes = "application/json")
+    @PostMapping(path = "/addAppointment", consumes = "application/json;charset=UTF-8")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
         //validacija ide u service

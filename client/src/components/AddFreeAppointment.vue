@@ -144,8 +144,7 @@ export default {
             var newAppointment = 
                     {
                       time: this.date + " " + this.time,
-                      price: this.price,
-                      doctor: {email:this.doctor},
+                      doctorEmail: this.doctor,
                       room: this.room,
                       examinationType: this.type,
                       clinic: "Ne znam kliniku dok se ne uradi login"

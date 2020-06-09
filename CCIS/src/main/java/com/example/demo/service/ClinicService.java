@@ -226,11 +226,10 @@ public class ClinicService {
         Optional<Clinic> clinicOptional = clinics.stream().filter(clinic -> clinic.getName().equals(clinicDTO.getName())).findFirst();
         if(find_clinic.isPresent()){
             Clinic clinic = find_clinic.get();
-            if(!clinicDTO.equals(clinic.getName())){
+            if(!clinicDTO.getName().equals(clinic.getName())){
                 if(clinicOptional.isPresent())
                     return null;
             }
-
             clinic.setName(clinicDTO.getName());
             clinic.setAddress(clinicDTO.getAddress());
             clinic.setDescription(clinicDTO.getDescription());
