@@ -55,7 +55,7 @@ public class AppointmentService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = formatter.parse(appointmentDTO.getDate());
         //apointmentDTO sada ima doctorDTO i tu treba izmena
-        Doctor getDoctor = doctorRepository.findByEmail(appointmentDTO.getDoctor().getEmail());
+        Doctor getDoctor = doctorRepository.findByEmail(appointmentDTO.doctorEmail);
         int room_len = appointmentDTO.getRoom().length();
         String room_number = appointmentDTO.getRoom().substring(room_len - 3, room_len);
         Room getRoom = roomRepository.findByNumber(room_number);

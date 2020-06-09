@@ -9,16 +9,15 @@ import java.util.Date;
 public class AppointmentDTO {
     private String id;
     private String time;
-    private float price;
-    private float discount;
-    public DoctorDTO doctor; //trebalo bi doctorDTO
+    private Float price;
+    private Float discount;
+    public String doctorEmail;
+    private DoctorDTO doctor; //trebalo bi doctorDTO
     private String patient;
-    private String room;
+    public String room;
     private String examinationType;
     private String clinic;
     private String report;
-
-
 
     public void setFields(Appointment appointment){
         this.setDoctor(appointment.getDoctor());

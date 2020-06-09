@@ -29,7 +29,7 @@ const actions = {
             localStorage.setItem('is_password_changed', true);
         }catch(error){
             dispatch('snackbar/showError', "Netacan stari password", {root:true});
-            throw error;
+            return Promise.reject(new Error('fail'));
         }
     },
 

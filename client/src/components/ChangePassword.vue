@@ -89,10 +89,10 @@ export default {
                 }
                 this.changePassword(passForm)
                     .then(() => {
-                        this.$router.push('/doctor'); 
+                        this.closeDialog(); 
                     }).catch(() => {});
 
-                this.closeDialog();
+                
             }
         }
     }

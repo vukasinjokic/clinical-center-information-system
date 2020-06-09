@@ -298,21 +298,21 @@ values (1, 'Skopryl', '1103565');
 ----------------------------------------------------------- Inserting clinics -----------------------------------------------------------
 insert into clinics			-- id = 1
 (name, address, description, rating, code_book_id)
-values ('Poliklinika Sparta', 'Bulevar Evrope 22, Novi Sad',
+values ('Poliklinika Sparta', 'Bulevar Evrope 22 Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor,
 		arcu quis iaculis facilisis, purus ipsum vehicula nunc,vitae finibus.',
 	    0.0, 1);
 
 insert into clinics			-- id = 2
 (name, address, description,  rating, code_book_id)
-values ('Poliklinika Medicina', 'Bulevar Oslobodjenja 79, Novi Sad',
+values ('Poliklinika Medicina', 'Bulevar Oslobodjenja 79 Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin magna turpis,
 		tincidunt in dictum et, fringilla at eros. Pellentesque eu est pharetra, interdum quam a.',
 	    0.0, 1);
 
 insert into clinics			-- id = 3
 (name, address, description,  rating, code_book_id)
-values ('Poliklinika Žekić', 'Grčkoškolska 3, Novi Sad',
+values ('Poliklinika Žekić', 'Grčkoškolska 3 Novi Sad',
 	   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ante diam, auctor in mauris et,
 		dapibus cursus nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque id.',
 	    0.0, 1);
