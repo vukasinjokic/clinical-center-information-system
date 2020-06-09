@@ -27,7 +27,7 @@ public class MedicalRecordDTO {
     }
 
     public void setFields(MedicalRecord medicalRecord) {
-        setPrescriptions(medicalRecord);
+        setPrescriptionsFromMedicalRecord(medicalRecord);
     }
 
     public String getId() {
@@ -102,7 +102,7 @@ public class MedicalRecordDTO {
         this.prescriptions = prescriptions;
     }
 
-    public void setPrescriptions(MedicalRecord medicalRecord) {
+    public void setPrescriptionsFromMedicalRecord(MedicalRecord medicalRecord) {
         Collection<Prescription> prescriptions = medicalRecord.getPrescriptions();
         for (Prescription prescription : prescriptions) {
             PrescriptionDTO prescriptionDTO = modelMapper.map(prescription, PrescriptionDTO.class);
