@@ -1,14 +1,14 @@
 package com.example.demo.api;
 
+import com.example.demo.Repository.ClinicRepository;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserDTO;
-import com.example.demo.model.ClinicCenterAdmin;
-import com.example.demo.model.UserRegisterRequest;
+import com.example.demo.model.*;
+import com.example.demo.service.AuthorityService;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.UserRegisterService;
 import com.example.demo.useful_beans.UserToLogin;
 import com.example.demo.dto.UserTokenState;
-import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.security.auth.JwtAuthenticationRequest;
 import com.example.demo.useful_beans.ChangePassword;
@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -54,6 +55,15 @@ public class AuthenticationController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private AuthorityService authorityService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ClinicRepository clinicRepository;
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody UserToLogin userToLogin,
@@ -155,6 +165,42 @@ public class AuthenticationController {
 
 
 
+    @PostMapping("/registerAdmins")
+    public ResponseEntity registerAdmins(@RequestBody UserRegisterRequest adminToRegister) {
+        List<User> existUsers = userService.findByEmailOrSocialSecurityNumber(
+                adminToRegister.getEmail(),
+                adminToRegister.getSocialSecurityNumber());
+        if (existUsers.size() > 2)
+            return new ResponseEntity<>("Unknown error. This should not happen.", HttpStatus.BAD_REQUEST);
+
+        else if (existUsers.size() == 2)
+            return new ResponseEntity<>("Both email and social security number are already taken.", HttpStatus.BAD_REQUEST);
+
+        else if (existUsers.size() == 1) {
+            if (existUsers.get(0).getEmail().equals(adminToRegister.getEmail()))
+                return new ResponseEntity<>("Chosen email is already taken.", HttpStatus.BAD_REQUEST);
+
+            if (existUsers.get(0).getSocialSecurityNumber().equals(adminToRegister.getSocialSecurityNumber()))
+                return new ResponseEntity<>("Chosen social security number is already taken.", HttpStatus.BAD_REQUEST);
+
+        }
+        if(adminToRegister.getClinicId() != null){
+            //clinic admin
+            Clinic clinic = clinicRepository.findById(adminToRegister.getClinicId()).get();
+            List<Authority> auth = authorityService.findByName("ROLE_CLINIC_ADMIN");
+            ClinicAdmin clinicAdmin = new ClinicAdmin(adminToRegister.getEmail(), adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), clinic, auth, false);
+            userRepository.save(clinicAdmin);
+            return ResponseEntity.ok("Successfully registered clinic admin");
+        }
+        else{
+            List<Authority> auth = authorityService.findByName("ROLE_CLINIC_CENTER_ADMIN");
+            ClinicCenterAdmin clinicCenterAdmin = new ClinicCenterAdmin(adminToRegister.getEmail(), adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), auth, false);
+            userRepository.save(clinicCenterAdmin);
+            return ResponseEntity.ok("Successfully registered clinic center admin");
+        }
+
+
+    }
 
 
 //

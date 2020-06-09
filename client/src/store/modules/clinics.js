@@ -14,7 +14,7 @@ const getters = {
 
 const actions = {
     async fetchClinics({commit}){
-        await Vue.$axios.get('http://localhost:8081/clinics')
+        await Vue.$axios.get('http://localhost:8081/clinics/getClinics')
         .then(response => {
             for (let i = 0; i < response.data.length; i++) {
                 var clinic = response.data[i];

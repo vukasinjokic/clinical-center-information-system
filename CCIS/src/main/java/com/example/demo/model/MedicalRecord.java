@@ -13,6 +13,21 @@ public class MedicalRecord {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
 
+   @Column(name = "weight", nullable = false)
+   private String weight;
+
+   @Column(name = "height", nullable = false)
+   private String height;
+
+   @Column(name = "left_eye", nullable = false)
+   private String leftEye;
+
+   @Column(name = "right_eye", nullable = false)
+   private String rightEye;
+
+   @Column(name = "blood_type", nullable = false)
+   private String bloodType;
+
    @OneToOne
    private Patient patient;
 
@@ -92,4 +107,44 @@ public class MedicalRecord {
        if(appointments == null) appointments = new ArrayList<>();
        appointments.add(appointment);
     }
+
+   public String getWeight() {
+      return weight;
+   }
+
+   public void setWeight(String weight) {
+      this.weight = weight;
+   }
+
+   public String getHeight() {
+      return height;
+   }
+
+   public void setHeight(String height) {
+      this.height = height;
+   }
+
+   public String getLeftEye() {
+      return leftEye;
+   }
+
+   public void setLeftEye(String leftEye) {
+      this.leftEye = leftEye;
+   }
+
+   public String getRightEye() {
+      return rightEye;
+   }
+
+   public void setRightEye(String rightEye) {
+      this.rightEye = rightEye;
+   }
+
+   public String getBloodType() {
+      return bloodType;
+   }
+
+   public void setBloodType(String bloodType) {
+      this.bloodType = bloodType;
+   }
 }

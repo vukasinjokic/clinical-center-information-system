@@ -1,7 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.Repository.ClinicRepository;
+import com.example.demo.Repository.DoctorRepository;
+import com.example.demo.Repository.MedicalStaffRepository;
+import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.RatingRepository;
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
+import com.example.demo.model.AppointmentRequest;
+import com.example.demo.model.Doctor;
+import com.example.demo.model.Patient;
+import com.example.demo.model.MedicalStaffRequest;
+import com.example.demo.model.Rating;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.*;
 import com.example.demo.validation.DoctorValidation;
@@ -36,8 +46,12 @@ public class DoctorService {
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
     private AppointmentRepository appointmentRepository;
-    private DoctorValidation doctorValidation = new DoctorValidation();
+    @Autowired
+    private RatingRepository ratingRepository;
+    @Autowired
+    private MedicalStaffRepository medicalStaffRepository;
 
+    private DoctorValidation doctorValidation = new DoctorValidation();
     public Doctor findById(Integer id){
         return doctorRepository.findById(id).orElse(null);
     }
@@ -52,6 +66,12 @@ public class DoctorService {
         return doctorRepository.findByEmail(email);
     }
 
+    public boolean gradeDoctor(Doctor doctor, Integer patientId, float newGrade) {
+        Rating doctorRating = doctor.getRating();
+        doctorRating.setGrade(patientId, newGrade);
+        doctorRating = ratingRepository.save(doctorRating);
+        return doctorRating != null;
+    }
     public String deleteDoctor(Integer id){
         Optional<Doctor> find_doc = doctorRepository.findById(id);
         List<Appointment> appointments = appointmentRepository.findByDoctorId(id);
@@ -117,11 +137,6 @@ public class DoctorService {
         newDoctor.setCity(doctorDTO.getCity());
         newDoctor.setAddress(doctorDTO.getAddress());
         newDoctor.setCountry(doctorDTO.getCountry());
-    }
-    public boolean gradeDoctor(Doctor doctor, float newRating) {
-        doctor.setRating((doctor.getRating() + newRating) / 2);
-        doctor = doctorRepository.save(doctor);
-        return doctor != null;
     }
 
     public boolean sendRequest(MedicalStaffRequest request){

@@ -30,12 +30,13 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @OneToOne(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
+   @OneToOne(mappedBy = "clinic", cascade = {ALL}, fetch = EAGER)
    @LazyToOne(LazyToOneOption.NO_PROXY)
    private PriceList priceList;
 
-   @Column(name = "rating", unique = false)
-   private float rating;
+   @OneToOne(fetch = EAGER)
+   @JoinColumn(name = "rating_id", unique = false, nullable = false)
+   private Rating rating;
 
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Doctor> doctors;
@@ -58,7 +59,7 @@ public class Clinic {
 
    @OneToMany(cascade = {ALL}, fetch = LAZY)
    private Collection<AppointmentRequest> appointmentRequests;
-//bilo je eager
+
    @OneToMany(cascade = {ALL}, fetch = EAGER, orphanRemoval = true)
    private Collection<MedicalStaffRequest> medicalStaffRequests;
 
@@ -73,9 +74,8 @@ public class Clinic {
       this.description = description;
       this.address = address;
    }
-   public Clinic(String name, String address, String description, PriceList priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests) {
-   }
-   public Clinic(String name, String address, String description, PriceList priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
+
+   public Clinic(String name, String address, String description, PriceList priceList, Rating rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -150,11 +150,11 @@ public class Clinic {
       this.priceList = priceList;
    }
 
-   public float getRating() {
+   public Rating getRating() {
       return rating;
    }
 
-   public void setRating(float rating) {
+   public void setRating(Rating rating) {
       this.rating = rating;
    }
 

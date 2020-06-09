@@ -1,6 +1,7 @@
 package com.example.demo.Repository;
 
 import com.example.demo.model.ClinicCenterAdmin;
+import com.example.demo.model.Patient;
 import com.example.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

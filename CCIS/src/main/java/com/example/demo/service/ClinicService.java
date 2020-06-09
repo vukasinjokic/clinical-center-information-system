@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+
 import com.example.demo.Repository.*;
 import com.example.demo.dto.ClinicDTO;
 import com.example.demo.model.*;
@@ -26,6 +27,10 @@ public class ClinicService {
     private ClinicRepository clinicRepository;
     @Autowired
     private ClinicAdminRepository clinicAdminRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
+
     @Autowired
     private CodeBookRepository codeBookRepository;
     @Autowired
@@ -44,10 +49,11 @@ public class ClinicService {
         return clinicRepository.findAll();
     }
 
-    public boolean gradeClinic(Clinic clinic, float newRating) {
-        clinic.setRating((clinic.getRating() + newRating) / 2);
-        clinic = clinicRepository.save(clinic);
-        return clinic != null;
+    public boolean gradeClinic(Clinic clinic, Integer patientId, float newGrade) {
+        Rating clinicRating = clinic.getRating();
+        clinicRating.setGrade(patientId, newGrade);
+        clinicRating = ratingRepository.save(clinicRating);
+        return clinicRating != null;
     }
 
     public Clinic addClinic(ClinicDTO clinicDTO) throws ParseException{
@@ -69,7 +75,7 @@ public class ClinicService {
 
     public float getClinicRating(String email){
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(email);
-        return clinicAdmin.getClinic().getRating();
+        return clinicAdmin.getClinic().getRating().getAverageGrade();
     }
 
     public List<ChartAppointment> makeChartAppointment(String period, String admin_email){

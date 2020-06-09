@@ -71,7 +71,7 @@ export default {
         }
     },
     created(){
-        this.fetchPatientAppointments(localStorage.getItem('user_email'));
+        this.fetchPatientFinishedAppointments(localStorage.getItem('user_email'));
     },
     
     computed:  {
@@ -112,7 +112,7 @@ export default {
     },
 
     methods:{
-        ...mapActions('appointments', ['fetchPatientAppointments']),
+        ...mapActions('appointments', ['fetchPatientFinishedAppointments']),
     },
     
 }

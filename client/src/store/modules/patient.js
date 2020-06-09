@@ -3,7 +3,11 @@ import Vue from 'vue'
 const getDefaultState = () => {
     return {
         patients: [],
-        userProfile: null  
+        userProfile: null,
+        medicalRecord: {
+            history: [],
+            prescriptions: []
+        }
     }
 };
 
@@ -12,6 +16,7 @@ const state = getDefaultState();
 const getters = {
     allPatients: (state) => state.patients,
     getUserProfile: (state) => state.userProfile,
+    getMedicalRecord: (state) => state.medicalRecord
 };
 
 const actions = {
@@ -23,6 +28,13 @@ const actions = {
         const response = await Vue.$axios.get('http://localhost:8081/patients/getPatients/' + email);
         commit('setPatients', response.data);
     },
+
+    async fetchMedicalRecord({commit}) {
+        var email = localStorage.getItem("user_email");
+        const response = await Vue.$axios.get('http://localhost:8081/patients/medicalRecord/' + email);
+        commit("setMedicalRecord", response.data);
+    },
+    
     async fetchUserProfile({commit}){
         const response = await Vue.$axios.get('http://localhost:8081/auth/userDetails');
         commit('setUserProfile', response.data);
@@ -36,6 +48,7 @@ const actions = {
 const mutations = {
     setPatients: (state, patients) => state.patients = patients,
     setUserProfile: (state, user) => state.userProfile = user,
+    setMedicalRecord: (state, medicalRecord) => state.medicalRecord = medicalRecord,
 
     resetState(state) {
         Object.assign(state, getDefaultState());

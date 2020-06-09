@@ -56,7 +56,6 @@ const store = new Vuex.Store({
 
             this.dispatch("startAppointment/resetAppointment");
             this.dispatch("calendar/resetCalendar");
-            this.dispatch("registrationReqeusts/resetRegistrationRequests");
             this.dispatch("businessReport/resetBusinessReport");
             this.dispatch("registrationRequests/resetRegistrationRequests");
 

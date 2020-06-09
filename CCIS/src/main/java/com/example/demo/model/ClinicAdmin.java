@@ -29,6 +29,11 @@ public class ClinicAdmin extends User {
       this.clinic = clinic;
    }
 
+   public ClinicAdmin( String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Clinic clinic, List<Authority> authorities, Boolean passwordChanged) {
+      super(username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, passwordChanged);
+      this.clinic = clinic;
+   }
+
    public Clinic getClinic() {
       return clinic;
    }
