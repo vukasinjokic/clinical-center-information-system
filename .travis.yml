@@ -6,10 +6,12 @@ services:
   - postgresql
 
 before_install:
+  - cd CCIS
+  - mvn -N io.takari:maven:wrapper
   - chmod +x mvnw
 
 script:
-  - cd CCIS && mvn -N io.takari:maven:wrapper ./mvnw clean install -DskipTests=false -B 
+  - ./mvnw clean install -DskipTests=false -B 
 
 dist: trusty
 
