@@ -19,6 +19,7 @@ import AppointmentRequests from '../components/AppointmentRequests'
 import ScheduleAppointment from '../components/ScheduleAppointment';
 import DoctorReview from '../components/doctor/DoctorReview';
 import ClinicProfile from '../components/ClinicProfile';
+import ClinicProfileForPatient from '../components/ClinicProfileForPatient';
 import ChangePassword from '../components/ChangePassword';
 import NursePage from '../views/NursePage'
 import PatientPage from '../views/PatientPage'
@@ -204,6 +205,7 @@ const router = new VueRouter({
           {path: "appointments", name: "AppointmentsForPatient", component: AppointmentsForPatient},
           {path: "medicalRecord", name: "MedicalRecord", component: MedicalRecord},
           {path: 'profile', name: 'UserProfile', component: UserProfile},
+          {path: 'clinicProfile/:id', name: 'ClinicProfileForPatient', component: ClinicProfileForPatient},
           {path: 'doctors', name: 'DoctorsForPatient', component: Doctors}
         ]
       },

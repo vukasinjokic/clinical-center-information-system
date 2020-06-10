@@ -63,6 +63,8 @@
 
                 <template v-slot:item.actions="{ item }">
                     <v-btn color="blue" @click="redirectToDoctors(item.filteredDoctors)">Doktori</v-btn>
+                    &nbsp;
+                    <v-btn color="blue" @click="redirectToClinic(item.id)">Profil</v-btn>
                 </template>
                 
                 <template v-slot:expanded-item="{ headers, item }">
@@ -132,6 +134,16 @@ export default {
                 this.$router.push({ name: 'DoctorsForPatient'});
             }
         },
+
+        redirectToClinic(clinicId) {
+            this.$router.push({
+                name: "ClinicProfileForPatient",
+                params: {
+                    id: clinicId
+                }
+            })
+        },
+
 
         validate() {
             if (this.$refs.form.validate()) {
