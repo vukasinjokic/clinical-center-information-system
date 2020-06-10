@@ -70,36 +70,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/registerPatient");
     }
-
-//            http.authorizeRequests()
-//                    .antMatchers("/clinic center admin").hasRole("CLINIC_CENTER_ADMIN")
-//                .antMatchers("/clinic admin").hasRole("CLINIC_ADMIN")
-//                .antMatchers("/doctor").hasRole("DOCTOR")
-//                .antMatchers("/nurse").hasRole("NURSE")
-//                .antMatchers("/patient").hasRole("PATIENT")
-//                .antMatchers("/auth/login").permitAll()
-//                .and().cors()
-//                .and().csrf().disable()
-//                .formLogin();
-
-//        http
-//                // user cannot get cookie
-////                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-////                .and()
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/", "/auth/**").permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                //
-//                .formLogin()
-//                .loginPage("/login").permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .clearAuthentication(true)
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID")
-//                .logoutSuccessUrl("/login");
 }

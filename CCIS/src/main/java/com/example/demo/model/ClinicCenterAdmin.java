@@ -10,11 +10,11 @@ public class ClinicCenterAdmin extends User {
     public ClinicCenterAdmin() {
     }
 
-    public ClinicCenterAdmin(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
-        super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
+    public ClinicCenterAdmin(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
+        super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
     }
 
-    public ClinicCenterAdmin( String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities, Boolean passwordChanged) {
-        super( username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, passwordChanged);
+    public ClinicCenterAdmin(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities, Boolean passwordChanged) {
+        super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, passwordChanged);
     }
 }

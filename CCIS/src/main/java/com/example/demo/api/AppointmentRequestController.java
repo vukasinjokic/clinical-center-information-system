@@ -71,7 +71,7 @@ public class AppointmentRequestController {
             if (clinic == null)
                 return new ResponseEntity<>("Invalid clinic id", HttpStatus.BAD_REQUEST);
 
-            User user = userService.findByUsername(appointmentToAdd.getPatientEmail());
+            User user = userService.findByEmail(appointmentToAdd.getPatientEmail());
             if (user == null)
                 return new ResponseEntity<>("Invalid user email", HttpStatus.BAD_REQUEST);
 

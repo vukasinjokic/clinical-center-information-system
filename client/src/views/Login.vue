@@ -26,7 +26,7 @@
                 <v-card-text>
                   <v-form ref="form">
                     <v-text-field
-                      v-model="user.username"
+                      v-model="user.email"
                       :rules="[requiredRule,emailRule]"
                       label="Email"
                       name="email"
@@ -72,7 +72,7 @@ import Vue from 'vue';
     data() {
        return{
             user:{
-                username: "",
+                email: "",
                 password: ""
             }
        } 

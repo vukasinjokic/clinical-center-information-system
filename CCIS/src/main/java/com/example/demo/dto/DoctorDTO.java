@@ -24,7 +24,6 @@ public class DoctorDTO {
     private Calendar calendar;
     private String clinic;
     private String clinicId;
-    private String username;
     private String rating;
     private Boolean passwordChanged;
     private BusinessHoursDTO businessHours;
@@ -44,14 +43,6 @@ public class DoctorDTO {
         catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getClinicId() {

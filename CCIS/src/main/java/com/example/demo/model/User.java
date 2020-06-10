@@ -15,9 +15,6 @@ public abstract class User implements UserDetails {
    @SequenceGenerator(name = "ust_seq_user", sequenceName = "ust_seq_user", initialValue = 1, allocationSize=1)
    private Integer id;
 
-   @Column(name = "username", unique = true, nullable = false)
-   private String username;
-
    @Column(name = "email", unique = true, nullable = false)
    private String email;
 
@@ -61,9 +58,8 @@ public abstract class User implements UserDetails {
    public User() {
    }
 
-   public User(Integer id, String username, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
+   public User(Integer id, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
       this.id = id;
-      this.username = username;
       this.email = email;
       this.password = password;
       this.firstName = firstName;
@@ -77,8 +73,7 @@ public abstract class User implements UserDetails {
       this.authorities = authorities;
    }
 
-   public User( String username, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities, Boolean passwordChanged) {
-      this.username = username;
+   public User(String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities, Boolean passwordChanged) {
       this.email = email;
       this.password = password;
       this.firstName = firstName;
@@ -213,11 +208,7 @@ public abstract class User implements UserDetails {
 
    @Override
    public String getUsername() {
-      return username;
-   }
-
-   public void setUsername(String username) {
-      this.username = username;
+      return email;
    }
 
    @Override

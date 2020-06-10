@@ -130,7 +130,6 @@ public class DoctorService {
     }
 
     private void setDoctorFields(Doctor newDoctor, DoctorDTO doctorDTO) {
-        newDoctor.setUsername(doctorDTO.getEmail());
         newDoctor.setEmail(doctorDTO.getEmail());
         newDoctor.setPassword(doctorDTO.getPassword());
         newDoctor.setFirstName(doctorDTO.getFirstName());

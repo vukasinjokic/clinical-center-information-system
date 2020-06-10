@@ -41,7 +41,7 @@ public class RegistrationRequestService {
         UserRegisterRequest req = registrationRequestRepository.findById(id).get();
         if(req != null){
             List<Authority> auth = authorityService.findByName("ROLE_PATIENT");
-            Patient patient = new Patient(req.getEmail(), req.getEmail(), passwordEncoder.encode(req.getPassword()), req.getFirstName(), req.getLastName(), req.getAddress(), req.getCity(), req.getCountry(), req.getPhoneNumber(), req.getSocialSecurityNumber(), auth);
+            Patient patient = new Patient(req.getEmail(), passwordEncoder.encode(req.getPassword()), req.getFirstName(), req.getLastName(), req.getAddress(), req.getCity(), req.getCountry(), req.getPhoneNumber(), req.getSocialSecurityNumber(), auth);
             registrationRequestRepository.deleteById(id);
             patientRepository.save(patient);
             return true;

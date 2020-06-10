@@ -10,7 +10,6 @@ import com.example.demo.service.UserRegisterService;
 import com.example.demo.useful_beans.UserToLogin;
 import com.example.demo.dto.UserTokenState;
 import com.example.demo.security.TokenUtils;
-import com.example.demo.security.auth.JwtAuthenticationRequest;
 import com.example.demo.useful_beans.ChangePassword;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,14 +70,14 @@ public class AuthenticationController {
 
 
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(userToLogin.username,
+                .authenticate(new UsernamePasswordAuthenticationToken(userToLogin.email,
                         userToLogin.password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
         List<String> strAuthorities = new ArrayList<>();
@@ -188,52 +187,17 @@ public class AuthenticationController {
             //clinic admin
             Clinic clinic = clinicRepository.findById(adminToRegister.getClinicId()).get();
             List<Authority> auth = authorityService.findByName("ROLE_CLINIC_ADMIN");
-            ClinicAdmin clinicAdmin = new ClinicAdmin(adminToRegister.getEmail(), adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), clinic, auth, false);
+            ClinicAdmin clinicAdmin = new ClinicAdmin(adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), clinic, auth, false);
             userRepository.save(clinicAdmin);
             return ResponseEntity.ok("Successfully registered clinic admin");
         }
         else{
             List<Authority> auth = authorityService.findByName("ROLE_CLINIC_CENTER_ADMIN");
-            ClinicCenterAdmin clinicCenterAdmin = new ClinicCenterAdmin(adminToRegister.getEmail(), adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), auth, false);
+            ClinicCenterAdmin clinicCenterAdmin = new ClinicCenterAdmin(adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), auth, false);
             userRepository.save(clinicCenterAdmin);
             return ResponseEntity.ok("Successfully registered clinic center admin");
         }
 
 
     }
-
-
-//
-//    @PostMapping(value = "/refresh")
-//    public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
-//
-//        String token = tokenUtils.getToken(request);
-//        String username = this.tokenUtils.getUsernameFromToken(token);
-//        User user = (User) this.userDetailsService.loadUserByUsername(username);
-//
-//        if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
-//            String refreshedToken = tokenUtils.refreshToken(token);
-//            int expiresIn = tokenUtils.getExpiredIn();
-//
-//            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
-//        } else {
-//            UserTokenState userTokenState = new UserTokenState();
-//            return ResponseEntity.badRequest().body(userTokenState);
-//        }
-//    }
-//
-//    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-//    @PreAuthorize("hasRole('USER')")
-//    public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
-//        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
-//
-//        Map<String, String> result = new HashMap<>();
-//        result.put("result", "success");
-//        return ResponseEntity.accepted().body(result);
-//    }
-//
-//    static class PasswordChanger {
-//        public String oldPassword;
-//        public String newPassword;
-//    }
 }
