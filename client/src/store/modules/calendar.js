@@ -57,11 +57,6 @@ const actions = {
     resetCalendar({commit}) {
         commit("resetState");
     }
-
-    //     round (a, b) {
-        
-//         return Math.floor((b - a + 1) * Math.random()) + a
-//     },
 };
 
 const mutations = {

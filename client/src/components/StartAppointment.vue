@@ -164,7 +164,7 @@ export default {
 
         medicalRecordBtnClicked(){
             this.medicalRecordDialog = true;
-            this.$refs.setUpPatient(this.patientEmail);
+            this.$refs.medicalRecordComponent.setUpPatient(this.patientEmail);
         },
 
         schedulingFinished(){
@@ -208,9 +208,12 @@ export default {
 
     },
     created(){
-        this.fetchAppointment(this.appointmentId); 
         this.fetchCodebook(this.appointmentId);
-        this.fetchPatientEmail(this.appointmentId);
+        if(this.appointment == null){
+            this.fetchAppointment(this.appointmentId); 
+            this.fetchPatientEmail(this.appointmentId);
+        }
+        
     }
 
 

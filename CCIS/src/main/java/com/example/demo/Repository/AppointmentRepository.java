@@ -29,6 +29,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
     @Query("select appointment.doctor.calendar from Appointment appointment where appointment.id = (:id)")
     Calendar findDoctorsCalendarFromAppointment(@Param("id") Integer id);
 
+    Optional<Appointment> findFirstByDoctorEmailAndPatientEmailAndFinishedFalseOrderByTimeAsc(@Param("doctorEmail") String doctorEmail, @Param("patientEmail") String patientEmail);
+
     List<Appointment> findAllByClinicIdAndTimeBetweenAndFinished(
             @Param("clinicId") Integer clinicId,
             @Param("dateFrom") Date dateFrom,
