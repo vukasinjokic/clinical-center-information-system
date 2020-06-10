@@ -5,6 +5,9 @@ jdk: oraclejdk8
 services:
   - postgresql
 
+before_install:
+  - chmod +x mvnw
+
 script:
   - cd CCIS && ./mvnw clean install -DskipTests=false -B 
 
