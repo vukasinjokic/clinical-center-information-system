@@ -67,6 +67,13 @@ public class DoctorService {
         return (List<Doctor>) clinicAdmin.get().getClinic().getDoctors();
     }
 
+    public List<Doctor> findDoctorsFromClinic(Integer clinicId) {
+        Optional<Clinic> optionalClinic = clinicRepository.findById(clinicId);
+        Clinic clinic = optionalClinic.get();
+        return clinicRepository.findDoctorsFromClinic(clinic);
+    }
+
+
     public Doctor findByEmail(String email){
         return doctorRepository.findByEmail(email);
     }
