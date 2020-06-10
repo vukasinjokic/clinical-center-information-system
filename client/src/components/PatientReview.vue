@@ -1,8 +1,23 @@
 <template>
 <div style="margin: 30px 70px 0px 70px">
+    <v-card>
+        <v-card-title>
+            Patients
+            <v-spacer></v-spacer>
+            <v-text-field
+                style="width:100px"
+                dense
+                outlined
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                hide-details
+            ></v-text-field>
+        </v-card-title>
         <v-data-table
             class="blue-grey darken-4 white--text"
             dark
+            :search="search"
             :headers="headers"
             :items="allPatients"
             :items-per-page="5"
@@ -17,6 +32,7 @@
                 >Show patient</v-btn>
             </template>
         </v-data-table>
+    </v-card>
         <v-dialog v-model="dialog" max-width="554px">
             <v-card>
                 <PatientProfile></PatientProfile>
@@ -57,7 +73,7 @@ export default {
         return{
             headers: [
                 {
-                    text: 'Name', value: 'firstName',fileterable: true
+                    text: 'Name', value: 'firstName',filterable: true
                 },
                 {
                     text: 'Last name', value: 'lastName', sortable:false
@@ -66,16 +82,17 @@ export default {
                     text: 'SSNumber', value: 'socialSecurityNumber'
                 },
                 {
-                    text: 'Email', value:'email', fileterable: true
+                    text: 'Email', value:'email', filterable: true
                 },
                 {
                     text:'City', value:'city', sortable:false
                 },
                 {
-                    text:'Phone number', value:'phoneNumber', sortable:false
+                    text:'Phone number', value:'phoneNumber', filterable:false, sortable:false
                 },
                 {  text: 'Profil pacijenta', value:"actions"}
             ],
+            search: '',
             dialog: false,
             selectedItem: {},
         }
@@ -101,7 +118,6 @@ export default {
         goTomedicalRecord(){
             this.canStaffViewRecord(this.selectedItem.email)
                 .then(() => {
-                    console.log("trueeeeeeeee");
                     this.$router.push('patient/record/'+ this.selectedItem.email);
                     this.fetchMedicalRecord(this.selectedItem.email);
                     //redirektujemo na medical Record

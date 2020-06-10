@@ -2,7 +2,7 @@
     <v-card max-width="544"
             class="mx-auto">
             <v-card-title>
-                <v-toolbar color="primary" dark> 
+                <v-toolbar color="indigo accent-3" dark> 
                 <v-list-item>
                 <v-avatar color="grey">
                     <v-icon dark>mdi-account-circle</v-icon>
