@@ -15,6 +15,7 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -88,6 +89,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/userDetails")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE', 'PATIENT')")
     public UserDTO getUserDetails() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDTO userDTO = new UserDTO(user);
@@ -96,6 +98,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/updateProfile")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE', 'PATIENT')")
     public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO userDTO){
         Optional<User> check = userRepository.findById(Integer.parseInt(userDTO.getId()));
 
@@ -116,16 +119,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/changePassword")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE', 'PATIENT')")
     public ResponseEntity<Void> changePassword(@RequestBody ChangePassword changePassword){
         Optional<User> check = userRepository.findById(Integer.parseInt(changePassword.getId()));
 
         if(check.isPresent()){
             User user = check.get();
-            if(!user.getPassword().equals(changePassword.getOld()))
+            if(!passwordEncoder.matches(changePassword.getOld(), user.getPassword()))
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
             user.setPasswordChanged(true);
-            user.setPassword(changePassword.getNew_pass());
+            user.setPassword(passwordEncoder.encode(changePassword.getNew_pass()));
             userRepository.save(user);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -153,6 +157,7 @@ public class AuthenticationController {
 
         }
 
+        patientToRegister.setPassword(passwordEncoder.encode(patientToRegister.getPassword()));
         boolean success = userRegisterService.saveUserRegisterRequest(patientToRegister);
         if (success) {
             List<ClinicCenterAdmin> clinicCenterAdmins = userService.findAllClinicCenterAdmins();
@@ -165,6 +170,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/registerAdmins")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN')")
     public ResponseEntity registerAdmins(@RequestBody UserRegisterRequest adminToRegister) {
         List<User> existUsers = userService.findByEmailOrSocialSecurityNumber(
                 adminToRegister.getEmail(),

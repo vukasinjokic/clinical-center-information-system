@@ -32,7 +32,7 @@ public class Patient extends User {
 
    public Patient(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
       super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, false);
-      this.medicalRecord = new MedicalRecord();
+      this.medicalRecord = new MedicalRecord(this);
       this.appointments = new HashSet<Appointment>();
    }
 

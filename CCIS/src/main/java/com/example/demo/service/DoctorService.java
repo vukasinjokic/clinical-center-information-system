@@ -18,6 +18,7 @@ import com.example.demo.model.*;
 import com.example.demo.validation.DoctorValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -51,7 +52,8 @@ public class DoctorService {
     private RatingRepository ratingRepository;
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     private DoctorValidation doctorValidation = new DoctorValidation();
@@ -131,7 +133,7 @@ public class DoctorService {
 
     private void setDoctorFields(Doctor newDoctor, DoctorDTO doctorDTO) {
         newDoctor.setEmail(doctorDTO.getEmail());
-        newDoctor.setPassword(doctorDTO.getPassword());
+        newDoctor.setPassword(passwordEncoder.encode(doctorDTO.getPassword()));
         newDoctor.setFirstName(doctorDTO.getFirstName());
         newDoctor.setLastName(doctorDTO.getLastName());
         newDoctor.setPhoneNumber(doctorDTO.getPhoneNumber());

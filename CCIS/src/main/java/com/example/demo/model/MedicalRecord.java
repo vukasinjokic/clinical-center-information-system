@@ -13,19 +13,19 @@ public class MedicalRecord {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
 
-   @Column(name = "weight", nullable = false)
+   @Column(name = "weight")
    private String weight;
 
-   @Column(name = "height", nullable = false)
+   @Column(name = "height")
    private String height;
 
-   @Column(name = "left_eye", nullable = false)
+   @Column(name = "left_eye")
    private String leftEye;
 
-   @Column(name = "right_eye", nullable = false)
+   @Column(name = "right_eye")
    private String rightEye;
 
-   @Column(name = "blood_type", nullable = false)
+   @Column(name = "blood_type")
    private String bloodType;
 
    @OneToOne
@@ -45,6 +45,9 @@ public class MedicalRecord {
    private Collection<Prescription> prescriptions;
 
 
+   public MedicalRecord(Patient patient) {
+      this.patient = patient;
+   }
 
    public MedicalRecord() {
       this.reports = new HashMap<String, String>();

@@ -129,7 +129,7 @@ export default {
                     alreadyFiltered: true
                 }));
                 sessionStorage.setItem("doctors", JSON.stringify(clinic.filteredDoctors));
-                this.$router.push({ name: 'Doctors'});
+                this.$router.push({ name: 'DoctorsForPatient'});
             }
         },
 
@@ -164,9 +164,6 @@ export default {
                 // Reset state of button and perform filter
                 this.setApplyFilters(false);
                 return this.allClinics().filter(clinic => {
-                    console.log("clinic id:", clinic.id);
-                    console.log("pricelist:", JSON.stringify(clinic.priceList));
-                    
                     // Does user input matches clinic name?
                     if (clinic.name.toLowerCase().match(this.filterWord.toLowerCase())) {
                         // Filter doctors in current clinic
