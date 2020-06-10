@@ -9,7 +9,7 @@ before_install:
   - chmod +x mvnw
 
 script:
-  - cd CCIS && ./mvnw clean install -DskipTests=false -B 
+  - cd CCIS && mvn -N io.takari:maven:wrapper ./mvnw clean install -DskipTests=false -B 
 
 dist: trusty
 
