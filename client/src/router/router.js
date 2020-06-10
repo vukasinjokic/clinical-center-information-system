@@ -133,7 +133,8 @@ const router = new VueRouter({
             {path: ':16/calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
             {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment},
-            {path: 'startAppointment', name: 'startAppointment', component: StartAppointment, props : true}
+            {path: 'startAppointment', name: 'startAppointment', component: StartAppointment, props : true},
+            {path: 'patient/record/:email', name:'Record', component: MedicalRecord}
         ]
       },
       {

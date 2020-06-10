@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
-           <v-btn  v-on="on" @click="edit" dark color="orange lighten-1">Edit Profile</v-btn>
+           <v-btn v-on="on" style="margin-top:10px" @click="edit" dark color="orange lighten-1">Edit Profile</v-btn>
         </template>
         <v-card>
             <v-card-title>

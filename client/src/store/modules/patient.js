@@ -20,8 +20,7 @@ const getters = {
 };
 
 const actions = {
-    async fetchPatients({commit, rootState}) {
-        console.log(rootState);
+    async fetchPatients({commit}) {
         var email = localStorage.getItem("user_email");
         // var email = rootState.userDetails.user.email; // kaze da je email=""
      
@@ -29,8 +28,8 @@ const actions = {
         commit('setPatients', response.data);
     },
 
-    async fetchMedicalRecord({commit}) {
-        var email = localStorage.getItem("user_email");
+    async fetchMedicalRecord({commit}, email) {
+        //var email = localStorage.getItem("user_email");
         const response = await Vue.$axios.get('http://localhost:8081/patients/medicalRecord/' + email);
         commit("setMedicalRecord", response.data);
     },

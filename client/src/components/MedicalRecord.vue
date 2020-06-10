@@ -144,7 +144,13 @@ export default {
     },
 
     created() {
-        this.fetchMedicalRecord();
+        var user_email = localStorage.getItem('user_email');
+        var user_role = localStorage.getItem('user_role');
+        if(user_role === 'ROLE_PATIENT')
+            this.fetchMedicalRecord(user_email);
+        else
+            this.fetchMedicalRecord(this.$route.params.email);
+        console.log(this.$route.params.email);
     }
 }
 </script>

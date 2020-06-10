@@ -77,6 +77,9 @@ public class ClinicDTO {
         this.rating = Float.toString(rating);
     }
 
+    //ovo mozda moze biti problem
+    public void setRating(Rating rating){ this.rating = rating.getAverageGrade()+"";}
+
     public List<String> getDoctors() {
         return doctors;
     }
