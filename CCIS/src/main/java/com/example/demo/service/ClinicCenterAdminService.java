@@ -1,12 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.Repository.AppointmentRequestRepository;
+import com.example.demo.Repository.CodeBookRepository;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.RegistrationRequestRepository;
-import com.example.demo.model.Authority;
-import com.example.demo.model.Nurse;
-import com.example.demo.model.Patient;
-import com.example.demo.model.UserRegisterRequest;
+import com.example.demo.model.*;
+import com.example.demo.useful_beans.CodeBookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RegistrationRequestService {
+public class ClinicCenterAdminService {
 
     @Autowired
     private RegistrationRequestRepository registrationRequestRepository;
+
+    @Autowired
+    private CodeBookRepository codeBookRepository;
 
     @Autowired
     private PatientRepository patientRepository;
@@ -57,5 +59,29 @@ public class RegistrationRequestService {
             return true;
         }
         return false;
+    }
+
+    public CodeBook getCodeBook() {
+        return codeBookRepository.findById(1).get();
+    }
+
+    public boolean addMedication(CodeBookEntity medication) {
+        CodeBook codeBook = codeBookRepository.findById(1).get();
+        if(codeBook.getMedications().containsKey(medication.code)){
+            return false;
+        }
+        codeBook.getMedications().put(medication.code, medication.name);
+        codeBookRepository.save(codeBook);
+        return true;
+    }
+
+    public boolean addDiagnosis(CodeBookEntity diagnosis) {
+        CodeBook codeBook = codeBookRepository.findById(1).get();
+        if(codeBook.getDiagnoses().containsKey(diagnosis.code)){
+            return false;
+        }
+        codeBook.getDiagnoses().put(diagnosis.code, diagnosis.name);
+        codeBookRepository.save(codeBook);
+        return true;
     }
 }

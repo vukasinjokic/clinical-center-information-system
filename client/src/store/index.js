@@ -16,6 +16,7 @@ import calendar from './modules/calendar'
 import registrationRequests from './modules/registrationRequests'
 import businessReport from './modules/businessReport'
 import perscriptions from './modules/perscriptions'
+import clinicCenterAdmin from './modules/clinicCenterAdmin'
 
 // load vuex
 Vue.use(Vuex);
@@ -39,7 +40,8 @@ const store = new Vuex.Store({
         calendar,
         registrationRequests,
         businessReport,
-        perscriptions
+        perscriptions,
+        clinicCenterAdmin
     },
 
     actions: {
@@ -58,6 +60,7 @@ const store = new Vuex.Store({
             this.dispatch("calendar/resetCalendar");
             this.dispatch("businessReport/resetBusinessReport");
             this.dispatch("registrationRequests/resetRegistrationRequests");
+            this.dispatch("clinicCenterAdmin/resetClinicCenterAdmin");
 
             localStorage.clear();
             sessionStorage.clear();
