@@ -3,8 +3,6 @@ package com.example.demo.validation;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Doctor;
-import javafx.util.Pair;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 

@@ -9,7 +9,6 @@ import com.example.demo.useful_beans.MedicineForPrescription;
 import com.example.demo.validation.AppointmentValidation;
 import com.example.demo.validation.DoctorValidation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
