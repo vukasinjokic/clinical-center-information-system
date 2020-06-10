@@ -146,11 +146,13 @@ export default {
             coords: [20.457273,44.787197]
         }
     },
-    created(){
-        this.fetchClinic();
+    mounted(){
+        this.fetchClinic()
+            .then(() => {
+                this.getCoordinates();        
+            });
         this.fetchTypes();
         this.fetchPriceList();
-        this.getCoordinates();
         // console.log(this.coords);
     },
     computed: {
@@ -225,8 +227,6 @@ export default {
         }
 
     },
-    mounted(){
-    }
 }
 </script>
 
