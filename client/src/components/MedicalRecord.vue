@@ -205,7 +205,12 @@ export default {
     },
 
     created() {
-        this.fetchMedicalRecord();
+        if(this.viewMode === 'doctor'){
+            this.fetchMedicalRecord(this.patientEmail);
+        }
+        else{
+            this.fetchMedicalRecord(localStorage.getItem("user_email"));
+        }
     }
 }
 </script>
