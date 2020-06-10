@@ -18,14 +18,14 @@ const getters = {
 
 const actions = {
     async fetchRegRequests({commit}){
-        const response = await Vue.$axios.get("http://localhost:8081/registrationRequests/getRegistrationRequests");
+        const response = await Vue.$axios.get("http://localhost:8081/clinicCenterAdmin/getRegistrationRequests");
         commit('setregistrationRequests', response.data);
     },
 
     async handleDenyingRequest({commit}, requestToDeny){
         try{
             let message = requestToDeny.message;
-            await Vue.$axios.post('http://localhost:8081/registrationRequests/deleteRequest/' + requestToDeny.requestId, message);
+            await Vue.$axios.post('http://localhost:8081/clinicCenterAdmin/deleteRequest/' + requestToDeny.requestId, message);
             commit('deletedRequest', requestToDeny.reqiestId);
             alert("Successfuly deleted request");
         }catch(error){
@@ -35,7 +35,7 @@ const actions = {
 
     async handleAcceptingRequest({commit}, id){
         try{
-            await Vue.$axios.post("http://localhost:8081/registrationRequests/handleAcceptingRequest/" + id);
+            await Vue.$axios.post("http://localhost:8081/clinicCenterAdmin/handleAcceptingRequest/" + id);
             commit('deletedRequest', id);
             // dispatch('snackBar/showSuccess', "Successfuly regitered user", {root : true});
             alert("Succesfult registered user");

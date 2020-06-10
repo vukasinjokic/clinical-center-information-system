@@ -31,6 +31,7 @@ import RegistrationRequests from '../components/RegistrationRequests'
 import ClinicCenterAdminPage from '../views/ClinicCenterAdminPage'
 import BusinessReport from '../components/businessReport/BusinessReport'
 import ValidatePerscriptions from '../components/ValidatePerscriptions'
+import CodeBook from '../components/CodeBook'
 import InstantHomeRedirect from '../views/InstantHomeRedirect'
 
 
@@ -213,6 +214,7 @@ const router = new VueRouter({
           {path: 'registrationRequests', name: 'registrationRequests', component: RegistrationRequests},        
           {path: "clinics", name: "Clinics", component: Clinics},
           {path: 'registerAdmins', name: "Register",component: Register},
+          {path: 'codeBook', name: 'CodeBook', component:CodeBook}
         ]
       },
       {
