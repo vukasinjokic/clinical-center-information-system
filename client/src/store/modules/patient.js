@@ -31,9 +31,13 @@ const actions = {
     },
 
     async fetchMedicalRecord({commit}, email) {
-        const response = await Vue.$axios.get('http://localhost:8081/patients/medicalRecord/' + email);
-        commit("setMedicalRecord", JSON.parse(JSON.stringify(response.data)));
-        commit("setRecordBackup", JSON.parse(JSON.stringify(response.data)));
+        try {    
+            const response = await Vue.$axios.get('http://localhost:8081/patients/medicalRecord/' + email);
+            commit("setMedicalRecord", JSON.parse(JSON.stringify(response.data)));
+            commit("setRecordBackup", JSON.parse(JSON.stringify(response.data)));
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
     
     async fetchUserProfile({commit}){

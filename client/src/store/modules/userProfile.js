@@ -15,12 +15,20 @@ const getters = {
 
 const actions = {
     async fetchUserProf({commit}){
-        const response = await Vue.$axios.get('http://localhost:8081/auth/userDetails');
-        commit('setUserProf', response.data);
+        try {
+            const response = await Vue.$axios.get('http://localhost:8081/auth/userDetails');
+            commit('setUserProf', response.data);
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
     async updateProfile({commit}, editItem){
-        const response = await Vue.$axios.post('http://localhost:8081/auth/updateProfile',editItem);
-        commit('setUserProf', response.data);
+        try {
+            const response = await Vue.$axios.post('http://localhost:8081/auth/updateProfile',editItem);
+            commit('setUserProf', response.data);
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
     async changePassword({dispatch}, passForm){
         try{

@@ -14,8 +14,12 @@ const getters = {
 
 const actions = {
     async fetchExaminationTypes({commit}){
-        const response = await Vue.$axios.get('http://localhost:8081/ex_type/getTypes');
-        commit('setTypes', response.data);
+        try {
+            const response = await Vue.$axios.get('http://localhost:8081/ex_type/getTypes')
+            commit('setTypes', response.data);
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
     async deleteType({commit, dispatch},type_name){
         try{

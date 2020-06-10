@@ -41,8 +41,8 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
-    public List<Appointment> getPatientAppointments(Integer patientId) {
-        return appointmentRepository.findByPatientId(patientId);
+    public List<Appointment> findByPatientIdFinished(Integer patientId) {
+        return appointmentRepository.findByPatientIdAndFinished(patientId, true);
     }
 
     public List<Appointment> getPredefinedAppointments(Integer clinicId) {

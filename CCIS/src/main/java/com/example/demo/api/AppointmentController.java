@@ -58,7 +58,7 @@ public class AppointmentController {
     @PreAuthorize("hasAnyRole('PATIENT')")
     public List<AppointmentDTO> getPatientAppointments(@RequestBody UserData userData) {
         Patient patient = patientRepository.findByEmail(userData.mail);
-        List<Appointment> allAppointments = appointmentService.getPatientAppointments(patient.getId());
+        List<Appointment> allAppointments = appointmentService.findByPatientIdFinished(patient.getId());
 
         return allAppointments.stream()
                 .map(this::convertToDTO)
