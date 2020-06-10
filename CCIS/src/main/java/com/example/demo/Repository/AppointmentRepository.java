@@ -2,6 +2,7 @@ package com.example.demo.Repository;
 
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Calendar;
+import com.example.demo.model.Clinic;
 import com.example.demo.model.CodeBook;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
 
     List<Appointment> findByDoctorId(Integer id);
     List<Appointment> findByPatientId(Integer id);
+
+    @Query("SELECT a FROM Appointment a WHERE a.patient IS NULL AND a.clinic = (:clinic) AND a.finished = false")
+    List<Appointment> findPredefinedAppointments(@Param("clinic") Clinic clinic);
 
     @Query("SELECT appointment FROM Appointment appointment JOIN FETCH appointment.clinic WHERE appointment.id = (:id)")
     Optional<Appointment> findByIdAndFetchClinicEagerly(@Param("id") Integer id);

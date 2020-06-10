@@ -45,6 +45,14 @@ public class AppointmentService {
         return appointmentRepository.findByPatientId(patientId);
     }
 
+    public List<Appointment> getPredefinedAppointments(Integer clinicId) {
+        Optional<Clinic> optionalClinic = clinicRepository.findById(clinicId);
+        if (optionalClinic.isPresent())
+            return appointmentRepository.findPredefinedAppointments(optionalClinic.get());
+        else
+            return new ArrayList<>();
+    }
+
     public Appointment getAppointment(Integer id){
         return appointmentRepository.findById(id).get();
     }

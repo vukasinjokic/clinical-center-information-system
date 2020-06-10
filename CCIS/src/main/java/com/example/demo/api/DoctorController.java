@@ -50,6 +50,16 @@ public class DoctorController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping(path = "getDoctorsFromClinic/{clinicId}")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<DoctorDTO> getDoctorsFromClinic(@PathVariable Integer clinicId){
+        List<Doctor> doctors = doctorService.findDoctorsFromClinic(clinicId);
+
+        return doctors.stream()
+                .map(this::convertDTO)
+                .collect(Collectors.toList());
+    }
+
     @PostMapping("/saveDoctor")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
     public ResponseEntity<DoctorDTO> saveDoctor(@RequestBody DoctorDTO doctorDTO){

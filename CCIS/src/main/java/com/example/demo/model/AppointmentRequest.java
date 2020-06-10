@@ -17,7 +17,7 @@ public class AppointmentRequest {
    @JoinColumn(name = "doctor_id")
    private Doctor doctor;
 
-   @ManyToOne
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "patient_id")
    private Patient patient;
 
