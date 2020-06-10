@@ -58,12 +58,11 @@
                 :headers="headers"
                 :items="filterClinics"
                 class="blue-grey darken-4 white--text"
-                @click:row="redirect"
                 show-expand
                 dark>
 
-                <template v-slot:item.priceList="{ item }">
-                    {{item.priceList}}
+                <template v-slot:item.actions="{ item }">
+                    <v-btn color="blue" @click="redirectToDoctors(item.filteredDoctors)">Doktori</v-btn>
                 </template>
                 
                 <template v-slot:expanded-item="{ headers, item }">
@@ -105,7 +104,8 @@ export default {
                 {text: "Name", value: "name"},
                 {text: "Address", value: "address"},
                 {text: "Rating", value: "rating"},
-                {text: "Description", value: "description", width: "40%"}
+                {text: "Description", value: "description", width: "30%"},
+                {text: "Actions", value: "actions"}
             ]
         }
     },
@@ -120,7 +120,7 @@ export default {
         ...mapGetters("examination_type", ['getTypes']),
 
 
-        redirect(clinic) {
+        redirectToDoctors(filteredDoctors) {
             if (this.$refs.form.validate()) {
                 sessionStorage.setItem("filterDetails",
                 JSON.stringify({
@@ -128,11 +128,10 @@ export default {
                     filterType: this.chosenExamination,
                     alreadyFiltered: true
                 }));
-                sessionStorage.setItem("doctors", JSON.stringify(clinic.filteredDoctors));
+                sessionStorage.setItem("doctors", JSON.stringify(filteredDoctors));
                 this.$router.push({ name: 'DoctorsForPatient'});
             }
         },
-
 
         validate() {
             if (this.$refs.form.validate()) {
