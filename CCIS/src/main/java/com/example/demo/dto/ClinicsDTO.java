@@ -22,7 +22,7 @@ public class ClinicsDTO {
     private String address;
     private String description;
     private Map<String, Float> priceList = new HashMap<>();
-    private String rating;
+    private Float rating;
     private List<DoctorDTO> doctors = new ArrayList<>();
 
     public ClinicsDTO() {
@@ -30,7 +30,7 @@ public class ClinicsDTO {
     }
 
     public void setDTOFields(Clinic clinic) {
-        setPriceListMap(clinic.getPriceList());
+        setPriceList(clinic.getPriceList());
         setDoctors(clinic.getDoctors());
         setRating(clinic.getRating());
     }
@@ -71,23 +71,19 @@ public class ClinicsDTO {
         return priceList;
     }
 
-    public void setPriceListMap(PriceList priceList) {
+    public void setPriceList(PriceList priceList) {
         if (priceList == null)
             return;
         for (PriceListItem item : priceList.getItems())
             this.priceList.put(item.getExaminationType().getName(), item.getPrice());
     }
 
-    public void setPriceList(Map<String, Float> priceList) {
-        this.priceList = priceList;
-    }
-
-    public String getRating() {
+    public Float getRating() {
         return rating;
     }
 
     public void setRating(Rating rating) {
-        this.rating = rating.getAverageGrade().toString();
+        this.rating = rating.getAverageGrade();
     }
 
     public List<DoctorDTO> getDoctors() {

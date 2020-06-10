@@ -18,7 +18,13 @@ const actions = {
         .then(response => {
             for (let i = 0; i < response.data.length; i++) {
                 var clinic = response.data[i];
+                for (let j = 0; j < clinic.doctors.length; j++) {
+                    const doctor = clinic.doctors[j];
+                    var examinationTypeName = doctor.examinationType.name;
+                    doctor.price = clinic.priceList[examinationTypeName];
+                }
                 clinic["filteredDoctors"] = clinic.doctors;
+
             }
             commit('setClinics', response.data);
         })
