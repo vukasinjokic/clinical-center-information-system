@@ -305,17 +305,32 @@ export default {
                     } else {
                         // Does chosen examination name matches doctors examination type?
                         if (doctor.examinationType.name.match(this.filterType)) {
+                            
+                            let startSelectedDay = (new Date(this.filterDate));
+                            startSelectedDay.setHours(7,0,0,0);
+                            let startSelectedDayMiliseconds = startSelectedDay.getTime();
+                            
+                            let endSelectedDay = new Date(this.filterDate);
+                            endSelectedDay.setHours(14,0,0,0);
+
+                            let vacationDates = doctor.calendar.vacationDates;
+                            var hasVacation = vacationDates.length == 2;
+                            if (hasVacation) {
+                                let startVacation = vacationDates[0];
+                                let endVacation = vacationDates[1];
+
+                                // If doctor is on vacation, skip him 
+                                if (startVacation.getTime() <= startSelectedDayMiliseconds < endVacation.getTime()) {
+                                    return false;
+                                }
+                            }
+
                             var hours = doctor.examinationType.duration;
                             let durationMilliseconds = hours * 1000 * 60 * 60;
 
                             let eventStartDates = doctor.calendar.eventStartDates.slice();
                             let eventEndDates = doctor.calendar.eventEndDates;
-                            
-                            let startSelectedDay = (new Date(this.filterDate));
-                            startSelectedDay.setHours(7,0,0,0);
-                            let endSelectedDay = new Date(this.filterDate);
-                            endSelectedDay.setHours(14,0,0,0);
-                            
+
                             eventStartDates.unshift(startSelectedDay);
 
                             for (var i = 1; i <= eventStartDates.length; i++) {
