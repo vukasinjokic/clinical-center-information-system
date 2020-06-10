@@ -73,9 +73,8 @@ public class ClinicDTO {
         return rating;
     }
 
-    public void setRating(Rating rating) {
-        this.rating = rating.getAverageGrade().toString();
-    }
+    //ovo mozda moze biti problem
+    public void setRating(Rating rating){ this.rating = rating.getAverageGrade()+"";}
 
     public List<String> getDoctors() {
         return doctors;

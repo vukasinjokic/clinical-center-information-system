@@ -162,6 +162,11 @@ export default {
             this.$refs.scheduleAppComponent.setPatientEmail(this.getPatientEmail())
         },
 
+        medicalRecordBtnClicked(){
+            this.medicalRecordDialog = true;
+            this.$refs.setUpPatient(this.patientEmail);
+        },
+
         schedulingFinished(){
             this.scheduleAppDialog = false;
         },

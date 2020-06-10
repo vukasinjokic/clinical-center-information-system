@@ -4,7 +4,8 @@ import Vue from 'vue'
 const getDefaultState = () => {
     return {
         doctor_list: [],
-        errorMessage: ""
+        errorMessage: "",
+        patientProfile: {},
     }
 };
 
@@ -12,6 +13,7 @@ const state = getDefaultState();
 
 const getters = {
     getDoctorList: (state) => state.doctor_list,
+    getPatientProfile: (state) => state.patientProfile
 };
 
 const actions = {
@@ -63,6 +65,23 @@ const actions = {
             dispatch("snackbar/showError", err.data, {root:true});
         })
     },
+    async fetchPatientProfile({commit, dispatch}, patient_email){
+        try{
+            const response = await Vue.$axios.get('http://localhost:8081/doctors/getPatientProfile/'+patient_email);
+            commit('setPatientProfile', response.data);
+        }catch(error){
+            dispatch('snackbar/showError',error.data,{root: true});
+        }
+    },
+    async canStaffViewRecord({dispatch}, patient_email){
+        try{
+            const response = await Vue.$axios.get('http://localhost:8081/doctors/checkIfCanViewRecord/'+patient_email);
+            return response.data;
+        }catch(error){
+            dispatch('snackbar/showError',"Nemate pravo pristupa",{root: true});
+            return Promise.reject();
+        }
+    },
 
     resetDoctor({commit}) {
         commit("resetState");
@@ -79,10 +98,10 @@ const mutations ={
 
     setDoctors: (state, doctors) => state.doctor_list = doctors,
 
-    alertError(state, text){ //ovo cemo prebaciti u errorHandler
-        state.errorMessage = text;
-        alert(text);
+    setPatientProfile(state, patient){
+        state.patientProfile = patient
     },
+
     onDeleteDoctor(state, id){
         const index = state.doctor_list.findIndex(doc => doc.id === id);
         state.doctor_list.splice(index,1);

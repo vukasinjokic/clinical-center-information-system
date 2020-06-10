@@ -35,18 +35,18 @@
                            Price list
                        </v-card-title>
                         <v-data-table
-                            class="blue-grey darken-4 white--text"
-                            dark
+                            class="white"
+                            
                             :headers="headers"
                             :items="getPriceListItems"
                             :items-per-page="5"
                             item-key="item.price">
                         <template v-slot:top>
-                            <v-toolbar flat class="blue-grey darken-4 white--text">
+                            <v-toolbar flat class="white">
                                 <v-spacer/>
                             <v-dialog v-model="dialog" max-width="300px">
                                 <template v-slot:activator="{ on }">
-                                <v-btn color="orange lighten-1" @click="variable=true" dark class="mb-2" v-on="on">New item</v-btn>
+                                <v-btn color="success" @click="variable=true" dark class="mb-2" v-on="on">New item</v-btn>
                                 </template>
                                 <v-card>
                                     <v-card-title>
@@ -146,11 +146,13 @@ export default {
             coords: [20.457273,44.787197]
         }
     },
-    created(){
-        this.fetchClinic();
+    mounted(){
+        this.fetchClinic()
+            .then(() => {
+                this.getCoordinates();        
+            });
         this.fetchTypes();
         this.fetchPriceList();
-        this.getCoordinates();
         // console.log(this.coords);
     },
     computed: {
@@ -225,8 +227,6 @@ export default {
         }
 
     },
-    mounted(){
-    }
 }
 </script>
 

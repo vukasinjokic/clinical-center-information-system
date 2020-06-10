@@ -51,7 +51,7 @@ public class PatientController {
     }
 
     @GetMapping(path = "/medicalRecord/{patientEmail}")
-    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR')")
+    @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")
     public ResponseEntity<MedicalRecordDTO> getMedicalRecord(@PathVariable("patientEmail") String patientEmail) {
         Patient patient = patientService.findByEmail(patientEmail);
         if (patient == null)

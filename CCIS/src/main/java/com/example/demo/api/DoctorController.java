@@ -4,14 +4,17 @@ import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.MedicalRecordDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
 import com.example.demo.service.DoctorService;
 import com.example.demo.model.MedicalStaffRequest;
 import com.example.demo.useful_beans.Grade;
+import org.dom4j.util.UserDataDocumentFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,6 +96,25 @@ public class DoctorController {
         DoctorDTO doctorDTO = modelMapper.map(doctor, DoctorDTO.class);
         doctorDTO.setFields(doctor);
         return doctorDTO;
+    }
+
+    @GetMapping("/getPatientProfile/{patient_email}")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    public ResponseEntity getPatientProfile(@PathVariable String patient_email){
+        Patient patient = doctorService.findPatientProfile(patient_email);
+        UserDTO userDTO = modelMapper.map(patient, UserDTO.class);
+        if(patient != null){
+            return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.badRequest().body("Bad request");
+    }
+
+    @GetMapping("/checkIfCanViewRecord/{patient_email}")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    public ResponseEntity canViewRecord(@PathVariable String patient_email){
+        if(doctorService.canStaffViewRecord(patient_email))
+            return ResponseEntity.ok().body(true);
+        return ResponseEntity.badRequest().body(false);
     }
 
     @GetMapping(path = "/calendar/{email}")

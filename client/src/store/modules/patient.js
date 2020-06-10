@@ -22,8 +22,7 @@ const getters = {
 };
 
 const actions = {
-    async fetchPatients({commit, rootState}) {
-        console.log(rootState);
+    async fetchPatients({commit}) {
         var email = localStorage.getItem("user_email");
         // var email = rootState.userDetails.user.email; // kaze da je email=""
      

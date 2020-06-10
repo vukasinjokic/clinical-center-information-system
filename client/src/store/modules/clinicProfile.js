@@ -44,8 +44,7 @@ const actions = {
             commit('setClinic', response.data);
             dispatch('snackbar/showSuccess',"Uspesna izmena klinike",{root: true});
         }catch(error){
-            //commit('setClinic', state.clinic);
-            alert(error.response.status);
+            dispatch('snackbar/showWarning',"Clinic name already taken",{root: true});
         }
     },
 

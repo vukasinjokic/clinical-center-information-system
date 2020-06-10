@@ -67,6 +67,20 @@ public class DoctorService {
         return (List<Doctor>) clinicAdmin.get().getClinic().getDoctors();
     }
 
+    public Patient findPatientProfile(String email){
+        Patient patient = patientRepository.findByEmail(email);
+        return patient;
+    }
+
+    public boolean canStaffViewRecord(String patientEmail){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndPatientEmailAndFinished(
+                user.getId(), patientEmail, true);
+        if(appointments.size() == 0)
+            return false;
+        return true;
+    }
+
     public Doctor findByEmail(String email){
         return doctorRepository.findByEmail(email);
     }
