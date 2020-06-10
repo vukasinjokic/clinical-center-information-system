@@ -106,6 +106,7 @@ export default {
     methods:{
         ...mapActions('patient',['fetchPatients','fetchMedicalRecord']),
         ...mapActions('doctor',['fetchPatientProfile','canStaffViewRecord']),
+        ...mapActions('startAppointment', ['startAppointmentForPatient']),
 
         showPatient(item){
             this.dialog = true;
@@ -113,7 +114,11 @@ export default {
             this.fetchPatientProfile(item.email);
         },
         goTostartAppointment(){
-            console.log(this.selectedItem.email);
+            this.startAppointmentForPatient(this.selectedItem.email)
+            .then(() => {
+                this.$router.push('startAppointment/' + this.selectedItem.email);
+            }).catch(()=>{});
+            
         },
         goTomedicalRecord(){
             this.canStaffViewRecord(this.selectedItem.email)

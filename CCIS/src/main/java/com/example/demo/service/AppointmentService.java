@@ -159,4 +159,10 @@ public class AppointmentService {
         return appointmentRepository.findPatientEmailFromAppointment(appointment_id);
     }
 
+    public Appointment getAppointmentForPatient(String patientEmail) {
+        Doctor doctor = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Appointment> appointmentOptional =  appointmentRepository.findFirstByDoctorEmailAndPatientEmailAndFinishedFalseOrderByTimeAsc(doctor.getEmail(), patientEmail);
+        if(appointmentOptional.isPresent()) return appointmentOptional.get();
+        return null;
+    }
 }

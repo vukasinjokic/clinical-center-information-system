@@ -127,6 +127,15 @@ public class AppointmentController {
         return ResponseEntity.ok(email);
     }
 
+    @GetMapping(path = "/getAppointmentForPatient/{patientEmail}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity getAppointmentForPatient(@PathVariable("patientEmail") String patientEmail){
+        Appointment appointment = appointmentService.getAppointmentForPatient(patientEmail);
+        if(appointment == null) return ResponseEntity.badRequest().body("You don't have a scheduled appointment with this patient");
+        return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.OK);
+
+    }
+
     @PostMapping(path = "/handleAppointmentFinish", consumes = "application/json")
     @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity handleAppointmentFinish(@RequestBody AppointmentToFinish appointmentToFinish){
