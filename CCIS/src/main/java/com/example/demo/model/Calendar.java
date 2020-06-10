@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import javafx.util.Pair;
-
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,18 +43,20 @@ public class Calendar {
     @Column(name = "appointment_id")
     private List<Integer> appointmentIds;
 
-    public HashMap<String,List<Pair<Date,Date>>> formatDates(){
+    public HashMap<String,List<HashMap<Date,Date>>> formatDates(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        HashMap<String,List<Pair<Date,Date>>> map = new HashMap<String, List<Pair<Date,Date>>>();
+        HashMap<String,List<HashMap<Date,Date>>> map = new HashMap<String, List<HashMap<Date,Date>>>();
 
         for(int i = 0; i<eventStartDates.size(); i++){
             if(map.containsKey(sdf.format(eventStartDates.get(i)).substring(0,10))){
-                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
+                HashMap<Date,Date> pair = new HashMap<Date,Date>();
+                pair.put(eventStartDates.get(i),eventStartDates.get(i));
                 map.get(sdf.format(eventStartDates.get(i)).substring(0,10)).add(pair);
 
             }else{
-                List<Pair<Date,Date>> ls = new ArrayList<Pair<Date,Date>>();
-                Pair<Date,Date> pair = new Pair<Date,Date>(eventStartDates.get(i),eventEndDates.get(i));
+                List<HashMap<Date,Date>> ls = new ArrayList<HashMap<Date,Date>>();
+                HashMap<Date,Date> pair = new HashMap<Date,Date>();
+                pair.put(eventStartDates.get(i),eventEndDates.get(i));
                 ls.add(pair);
                 map.put(sdf.format(eventStartDates.get(i)).substring(0,10), ls);
             }

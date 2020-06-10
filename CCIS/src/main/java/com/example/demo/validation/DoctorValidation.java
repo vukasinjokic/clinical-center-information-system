@@ -6,10 +6,7 @@ import com.example.demo.model.Doctor;
 import javafx.util.Pair;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class DoctorValidation {
 
@@ -60,35 +57,41 @@ public class DoctorValidation {
             doctor.getCalendar().setEventEndDates(new ArrayList<Date>());
             return true;
         }
-        List<Pair<Date,Date>> check_dates_list = doctor.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
+        List<HashMap<Date,Date>> check_dates_list = doctor.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
         if(check_dates_list == null)
             return true;
         for(int i = 0; i< check_dates_list.size(); i++){
-            if(startDate.after(check_dates_list.get(i).getKey())){
-                if(startDate.before(check_dates_list.get(i).getValue()))
-                    return false;
-                if(i < check_dates_list.size()-1){
-                    if(startDate.before(check_dates_list.get(i+1).getKey()) && startDate.after(check_dates_list.get(i).getValue())){
-                        if(endDate.before(check_dates_list.get(i+1).getKey())){
-                            return true;
+
+            for (Map.Entry<Date, Date> entry : check_dates_list.get(i).entrySet()) {
+
+                if (startDate.after(entry.getKey())) {
+                    if (startDate.before(entry.getValue()))
+                        return false;
+                    if (i < check_dates_list.size() - 1) {
+                        for (Map.Entry<Date, Date> entry1 : check_dates_list.get(i+1).entrySet()) {
+                            if (startDate.before(entry1.getKey()) && startDate.after(entry.getValue())) {
+                                if (endDate.before(entry1.getKey())) {
+                                    return true;
+                                }
+                            } else {
+                                continue;
+                            }
                         }
-                    }else{
-                        continue;
+                    } else {
+                        if (startDate.after(entry.getKey())) {
+                            if (startDate.after(entry.getValue()))
+                                return true;
+                        } else { //before
+                            if (endDate.before(entry.getKey()))
+                                return true;
+                        }
                     }
-                }else{
-                    if(startDate.after(check_dates_list.get(i).getKey())){
-                        if(startDate.after(check_dates_list.get(i).getValue()))
-                            return true;
-                    }else{ //before
-                        if(endDate.before(check_dates_list.get(i).getKey()))
-                            return true;
-                    }
+                } else if (startDate.before(entry.getKey())) {
+                    if (endDate.before(entry.getKey()))
+                        return true;
+                    else
+                        return false;
                 }
-            }else if(startDate.before(check_dates_list.get(i).getKey())){
-                if(endDate.before(check_dates_list.get(i).getKey()))
-                    return true;
-                else
-                    return false;
             }
         }
         return false;
