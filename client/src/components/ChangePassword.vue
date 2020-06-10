@@ -2,7 +2,7 @@
     <div>
         <CustomToolbar/>
         <v-row justify="center">
-                <v-card style="width: 40%">
+                <v-card style="width: 40%; margin-top:20px">
                     <v-card-title>
                         <v-toolbar height="45px" color="orange lighten-1" class="white--text">
                             <span class="headline">Change password</span>
@@ -80,13 +80,19 @@ export default {
 
     methods: {
         ...mapActions('userProfile',['changePassword','fetchUserProf']),
+        ...mapActions('snackbar',['showError']),
 
         closeDialog(){
             this.dialogPass = false;
             this.$refs.form.reset();
-            this.$router.push({
-                name: "InstantHomeRedirect"
-            });
+            if(localStorage.getItem('is_password_changed') == 'true'){
+                this.$router.push({
+                    name: "InstantHomeRedirect"
+                });
+            }
+            else{
+                this.showError("You can't access Home page before changing password");
+            }
         },
         savePassword(){
             if(this.$refs.form.validate()){

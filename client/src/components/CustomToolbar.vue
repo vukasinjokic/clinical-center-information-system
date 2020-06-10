@@ -1,6 +1,7 @@
 <template>
     <v-toolbar
-    height="40px">
+    height="35px"
+    class="indigo lighten-5">
         <v-spacer></v-spacer>
         <LogOut/>
     </v-toolbar>

@@ -48,12 +48,22 @@ const isClinicCenterAdmin = (to, from, next) => {
 
 const isClinicAdmin = (to, from, next) => {
   if (localStorage.getItem("user_role") === "ROLE_CLINIC_ADMIN") {
-    next();
-    return;
+    if(localStorage.getItem("is_password_changed") == 'true'){
+      next();
+      return;
+    }else{
+      if(from.path === '/'){
+        next({path: '/change-password'});
+        return;
+      }else{
+        next();
+      }
+    }
+  }else{
+    next({
+      name: "Unauthorized"
+    })
   }
-  next({
-    name: "Unauthorized"
-  })
 };
 
 const isDoctor = (to, from, next) => {
@@ -79,12 +89,22 @@ const isDoctor = (to, from, next) => {
 
 const isNurse = (to, from, next) => {
   if (localStorage.getItem("user_role") === "ROLE_NURSE") {
-    next();
-    return;
+    if(localStorage.getItem("is_password_changed") == 'true'){
+      next();
+      return;
+    }else{
+      if(from.path === '/'){
+        next({path: '/change-password'});
+        return;
+      }else{
+        next();
+      }
+    }
+  }else{
+    next({
+      name: "Unauthorized"
+    })
   }
-  next({
-    name: "Unauthorized"
-  })
 };
 
 const isPatient = (to, from, next) => {

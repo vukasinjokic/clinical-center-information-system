@@ -1,6 +1,9 @@
 <template>
   <div>
       <v-btn
+      small
+      class="blue-grey darken-4 white--text"
+      style="width: 100px"
       @click="logOut"
       block>
       Log out
