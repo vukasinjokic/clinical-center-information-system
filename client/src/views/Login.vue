@@ -26,7 +26,7 @@
                 <v-card-text>
                   <v-form ref="form">
                     <v-text-field
-                      v-model="user.username"
+                      v-model="user.email"
                       :rules="[requiredRule,emailRule]"
                       label="Email"
                       name="email"
@@ -72,7 +72,7 @@ import Vue from 'vue';
     data() {
        return{
             user:{
-                username: "",
+                email: "",
                 password: ""
             }
        } 
@@ -93,22 +93,9 @@ import Vue from 'vue';
                     Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
                     alert("Uspesno logovanje");
 
-                    if(localStorage.getItem("user_role") == "ROLE_DOCTOR"){
-                      this.$router.push('doctor');
-                    }else if(localStorage.getItem("user_role") == "ROLE_CLINIC_ADMIN"){
-                      this.$router.push('clinicAdmin');
-                    }else if(localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN"){
-                      this.$router.push('clinicCenterAdmin');
-                    }else if (localStorage.getItem("user_role") === "ROLE_PATIENT") {
-                      this.$router.push({
-                        name: "PatientPage"
-                      })
-                    }else if(localStorage.getItem("user_role") === "ROLE_NURSE"){
-                      this.$router.push('nurse');
-                    }                    
-                    else{
-                      this.$router.push('home');
-                    }
+                    this.$router.push({
+                      name: "InstantHomeRedirect"
+                    });
                 }
                 else
                     alert("Neispravan email ime ili lozinka");

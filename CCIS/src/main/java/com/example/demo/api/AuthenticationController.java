@@ -10,12 +10,12 @@ import com.example.demo.service.UserRegisterService;
 import com.example.demo.useful_beans.UserToLogin;
 import com.example.demo.dto.UserTokenState;
 import com.example.demo.security.TokenUtils;
-import com.example.demo.security.auth.JwtAuthenticationRequest;
 import com.example.demo.useful_beans.ChangePassword;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -71,14 +71,14 @@ public class AuthenticationController {
 
 
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(userToLogin.username,
+                .authenticate(new UsernamePasswordAuthenticationToken(userToLogin.email,
                         userToLogin.password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
         List<String> strAuthorities = new ArrayList<>();
@@ -89,6 +89,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/userDetails")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE', 'PATIENT')")
     public UserDTO getUserDetails() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDTO userDTO = new UserDTO(user);
@@ -97,6 +98,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/updateProfile")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE', 'PATIENT')")
     public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO userDTO){
         Optional<User> check = userRepository.findById(Integer.parseInt(userDTO.getId()));
 
@@ -117,16 +119,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/changePassword")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE', 'PATIENT')")
     public ResponseEntity<Void> changePassword(@RequestBody ChangePassword changePassword){
         Optional<User> check = userRepository.findById(Integer.parseInt(changePassword.getId()));
 
         if(check.isPresent()){
             User user = check.get();
-            if(!user.getPassword().equals(changePassword.getOld()))
+            if(!passwordEncoder.matches(changePassword.getOld(), user.getPassword()))
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
             user.setPasswordChanged(true);
-            user.setPassword(changePassword.getNew_pass());
+            user.setPassword(passwordEncoder.encode(changePassword.getNew_pass()));
             userRepository.save(user);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -154,6 +157,7 @@ public class AuthenticationController {
 
         }
 
+        patientToRegister.setPassword(passwordEncoder.encode(patientToRegister.getPassword()));
         boolean success = userRegisterService.saveUserRegisterRequest(patientToRegister);
         if (success) {
             List<ClinicCenterAdmin> clinicCenterAdmins = userService.findAllClinicCenterAdmins();
@@ -166,6 +170,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/registerAdmins")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN')")
     public ResponseEntity registerAdmins(@RequestBody UserRegisterRequest adminToRegister) {
         List<User> existUsers = userService.findByEmailOrSocialSecurityNumber(
                 adminToRegister.getEmail(),
@@ -188,52 +193,17 @@ public class AuthenticationController {
             //clinic admin
             Clinic clinic = clinicRepository.findById(adminToRegister.getClinicId()).get();
             List<Authority> auth = authorityService.findByName("ROLE_CLINIC_ADMIN");
-            ClinicAdmin clinicAdmin = new ClinicAdmin(adminToRegister.getEmail(), adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), clinic, auth, false);
+            ClinicAdmin clinicAdmin = new ClinicAdmin(adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), clinic, auth, false);
             userRepository.save(clinicAdmin);
             return ResponseEntity.ok("Successfully registered clinic admin");
         }
         else{
             List<Authority> auth = authorityService.findByName("ROLE_CLINIC_CENTER_ADMIN");
-            ClinicCenterAdmin clinicCenterAdmin = new ClinicCenterAdmin(adminToRegister.getEmail(), adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), auth, false);
+            ClinicCenterAdmin clinicCenterAdmin = new ClinicCenterAdmin(adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), auth, false);
             userRepository.save(clinicCenterAdmin);
             return ResponseEntity.ok("Successfully registered clinic center admin");
         }
 
 
     }
-
-
-//
-//    @PostMapping(value = "/refresh")
-//    public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
-//
-//        String token = tokenUtils.getToken(request);
-//        String username = this.tokenUtils.getUsernameFromToken(token);
-//        User user = (User) this.userDetailsService.loadUserByUsername(username);
-//
-//        if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
-//            String refreshedToken = tokenUtils.refreshToken(token);
-//            int expiresIn = tokenUtils.getExpiredIn();
-//
-//            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
-//        } else {
-//            UserTokenState userTokenState = new UserTokenState();
-//            return ResponseEntity.badRequest().body(userTokenState);
-//        }
-//    }
-//
-//    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-//    @PreAuthorize("hasRole('USER')")
-//    public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
-//        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
-//
-//        Map<String, String> result = new HashMap<>();
-//        result.put("result", "success");
-//        return ResponseEntity.accepted().body(result);
-//    }
-//
-//    static class PasswordChanger {
-//        public String oldPassword;
-//        public String newPassword;
-//    }
 }

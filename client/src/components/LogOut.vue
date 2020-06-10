@@ -1,6 +1,9 @@
 <template>
   <div>
       <v-btn
+      small
+      class="blue-grey darken-4 white--text"
+      style="width: 100px"
       @click="logOut"
       block>
       Log out
@@ -16,7 +19,9 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch("clearStore")
-      this.$router.push("/");
+      this.$router.push({
+        name: "Login"
+      });
     }
   }
 };

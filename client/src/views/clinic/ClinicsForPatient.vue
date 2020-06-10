@@ -62,15 +62,21 @@
                 show-expand
                 dark>
 
+                <template v-slot:item.priceList="{ item }">
+                    {{item.priceList}}
+                </template>
+                
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
                         <th>Ime doktora</th>
                         <th>Prezime doktora</th>
                         <th>Tip pregleda</th>
+                        <th>Cena pregleda</th>
                         <tr v-for="doctor in item.filteredDoctors" v-bind:key=doctor.name>
                             <td>{{doctor.firstName}}</td>
                             <td>{{doctor.lastName}}</td>
                             <td>{{doctor.examinationType.name}}</td>
+                            <td>{{doctor.price}}</td>
                         </tr>
                     </td>
                 </template>
@@ -98,9 +104,8 @@ export default {
             headers: [
                 {text: "Name", value: "name"},
                 {text: "Address", value: "address"},
-                {text: "Price List", value: "priceList"},
                 {text: "Rating", value: "rating"},
-                {text: "Description", value: "description", width: "25%"}
+                {text: "Description", value: "description", width: "40%"}
             ]
         }
     },
@@ -124,7 +129,7 @@ export default {
                     alreadyFiltered: true
                 }));
                 sessionStorage.setItem("doctors", JSON.stringify(clinic.filteredDoctors));
-                this.$router.push({ name: 'Doctors'});
+                this.$router.push({ name: 'DoctorsForPatient'});
             }
         },
 
