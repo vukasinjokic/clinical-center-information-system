@@ -96,7 +96,7 @@
                                     clinicId: item.clinicId,
                                     appointmentTime: freeAppointment.time
                                 })">
-                                    Schedule appointment
+                                    Zakaži pregled
                                 </v-btn>
                             </td>
                         </tr>
@@ -140,7 +140,6 @@ export default {
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 
-        // TODO: Videti zasto slanje mejla traje dugo
         onClick(appointmentRequest) {
             if (this.$refs.form.validate()) {
                 appointmentRequest.patientEmail = localStorage.getItem("user_email");

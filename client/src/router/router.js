@@ -33,6 +33,8 @@ import ClinicCenterAdminPage from '../views/ClinicCenterAdminPage'
 import BusinessReport from '../components/businessReport/BusinessReport'
 import ValidatePerscriptions from '../components/ValidatePerscriptions'
 import InstantHomeRedirect from '../views/InstantHomeRedirect'
+import PredefinedAppointments from '../components/PredefinedAppointments'
+
 
 
 Vue.use(VueRouter);
@@ -206,7 +208,8 @@ const router = new VueRouter({
           {path: "medicalRecord", name: "MedicalRecord", component: MedicalRecord},
           {path: 'profile', name: 'UserProfile', component: UserProfile},
           {path: 'clinicProfile/:id', name: 'ClinicProfileForPatient', component: ClinicProfileForPatient},
-          {path: 'doctors', name: 'DoctorsForPatient', component: Doctors}
+          {path: 'doctors', name: 'DoctorsForPatient', component: Doctors},
+          {path: 'predefinedAppointments/:clinicId', name: 'PredefinedAppointments', component: PredefinedAppointments}
         ]
       },
       {
