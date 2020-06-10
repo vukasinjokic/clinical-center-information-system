@@ -1,7 +1,7 @@
 <template>
         <div class="text-center ma-2">
             <v-snackbar
-                :timeout="2000"
+                :timeout="4000"
                 top
                 :color="getColor"
                 v-model="snackBar"
