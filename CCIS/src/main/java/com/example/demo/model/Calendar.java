@@ -137,9 +137,14 @@ public class Calendar {
         }
     }
 
-    public void addVacationDates(MedicalStaffRequest medicalStaffRequest){
-        this.getVacationDates().add(medicalStaffRequest.getFromDate());
-        this.getVacationDates().add(medicalStaffRequest.getToDate());
+    public void addVacationDates(MedicalStaffRequest medicalStaffRequest) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            this.getVacationDates().add(sdf.parse(sdf.format(medicalStaffRequest.getFromDate())));
+            this.getVacationDates().add(sdf.parse(sdf.format(medicalStaffRequest.getToDate())));
+        }catch (ParseException p){
+            p.printStackTrace();
+        }
     }
 
     private void addEvent(Date startDate, Date endDate, String eventName) {
