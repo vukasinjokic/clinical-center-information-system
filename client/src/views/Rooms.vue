@@ -86,8 +86,8 @@
                     :expanded.sync="expanded"
                     item-key="name"
                     show-expand
-                    class="blue-grey darken-4 white--text"
-                    dark>
+                    class="white"
+                    >
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length" v-if="item.calendar != null">
                         <tr v-for="it in item.calendar.eventStartDates.length" v-bind:key=it.name>
@@ -127,7 +127,7 @@
                      </td>
                 </template>
                 <template v-slot:top>
-                <v-toolbar flat class="blue-grey darken-4 white--text">
+                <v-toolbar flat class="white">
                 <v-spacer></v-spacer>
                 <v-dialog v-model="editDialog" max-width="370px">
                     <template v-slot:activator="{ on }">
