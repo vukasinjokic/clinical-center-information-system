@@ -14,7 +14,7 @@
             <template #item.reserveRoomButton="{ item }" ><v-btn @click="reserveRoom(item)" color="orange lighten-1" dark>Reserve Room</v-btn></template>
 
         </v-data-table>
-    <v-dialog v-model="roomsDialog" eager>    
+    <v-dialog v-model="roomsDialog" width="55%" eager>    
         <Rooms ref="roomsComponent" @reserved="roomReserved"></Rooms>
     </v-dialog>
     </div>
