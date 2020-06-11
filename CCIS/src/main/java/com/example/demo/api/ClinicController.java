@@ -78,12 +78,32 @@ public class ClinicController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/getClinicById/{clinicId}")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public ResponseEntity<ClinicDTO> getClinicById(@PathVariable Integer clinicId){
+        Clinic clinic = clinicService.findById(clinicId);
+        if(clinic != null) {
+            ResponseEntity<ClinicDTO> clinicDTOResponseEntity = new ResponseEntity<>(modelMapper.map(clinic, ClinicDTO.class), HttpStatus.OK);
+            return clinicDTOResponseEntity;
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/getPriceList")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
     public ResponseEntity<PriceListDTO> getPriceList(){
         PriceList priceList = clinicService.getPriceList();
         if(priceList != null)
             return new ResponseEntity<>(new PriceListDTO(priceList), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getPriceList/{clinicId}")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public ResponseEntity<PriceListDTO> getPriceListByClinicId(@PathVariable Integer clinicId){
+        Clinic clinic = clinicService.findById(clinicId);
+        if(clinic != null)
+            return new ResponseEntity<>(new PriceListDTO(clinic.getPriceList()), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

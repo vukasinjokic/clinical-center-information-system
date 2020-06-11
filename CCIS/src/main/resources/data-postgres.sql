@@ -777,28 +777,28 @@ insert into price_list_items (price_list_id, items_id) values (3, 9);        -- 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------- Inserting doctors -----------------------------------------------------------
 insert into doctors			-- id = 16
-(id, email, password, first_name, last_name,is_password_changed ,address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor1@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Duško', 'Dušković','T', 'Nepoznata 34', 'Prokuplje', 'Srbija', '0641234567', '36363636363', 7, 1, 1, 1, 1);
+(id, email, password, first_name, last_name,is_password_changed ,address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id,activity)
+values (nextval('ust_seq_user'), 'doktor1@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Duško', 'Dušković','T', 'Nepoznata 34', 'Prokuplje', 'Srbija', '0641234567', '36363636363', 7, 1, 1, 1, 1, 'T');
 
 insert into doctors			-- id = 17
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor2@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Vesna', 'Vesnić','F' ,'Nepoznata 35', 'Smederevo', 'Srbija', '0641234567', '37373737373', 8, 2, 2, 2, 1);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id,activity)
+values (nextval('ust_seq_user'), 'doktor2@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Vesna', 'Vesnić','F' ,'Nepoznata 35', 'Smederevo', 'Srbija', '0641234567', '37373737373', 8, 2, 2, 2, 1,'T');
 
 insert into doctors			-- id = 18
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ivan', 'Ivanović','F', 'Nepoznata 36', 'Jagodina', 'Srbija', '0641234567', '38383838383', 9, 3, 3, 3, 2);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id,activity)
+values (nextval('ust_seq_user'), 'doktor3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ivan', 'Ivanović','F', 'Nepoznata 36', 'Jagodina', 'Srbija', '0641234567', '38383838383', 9, 3, 3, 3, 2, 'T');
 
 insert into doctors			-- id = 19
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Zorana', 'Zoranović','F', 'Nepoznata 37', 'Bor', 'Srbija', '0641234567', '39393939393', 10, 4, 4, 1, 2);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id,activity)
+values (nextval('ust_seq_user'), 'doktor4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Zorana', 'Zoranović','F', 'Nepoznata 37', 'Bor', 'Srbija', '0641234567', '39393939393', 10, 4, 4, 1, 2, 'T');
 
 insert into doctors			-- id = 20
-(id, email, password, first_name, last_name,is_password_changed ,address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Zoran', 'Zorić','F' ,'Nepoznata 38', 'Šabac', 'Srbija', '0641234567', '40404040404', 11, 5, 5, 2, 3);
+(id, email, password, first_name, last_name,is_password_changed ,address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id,activity)
+values (nextval('ust_seq_user'), 'doktor5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Zoran', 'Zorić','F' ,'Nepoznata 38', 'Šabac', 'Srbija', '0641234567', '40404040404', 11, 5, 5, 2, 3, 'T');
 
 insert into doctors			-- id = 21
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id)
-values (nextval('ust_seq_user'), 'doktor6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Goran', 'Gorić','F' ,'Nepoznata 39', 'Pančevo', 'Srbija', '0641234567', '41414141414', 12, 6, 3, 3, 3);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, calendar_id, rating_id, bus_hours_id, ex_type_id, clinic_id,activity)
+values (nextval('ust_seq_user'), 'doktor6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Goran', 'Gorić','F' ,'Nepoznata 39', 'Pančevo', 'Srbija', '0641234567', '41414141414', 12, 6, 3, 3, 3, 'T');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -875,18 +875,18 @@ insert into reports (medical_record_id, report, doctor_email) values (6, 'Kolera
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting rooms -------------------------------------------------------
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 1','100', 13, 1, 'APPOINTMENT');				-- id = 1
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 2','101', 14, 1, 'APPOINTMENT');				-- id = 2
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 3','102', 15, 1, 'APPOINTMENT');				-- id = 3
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 4','103', 16, 1, 'APPOINTMENT');				-- id = 4
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 5','104', 17, 2, 'APPOINTMENT');				-- id = 5
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 6','105', 18, 2, 'APPOINTMENT');				-- id = 6
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 7','106', 19, 2, 'OPERATION');			-- id = 7
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 8','107', 20, 2, 'OPERATION');			-- id = 8
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 9','108', 21, 3, 'OPERATION');			-- id = 9
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 10','109', 22, 3, 'OPERATION');			-- id = 10
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 11','110', 23, 3, 'OPERATION');			-- id = 11
-insert into rooms (name,number, calendar_id, clinic_id, room_type) values ('Sala 12','111', 24, 3, 'OPERATION');			-- id = 12
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 1','100', 13, 1, 'APPOINTMENT','T');				-- id = 1
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 2','101', 14, 1, 'APPOINTMENT','T');				-- id = 2
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 3','102', 15, 1, 'APPOINTMENT','T');				-- id = 3
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 4','103', 16, 1, 'APPOINTMENT','T');				-- id = 4
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 5','104', 17, 2, 'APPOINTMENT','T');				-- id = 5
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 6','105', 18, 2, 'APPOINTMENT','T');				-- id = 6
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 7','106', 19, 2, 'OPERATION','T');			-- id = 7
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 8','107', 20, 2, 'OPERATION','T');			-- id = 8
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 9','108', 21, 3, 'OPERATION','T');			-- id = 9
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 10','109', 22, 3, 'OPERATION','T');			-- id = 10
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 11','110', 23, 3, 'OPERATION','T');			-- id = 11
+insert into rooms (name,number, calendar_id, clinic_id, room_type,activity) values ('Sala 12','111', 24, 3, 'OPERATION','T');			-- id = 12
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -954,6 +954,36 @@ values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
+-----------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------- Inserting predefined appointments --------------------------------------------------
+-- insert into appointments			-- id = 13
+-- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
+-- values ('2020-08-08 08:00:00',  1000.0, 	 10.0, 		16, 			1, 				1, 	 			1, 'F');
+--
+-- insert into appointments			-- id = 14
+-- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
+-- values ('2020-08-09 08:00:00',  500.0, 	 5.0, 		17, 			2, 				2, 	 			1, 'F');
+--
+-- insert into appointments			-- id = 15
+-- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
+-- values ('2020-08-08 08:00:00',  1000.0, 	 10.0, 		18, 			7, 				3, 	 			2, 'F');
+--
+-- insert into appointments			-- id = 16
+-- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
+-- values ('2020-08-09 08:00:00',  500.0, 	 5.0, 		19, 			5, 				1, 	 			2, 'F');
+--
+-- insert into appointments			-- id = 15
+-- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
+-- values ('2020-08-08 08:00:00',  1000.0, 	 10.0, 		20, 		9, 				2, 	 			3, 'F');
+--
+-- insert into appointments			-- id = 16
+-- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
+-- values ('2020-08-09 08:00:00',  500.0, 	 5.0, 		21, 			10, 				3, 	 			3, 'F');
+--
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- Inserting user_authority --------------------------------------------------------

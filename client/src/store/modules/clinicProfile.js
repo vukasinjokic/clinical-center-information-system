@@ -29,9 +29,27 @@ const actions = {
         }
     },
 
+    async fetchClinicById({commit}, clinicId){
+        try{
+            const response = await Vue.$axios.get('http://localhost:8081/clinics/getClinicById/' + clinicId);
+            commit('setClinic', response.data);
+        }catch(error){
+            alert(error.response.status);
+        }
+    },
+
     async fetchPriceList({commit}){
         try{
             const response = await Vue.$axios.get('http://localhost:8081/clinics/getPriceList');
+            commit('setPriceList', response.data);
+        }catch(error){
+            alert(error.response.status);
+        }
+    },
+
+    async fetchPriceListByClinicId({commit}, clinicId){
+        try{
+            const response = await Vue.$axios.get('http://localhost:8081/clinics/getPriceList/' + clinicId);
             commit('setPriceList', response.data);
         }catch(error){
             alert(error.response.status);

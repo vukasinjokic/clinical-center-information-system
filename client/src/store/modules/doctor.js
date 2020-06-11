@@ -27,6 +27,16 @@ const actions = {
         }
     },
 
+    async fetchDoctorsFromClinic({commit, dispatch}, clinicId){
+        try{
+            const response = await Vue.$axios.get('http://localhost:8081/doctors/getDoctorsFromClinic/' + clinicId);
+            commit('setDoctors', response.data);
+        }catch(error){
+            console.log(error.response.status);
+            dispatch('snackbar/showError', "Nesto se cudno desava", {root: true});
+        }
+    },
+
     async saveDoctor({commit, dispatch}, doctor){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/doctors/saveDoctor', doctor);

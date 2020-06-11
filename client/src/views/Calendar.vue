@@ -62,11 +62,14 @@
           offset-x
         >
           <v-card
+            
+            v-if="selectedEvent.appointmentId"
             color="grey lighten-4"
             min-width="350px"
             flat
           >
             <v-toolbar
+
               :color="selectedEvent.color"
               dark
             >

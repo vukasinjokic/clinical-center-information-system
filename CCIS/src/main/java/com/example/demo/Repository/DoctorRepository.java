@@ -14,6 +14,16 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     List<Doctor> findByExaminationTypeId(Integer id);
     Doctor findByEmail(String email);
 
+    Doctor findByEmailAndActivity(
+            @Param("email") String email,
+            @Param("activity") Boolean activity
+    );
+
+    List<Doctor> findAllByClinicIdAndActivity(
+            @Param("clinicId") Integer clinicId,
+            @Param("activity") Boolean activity
+    );
+
     @Query("SELECT doctor FROM Doctor doctor JOIN FETCH doctor.clinic WHERE doctor.email = (:email)")
     public Doctor findByEmailAndFetchClinicEagerly(@Param("email") String email);
 

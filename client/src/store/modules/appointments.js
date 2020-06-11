@@ -54,6 +54,11 @@ const actions = {
         commit('setAppo', finishedAppointments);
     },
 
+    async fetchPredefinedAppointments({commit}, clinicId) {
+        const response = await Vue.$axios.post("http://localhost:8081/appointments/getPredefinedAppointments/" + clinicId);
+        commit('setAppo', response.data);
+    },
+
     async fetchRooms({commit}){
         const response = await Vue.$axios.get('http://localhost:8081/appointments/getRooms');
         commit('setFreeAppointmentsRooms', response.data);

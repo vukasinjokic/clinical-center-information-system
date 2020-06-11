@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
@@ -13,6 +14,9 @@ public class Doctor extends MedicalStaff {
    @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name="rating_id", nullable = false)
    private Rating rating;
+
+   @Type(type = "true_false")
+   private Boolean activity;
 
    @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "bus_hours_id", nullable = false)
@@ -39,6 +43,14 @@ public class Doctor extends MedicalStaff {
 
    public Doctor(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
       super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, authorities);
+   }
+
+   public Boolean getActivity() {
+      return activity;
+   }
+
+   public void setActivity(Boolean activity) {
+      this.activity = activity;
    }
 
    public Rating getRating() {

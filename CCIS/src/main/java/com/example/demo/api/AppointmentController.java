@@ -65,6 +65,16 @@ public class AppointmentController {
                 .collect(Collectors.toList());
     }
 
+    @PostMapping("/getPredefinedAppointments/{clinicId}")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<AppointmentDTO> getPredefinedAppointments(@PathVariable Integer clinicId) {
+        List<Appointment> predefinedAppointments = appointmentService.getPredefinedAppointments(clinicId);
+
+        return predefinedAppointments.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     //operation rooms for free appointment
     @GetMapping("/getRooms")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
