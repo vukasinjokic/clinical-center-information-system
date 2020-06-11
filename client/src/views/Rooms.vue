@@ -86,8 +86,8 @@
                     :expanded.sync="expanded"
                     item-key="name"
                     show-expand
-                    class="blue-grey darken-4 white--text"
-                    dark>
+                    class="white"
+                    >
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length" v-if="item.calendar != null">
                         <tr v-for="it in item.calendar.eventStartDates.length" v-bind:key=it.name>
@@ -127,7 +127,7 @@
                      </td>
                 </template>
                 <template v-slot:top>
-                <v-toolbar flat class="blue-grey darken-4 white--text">
+                <v-toolbar flat class="white">
                 <v-spacer></v-spacer>
                 <v-dialog v-model="editDialog" max-width="370px">
                     <template v-slot:activator="{ on }">
@@ -288,11 +288,11 @@ export default {
         },
 
         sendNotification(){
-            let doctors = [];
+            let doctorsIds = [];
             this.doctorsSelect.concat(this.mainDoctor.firstName + ' ' + this.mainDoctor.lastName).forEach(name => {
-                doctors.push(this.clinicDoctorsDict[name]);
+                doctorsIds.push(this.clinicDoctorsDict[name].id);
             });
-            let payload = {doctors: doctors, requestId : this.request.id, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
+            let payload = {doctorsIds: doctorsIds, requestId : this.request.id, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
             this.handleReservation(payload);
             this.dialog = false;
             this.$emit('reserved');

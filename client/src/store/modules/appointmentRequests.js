@@ -1,4 +1,4 @@
-import axios from 'axios'
+import Vue from 'vue'
 
 const getDefaultState = () => {
     return {
@@ -16,19 +16,15 @@ const getters = {
 
 }
 
-const config = {
-    headers: {Authorization: "Bearer " + localStorage.getItem("JWT")}
-}
-
 const actions = {
     async fetchAppRequests({commit}){
-        const response = await axios.get("http://localhost:8081/appointmentRequests/getAppointmentRequests", config);
+        const response = await Vue.$axios.get("http://localhost:8081/appointmentRequests/getAppointmentRequests");
         commit('setAppointmentRequests', response.data);
     },
 
     async deleteRequest({commit}, id){
         try{
-            await axios.delete('http://localhost:8081/appointmentRequests/deleteRequest/' + id);
+            await Vue.$axios.delete('http://localhost:8081/appointmentRequests/deleteRequest/' + id);
             commit('deletedRequest', id);
         }catch(error){
             alert(error.response);

@@ -61,8 +61,8 @@ export default {
         ...mapActions('appointmentRequests', ['fetchAppRequests', 'deleteRequest']),
 
         getTime(item){
-            if(item.type == 'DOCTOR') return new Date(item.time).toLocaleString();
-            return new Date(item.predefAppointment.date).toLocaleString();
+            if(item.type.predefAppointment) return new Date(item.predefAppointment.date).toLocaleString();
+            return new Date(item.time).toLocaleString();
         },
 
         reserveRoom(request){

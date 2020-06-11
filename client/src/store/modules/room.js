@@ -36,6 +36,7 @@ const actions = {
     filterRooms: ({commit}, payload) => {
         let search = payload.search;
         let duration = payload.duration;
+        console.log(new Date());
         let date = payload.date == "" ? new Date() : payload.date;
         let availableTimes = {};
         let filteredRooms = state.rooms.filter(room => {
@@ -45,9 +46,9 @@ const actions = {
             let eventEndDates = room.calendar.eventEndDates;
 
             let startSelectedDay = (new Date(date));
-            startSelectedDay.setHours(8,0,0,0);
+            startSelectedDay.setHours(7,0,0,0);
             let endSelectedDay = new Date(date);
-            endSelectedDay.setHours(15,0,0,0);
+            endSelectedDay.setHours(14,0,0,0);
 
             eventStartDates.unshift(startSelectedDay);
             
@@ -57,6 +58,10 @@ const actions = {
             for(var i = 1; i != eventStartDates.length; i++){
                 let startAppDate = new Date(eventStartDates[i]);
                 let endAppDate = new Date(eventEndDates[i-1]);
+                if(endAppDate.getTime() <= startSelectedDay.getTime()){
+                    continue;
+                }
+
                 //can the appointment be set before the first already set appointment 
                 if(i == 1 && new Date(eventStartDates[i-1]).getTime() + durationMilliseconds <= startAppDate.getTime()){
                     showRoom = true;
@@ -77,6 +82,10 @@ const actions = {
                     break;
                 }
                 
+            }
+            if(firstAvailable == null){
+                firstAvailable = startSelectedDay;
+                showRoom = true;
             }
             showRoom = room.type.toUpperCase().match(payload.type.toUpperCase()) ? true : false;
             if(date == "") showRoom = true;

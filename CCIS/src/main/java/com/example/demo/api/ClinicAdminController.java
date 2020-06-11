@@ -85,7 +85,7 @@ public class ClinicAdminController {
             clinicAdminService.handleReservation(appointmentToReserve);
         }catch( Exception e ){
             ResponseEntity.status(404);
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
     }
