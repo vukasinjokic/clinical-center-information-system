@@ -36,6 +36,7 @@ const actions = {
     filterRooms: ({commit}, payload) => {
         let search = payload.search;
         let duration = payload.duration;
+        console.log(new Date());
         let date = payload.date == "" ? new Date() : payload.date;
         let availableTimes = {};
         let filteredRooms = state.rooms.filter(room => {
@@ -45,9 +46,9 @@ const actions = {
             let eventEndDates = room.calendar.eventEndDates;
 
             let startSelectedDay = (new Date(date));
-            startSelectedDay.setHours(8,0,0,0);
+            startSelectedDay.setHours(7,0,0,0);
             let endSelectedDay = new Date(date);
-            endSelectedDay.setHours(15,0,0,0);
+            endSelectedDay.setHours(14,0,0,0);
 
             eventStartDates.unshift(startSelectedDay);
             
@@ -57,6 +58,10 @@ const actions = {
             for(var i = 1; i != eventStartDates.length; i++){
                 let startAppDate = new Date(eventStartDates[i]);
                 let endAppDate = new Date(eventEndDates[i-1]);
+                if(endAppDate.getTime() <= startSelectedDay.getTime()){
+                    continue;
+                }
+
                 //can the appointment be set before the first already set appointment 
                 if(i == 1 && new Date(eventStartDates[i-1]).getTime() + durationMilliseconds <= startAppDate.getTime()){
                     showRoom = true;
@@ -77,6 +82,10 @@ const actions = {
                     break;
                 }
                 
+            }
+            if(firstAvailable == null){
+                firstAvailable = startSelectedDay;
+                showRoom = true;
             }
             showRoom = room.type.toUpperCase().match(payload.type.toUpperCase()) ? true : false;
             if(date == "") showRoom = true;
@@ -122,12 +131,13 @@ const actions = {
 
     },
 
-    async deleteRoom({commit}, id){
+    async deleteRoom({commit, dispatch}, id){
         try{
             await Vue.$axios.delete('http://localhost:8081/rooms/deleteRoom/' + id);
             commit('deletedRoom', id);
+            dispatch('snackbar/showSuccess', "Successfully deleted.", {root: true});
         }catch(error){
-            alert(error.response);
+            dispatch('snackbar/showWarning', "Can't delete", {root: true});
         }
     },
     async addRoom({commit}, room){
@@ -138,12 +148,13 @@ const actions = {
             alert(error.response);
         }
     },
-    async updateRoom({commit}, room){
+    async updateRoom({commit,dispatch}, room){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/rooms/updateRoom', room);
             commit('updatedRoom', response.data);
+            dispatch("snackbar/showSuccess", "Successfully updated", {root: true});
         }catch(error){
-            alert(error.response.status);
+            dispatch("snackbar/showWarning", "Can't update", {root:true});
         }
     },
 

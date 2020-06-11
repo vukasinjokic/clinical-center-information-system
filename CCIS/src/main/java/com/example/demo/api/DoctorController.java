@@ -1,17 +1,16 @@
 package com.example.demo.api;
 
+import com.example.demo.Repository.MedicalStaffRepository;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.MedicalRecordDTO;
 import com.example.demo.dto.UserDTO;
-import com.example.demo.model.Calendar;
-import com.example.demo.model.Doctor;
-import com.example.demo.model.Patient;
+import com.example.demo.exceptions.ForbiddenException;
+import com.example.demo.model.*;
 import com.example.demo.service.DoctorService;
-import com.example.demo.model.MedicalStaffRequest;
+import com.example.demo.service.MedicalStaffService;
 import com.example.demo.useful_beans.Grade;
-import org.dom4j.util.UserDataDocumentFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -32,12 +31,14 @@ public class DoctorController {
 
     private final DoctorService doctorService;
     private final PatientRepository patientRepository;
+    private final MedicalStaffService medicalStaffService;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public DoctorController(DoctorService doctorService, PatientRepository patientRepository) {
+    public DoctorController(DoctorService doctorService, PatientRepository patientRepository, MedicalStaffService medicalStaffService) {
         this.doctorService = doctorService;
         this.patientRepository = patientRepository;
+        this.medicalStaffService = medicalStaffService;
     }
 
     @GetMapping
@@ -72,16 +73,16 @@ public class DoctorController {
 
     @DeleteMapping("/deleteDoctor{id}")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
-    public ResponseEntity<String> deleteDoctor(@PathVariable Integer id){
-        String message = doctorService.deleteDoctor(id);
-        if(message == ""){
-            return new ResponseEntity<>("Usesno obrisan", HttpStatus.OK);
-        }
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> deleteDoctor(@PathVariable Integer id) throws ForbiddenException {
+        doctorService.deleteDoctor(id);
+
+        return new ResponseEntity<>("Usesno obrisan", HttpStatus.OK);
+
+        //return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/sendVacationRequest")
-    @PreAuthorize("hasAnyRole('DOCTOR')")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     public ResponseEntity<String> sendVacationRequest(@RequestBody MedicalStaffRequest request){
         if(doctorService.sendRequest(request)){
             return new ResponseEntity<>("OK",HttpStatus.OK);
@@ -130,10 +131,7 @@ public class DoctorController {
     @GetMapping(path = "/calendar/{email}")
     @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
     public Calendar getDoctorsCalendar(@PathVariable("email") String email){
-        Doctor doctor = doctorService.findByEmail(email);
-        DoctorDTO doctorDTO = modelMapper.map(doctor,DoctorDTO.class);
-        doctorDTO.setFields(doctor);
-        return doctorDTO.getCalendar();
+        return medicalStaffService.getStaffCalendar(email);
     }
 
     @PostMapping("/updateMedicalRecord")

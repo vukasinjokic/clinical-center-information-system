@@ -1,7 +1,6 @@
 <template>
     <div class="home"> 
         <div>
-        <v-container>
              <v-card>
                  <v-card-title>
                      Rooms
@@ -43,6 +42,7 @@
                         format="24h"
                         full-width
                         @click:minute="$refs.menu.save(duration)"
+                        :min="nowDate"
                         ></v-time-picker>
                     </v-menu>
                     <v-spacer></v-spacer>
@@ -77,7 +77,7 @@
                     <v-spacer></v-spacer>
                     <v-btn @click="filter">Search</v-btn>
                 </v-card-title>          
-                </v-card>
+                
                 <v-data-table 
                     :ref="table"
                     :headers="headers"
@@ -86,8 +86,8 @@
                     :expanded.sync="expanded"
                     item-key="name"
                     show-expand
-                    class="blue-grey darken-4 white--text"
-                    dark>
+                    class="white"
+                    >
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length" v-if="item.calendar != null">
                         <tr v-for="it in item.calendar.eventStartDates.length" v-bind:key=it.name>
@@ -127,70 +127,12 @@
                      </td>
                 </template>
                 <template v-slot:top>
-                <v-toolbar flat class="blue-grey darken-4 white--text">
-                <v-spacer></v-spacer>
-                <v-dialog v-model="editDialog" max-width="370px">
-                    <template v-slot:activator="{ on }">
-                    <v-btn color="orange lighten-1" dark class="mb-2" v-on="on">New Room</v-btn>
-                    </template>
-                    <v-card>
-                    <v-card-title>
-                        <span class="headline">{{ formTitle }}</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-container>
-                        <v-form ref="form">
-                        <v-row>
-                            <v-col cols="12" sm="6" md="12">
-                            <v-text-field 
-                                    label="Room name"
-                                    v-model="editedItem.name"
-                                    :rules="[requiredRule]"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                            <v-text-field  v-model="editedItem.number" label="Room number"
-                                :rules="[numberRule,requiredRule]" >
-                            </v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm= "6" md="8">
-                                <v-select
-                                    :rules="[requiredRule]"
-                                    v-model="editedItem.type"
-                                    :items="typesEx"
-                                    label="Select type">
-                                </v-select>
-                            </v-col>
-                        </v-row>
-                        </v-form>
-                        </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-                    </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                </v-toolbar>
+                
                  </template>
-                <template v-slot:item.actions="{ item }">
-                    <v-icon
-                        small
-                        class="mr-2"
-                        @click="editItem(item)"
-                        >
-                        mdi-pencil
-                        </v-icon>
-                        <v-icon
-                        small
-                        @click="deleteItem(item)"
-                        >
-                        mdi-delete
-                    </v-icon>
-                </template>
+                <!-- <template v-slot:item.actions="{ item }">
+                </template> -->
                 </v-data-table>
-            
-        </v-container>
+                </v-card>
         </div>
         
     </div> 
@@ -212,13 +154,9 @@ export default {
                 {
                     text: 'Number', value: 'number', fileterable:true            
                 },
-                {
-                    text: 'Clinic', value: 'clinic',fileterable: true
-                },
                 { 
                     text: 'Type', value: 'type', sortable: true 
                 },
-                {text: "Actions", value:"actions"}
             ],
             search: "",
             date:"",
@@ -228,19 +166,6 @@ export default {
             duration: "00:00",
             menu2: false,
             dialog: false,
-            editDialog: false,
-            editedItem: {
-                id: "",
-                name: "",
-                number: "",
-                type: ""
-            },
-            defaultItem: {
-                id: "",
-                name: "",
-                number: "",
-                type: ""
-            },
             editedIndex: -1,
             typesEx: ["APPOINTMENT","OPERATION"],
             doctorsSelect: [],
@@ -250,7 +175,7 @@ export default {
     },
     methods: {
         ...mapActions('room',['fetchRooms','filterRooms', 'fetchClinicDoctors',
-         'handleReservation','deleteRoom','addRoom', 'updateRoom']),
+         'handleReservation']),
 
         dateToString(item){
             var d = new Date(item);
@@ -275,11 +200,11 @@ export default {
         },
 
         sendNotification(){
-            let doctors = [];
+            let doctorsIds = [];
             this.doctorsSelect.concat(this.mainDoctor.firstName + ' ' + this.mainDoctor.lastName).forEach(name => {
-                doctors.push(this.clinicDoctorsDict[name]);
+                doctorsIds.push(this.clinicDoctorsDict[name].id);
             });
-            let payload = {doctors: doctors, requestId : this.request.id, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
+            let payload = {doctorsIds: doctorsIds, requestId : this.request.id, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
             this.handleReservation(payload);
             this.dialog = false;
             this.$emit('reserved');
@@ -292,31 +217,7 @@ export default {
         allowedMinutes: m => m % 15 === 0,
         allowedHours: h => h <= 10,
 
-        editItem(item){
-            this.editedIndex = this.getAllRooms.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            this.editDialog = true;
 
-        },
-        deleteItem(item){
-            this.deleteRoom(item.id);
-        },
-        close(){
-            this.editDialog = false;
-            this.editedItem = Object.assign({}, this.defaultItem);
-            this.editedIndex = -1;
-            this.$refs.form.reset();
-
-        },
-        save(){
-            if(this.$refs.form.validate()){
-                if(this.editedIndex > -1)
-                    this.updateRoom(this.editedItem);
-                else
-                    this.addRoom(this.editedItem);
-                this.close();
-            }
-        },
         setUpFields(request){
             this.request = request;
             this.date = request.time;
@@ -370,6 +271,9 @@ export default {
         numberRule(){
             return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be valid.";
         },
+        nowDate(){
+            return new Date().toISOString().slice(0,10);
+        }
     },
     created(){
         this.fetchRooms();

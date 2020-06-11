@@ -25,9 +25,9 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     @Async
-    public void alertDoctorsOperation(List<DoctorDTO> doctors, Appointment appointment) throws MailException, InterruptedException{
+    public void alertDoctorsOperation(List<Doctor> doctors, Appointment appointment) throws MailException, InterruptedException{
 
-        for(DoctorDTO doctor : doctors){
+        for(Doctor doctor : doctors){
             SimpleMailMessage mail = new SimpleMailMessage();
 //            mail.setTo(doctor.getEmail());
             mail.setTo("isamrstim23@gmail.com");
@@ -51,12 +51,12 @@ public class EmailService {
     }
 
     @Async
-    public void alertAdminForVacation(Doctor doctor, MedicalStaffRequest request){
+    public void alertAdminForVacation(MedicalStaff medicalStaff, MedicalStaffRequest request){
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo("isamrstim23@gmail.com");
-        mail.setFrom(doctor.getEmail());
+        mail.setFrom(medicalStaff.getEmail());
         mail.setSubject("Zahtev za " + request.getType().toString());
-        mail.setText("Postovani/a " + ", \n\n doktor " + doctor.getFirstName() + " " + doctor.getLastName()
+        mail.setText("Postovani/a " + ", \n\n doktor " + medicalStaff.getFirstName() + " " + medicalStaff.getLastName()
                        + " je zatrazio " + request.getType() + " od: " + request.getFromDate().toString()+
                         " do: " +request.getToDate().toString() + " datuma.");
         javaMailSender.send(mail);

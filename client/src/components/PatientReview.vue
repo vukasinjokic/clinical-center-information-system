@@ -36,7 +36,7 @@
         <v-dialog v-model="dialog" max-width="554px">
             <v-card>
                 <PatientProfile></PatientProfile>
-                <v-card-actions>
+                <v-card-actions v-if="userRole != 'ROLE_NURSE'">
                     <v-btn
                         color="primary"
                         rounded
@@ -95,10 +95,12 @@ export default {
             search: '',
             dialog: false,
             selectedItem: {},
+            userRole: ''
         }
     },
     created(){
         this.fetchPatients();
+        this.userRole = localStorage.getItem("user_role");
     },
     computed: {
         ...mapGetters('patient',['allPatients'])
