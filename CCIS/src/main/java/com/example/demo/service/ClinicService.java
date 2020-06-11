@@ -219,7 +219,8 @@ public class ClinicService {
             priceList.getItems().add(priceListItem);
             priceList.setClinic(admin.getClinic());
             priceListRepository.save(priceList);
-            return priceListItemRepository.save(priceListItem);
+
+            return priceListItemRepository.findByExaminationTypeId(examinationType.getId()).get();
         }
         return null;
     }
