@@ -12,7 +12,6 @@ before_install:
 
 script:
   - ./mvnw clean install -DskipTests=false -B 
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=vujko_clinical-center-information-system -X
 dist: trusty
 
 deploy:
@@ -20,8 +19,4 @@ deploy:
   api_key: $HEROKU_API_KEY
   app: clinic-center-inf-system
 
-  addons:
-  sonarcloud:
-    organization: "vujko-dzoni"
-    token:
-      secure: "RiCXM7H+jmq9eU1x3ECKZu4qm0L2QBUZesHGt0876RnaDXkXu8m4JOy8n93JS3WJ1oUcmv+XHjbuWKsV5LMFFfPgEdHHr4rSfvLnoAwHrxNFK2Imo/agzR0FlgJngjcGqHYYLhd3GiD+GP8FUZ8FwGsdGx1BcE51i8cYQ+CmTf4CLYwm4ZwcV+cKKcTcRORNMhR00UezrFc7GCVGJNwqZNxm7h/CNWGrdbVEHw2YdvPGDG/JGOTDjzSg534g3LZOAKTk5IdI4zMPoLU+a5R5SQY870ASyI/KfpoDVJM1kdegK3pfecViACz4KlpHp1hbWcnknaW9VxaDSrJdSBPK5jmjjN4C9hJvI/5RQqVFS32I8oqDtscEgHWRGnJIRcDVsHd5JOX3SPbfiwP6YqoFWdOYoGi5ij/guqUvmfQlPsTP+7cNOhOyzP8D+BOG+Q21lELGURsdX9IMixgpWlUWsH6KZM+flEwinKxou89wQaAtTqhYHayxx9nkYZqnz8NnRtZgFYlNruBt0p2j5vo+LgACkru+CuaD2tr9WxF7sCV0hP6zejgwh+i5SQGIoOI1pPUkv662gPJfv+oCuqjT8KcrU7Dg8YGsvK3MchI3OYwTLNVh/sY2/bkz9/TVLFiFzp3ikgtmzJA6vuJkb7xzRLtOFmZkFppcGHD9zSirOzU=" # encrypted value of your token
+  
