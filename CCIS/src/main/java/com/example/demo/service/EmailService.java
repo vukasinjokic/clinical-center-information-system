@@ -25,9 +25,9 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     @Async
-    public void alertDoctorsOperation(List<DoctorDTO> doctors, Appointment appointment) throws MailException, InterruptedException{
+    public void alertDoctorsOperation(List<Doctor> doctors, Appointment appointment) throws MailException, InterruptedException{
 
-        for(DoctorDTO doctor : doctors){
+        for(Doctor doctor : doctors){
             SimpleMailMessage mail = new SimpleMailMessage();
 //            mail.setTo(doctor.getEmail());
             mail.setTo("isamrstim23@gmail.com");

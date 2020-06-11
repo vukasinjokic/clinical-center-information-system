@@ -275,11 +275,11 @@ export default {
         },
 
         sendNotification(){
-            let doctors = [];
+            let doctorsIds = [];
             this.doctorsSelect.concat(this.mainDoctor.firstName + ' ' + this.mainDoctor.lastName).forEach(name => {
-                doctors.push(this.clinicDoctorsDict[name]);
+                doctorsIds.push(this.clinicDoctorsDict[name].id);
             });
-            let payload = {doctors: doctors, requestId : this.request.id, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
+            let payload = {doctorsIds: doctorsIds, requestId : this.request.id, room : this.selectedRoom, reservedTime : this.availableTimes[this.selectedRoom.id]}
             this.handleReservation(payload);
             this.dialog = false;
             this.$emit('reserved');
