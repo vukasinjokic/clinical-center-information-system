@@ -122,12 +122,13 @@ const actions = {
 
     },
 
-    async deleteRoom({commit}, id){
+    async deleteRoom({commit, dispatch}, id){
         try{
             await Vue.$axios.delete('http://localhost:8081/rooms/deleteRoom/' + id);
             commit('deletedRoom', id);
+            dispatch('snackbar/showSuccess', "Successfully deleted.", {root: true});
         }catch(error){
-            alert(error.response);
+            dispatch('snackbar/showWarning', "Can't delete", {root: true});
         }
     },
     async addRoom({commit}, room){

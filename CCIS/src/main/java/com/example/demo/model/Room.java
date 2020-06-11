@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -23,6 +24,9 @@ public class Room {
 
    @Column(name = "number", unique = true, nullable = false)
    private String number;
+
+   @Type(type = "true_false")
+   private Boolean activity;
 
    @Enumerated(EnumType.STRING)
    @Column(name = "room_type", length = 15)
@@ -60,6 +64,14 @@ public class Room {
 
    public void setId(Integer id) {
       this.id = id;
+   }
+
+   public Boolean getActivity() {
+      return activity;
+   }
+
+   public void setActivity(Boolean activity) {
+      this.activity = activity;
    }
 
    public Collection<Appointment> getAppointments() {

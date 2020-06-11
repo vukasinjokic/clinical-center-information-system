@@ -5,13 +5,13 @@ import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.MedicalRecordDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.exceptions.ForbiddenException;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
 import com.example.demo.service.DoctorService;
 import com.example.demo.model.MedicalStaffRequest;
 import com.example.demo.useful_beans.Grade;
-import org.dom4j.util.UserDataDocumentFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -72,12 +72,12 @@ public class DoctorController {
 
     @DeleteMapping("/deleteDoctor{id}")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
-    public ResponseEntity<String> deleteDoctor(@PathVariable Integer id){
-        String message = doctorService.deleteDoctor(id);
-        if(message == ""){
-            return new ResponseEntity<>("Usesno obrisan", HttpStatus.OK);
-        }
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> deleteDoctor(@PathVariable Integer id) throws ForbiddenException {
+        doctorService.deleteDoctor(id);
+
+        return new ResponseEntity<>("Usesno obrisan", HttpStatus.OK);
+
+        //return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/sendVacationRequest")

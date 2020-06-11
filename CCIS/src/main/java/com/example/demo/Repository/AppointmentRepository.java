@@ -41,6 +41,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
             @Param("dateTo")Date dateTo,
             @Param("finished")Boolean finished);
 
+    List<Appointment> findAllByRoomIdAndTimeAfter(
+            @Param("roomId") Integer roomId,
+            @Param("date") Date date);
+
+    List<Appointment> findAllByDoctorIdAndTimeAfter(
+            @Param("doctorId") Integer doctorId,
+            @Param("time") Date time
+    );
+
     List<Appointment> findAllByDoctorIdAndPatientEmailAndFinished(
             @Param("doctorId") Integer doctorId,
             @Param("patientEmail") String patientEmail,

@@ -8,6 +8,7 @@ import com.example.demo.Repository.RatingRepository;
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.MedicalRecordDTO;
+import com.example.demo.exceptions.ForbiddenException;
 import com.example.demo.model.AppointmentRequest;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
@@ -62,9 +63,11 @@ public class DoctorService {
     }
 
     public List<Doctor> findAllDoctors(){
+        //treba izmena za aktivnost
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<ClinicAdmin> clinicAdmin =  clinicAdminRepository.findById(user.getId());
-        return (List<Doctor>) clinicAdmin.get().getClinic().getDoctors();
+        return doctorRepository.findAllByClinicIdAndActivity(
+                clinicAdmin.get().getClinic().getId(),true);
     }
 
     public Patient findPatientProfile(String email){
@@ -73,6 +76,7 @@ public class DoctorService {
     }
 
     public boolean canStaffViewRecord(String patientEmail){
+        //DOCTOR ACTIVITY
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndPatientEmailAndFinished(
                 user.getId(), patientEmail, true);
@@ -82,6 +86,7 @@ public class DoctorService {
     }
 
     public List<Doctor> findDoctorsFromClinic(Integer clinicId) {
+        //DOCTOR ACTIVITY
         Optional<Clinic> optionalClinic = clinicRepository.findById(clinicId);
         Clinic clinic = optionalClinic.get();
         return clinicRepository.findDoctorsFromClinic(clinic);
@@ -89,7 +94,8 @@ public class DoctorService {
 
 
     public Doctor findByEmail(String email){
-        return doctorRepository.findByEmail(email);
+        //DOCTOR ACTIVITY
+        return doctorRepository.findByEmailAndActivity(email, true);
     }
 
     public boolean gradeDoctor(Doctor doctor, Integer patientId, float newGrade) {
@@ -98,29 +104,26 @@ public class DoctorService {
         doctorRating = ratingRepository.save(doctorRating);
         return doctorRating != null;
     }
-    public String deleteDoctor(Integer id){
+    public void deleteDoctor(Integer id) throws ForbiddenException {
         Optional<Doctor> find_doc = doctorRepository.findById(id);
-        List<Appointment> appointments = appointmentRepository.findByDoctorId(id);
-        //ne pokupi doktora koji ima appointments null
         Date date = new Date();
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndTimeAfter(id, date);
+        //ne pokupi doktora koji ima appointments null
         if(find_doc.isPresent()){
             Doctor doctor = find_doc.get();
-            if(doctorValidation.checkAppointments(appointments,date)) {
-                doctorRepository.delete(doctor);
-                return "";
-            }
-            if(doctor.getCalendar() == null){
-                doctorRepository.delete(doctor);
-                return "";
+
+            if(appointments.size() == 0){
+                doctor.setActivity(false);
+                doctorRepository.save(doctor);
+                return;
             }
 //            if(doctorValidation.validateDeleting(doctor,date)){
 //                doctorRepository.delete(doctor);
 //                return "";
 //            }
-
-            return "Ne mozete obrisati doktora koji ima zakazan pregled.";
+            throw new ForbiddenException("Doktor ima zakazane preglede.");
         }
-        return "Doktor sa zadatim id ne postoji.";
+        throw new ForbiddenException("Doktor ima zakazane preglede.");
     }
 
     public Doctor saveDoctor(DoctorDTO doctorDTO){
@@ -162,6 +165,7 @@ public class DoctorService {
         newDoctor.setCity(doctorDTO.getCity());
         newDoctor.setAddress(doctorDTO.getAddress());
         newDoctor.setCountry(doctorDTO.getCountry());
+        newDoctor.setActivity(true);
     }
 
     public boolean sendRequest(MedicalStaffRequest request){
