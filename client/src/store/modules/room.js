@@ -139,12 +139,13 @@ const actions = {
             alert(error.response);
         }
     },
-    async updateRoom({commit}, room){
+    async updateRoom({commit,dispatch}, room){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/rooms/updateRoom', room);
             commit('updatedRoom', response.data);
+            dispatch("snackbar/showSuccess", "Successfully updated", {root: true});
         }catch(error){
-            alert(error.response.status);
+            dispatch("snackbar/showWarning", "Can't update", {root:true});
         }
     },
 

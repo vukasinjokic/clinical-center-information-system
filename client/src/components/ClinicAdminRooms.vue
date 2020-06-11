@@ -5,127 +5,28 @@
              <v-card>
                  <v-card-title>
                      Rooms
-                 </v-card-title>
-                <v-card-title>
+                    <v-spacer></v-spacer>
                     <v-text-field
+                        style="width:100px"
+                        dense
+                        outlined
                         v-model="search"
+                        append-icon="mdi-magnify"
                         label="Search"
-                        single-line
-                        show-details
-                        
+                        hide-details
                     ></v-text-field>
-                    <v-spacer></v-spacer>
-                    <v-menu
-                        ref="menu"
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        :return-value.sync="duration"
-                        transition="scale-transition"
-                        offset-y
-                        max-width="290px"
-                        min-width="290px"
-                    >   
-                        <template v-slot:activator="{ on }">
-                        <v-text-field
-                            v-model="duration"
-                            label="Pick duration"
-                            prepend-icon="mdi-access_time"
-                            readonly
-                            v-on="on"
-                        ></v-text-field>
-                        </template>
-                        <v-time-picker
-                        v-if="menu2"
-                        v-model="duration"
-                        :allowed-minutes="allowedMinutes"
-                        :allowed-hours="allowedHours"
-                        format="24h"
-                        full-width
-                        @click:minute="$refs.menu.save(duration)"
-                        ></v-time-picker>
-                    </v-menu>
-                    <v-spacer></v-spacer>
-                    <v-menu
-                        v-model="fromDateMenu"
-                        :close-on-content-click="true"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        max-width="290px">
-                        <template v-slot:activator="{ on }">
-                            <v-text-field  v-model="date"
-                                v-on="on"
-                                label="Pick date"
-                                :value="date"
-                                hint="MM/DD/YYYY format"
-                                />
-                        </template>
-                        <v-date-picker  v-model="date"
-                                @input="fromDateMenu = false">           
-                        </v-date-picker>          
-                    </v-menu>
-                    <v-spacer></v-spacer>
-                    <v-combobox
-                        v-model="type"
-                        :items="types"
-                        label="Select type"
-
-                    >
-
-                    </v-combobox>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="filter">Search</v-btn>
-                </v-card-title>          
-                </v-card>
+                </v-card-title>
+                
                 <v-data-table 
+                    :search="search"
                     :ref="table"
                     :headers="headers"
                     :items="filteredRooms"
                     :items-per-page="5"
-                    :expanded.sync="expanded"
                     item-key="name"
-                    show-expand
                     class="blue-grey darken-4 white--text"
                     dark>
-                <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length" v-if="item.calendar != null">
-                        <tr v-for="it in item.calendar.eventStartDates.length" v-bind:key=it.name>
-                            <td>Start date: {{ dateToString(item.calendar.eventStartDates[it-1])}}</td>
-                            <td>End date: {{ dateToString(item.calendar.eventEndDates[it-1])}}</td>
-                        </tr>
-                        <tr style="background-color:gray" v-if="availableTimes">
-                            <td >First available appointment : {{dateToString(availableTimes[item.id])}}</td>
-                            <td style="text-align:center; margin-left:140px;"><v-btn @click="reserveRoom(item)" color="blue">Reserve room</v-btn> </td>
-                            <v-row justify="center">
-                                <v-dialog v-model="dialog" persistent max-width="500">
-                                <v-card>
-                                    <v-card-title class="headline">Choose doctors to attend operation</v-card-title>
-                                    <v-container fluid>
-                                    <v-row align="center">
-                                        <v-col sm="100">
-                                            <v-select
-                                            v-model="doctorsSelect"
-                                            :items="doctorsForSelect"
-                                            :menu-props="{ maxHeight: '400' }"
-                                            label="Select"
-                                            style="width:500px"
-                                            multiple
-                                            ></v-select>
-                                        </v-col>
-                                    </v-row>
-                                    </v-container>
-                                    <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
-                                    <v-btn color="blue darken-1" text @click="sendNotification()">Send notification</v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                                </v-dialog>
-                            </v-row>
-                        </tr>
-                     </td>
-                </template>
+                
                 <template v-slot:top>
                 <v-toolbar flat class="blue-grey darken-4 white--text">
                 <v-spacer></v-spacer>
@@ -189,6 +90,7 @@
                     </v-icon>
                 </template>
                 </v-data-table>
+                </v-card>
                 <v-dialog v-model="confirmDialog" max-width="300px">
                     <v-card>
                         <v-card-title>

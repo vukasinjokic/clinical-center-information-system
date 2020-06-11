@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router'
 import UserProfile from '../components/UserProfile.vue'
 import VacationReqReview from '../components/VacationReqReview'
-import Room from '../views/Rooms'
+import ClinicAdminRooms from '../components/ClinicAdminRooms.vue'
 import Login from '../views/Login'
 import Appointments from '../views/Appointments'
 import ExaminationTypeReview from '../components/examinationType/ExaminationTypeReview.vue'
@@ -199,7 +199,7 @@ const router = new VueRouter({
           {path: 'businessReport', name: 'BusinessReport', component: BusinessReport},
           {path: 'appointmentRequests', name: 'AppointmentRequests', component: AppointmentRequests},
           {path: 'vacationRequests', name: 'Vacation Requests', component: VacationReqReview },
-          {path: 'rooms', name: 'Rooms', component: Room },
+          {path: 'updateRooms', name: 'ClinicAdminRooms', component: ClinicAdminRooms },
           {path: 'ex_type', name: 'ExaminationType', component : ExaminationTypeReview },
           {path: 'appointments', name: 'Appointments', component : Appointments },
           {path: 'doctors', name: 'Doctors', component : DoctorReview},

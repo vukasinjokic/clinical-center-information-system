@@ -62,7 +62,7 @@ export default {
                 { title: 'Business report', link: '/clinicAdmin/businessReport'},
                 { title: 'Appointment requests', link: '/clinicAdmin/appointmentRequests' },
                 { title: 'Vacation requests', link: '/clinicAdmin/vacationRequests'},
-                { title: 'Rooms', link: '/clinicAdmin/rooms'},
+                { title: 'Rooms', link: '/clinicAdmin/updateRooms'},
                 { title: 'Examination types', link: '/clinicAdmin/ex_type'},
                 { title: 'Appointments', link: '/clinicAdmin/appointments'},
                 { title: 'Doctors', link: '/clinicAdmin/doctors'},
