@@ -65,13 +65,7 @@
                       v-model="dura" 
                       ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field 
-                      :rules="[durationRule,requiredRule]" 
-                      label="Price" type="float"
-                      v-model="price" 
-                      required></v-text-field>
-                </v-col>
+                
                 <v-col cols="12" sm="6">
                   <v-select
                     v-model="room"
@@ -98,6 +92,7 @@
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text v-on:click="closeDialog">Close</v-btn>
             <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                {{time}}
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -144,13 +139,12 @@ export default {
             this.dialog = false;
             this.$refs.form.reset();
         },
-        save(){
+        save(){ 
           if(this.$refs.form.validate()){
             var newAppointment = 
                     {
-                      time: new Date(this.date + " " + this.time),
-                      price: this.price,
-                      doctor: this.doctor,
+                      time: this.date + " " + this.time,
+                      doctorEmail: this.doctor,
                       room: this.room,
                       examinationType: this.type,
                       clinic: "Ne znam kliniku dok se ne uradi login"
@@ -161,8 +155,8 @@ export default {
           }
         },
         doSome(){
-            var duration = parseInt(this.getTypeDuration(this.type).duration);
-            this.dura = duration/3600000 + "h";
+            var duration = parseFloat(this.getTypeDuration(this.type).duration);
+            this.dura = duration + "h";
             this.fetchDoctors(this.type);
         }
     }

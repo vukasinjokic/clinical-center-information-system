@@ -8,8 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +25,9 @@ public class AppointmentRequestController {
     private final AppointmentRequestService appointmentRequestService;
     private final DoctorService doctorService;
     private final ClinicService clinicService;
-    private final UserService userService;
+    private final PatientService patientService;
     private final ClinicAdminService clinicAdminService;
+    private final AppointmentService appointmentService;
     private final EmailService emailService;
 
     private ModelMapper modelMapper = new ModelMapper();
@@ -38,14 +37,15 @@ public class AppointmentRequestController {
     public AppointmentRequestController(AppointmentRequestService appointmentRequestService,
                                         DoctorService doctorService,
                                         ClinicService clinicService,
-                                        UserService userService,
+                                        PatientService patientService,
                                         ClinicAdminService clinicAdminService,
-                                        EmailService emailService) {
+                                        AppointmentService appointmentService, EmailService emailService) {
         this.appointmentRequestService = appointmentRequestService;
         this.doctorService = doctorService;
         this.clinicService = clinicService;
-        this.userService = userService;
+        this.patientService = patientService;
         this.clinicAdminService = clinicAdminService;
+        this.appointmentService = appointmentService;
         this.emailService = emailService;
     }
 
@@ -62,29 +62,38 @@ public class AppointmentRequestController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> addAppointmentRequest(@RequestBody AppointmentToReservePatient appointmentToAdd) {
         try {
-            Date chosenDate = formatter.parse(appointmentToAdd.getAppointmentTime());
-            Doctor doctor = doctorService.findById(Integer.parseInt(appointmentToAdd.getDoctorId()));
-            if (doctor == null)
-                return new ResponseEntity<>("Invalid doctor id", HttpStatus.BAD_REQUEST);
-
-            Clinic clinic = clinicService.findById(Integer.parseInt(appointmentToAdd.getClinicId()));
-            if (clinic == null)
-                return new ResponseEntity<>("Invalid clinic id", HttpStatus.BAD_REQUEST);
-
-            User user = userService.findByUsername(appointmentToAdd.getPatientEmail());
-            if (user == null)
+            Integer clinicId = 0;
+            AppointmentRequest appointmentRequest = new AppointmentRequest();
+            Patient patient = patientService.findByEmail(appointmentToAdd.getPatientEmail());
+            if (patient == null)
                 return new ResponseEntity<>("Invalid user email", HttpStatus.BAD_REQUEST);
 
-            AppointmentRequest appointmentRequest = new AppointmentRequest();
-            appointmentRequest.setDoctor(doctor);
-            appointmentRequest.setPatient((Patient) user);
-            appointmentRequest.setTime(chosenDate);
-            appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
+            if (appointmentToAdd.getAppointmentId() == null) {
+                Date chosenDate = formatter.parse(appointmentToAdd.getAppointmentTime());
+                Doctor doctor = doctorService.findById(Integer.parseInt(appointmentToAdd.getDoctorId()));
+                if (doctor == null)
+                    return new ResponseEntity<>("Invalid doctor id", HttpStatus.BAD_REQUEST);
+
+                Clinic clinic = clinicService.findById(Integer.parseInt(appointmentToAdd.getClinicId()));
+                if (clinic == null)
+                    return new ResponseEntity<>("Invalid clinic id", HttpStatus.BAD_REQUEST);
+                clinicId = clinic.getId();
+
+                appointmentRequest.setDoctor(doctor);
+                appointmentRequest.setPatient(patient);
+                appointmentRequest.setTime(chosenDate);
+                appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
+            } else {
+                Appointment predefinedAppointment = appointmentService.getAppointment(appointmentToAdd.getAppointmentId());
+                clinicId = predefinedAppointment.getClinic().getId();
+                appointmentRequest.setPredefAppointment(predefinedAppointment);
+                appointmentRequest.setPatient(patient);
+                appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
+            }
 
             boolean success = appointmentRequestService.saveRequest(appointmentRequest);
             if (success) {
-                List<ClinicAdmin> clinicAdmins = clinicAdminService.getClinicAdminsByClinicId(clinic.getId());
-                // TODO: Videti zašto traje dugo
+                List<ClinicAdmin> clinicAdmins = clinicAdminService.getClinicAdminsByClinicId(clinicId);
                 emailService.alertClinicAdminForAppointmentPatientRequest(clinicAdmins, appointmentRequest);
 
                 return new ResponseEntity<>("OK", HttpStatus.OK);

@@ -52,13 +52,53 @@
         :event-overlap-threshold="30"
         :event-color="getEventColor"
         @change="getEvents"
+        @click:event="showEvent"
       ></v-calendar>
+
+      <v-menu
+          v-model="selectedOpen"
+          :close-on-content-click="false"
+          :activator="selectedElement"
+          offset-x
+        >
+          <v-card
+            
+            v-if="selectedEvent.appointmentId"
+            color="grey lighten-4"
+            min-width="350px"
+            flat
+          >
+            <v-toolbar
+
+              :color="selectedEvent.color"
+              dark
+            >
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-spacer></v-spacer>
+              
+            </v-toolbar>
+            
+            <v-card-actions>
+              
+              <v-btn
+                text
+                color="primary"
+                @click="startAppointmentButtonClicked"
+              >
+                Start appointment
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+
+
     </v-sheet>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions, mapGetters } from 'vuex'
+
   export default {
     data: () => ({
       type: 'month',
@@ -73,70 +113,52 @@ import axios from "axios";
         { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
       ],
       value: '',
-      events: [],
-      eventStartDates: [],
-      eventEndDates: [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: [],
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
     }),
-    created() {
-       
-        axios
-        .get("http://localhost:8081/doctors/calendar/"+localStorage.getItem('user_email'))
-        .then(response => {
-            response.data.eventStartDates.forEach(date => {
-                let eventStartDate= new Date(date)
-                let formatted_date = eventStartDate.getFullYear() + "-" + (eventStartDate.getMonth() + 1) + "-" + eventStartDate.getDate() + " " + eventStartDate.getHours() + ":" + eventStartDate.getMinutes();
-                this.eventStartDates.push(formatted_date)
-            }); 
-            response.data.eventEndDates.forEach(date => {
-                let eventEndDate= new Date(date)
-                let formatted_date = eventEndDate.getFullYear() + "-" + (eventEndDate.getMonth() + 1) + "-" + eventEndDate.getDate() + " " + eventEndDate.getHours() + ":" + eventEndDate.getMinutes();
-                this.eventEndDates.push(formatted_date)
-            }); 
-            this.names = response.data.eventNames;
-            this.getEvents();
-        })
 
-
-    },
+    
     methods: {
-      getEvents () {
-        const events = []
+      ...mapActions('calendar',['fetchCalendar','startAppointment']),
 
-        // const min = new Date(`${start.date}T00:00:00`)
-        // const max = new Date(`${end.date}T23:59:59`)
+      startAppointmentButtonClicked(){
+        this.startAppointment(this.selectedEvent.appointmentId);
+        this.$router.replace({name:'startAppointment'});
 
-        for (let i = 0; i < this.names.length; i++) {
-        //   const allDay = this.rnd(0, 3) === 0
-        //   const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-        //   const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        //   const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        //   const second = new Date(first.getTime() + secondTimestamp)
-
-          events.push({
-            name: this.names[i],
-            // start: this.formatDate(first, !allDay),
-            // end: this.formatDate(second, !allDay),
-            start: this.eventStartDates[i],
-            end: this.eventEndDates[i],
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-          })
-        }
-
-        this.events = events
       },
+      
       getEventColor (event) {
         return event.color
       },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
+      showEvent ({ nativeEvent, event }) {
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          setTimeout(() => this.selectedOpen = true, 10)
+        }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          setTimeout(open, 10)
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
       },
-      formatDate (a, withTime) {
-        return withTime
-          ? `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
-          : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`
+      
+    },
+    computed : {
+      ...mapGetters('calendar', ['getEvents']),
+
+      events : function() {
+        return this.getEvents();
       },
+
+    },
+    created() {
+          this.fetchCalendar();
     },
   }
 </script>

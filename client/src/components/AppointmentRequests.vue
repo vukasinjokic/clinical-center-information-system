@@ -14,7 +14,7 @@
             <template #item.reserveRoomButton="{ item }" ><v-btn @click="reserveRoom(item)" color="orange lighten-1" dark>Reserve Room</v-btn></template>
 
         </v-data-table>
-    <v-dialog v-model="roomsDialog" eager>    
+    <v-dialog v-model="roomsDialog" width="55%" eager>    
         <Rooms ref="roomsComponent" @reserved="roomReserved"></Rooms>
     </v-dialog>
     </div>
@@ -61,23 +61,18 @@ export default {
         ...mapActions('appointmentRequests', ['fetchAppRequests', 'deleteRequest']),
 
         getTime(item){
-            if(item.type == 'DOCTOR') return new Date(item.time).toLocaleString();
-            return new Date(item.predefAppointment.date).toLocaleString();
+            if(item.type.predefAppointment) return new Date(item.predefAppointment.date).toLocaleString();
+            return new Date(item.time).toLocaleString();
         },
 
         reserveRoom(request){
-            console.log(request.doctor);
             this.roomsDialog = true;
             this.$refs.roomsComponent.setUpFields(request);
         },
 
-        roomReserved(request){
+        roomReserved(){
             this.roomsDialog = false;
-            this.deleteRequest(request.id);
         }
-
-        
-
         
     },
     computed : {  

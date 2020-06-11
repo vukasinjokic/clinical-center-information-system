@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.servlet.annotation.HttpMethodConstraint;
 import java.util.*;
@@ -46,11 +48,17 @@ public class Appointment {
    @JoinColumn(name = "clinic_id")
    private Clinic clinic;
 
+   @Column(name = "report")
+   private String report;
+
+   @Type(type = "true_false")
+   private boolean finished;
+
 
    public Appointment() {
    }
 
-   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic) {
+   public Appointment(Integer id, Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic, String report, boolean finished) {
       this.id = id;
       this.time = time;
       this.price = price;
@@ -60,6 +68,8 @@ public class Appointment {
       this.examinationType = examinationType;
       this.patient = patient;
       this.clinic = clinic;
+      this.report = report;
+      this.finished = finished;
    }
    public Appointment( Date time, float price, float discount, Doctor doctor, Room room, ExaminationType examinationType, Patient patient , Clinic clinic) {
       this.time = time;
@@ -79,6 +89,14 @@ public class Appointment {
       this.room = room;
       this.examinationType = examinationType;
       this.clinic = clinic;
+   }
+
+   public String getReport() {
+      return report;
+   }
+
+   public void setReport(String report) {
+      this.report = report;
    }
 
    public Clinic getClinic() {
@@ -153,5 +171,11 @@ public class Appointment {
       this.patient = patient;
    }
 
+   public boolean isFinished() {
+      return finished;
+   }
 
+   public void setFinished(boolean finished) {
+      this.finished = finished;
+   }
 }

@@ -48,7 +48,7 @@ export default {
                     text: 'Price', value: 'price', fileterable:true            
                 },
                 {
-                    text: 'Doctor', value: 'doctor',fileterable: true
+                    text: 'Doctor', value: 'doctor.email',fileterable: true
                 },
                 { 
                     text: 'Patient', value: 'patient',fileterable: true
@@ -77,9 +77,8 @@ export default {
         ...mapActions('appointments', ['fetchAppointments']),
         addAppointment(){
             console.log("Implementiraj");
-        }
-    },
-    
+        },
+    }
 }
 </script>
 <style>

@@ -11,8 +11,7 @@ import java.util.List;
 @Table(name = "patients")
 public class Patient extends User {
 
-   @OneToOne(fetch = LAZY)
-   @JoinColumn(name = "medical_record_id")
+   @OneToOne(mappedBy = "patient", cascade = {CascadeType.ALL}, fetch = LAZY)
    private MedicalRecord medicalRecord;
 
    @ManyToOne(fetch = LAZY)
@@ -25,17 +24,23 @@ public class Patient extends User {
    public Patient() {
       this.appointments = new HashSet<Appointment>();
    }
-   public Patient(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, MedicalRecord medicalRecord, List<Authority> authorities) {
-      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
+   public Patient(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, MedicalRecord medicalRecord, List<Authority> authorities) {
+      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities);
       this.medicalRecord = medicalRecord;
       this.appointments = new HashSet<Appointment>();
    }
 
-   public Collection<Appointment> getAppointment() {
+   public Patient(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
+      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, false);
+      this.medicalRecord = new MedicalRecord(this);
+      this.appointments = new HashSet<Appointment>();
+   }
+
+   public Collection<Appointment> getAppointments() {
       return appointments;
    }
 
-   public void setAppointment(Collection<Appointment> appointments) {
+   public void setAppointments(Collection<Appointment> appointments) {
       this.appointments = appointments;
    }
 
@@ -59,5 +64,12 @@ public class Patient extends User {
 
    public void addAppointment(Appointment a){
       this.appointments.add(a);
+   }
+
+   public void removeAppointment(Appointment a){
+      if(a == null) return;
+      if(appointments.contains(a)){
+         appointments.remove(a);
+      }
    }
 }

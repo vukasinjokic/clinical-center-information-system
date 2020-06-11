@@ -4,57 +4,23 @@
         <router-view></router-view>  
       </v-content>
     <v-app-bar
-      height="40px"
+      height="33px"
       app
       class="blue-grey darken-4 white--text"
     >
-      <router-link
-        class="white--text"
-        to="/vacRequests"
-        
-      >
-      Vacation requests</router-link>
       <v-spacer></v-spacer>
-      <router-link
-        class="white--text"
-        to="/rooms"
-      >Rooms</router-link>
-      <v-spacer></v-spacer>
-        
-      <router-link
-        class="white--text"
-        to="/appointments"
-      >Appointments</router-link>
-      <v-spacer></v-spacer>
-      
-      
-      <router-link
-      class="white--text"
-        to="/ex_type"
-      >Examination TYpe</router-link>
-      <v-spacer></v-spacer>
-
-      <router-link
-      class="white--text"
-        to="/clinics"
-      >Clinics</router-link>
-      <v-spacer></v-spacer>
-
       <v-toolbar-title class="white--text">Clinic center</v-toolbar-title>
+      <v-spacer></v-spacer>
     </v-app-bar>
-   
+    <Snackbar></Snackbar>
   </v-app>
 </template>
 
 <script>
-
+import Snackbar from './components/global/Snackbar'
 export default {
   name: 'App',
-
-  components: {
-    
-  },
-
+  components: {Snackbar},
   data: () => ({
     //
   }),

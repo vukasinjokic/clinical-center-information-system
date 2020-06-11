@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
@@ -10,9 +11,12 @@ import java.util.List;
 @Entity
 @Table(name = "doctors")
 public class Doctor extends MedicalStaff {
+   @OneToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name="rating_id", nullable = false)
+   private Rating rating;
 
-   @Column(name="rating", unique = false, nullable = false)
-   private float rating;
+   @Type(type = "true_false")
+   private Boolean activity;
 
    @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "bus_hours_id", nullable = false)
@@ -23,28 +27,37 @@ public class Doctor extends MedicalStaff {
    private ExaminationType examinationType;
 
 
-   @OneToMany(mappedBy = "doctor" ,fetch = FetchType.LAZY)
+   @OneToMany(mappedBy = "doctor" ,fetch = FetchType.LAZY,cascade = CascadeType.ALL,
+           orphanRemoval = true)
    private Collection<Appointment> appointments;
 
    public Doctor() {
    }
 
-   public Doctor(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, float rating, BusinessHours businessHours, ExaminationType examinationType, Clinic clinic, List<Authority> authorities) {
-      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, calendar, clinic, authorities);
+   public Doctor(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, Calendar calendar, Rating rating, BusinessHours businessHours, ExaminationType examinationType, Clinic clinic, List<Authority> authorities) {
+      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, calendar, clinic, authorities);
       this.rating = rating;
       this.businessHours = businessHours;
       this.examinationType = examinationType;
    }
 
-   public Doctor(Integer id, String username, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
-      super(id, username, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, authorities);
+   public Doctor(Integer id, String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities) {
+      super(id, email, password, name, lastName, address, city, country, phone, socialSecurityNumber, authorities);
    }
 
-   public float getRating() {
+   public Boolean getActivity() {
+      return activity;
+   }
+
+   public void setActivity(Boolean activity) {
+      this.activity = activity;
+   }
+
+   public Rating getRating() {
       return rating;
    }
 
-   public void setRating(float rating) {
+   public void setRating(Rating rating) {
       this.rating = rating;
    }
 

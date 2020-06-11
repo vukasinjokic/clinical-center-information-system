@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +33,9 @@ public class ClinicAdminService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private AppointmentRequestRepository appointmentRequestRepository;
+
+    @Autowired
     private PatientRepository patientRepository;
 
     @Autowired
@@ -37,6 +43,9 @@ public class ClinicAdminService {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -50,29 +59,33 @@ public class ClinicAdminService {
     }
 
     public void handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
-        Integer patient_id = Integer.parseInt(appointmentToReserve.getRequest().getPatient().getId());
+        AppointmentRequest appointmentRequest = appointmentRequestRepository.findById(appointmentToReserve.getRequestId()).get();
+
+        Integer patient_id = appointmentRequest.getPatient().getId();
         Patient patient = patientRepository.findById(patient_id).get();
 
-        Integer doctor_id = Integer.parseInt(appointmentToReserve.getRequest().getDoctor().getId());
-        Doctor doctor = doctorRepository.findById(doctor_id).get();
+        List<Doctor> doctors = doctorRepository.findAllById(appointmentToReserve.getDoctorsIds());
+
+        Doctor doctor = doctors.get(doctors.size() - 1);
 
         Integer room_id = Integer.parseInt(appointmentToReserve.getRoom().getId());
         Room room = roomRepository.findById(room_id).get();
 
         Appointment appointment;
-        if(appointmentToReserve.getRequest().getPredefAppointment() != null){
-            Integer appointment_id = Integer.parseInt(appointmentToReserve.getRequest().getId());
+        if(appointmentRequest.getPredefAppointment() != null){
+            Integer appointment_id = appointmentRequest.getPredefAppointment().getId();
             appointment = appointmentRepository.getOne(appointment_id);
         }
         else{
-            appointment = new Appointment(appointmentToReserve.getReservedTime(), appointmentToReserve.getRequest().getPrice(), appointmentToReserve.getRequest().getDiscount(), doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
+            appointment = new Appointment(appointmentToReserve.getReservedTime(), 0, 0, doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
         }
         patient.addAppointment(appointment);
-        List<Doctor> doctors = appointmentToReserve.getDoctors().stream().map(doctorDTO -> modelMapper.map(doctorDTO, Doctor.class)).collect(Collectors.toList());
         addAppointmentToDoctors(appointment, doctors);
+
         room.addAppointment(appointment);
         updateDataBase(appointment, patient, doctors, room);
-        emailService.alertDoctorsOperation(appointmentToReserve.getDoctors(), appointment);
+
+        emailService.alertDoctorsOperation(doctors, appointment);
         emailService.alertPatientOperation(appointment);
     }
 
@@ -80,7 +93,7 @@ public class ClinicAdminService {
         appointmentRepository.save(appointment);
 //        patientRepository.save(patient);
 //        roomRepository.save(room);
-//        doctorRepository.saveAll(doctors);
+        doctorRepository.saveAll(doctors);
     }
 
     private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors) {
@@ -96,6 +109,25 @@ public class ClinicAdminService {
         return (List<MedicalStaffRequest>)
                 clinicAdmin.getClinic().getMedicalStaffRequests();
 
+    }
+
+    public float getProfit(String email, String dateFrom, String dateTo) throws ParseException {
+        ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmail(email);
+        Integer clinicId = clinicAdmin.getClinic().getId();
+        Date startDate = parseFromStringToDate(dateFrom);
+        Date endDate = parseFromStringToDate(dateTo);
+        List<Appointment> appointments = appointmentRepository.findAllByClinicIdAndTimeBetweenAndFinished(clinicId,startDate,endDate, true);
+
+        return this.CalculateProfit(appointments);
+    }
+
+    private float CalculateProfit(List<Appointment> appointments){
+        float ret = 0;
+        for(Appointment ap : appointments){
+            float priceWithDiscount = ap.getPrice() - ap.getPrice()*ap.getDiscount()/100;
+            ret = ret + priceWithDiscount;
+        }
+        return ret;
     }
 
     public boolean declineRequest(DeclineVacRequest declineVacRequest){
@@ -118,8 +150,9 @@ public class ClinicAdminService {
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
 
         if(check_request.isPresent()){
-//            MedicalStaff medicalStaff = medicalStaffRepository.findByEmail(check_request.get().getMedicalStaff_email());
-//            medicalStaff.getCalendar().getDates();
+            MedicalStaff medicalStaff = (MedicalStaff) userRepository.findByEmail(check_request.get().getMedicalStaff_email());
+            medicalStaff.addVacationDates(check_request.get());
+
             emailService.alertStaffForVacation(user, check_request.get(),"");
             clinicAdmin.getClinic().getMedicalStaffRequests().remove(check_request.get());
             medicalStaffRequestRepository.deleteById(check_request.get().getId());
@@ -140,5 +173,9 @@ public class ClinicAdminService {
     private DoctorDTO convertToDTO(Doctor doctor){
         DoctorDTO doctorDTO = modelMapper.map(doctor, DoctorDTO.class);
         return doctorDTO;
+    }
+    private Date parseFromStringToDate(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf. parse(date);
     }
 }

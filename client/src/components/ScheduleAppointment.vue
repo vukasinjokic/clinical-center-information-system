@@ -1,6 +1,6 @@
 <template>
-    <div style="padding: 35px; 0px; 0px; 50px">
-        <v-card width="55%">
+    <div  style="padding: 35px, 0px, 0px, 50px; width:55%" >
+        <v-card >
             <v-card-title>Postupak zakazivanja pregleda i operacija</v-card-title>
             <v-text>
                 <v-container>
@@ -22,7 +22,7 @@
                             <v-text-field
                                 :rules="[requiredRule]"
                                 v-model="time"
-                                label="Pick duration"
+                                label="Pick time"
                                 prepend-icon="mdi-timer"
                                 readonly
                                 v-on="on"
@@ -128,7 +128,12 @@ export default {
                     patient: this.email
                 }
                 this.scheduleAppointment(obj);
+                this.$emit('scheduled');
             }
+        },
+
+        setPatientEmail(email){
+            this.email = email;
         }
     },
 }

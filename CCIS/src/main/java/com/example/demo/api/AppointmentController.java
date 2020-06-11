@@ -2,15 +2,15 @@ package com.example.demo.api;
 
 import com.example.demo.Repository.DoctorRepository;
 import com.example.demo.Repository.ExaminationTypeRepository;
+import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.RoomDTO;
-import com.example.demo.model.Appointment;
-import com.example.demo.model.Doctor;
-import com.example.demo.model.ExaminationType;
-import com.example.demo.model.Room;
+import com.example.demo.model.*;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.service.RoomService;
+import com.example.demo.useful_beans.UserData;
+import com.example.demo.useful_beans.AppointmentToFinish;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,10 +31,15 @@ public class AppointmentController {
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
     private final AppointmentService appointmentService;
     private final RoomService roomService;
     private ModelMapper modelMapper = new ModelMapper();
 
+    @Autowired
     public AppointmentController(AppointmentService appointmentService, RoomService roomService){
         this.appointmentService = appointmentService;
         this.roomService = roomService;
@@ -48,6 +53,28 @@ public class AppointmentController {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    @PostMapping("/getPatientAppointments")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<AppointmentDTO> getPatientAppointments(@RequestBody UserData userData) {
+        Patient patient = patientRepository.findByEmail(userData.mail);
+        List<Appointment> allAppointments = appointmentService.getPatientAppointments(patient.getId());
+
+        return allAppointments.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/getPredefinedAppointments/{clinicId}")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<AppointmentDTO> getPredefinedAppointments(@PathVariable Integer clinicId) {
+        List<Appointment> predefinedAppointments = appointmentService.getPredefinedAppointments(clinicId);
+
+        return predefinedAppointments.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     //operation rooms for free appointment
     @GetMapping("/getRooms")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
@@ -64,25 +91,70 @@ public class AppointmentController {
         return examinationTypeRepository.findAll();
     }
 
-    @GetMapping(path="/getDoctors/{ex_type_name}")
+    @GetMapping(path="/getDoctors/{ex_type_id}")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public List<DoctorDTO> getDoctorsByExType(@PathVariable("ex_type_name") String ex_type_name){
-        List<Doctor> doctors = doctorRepository.findByExaminationTypeName(ex_type_name);
+    public List<DoctorDTO> getDoctorsByExType(@PathVariable("ex_type_id") Integer ex_type_id){
+        List<Doctor> doctors = doctorRepository.findByExaminationTypeId(ex_type_id);
 
         return doctors.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(path = "/addAppointment", consumes = "application/json")
+    @PostMapping(path = "/addAppointment", consumes = "application/json;charset=UTF-8")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
         //validacija ide u service
         Appointment appointment = appointmentService.saveAppointment(appointmentDTO);
         if(appointment == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().header("Soba je zauzeta").body(new AppointmentDTO());
+
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.CREATED);
     }
+
+    @GetMapping(path = "/getAppointment/{id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<AppointmentDTO> getAppointment(@PathVariable("id") Integer id){
+        Appointment appointment = appointmentService.getAppointment(id);
+        if(appointment == null){return new ResponseEntity<>(HttpStatus.NOT_FOUND);};
+        return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.OK);
+
+    }
+
+    @GetMapping(path = "/getCodebook/{appointment_id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity<CodeBook> getCodebookFromAppointmentClinic(@PathVariable("appointment_id") Integer appointment_id){
+        CodeBook codebook = appointmentService.getCodebookFromAppointmentClinic(appointment_id);
+        if(codebook == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<CodeBook>(codebook, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getPatientEmail/{appointment_id}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity getPatientEmail(@PathVariable("appointment_id") Integer appointment_id){
+        String email = appointmentService.getPatinetEmail(appointment_id);
+        if(email == null) return ResponseEntity.badRequest().body("No email found");
+        return ResponseEntity.ok(email);
+    }
+
+    @GetMapping(path = "/getAppointmentForPatient/{patientEmail}")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity getAppointmentForPatient(@PathVariable("patientEmail") String patientEmail){
+        Appointment appointment = appointmentService.getAppointmentForPatient(patientEmail);
+        if(appointment == null) return ResponseEntity.badRequest().body("You don't have a scheduled appointment with this patient");
+        return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.OK);
+
+    }
+
+    @PostMapping(path = "/handleAppointmentFinish", consumes = "application/json")
+    @PreAuthorize("hasRole('DOCTOR')")
+    public ResponseEntity handleAppointmentFinish(@RequestBody AppointmentToFinish appointmentToFinish){
+        if(appointmentService.handleAppointmentFinish(appointmentToFinish)){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
 
     public AppointmentDTO convertToDTO(Appointment appointment){
         AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);

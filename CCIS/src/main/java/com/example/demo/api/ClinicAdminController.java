@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.Repository.ClinicAdminRepository;
+import com.example.demo.Repository.ClinicRepository;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.ClinicAdmin;
 import com.example.demo.model.Doctor;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,6 @@ public class ClinicAdminController {
 
     @Autowired
     private ClinicAdminService clinicAdminService;
-
     @Autowired
     private EmailService emailService;
 
@@ -60,6 +61,22 @@ public class ClinicAdminController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping(path = "/getProfit")
+    @PreAuthorize("hasRole('CLINIC_ADMIN')")
+    public ResponseEntity getProfit(
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "dateFrom") String dateFrom,
+            @RequestParam(name = "dateTo") String dateTo)
+    {
+        float ret = 0;
+        try{
+            ret = clinicAdminService.getProfit(email, dateFrom,dateTo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().body(ret);
+    }
+
     @PostMapping(path ="/handleReservation", consumes = "application/json")
     @PreAuthorize("hasRole('CLINIC_ADMIN')")
     public void handleReservation(@RequestBody AppointmentToReserve appointmentToReserve){
@@ -68,7 +85,7 @@ public class ClinicAdminController {
             clinicAdminService.handleReservation(appointmentToReserve);
         }catch( Exception e ){
             ResponseEntity.status(404);
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
     }

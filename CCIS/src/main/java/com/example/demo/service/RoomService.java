@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,8 @@ public class RoomService {
     private RoomValidation roomValidation = new RoomValidation();
 
     public List<Room> getAllRooms(){
-        return roomRepository.findAll();
+        ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return roomRepository.findByClinicIdAndActivity(user.getClinic().getId(), true);
     }
 
     public Room save(RoomDTO roomDTO){
@@ -38,6 +40,7 @@ public class RoomService {
             Clinic clinic = user.getClinic();
 
             Room new_room = new Room(roomDTO.getName(),roomDTO.getNumber(),clinic, Room.RoomType.valueOf(roomDTO.getType().toUpperCase()));
+            new_room.setActivity(true);
             return roomRepository.save(new_room);
         }
 
@@ -67,13 +70,24 @@ public class RoomService {
         return null;
     }
 
+    public Room getRoom(Integer id){
+        Optional<Room> room = roomRepository.findById(id);
+        if(room.isPresent()){
+            return room.get();
+        }
+        return null;
+    }
+
     public boolean deleteRoom(Integer id){
         Optional<Room> try_find = roomRepository.findById(id);
         if(try_find.isPresent()){
+            Date date_now = new Date();
             Room room = try_find.get();
-            List<Appointment> appointments = appointmentRepository.findByRoomId(room.getId());
+            List<Appointment> appointments = appointmentRepository.findAllByRoomIdAndTimeAfter(room.getId(),date_now);
+            //logicko brisanje
             if(appointments.size() == 0){
-                roomRepository.deleteById(room.getId());
+                room.setActivity(false);
+                roomRepository.save(room);
                 return true;
             }
         }

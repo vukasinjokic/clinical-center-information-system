@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -28,11 +30,13 @@ public class Clinic {
    @Column(name = "description", unique = false, nullable = false)
    private String description;
 
-   @Column(name = "price_list", unique = false)
-   private String priceList;
+   @OneToOne(mappedBy = "clinic", cascade = {ALL}, fetch = EAGER)
+   @LazyToOne(LazyToOneOption.NO_PROXY)
+   private PriceList priceList;
 
-   @Column(name = "rating", unique = false)
-   private float rating;
+   @OneToOne(fetch = EAGER)
+   @JoinColumn(name = "rating_id", unique = false, nullable = false)
+   private Rating rating;
 
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Doctor> doctors;
@@ -49,7 +53,7 @@ public class Clinic {
    @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
    private Collection<Patient> patients;
 
-   @ManyToOne( fetch = LAZY, cascade = {ALL})
+   @ManyToOne( fetch = EAGER, cascade = {ALL})
    @JoinColumn(name = "code_book_id")
    private CodeBook codeBook;
 
@@ -59,10 +63,11 @@ public class Clinic {
    @OneToMany(cascade = {ALL}, fetch = EAGER, orphanRemoval = true)
    private Collection<MedicalStaffRequest> medicalStaffRequests;
 
+   @OneToMany(mappedBy = "clinic", cascade = {ALL}, fetch = LAZY)
+   private Collection<Prescription> prescriptions;
+
    public Clinic() {
    }
-
-
 
    public Clinic(String name, String description, String address){
       this.name = name;
@@ -70,7 +75,7 @@ public class Clinic {
       this.address = address;
    }
 
-   public Clinic(String name, String address, String description, String priceList, float rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests) {
+   public Clinic(String name, String address, String description, PriceList priceList, Rating rating, Collection<Nurse> nurses, Collection<Doctor> doctors, Collection<Appointment> appointments, Collection<Room> rooms, CodeBook codeBook, Collection<AppointmentRequest> appointmentRequests, Collection<Prescription> prescriptions) {
       this.name = name;
       this.address = address;
       this.description = description;
@@ -81,6 +86,7 @@ public class Clinic {
       this.rooms = rooms;
       this.codeBook = codeBook;
       this.appointmentRequests = appointmentRequests;
+      this.prescriptions = prescriptions;
    }
 
    public Integer getId() {
@@ -93,6 +99,14 @@ public class Clinic {
 
    public void setMedicalStaffRequests(Collection<MedicalStaffRequest> medicalStaffRequests) {
       this.medicalStaffRequests = medicalStaffRequests;
+   }
+
+   public Collection<Prescription> getPrescriptions() {
+      return prescriptions;
+   }
+
+   public void setPrescriptions(Collection<Prescription> prescriptions) {
+      this.prescriptions = prescriptions;
    }
 
    public Collection<AppointmentRequest> getAppointmentRequests() {
@@ -128,19 +142,19 @@ public class Clinic {
       this.description = description;
    }
 
-   public String getPriceList() {
+   public PriceList getPriceList() {
       return priceList;
    }
 
-   public void setPriceList(String priceList) {
+   public void setPriceList(PriceList priceList) {
       this.priceList = priceList;
    }
 
-   public float getRating() {
+   public Rating getRating() {
       return rating;
    }
 
-   public void setRating(float rating) {
+   public void setRating(Rating rating) {
       this.rating = rating;
    }
 
@@ -341,4 +355,18 @@ public class Clinic {
          rooms.clear();
    }
 
+   public void addPrescription(Prescription p){
+      if(this.prescriptions == null) prescriptions = new ArrayList<Prescription>();
+      prescriptions.add(p);
+   }
+
+   public void removePersciptionById(Integer id) {
+      if(this.prescriptions == null) return;
+      for(Prescription p : prescriptions){
+         if(p.getId() == id) {
+            prescriptions.remove(p);
+            return;
+         }
+      }
+   }
 }

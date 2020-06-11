@@ -1,6 +1,6 @@
 <template>
     <div id="register">
-        <v-container >
+        <v-container style="width:70%">
         <v-card class="elevation-12">
               <v-toolbar
                 color="primary"
@@ -102,12 +102,31 @@
                                 counter @click:append="show1 = !show1">
                             </v-text-field>
                         </v-col>
+
+                        <v-col cols="10" sm="5" md="5" v-if="registerMode === 'admins'">
+                            <v-select
+                            v-model="userType"
+                            label="User type"
+                            :items="selectTypeOptions"
+                            />
+                        </v-col>
+
+                        <v-col cols="10" sm="5" md="5" v-if="registerMode === 'admins'">
+                            <v-select
+                            v-model="selectedClinicName"
+                            label="Clinic"
+                            :items="getClinicNames()"
+                            v-bind:disabled="userType != 'Clinic Admin'"
+                            />
+                        </v-col>
+
                         <v-spacer></v-spacer>
                         <v-col cols="6"/>
-                        <v-col cols="2" sm="2">
-                            <v-btn :to="`/`" text class="grey white--text ">Login</v-btn>
+                        
+                        <v-col cols="2" sm="2" >
+                            <v-btn :to="`/`" v-if="registerMode !== 'admins'" text class="grey white--text ">Login</v-btn>
                         </v-col>
-                        <v-col cols="3" class="pa-2" sm="2" >
+                        <v-col cols="4" class="pa-2" sm="2" >
                             <v-btn block :disabled="!valid" color="primary" @click="submit">Register</v-btn>
                         </v-col>
                     </v-row>
@@ -120,6 +139,7 @@
 
 <script>
 import axios from 'axios';
+import Vue from 'vue';
 
 export default {
     computed: {
@@ -134,25 +154,61 @@ export default {
         }
     },
     methods: {
-        async submit() {
-            if (this.$refs.registerForm.validate()) {
-                await axios.post('http://localhost:8081/auth/registerPatient', this.user)
-                .then(response => {
-                    if (response.status === 200) {
-                        alert("Vaš zahtev za registraciju je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
-                    } else {
-                        alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
-                    }
-                })
-                .catch(error => {
-                    if (error.response.status >= 400) {
-                        alert("Error: " + error.response.status + ".\nMessage: " + error.response.data)
-                    } else {
-                        alert("Unknown error: " + error.response.status + ".\nMessage: " + error.response.data);
-                    }
-                });
+        submit(){
+            if(this.$refs.registerForm.validate()){
+                if(this.registerMode === "admins"){
+                    this.handleRegisterAdmins();
+                }
+                else{
+                    this.handleRegisterPatient();
+                }
             }
         },
+        handleRegisterAdmins(){
+            this.setSelectedClinic();
+            Vue.$axios.post('http://localhost:8081/auth/registerAdmins', this.user)
+            .then(response => {
+                if(response.status === 200){
+                    alert("Admin successfully registered");
+                    this.$router.push('/clinicCenterAdmin')
+                }
+            })
+        },
+
+        setSelectedClinic(){
+            this.clinics.forEach(clinic => {
+                if(clinic.name === this.selectedClinicName){
+                    this.user.clinicId = clinic.id;
+                }
+            });
+        },
+
+        handleRegisterPatient() {
+            axios.post('http://localhost:8081/auth/registerPatient', this.user)
+            .then(response => {
+                if (response.status === 200) {
+                    alert("Vaš zahtev za registraciju je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
+                } else {
+                    alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
+                }
+            })
+            .catch(error => {
+                if (error.response.status >= 400) {
+                    alert("Error: " + error.response.status + ".\nMessage: " + error.response.data)
+                } else {
+                    alert("Unknown error: " + error.response.status + ".\nMessage: " + error.response.data);
+                }
+            });
+            
+        },
+
+        getClinicNames(){
+            let clinicNames = [];
+            this.clinics.forEach(clinic => {
+                clinicNames.push(clinic.name);
+            })
+            return clinicNames;
+        }
     },
     data(){
         return {
@@ -165,7 +221,8 @@ export default {
                 country: "",
                 phoneNumber: "",
                 socialSecurityNumber: "",
-                password: ""
+                password: "",
+                clinicId: null
             },
             valid: true,
             verify: "",
@@ -174,7 +231,22 @@ export default {
                 v => /.+@.+\..+/.test(v) || "E-mail must be valid"
             ],
             show1: false,
+            registerMode: "",
+            userType: "",
+            selectTypeOptions: ["Clinic Admin", "Clinic Center Admin"],
+            clinics: [],
+            selectedClinicName : ''
             
+        }
+    },
+    created(){
+        if(localStorage.getItem("user_role") === "ROLE_CLINIC_CENTER_ADMIN"){
+            this.registerMode = "admins";
+            let self = this;
+            Vue.$axios.get('http://localhost:8081/clinics/getClinics')
+                .then(response => {
+                    self.clinics = response.data;
+            })
         }
     }
 }

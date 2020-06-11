@@ -11,6 +11,6 @@ public interface ClinicAdminRepository extends JpaRepository<ClinicAdmin, Intege
 
     @Query("SELECT admin FROM ClinicAdmin admin JOIN FETCH admin.clinic WHERE admin.email = (:email)")
     public ClinicAdmin findByEmailAndFetchClinicEagerly(@Param("email") String email);
-
+    public ClinicAdmin findByEmail(String email);
     public List<ClinicAdmin> findByClinicId(Integer clinicId);
 }

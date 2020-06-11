@@ -2,11 +2,16 @@ package com.example.demo.dto;
 
 import com.example.demo.model.Clinic;
 import com.example.demo.model.Doctor;
+import com.example.demo.model.PriceList;
+import com.example.demo.model.PriceListItem;
+import com.example.demo.model.Rating;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ClinicsDTO {
 
@@ -16,8 +21,8 @@ public class ClinicsDTO {
     private String name;
     private String address;
     private String description;
-    private String priceList;
-    private String rating;
+    private Map<String, Float> priceList = new HashMap<>();
+    private Float rating;
     private List<DoctorDTO> doctors = new ArrayList<>();
 
     public ClinicsDTO() {
@@ -25,7 +30,9 @@ public class ClinicsDTO {
     }
 
     public void setDTOFields(Clinic clinic) {
+        setPriceList(clinic.getPriceList());
         setDoctors(clinic.getDoctors());
+        setRating(clinic.getRating());
     }
 
     public String getId() {
@@ -60,20 +67,23 @@ public class ClinicsDTO {
         this.description = description;
     }
 
-    public String getPriceList() {
+    public Map<String, Float> getPriceList() {
         return priceList;
     }
 
-    public void setPriceList(String priceList) {
-        this.priceList = priceList;
+    public void setPriceList(PriceList priceList) {
+        if (priceList == null)
+            return;
+        for (PriceListItem item : priceList.getItems())
+            this.priceList.put(item.getExaminationType().getName(), item.getPrice());
     }
 
-    public String getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setRating(Rating rating) {
+        this.rating = rating.getAverageGrade();
     }
 
     public List<DoctorDTO> getDoctors() {

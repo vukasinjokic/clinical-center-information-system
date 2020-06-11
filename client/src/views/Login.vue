@@ -3,7 +3,7 @@
   <v-app id="inspire">
     <v-content>
       <v-container
-        class="fill-height"
+        
         fluid
       >
         <v-row
@@ -21,12 +21,12 @@
                   dark
                   flat
                 >
-                  <v-toolbar-title>Login form</v-toolbar-title>       
+                  <v-toolbar-title>Login form class="fill-height"</v-toolbar-title>       
                 </v-toolbar>
                 <v-card-text>
                   <v-form ref="form">
                     <v-text-field
-                      v-model="user.username"
+                      v-model="user.email"
                       :rules="[requiredRule,emailRule]"
                       label="Email"
                       name="email"
@@ -58,9 +58,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { mapActions } from 'vuex';
-
+import Vue from 'vue';
   export default {
     name: "Login",
     computed: {
@@ -74,23 +72,30 @@ import { mapActions } from 'vuex';
     data() {
        return{
             user:{
-                username: "",
+                email: "",
                 password: ""
             }
        } 
     },
     methods:{
-        ...mapActions("userDetails", ["logIn"]),
 
         submit(){
           if(this.$refs.form.validate()){
-            axios
+            Vue.$axios
             .post('http://localhost:8081/auth/login', this.user)
             .then(response =>{
                 if(response.data){
-                    this.logIn(response.data);
+                    localStorage.setItem('JWT', response.data.accessToken);
+                    localStorage.setItem('Duration', response.data.expiresIn);
+                    localStorage.setItem('user_email', response.data.email);
+                    localStorage.setItem('user_role', response.data.authorities[0]);
+                    localStorage.setItem('is_password_changed', response.data.passwordChanged);
+                    Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
                     alert("Uspesno logovanje");
-                    this.$router.push('home');
+
+                    this.$router.push({
+                      name: "InstantHomeRedirect"
+                    });
                 }
                 else
                     alert("Neispravan email ime ili lozinka");

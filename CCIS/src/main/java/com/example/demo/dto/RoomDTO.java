@@ -16,7 +16,7 @@ public class RoomDTO {
         try{
             this.number = room.getNumber();
             this.clinic = room.getClinic().getName();
-            CalendarDTO.setUpCalendar(room.getCalendar().getId(), calendar, room.getAppointments());
+//            CalendarDTO.setUpCalendar(room.getCalendar().getId(), calendar, room.getAppointments());
         }
         catch (Exception e){
             e.printStackTrace();

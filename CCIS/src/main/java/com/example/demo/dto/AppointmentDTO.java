@@ -9,17 +9,18 @@ import java.util.Date;
 public class AppointmentDTO {
     private String id;
     private String time;
-    private float price;
-    private float discount;
-    private String doctor; //
+    private Float price;
+    private Float discount;
+    public String doctorEmail;
+    private DoctorDTO doctor; //trebalo bi doctorDTO
     private String patient;
-    private String room;
+    public String room;
     private String examinationType;
     private String clinic;
-
+    private String report;
+    private boolean finished;
 
     public void setFields(Appointment appointment){
-
         this.setDoctor(appointment.getDoctor());
         this.setPatient(appointment.getPatient());
         this.setRoom(appointment.getRoom());
@@ -37,10 +38,23 @@ public class AppointmentDTO {
     }
 
     public void setDoctor(Doctor doctor){
-        this.doctor = doctor.getEmail();
+        if(this.doctor == null)
+            this.doctor = new DoctorDTO();
+        this.doctor.setId(doctor.getId().toString());
+        this.doctor.setFirstName(doctor.getFirstName());
+        this.doctor.setLastName(doctor.getLastName());
+        this.doctor.setSocialSecurityNumber(doctor.getSocialSecurityNumber());
+        this.doctor.setEmail(doctor.getEmail());
+        this.doctor.setClinic(doctor.getClinic().getName());
+        this.doctor.setClinicId(doctor.getClinic().getId().toString());
     }
-    public void setDoctor(String doctor){
-        this.doctor = doctor;
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
     }
 
     public void setExaminationType(String examinationType) {
@@ -75,8 +89,12 @@ public class AppointmentDTO {
         this.clinic = clinic.getName();
     }
 
+    public void setTime(String time){
+        this.time = time;
+    }
+
     public void setTime(Date time){
-        this.time = new SimpleDateFormat("dd-MM-yyyy hh:mm").format(time);
+        this.time = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(time);
     }
 
     public String getClinic() {
@@ -101,7 +119,7 @@ public class AppointmentDTO {
         this.id = id;
     }
 
-    public String getDoctor() {
+    public DoctorDTO getDoctor() {
         return doctor;
     }
 
@@ -118,10 +136,15 @@ public class AppointmentDTO {
         return examinationType;
     }
 
-
-
     public String getId() {
         return id;
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 }

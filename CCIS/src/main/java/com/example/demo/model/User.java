@@ -1,4 +1,5 @@
 package com.example.demo.model;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,9 +14,6 @@ public abstract class User implements UserDetails {
    @GeneratedValue(strategy=GenerationType.TABLE, generator="ust_seq_user")
    @SequenceGenerator(name = "ust_seq_user", sequenceName = "ust_seq_user", initialValue = 1, allocationSize=1)
    private Integer id;
-
-   @Column(name = "username", unique = true, nullable = false)
-   private String username;
 
    @Column(name = "email", unique = true, nullable = false)
    private String email;
@@ -47,6 +45,10 @@ public abstract class User implements UserDetails {
    @Column(name = "last_password_reset_date")
    private Timestamp lastPasswordResetDate;
 
+   @Column(name = "is_password_changed")
+   @Type(type = "true_false")
+   private Boolean passwordChanged;
+
    @ManyToMany(fetch = FetchType.EAGER)
    @JoinTable(name = "user_authority",
            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -56,9 +58,8 @@ public abstract class User implements UserDetails {
    public User() {
    }
 
-   public User(Integer id, String username, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
+   public User(Integer id, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities) {
       this.id = id;
-      this.username = username;
       this.email = email;
       this.password = password;
       this.firstName = firstName;
@@ -70,6 +71,28 @@ public abstract class User implements UserDetails {
       this.socialSecurityNumber = socialSecurityNumber;
       this.lastPasswordResetDate = lastPasswordResetDate;
       this.authorities = authorities;
+   }
+
+   public User(String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String socialSecurityNumber, Timestamp lastPasswordResetDate, List<Authority> authorities, Boolean passwordChanged) {
+      this.email = email;
+      this.password = password;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.city = city;
+      this.country = country;
+      this.phoneNumber = phoneNumber;
+      this.socialSecurityNumber = socialSecurityNumber;
+      this.lastPasswordResetDate = lastPasswordResetDate;
+      this.authorities = authorities;
+      this.passwordChanged = passwordChanged;
+   }
+   public Boolean isPasswordChanged() {
+      return passwordChanged;
+   }
+
+   public void setPasswordChanged(Boolean passwordChanged) {
+      this.passwordChanged = passwordChanged;
    }
 
    public Integer getId() {
@@ -185,11 +208,7 @@ public abstract class User implements UserDetails {
 
    @Override
    public String getUsername() {
-      return username;
-   }
-
-   public void setUsername(String username) {
-      this.username = username;
+      return email;
    }
 
    @Override

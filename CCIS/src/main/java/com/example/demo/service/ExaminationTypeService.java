@@ -23,7 +23,7 @@ public class ExaminationTypeService {
     public List<ExaminationType> findAllTypes(){
         //validacija
         List<ExaminationType> types = examinationTypeRepository.findAll();
-        types.forEach(type -> type.setDuration(type.getDuration()/3600000));
+        //types.forEach(type -> type.setDuration(type.getDuration()));
         return types;
     }
     public boolean removeType(String name){

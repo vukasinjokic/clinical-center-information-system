@@ -18,14 +18,9 @@
                     </v-list-item-content>
                 </v-list-item> 
             </v-list>
-
-            <template v-slot:append>
-                <div class="pa-3">
-                    <v-btn block >Logout</v-btn>
-                </div>
-            </template>
         </v-navigation-drawer>      
          
+         <CustomToolbar/>
         <v-content style="padding: 6px 0px 0px 6px">
             <v-container fluid>
                 <router-view></router-view>
@@ -35,7 +30,13 @@
 </template>
 
 <script>
+import CustomToolbar from "../components/CustomToolbar"
+
 export default {
+    components: {
+        CustomToolbar
+    },
+
     data(){
         return {
             items: [
@@ -43,7 +44,7 @@ export default {
                 { title: 'Work calendar', link: '/nurse/:16/calendar', icon: 'mdi-calendar' },
                 { title: 'Create request for vacation', link: '/nurse/vacationRequest',icon:'mdi-airplane' },
                 { title: 'Profile', link: '/nurse/profile', icon: 'mdi-account' },
-                { title: 'Validate Perscription', link: '/nurse/perscriptions', icon: 'mdi-ballot-outline' },
+                { title: 'Validate Perscription', link: '/nurse/validatePerscriptions', icon: 'mdi-ballot-outline' },
 
             ],
             drawer: true

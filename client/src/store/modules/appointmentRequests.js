@@ -1,8 +1,12 @@
-import axios from 'axios'
+import Vue from 'vue'
 
-const state = {
-    appointmentRequests : []
-}
+const getDefaultState = () => {
+    return {
+        appointmentRequests: []
+    }
+} ;
+
+const state = getDefaultState();
 
 const getters = {
     
@@ -12,24 +16,24 @@ const getters = {
 
 }
 
-const config = {
-    headers: {Authorization: "Bearer " + localStorage.getItem("JWT")}
-}
-
 const actions = {
     async fetchAppRequests({commit}){
-        const response = await axios.get("http://localhost:8081/appointmentRequests/getAppointmentRequests", config);
+        const response = await Vue.$axios.get("http://localhost:8081/appointmentRequests/getAppointmentRequests");
         commit('setAppointmentRequests', response.data);
     },
 
     async deleteRequest({commit}, id){
         try{
-            await axios.delete('http://localhost:8081/appointmentRequests/deleteRequest/' + id);
+            await Vue.$axios.delete('http://localhost:8081/appointmentRequests/deleteRequest/' + id);
             commit('deletedRequest', id);
         }catch(error){
             alert(error.response);
         }
     },
+
+    resetAppointmentRequests({commit}) {
+        commit("resetState");
+    }
 }
 
 const mutations = {
@@ -41,6 +45,10 @@ const mutations = {
         const index = state.appointmentRequests.findIndex(type => type.id === id);
         state.appointmentRequests.splice(index,1);
     },
+
+    resetState (state) {
+        Object.assign(state, getDefaultState())
+    }
 }
 const namespaced = true;
 
