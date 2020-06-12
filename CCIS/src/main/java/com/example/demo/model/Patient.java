@@ -1,5 +1,10 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Type;
+
 import static javax.persistence.FetchType.LAZY;
 
 import javax.persistence.*;
@@ -18,8 +23,13 @@ public class Patient extends User {
    @JoinColumn(name="clinic_id")
    private Clinic clinic;
 
+   @LazyCollection(LazyCollectionOption.FALSE)
    @OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL},fetch = LAZY)
    private Collection<Appointment> appointments;
+
+//   @Type(type = "true_false")
+//   private boolean active;
+
 
    public Patient() {
       this.appointments = new HashSet<Appointment>();
@@ -36,6 +46,13 @@ public class Patient extends User {
       this.appointments = new HashSet<Appointment>();
    }
 
+//   public Patient(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities, boolean active) {
+//      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, false);
+//      this.medicalRecord = new MedicalRecord(this);
+//      this.appointments = new HashSet<Appointment>();
+//      this.active = active;
+//   }
+
    public Collection<Appointment> getAppointments() {
       return appointments;
    }
@@ -44,7 +61,13 @@ public class Patient extends User {
       this.appointments = appointments;
    }
 
-
+//   public boolean isActive() {
+//      return active;
+//   }
+//
+//   public void setActive(boolean active) {
+//      this.active = active;
+//   }
 
    public MedicalRecord getMedicalRecord() {
       return medicalRecord;

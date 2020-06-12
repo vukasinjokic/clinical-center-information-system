@@ -1,12 +1,13 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "doctors")
@@ -26,7 +27,7 @@ public class Doctor extends MedicalStaff {
    @JoinColumn(name = "ex_type_id",nullable = false)
    private ExaminationType examinationType;
 
-
+   @LazyCollection(LazyCollectionOption.FALSE)
    @OneToMany(mappedBy = "doctor" ,fetch = FetchType.LAZY,cascade = CascadeType.ALL,
            orphanRemoval = true)
    private Collection<Appointment> appointments;
@@ -89,4 +90,37 @@ public class Doctor extends MedicalStaff {
       appointments.add(appointment);
       getCalendar().addAppointment(appointment);
    }
+
+    public List<Date> getAvailableTimesForDate(Date time) {
+       List<Date> availableStartTimes = new ArrayList<Date>();
+       List<Date> eventStartDates = getCalendar().getEventStartDates();
+       List<Date> eventEndDates = getCalendar().getEventEndDates();
+       int counter = 0;
+       if((time.getTime() + examinationType.getMillisecondsDuration()) <= eventStartDates.get(0).getTime()){
+          availableStartTimes.add(time);
+       }
+       for(int i = 0; i != eventStartDates.size() - 1; i++){
+          if(!getCalendar().areTheSameDay(time, eventStartDates.get(i))){
+             counter++;
+             continue;
+          }
+          Date end = eventEndDates.get(i);
+          while(end.getTime() + examinationType.getMillisecondsDuration() <= eventStartDates.get(i+1).getTime()){
+             if(getCalendar().areTheSameDay(end, eventStartDates.get(i + 1))
+                     || end.getTime() + examinationType.getMillisecondsDuration() <= getCalendar().getDayStart(end).getTime() + businessHours.getEnded().getTime())
+             {
+                 availableStartTimes.add(end);
+             }
+             end.setTime(end.getTime() + examinationType.getMillisecondsDuration());
+          }
+       }
+       //nema pregleda za trazeni dan i ako se pregled moze izvrsiti pre kraja radnog vremena
+       if(eventStartDates.size() == counter + 1
+               && time.getTime() + examinationType.getMillisecondsDuration() <= getCalendar().getDayStart(time).getTime() + businessHours.getEnded().getTime())
+       {
+          availableStartTimes.add(time);
+       }
+       return availableStartTimes;
+    }
+
 }

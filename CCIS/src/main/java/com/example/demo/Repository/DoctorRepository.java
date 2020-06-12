@@ -1,5 +1,7 @@
 package com.example.demo.Repository;
 
+import com.example.demo.model.Calendar;
+import com.example.demo.model.Clinic;
 import com.example.demo.model.ClinicAdmin;
 import com.example.demo.model.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +31,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     @Query("SELECT doctor FROM Doctor doctor JOIN fetch doctor.appointments where doctor.id = (:id)")
     public Doctor findByIdAndFetchAppointmentsEagerly(@Param("id") Integer id);
+
+    @Query("select doctor.clinic from Doctor doctor where doctor.id = (:id)")
+    public Clinic findClinicByDoctorId(@Param("id") Integer id);
+
 }

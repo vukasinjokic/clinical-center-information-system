@@ -26,15 +26,8 @@ public class EmailService {
 
     @Async
     public void alertDoctorsOperation(List<Doctor> doctors, Appointment appointment) throws MailException, InterruptedException{
-
         for(Doctor doctor : doctors){
-            SimpleMailMessage mail = new SimpleMailMessage();
-//            mail.setTo(doctor.getEmail());
-            mail.setTo("isamrstim23@gmail.com");
-            mail.setFrom("blabla");
-            mail.setSubject("Nova operacija zakazana");
-            mail.setText("Postovani/a " + doctor.getFirstName() + ", \n\n Zakazan je "+ appointment.getExaminationType().getName()+ " u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". Pozvani ste da joj prisustvujete. \n\n");
-            javaMailSender.send(mail);
+            alertDoctorOperation(doctor, appointment);
         }
     }
 
@@ -126,6 +119,17 @@ public class EmailService {
         mail.setFrom("Clinical-center-information-system@gmail.com");
         mail.setSubject("Odbijen zahtev za registraciju");
         mail.setText(message);
+        javaMailSender.send(mail);
+    }
+
+    @Async
+    public void alertDoctorOperation(Doctor doctor, Appointment appointment) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+//            mail.setTo(doctor.getEmail());
+        mail.setTo("isamrstim23@gmail.com");
+        mail.setFrom("blabla");
+        mail.setSubject("Nova operacija zakazana");
+        mail.setText("Postovani/a " + doctor.getFirstName() + ", \n\n Zakazan je "+ appointment.getExaminationType().getName()+ " u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". Pozvani ste da joj prisustvujete. \n\n");
         javaMailSender.send(mail);
     }
 }
