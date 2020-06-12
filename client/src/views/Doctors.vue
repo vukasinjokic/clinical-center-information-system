@@ -94,7 +94,9 @@
                                 @click="onClick({
                                     doctorId: item.id,
                                     clinicId: item.clinicId,
-                                    appointmentTime: freeAppointment.time
+                                    appointmentTime: freeAppointment.time,
+                                    patientEmail: '',
+                                    price: item.price
                                 })">
                                     Zakaži pregled
                                 </v-btn>
