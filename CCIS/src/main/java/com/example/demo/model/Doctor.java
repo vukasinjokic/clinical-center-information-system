@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "doctors")
 public class Doctor extends MedicalStaff {
    @OneToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name="rating_id", nullable = false)
+   @JoinColumn(name="rating_id", nullable = true)
    private Rating rating;
 
    @Type(type = "true_false")

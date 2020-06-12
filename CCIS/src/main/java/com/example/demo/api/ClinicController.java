@@ -69,10 +69,10 @@ public class ClinicController {
         return ResponseEntity.ok().body(rating);
     }
 
-    @GetMapping("/getAppointments/{period}/{email}")
+    @GetMapping("/getAppointments/{period}/{date}/{email}")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
-    public ResponseEntity getAppointments(@PathVariable String period, @PathVariable String email){
-        List<ChartAppointment> chart = clinicService.makeChartAppointment(period, email);
+    public ResponseEntity getAppointments(@PathVariable String period, @PathVariable String date, @PathVariable String email){
+        List<ChartAppointment> chart = clinicService.makeChartAppointment(period,date, email);
         if(chart != null)
             return ResponseEntity.ok().body(chart);
         return ResponseEntity.badRequest().body("nesto lose");

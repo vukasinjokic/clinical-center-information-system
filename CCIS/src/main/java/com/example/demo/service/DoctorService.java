@@ -168,6 +168,7 @@ public class DoctorService {
         newDoctor.setCity(doctorDTO.getCity());
         newDoctor.setAddress(doctorDTO.getAddress());
         newDoctor.setCountry(doctorDTO.getCountry());
+//        newDoctor.setRating();
         newDoctor.setActivity(true);
     }
 

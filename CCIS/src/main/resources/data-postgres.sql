@@ -448,15 +448,15 @@ values (nextval('ust_seq_user'), 'admin2@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQ
 
 insert into clinic_admins			-- id = 6
 (id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'admin3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Jovan', 'Bodroža','F', 'Nepoznata 6', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '66666666666', 2);
+values (nextval('ust_seq_user'), 'admin3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Jovan', 'Bodroža','T', 'Nepoznata 6', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '66666666666', 2);
 
 insert into clinic_admins			-- id = 7
 (id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'admin4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Petar', 'Petrović','F' ,'Nepoznata 7', 'Subotica', 'Srbija', '0641234567', '77777777777', 2);
+values (nextval('ust_seq_user'), 'admin4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Petar', 'Petrović','T' ,'Nepoznata 7', 'Subotica', 'Srbija', '0641234567', '77777777777', 2);
 
 insert into clinic_admins			-- id = 8
 (id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'admin5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Dejan', 'Dejanović','F', 'Nepoznata 8', 'Kikinda', 'Srbija', '0641234567', '88888888888', 3);
+values (nextval('ust_seq_user'), 'admin5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Dejan', 'Dejanović','T', 'Nepoznata 8', 'Kikinda', 'Srbija', '0641234567', '88888888888', 3);
 
 insert into clinic_admins			-- id = 9
 (id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
