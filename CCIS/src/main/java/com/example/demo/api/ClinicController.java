@@ -44,9 +44,19 @@ public class ClinicController {
     }
 
     @GetMapping("/getClinics")
-    @PreAuthorize("hasAnyRole('PATIENT','CLINIC_CENTER_ADMIN')")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN')")
     public List<ClinicsDTO> getAllClinics() {
         List<Clinic> clinics = clinicService.getAllClinics();
+        return clinics.stream()
+                .map(this::convertToClinicsDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getClinicsPatient")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<ClinicsDTO> getAllClinicsPatient() {
+        List<Clinic> clinics = clinicService.getAllClinics();
+        clinics.forEach(clinic -> clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity())));
         return clinics.stream()
                 .map(this::convertToClinicsDTO)
                 .collect(Collectors.toList());
@@ -83,6 +93,7 @@ public class ClinicController {
     public ResponseEntity<ClinicDTO> getClinicById(@PathVariable Integer clinicId){
         Clinic clinic = clinicService.findById(clinicId);
         if(clinic != null) {
+            clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity()));
             ResponseEntity<ClinicDTO> clinicDTOResponseEntity = new ResponseEntity<>(modelMapper.map(clinic, ClinicDTO.class), HttpStatus.OK);
             return clinicDTOResponseEntity;
         }

@@ -74,11 +74,12 @@ export default {
     },
     created(){
         this.clinicId = this.$route.params.id
-        this.fetchClinicById(this.clinicId);
+        this.fetchClinicById(this.clinicId)
+        .then(() => {
+            this.getCoordinates();
+        });
         this.fetchPriceListByClinicId(this.clinicId);
-        this.getCoordinates();
         this.fetchDoctorsFromClinic(this.clinicId);
-        // console.log(this.coords);
     },
     computed: {
         ...mapGetters('clinicProfile',['getClinic','getPriceListItems']),
@@ -121,7 +122,6 @@ export default {
                     new_address = new_address + arr[i];
             }
             
-            console.log(new_address);
             axios
             .get(`https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${this.apiKey}&geocode=${new_address}`)
             .then(response =>{
