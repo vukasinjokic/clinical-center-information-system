@@ -94,7 +94,9 @@
                                 @click="onClick({
                                     doctorId: item.id,
                                     clinicId: item.clinicId,
-                                    appointmentTime: freeAppointment.time
+                                    appointmentTime: freeAppointment.time,
+                                    patientEmail: '',
+                                    price: item.price
                                 })">
                                     Zakaži pregled
                                 </v-btn>
@@ -146,16 +148,15 @@ export default {
                 Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
                 .then(response => {
                     if (response.status === 200) {
-                        alert("Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
+                        this.$store.dispatch('snackbar/showSuccess',
+                        "Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.", 
+                        {root: true});
+                        
                     } else {
-                        alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
+                        this.$store.dispatch('snackbar/showError', "Unknown error: " + response.status + ".\nMessage: " + response.data, {root: true});
                     }
                 }).catch(error => {
-                    if (error.response.status >= 400) {
-                        alert("Error: " + error.response.status + ".\nMessage: " + error.response.data)
-                    } else {
-                        alert("Unknown error: " + error.response.status + ".\nMessage: " + error.response.data);
-                    }
+                    this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
                 });
             }
         },

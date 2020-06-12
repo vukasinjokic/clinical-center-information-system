@@ -55,7 +55,7 @@ public class DoctorController {
     @PreAuthorize("hasAnyRole('PATIENT')")
     public List<DoctorDTO> getDoctorsFromClinic(@PathVariable Integer clinicId){
         List<Doctor> doctors = doctorService.findDoctorsFromClinic(clinicId);
-
+        doctors.removeIf(doctor -> !doctor.getActivity());
         return doctors.stream()
                 .map(this::convertDTO)
                 .collect(Collectors.toList());

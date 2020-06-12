@@ -19,7 +19,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
     List<Appointment> findByRoomId(Integer id);
 
     List<Appointment> findByDoctorId(Integer id);
-    List<Appointment> findByPatientId(Integer id);
+    List<Appointment> findByPatientIdAndFinished(Integer id, boolean finished);
 
     @Query("SELECT a FROM Appointment a WHERE a.patient IS NULL AND a.clinic = (:clinic) AND a.finished = false")
     List<Appointment> findPredefinedAppointments(@Param("clinic") Clinic clinic);

@@ -82,13 +82,24 @@ public class AppointmentRequestController {
                 appointmentRequest.setDoctor(doctor);
                 appointmentRequest.setPatient(patient);
                 appointmentRequest.setTime(chosenDate);
+
+                appointmentRequest.setPrice(appointmentToAdd.getPrice());
+                appointmentRequest.setDiscount(0f);
+
                 appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
             } else {
                 Appointment predefinedAppointment = appointmentService.getAppointment(appointmentToAdd.getAppointmentId());
                 clinicId = predefinedAppointment.getClinic().getId();
-                appointmentRequest.setPredefAppointment(predefinedAppointment);
+
+                appointmentRequest.setDoctor(predefinedAppointment.getDoctor());
                 appointmentRequest.setPatient(patient);
+                appointmentRequest.setTime(predefinedAppointment.getTime());
+
+                appointmentRequest.setPrice(predefinedAppointment.getPrice());
+                appointmentRequest.setDiscount(predefinedAppointment.getDiscount());
+
                 appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
+                appointmentRequest.setPredefAppointment(predefinedAppointment);
             }
 
             boolean success = appointmentRequestService.saveRequest(appointmentRequest);

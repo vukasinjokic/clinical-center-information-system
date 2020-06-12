@@ -47,16 +47,21 @@ const actions = {
     },
 
     async fetchPatientFinishedAppointments({commit}, mail){
-        const response = await Vue.$axios.post('http://localhost:8081/appointments/getPatientAppointments', {mail});
-        var finishedAppointments = response.data.filter(appointment => {
-            return appointment.finished;
-        })
-        commit('setAppo', finishedAppointments);
+        try {
+            const response = await Vue.$axios.post('http://localhost:8081/appointments/getPatientAppointments', {mail});
+            commit('setAppo', response.data);
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
 
     async fetchPredefinedAppointments({commit}, clinicId) {
-        const response = await Vue.$axios.post("http://localhost:8081/appointments/getPredefinedAppointments/" + clinicId);
-        commit('setAppo', response.data);
+        try {
+            const response = await Vue.$axios.post("http://localhost:8081/appointments/getPredefinedAppointments/" + clinicId);
+            commit('setAppo', response.data);
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
 
     async fetchRooms({commit}){

@@ -6,17 +6,27 @@ public class AppointmentToReservePatient {
     private String appointmentTime;
     private String patientEmail;
     private Integer appointmentId;
+    private Float price;
 
     public AppointmentToReservePatient() {
 
     }
 
-    public AppointmentToReservePatient(String doctorId, String clinicId, String appointmentTime, String patientEmail, Integer appointmentId) {
+    public AppointmentToReservePatient(String doctorId, String clinicId, String appointmentTime, String patientEmail, Integer appointmentId, Float price) {
         this.doctorId = doctorId;
         this.clinicId = clinicId;
         this.appointmentTime = appointmentTime;
         this.patientEmail = patientEmail;
         this.appointmentId = appointmentId;
+        this.price = price;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public String getPatientEmail() {
