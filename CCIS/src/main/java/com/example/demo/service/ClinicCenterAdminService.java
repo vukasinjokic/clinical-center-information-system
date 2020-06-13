@@ -44,9 +44,10 @@ public class ClinicCenterAdminService {
         if(req != null){
             List<Authority> auth = authorityService.findByName("ROLE_PATIENT");
             // Password is already hashed
-            Patient patient = new Patient(req.getEmail(), req.getPassword(), req.getFirstName(), req.getLastName(), req.getAddress(), req.getCity(), req.getCountry(), req.getPhoneNumber(), req.getSocialSecurityNumber(), auth);
+            Patient patient = new Patient(req.getEmail(), req.getPassword(), req.getFirstName(), req.getLastName(), req.getAddress(), req.getCity(), req.getCountry(), req.getPhoneNumber(), req.getSocialSecurityNumber(), auth, false);
             registrationRequestRepository.deleteById(id);
-            patientRepository.save(patient);
+            Patient p = patientRepository.save(patient);
+            emailService.alertPatientOfAccountVerification(p);
             return true;
         }
         return false;

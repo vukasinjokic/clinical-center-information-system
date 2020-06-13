@@ -34,6 +34,10 @@ public class RoomService {
         return roomRepository.findByClinicIdAndActivity(user.getClinic().getId(), true);
     }
 
+    public List<Room> getRoomsForClinicId(Integer clinic_id){
+        return roomRepository.findAllByActivityTrueAndClinicId(clinic_id);
+    }
+
     public Room save(RoomDTO roomDTO){
         ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Integer> clinicId = clinicAdminRepository.findClinicIdByAdminId(user.getId());

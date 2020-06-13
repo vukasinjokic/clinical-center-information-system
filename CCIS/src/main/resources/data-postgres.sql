@@ -494,15 +494,16 @@ insert into calendars default values;
 insert into calendars default values;
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
-
+-- insert into vataction_dates (calendar_id, vacation_dates) values (7, '2020-06-05 08:00:00');
+-- insert into vataction_dates (calendar_id, vacation_dates) values (7, '2020-06-10 08:00:00');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- Inserting event_start_dates ----------------------------------------------------------
-insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-05-01 08:00:00');
-insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-05-01 10:00:00');
-insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-05-02 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-06-08 08:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-06-09 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-07-02 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-05-03 10:00:00');
-insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-05-04 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-07-03 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-07-04 10:00:00');
 
 insert into event_start_dates (calendar_id, event_start_dates) values (9,'2020-05-05 10:00:00');
 insert into event_start_dates (calendar_id, event_start_dates) values (9,'2020-05-06 10:00:00');
@@ -518,14 +519,14 @@ insert into event_start_dates (calendar_id, event_start_dates) values (12,'2020-
 ------------------------------------------------------------------------------------------------
 -----------------------------------SOBE---------------------------------------------------------
 
-insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-05-01 08:00:00');
-insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-05-01 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-06-08 08:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-06-09 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (14,'2020-05-02 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (14,'2020-07-02 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (15,'2020-05-03 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (15,'2020-07-03 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (16,'2020-05-04 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (16,'2020-07-04 10:00:00');
 
 insert into event_start_dates (calendar_id, event_start_dates) values (17,'2020-05-05 10:00:00');
 
@@ -546,12 +547,12 @@ insert into event_start_dates (calendar_id, event_start_dates) values (23,'2020-
 --
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -------------------------------------------------- Inserting event_end_dates ------------------------------------------------------------
-insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-05-01 08:30:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-05-01 11:00:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-05-02 10:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-06-08 08:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-06-09 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-07-02 10:30:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-05-03 11:00:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-05-04 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-07-03 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-07-04 11:00:00');
 
 insert into event_end_dates (calendar_id, event_end_dates) values (9,'2020-05-05 11:00:00');
 insert into event_end_dates (calendar_id, event_end_dates) values (9,'2020-05-06 11:00:00');
@@ -566,14 +567,14 @@ insert into event_end_dates (calendar_id, event_end_dates) values (12,'2020-05-1
 ------------------------------------------------------------------------------------------------
 -----------------------------------SOBE---------------------------------------------------------
 
-insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-05-01 08:30:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-05-01 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-06-08 08:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-06-09 11:00:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (14, '2020-05-02 10:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (14, '2020-07-02 10:30:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (15,'2020-05-03 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (15,'2020-07-03 11:00:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (16,'2020-05-04 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (16,'2020-07-04 11:00:00');
 
 insert into event_end_dates (calendar_id, event_end_dates) values (17,'2020-05-05 11:00:00');
 
@@ -805,28 +806,28 @@ values (nextval('ust_seq_user'), 'doktor6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8i
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting patients -----------------------------------------------------------
 insert into patients			-- id = 22
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent1@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ljubiša', 'Ljubišić', 'T', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent1@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ljubiša', 'Ljubišić', 'T', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1, 'T');
 
 insert into patients			-- id = 23
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent2@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ana', 'Anić','T' , 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 1);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent2@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ana', 'Anić','T' , 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 1, 'T');
 
 insert into patients			-- id = 24
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milica', 'Milicić','F' ,'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141',1);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milica', 'Milicić','F' ,'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141',1, 'T');
 
 insert into patients			-- id = 25
-(id, email, password, first_name, last_name, is_password_changed, address, city, country, phone_number, social_security_number,clinic_id)
-values (nextval('ust_seq_user'), 'pacijent4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Gordana', 'Gordanović','F' ,'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 2);
+(id, email, password, first_name, last_name, is_password_changed, address, city, country, phone_number, social_security_number,clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Gordana', 'Gordanović','F' ,'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 2, 'T');
 
 insert into patients			-- id = 26
-(id,  email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Olja', 'Oljić','F', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161',2);
+(id,  email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Olja', 'Oljić','F', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161',2, 'T');
 
 insert into patients			-- id = 27
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number,clinic_id)
-values (nextval('ust_seq_user'), 'pacijent6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milena', 'Milenić','F' ,'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 2);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number,clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milena', 'Milenić','F' ,'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 2, 'T');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -948,17 +949,17 @@ insert into appointments			-- id = 12
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
 values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3, 'F');
 
--- insert into appointments			-- id = 12
--- 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id)
--- values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				3);
+insert into appointments			-- id = 13
+				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished)
+values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				3, 'F');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------- Inserting predefined appointments --------------------------------------------------
--- insert into appointments			-- id = 13
--- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
--- values ('2020-08-08 08:00:00',  1000.0, 	 10.0, 		16, 			1, 				1, 	 			1, 'F');
+insert into appointments			-- id = 14
+(				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
+values ('2020-06-08 08:00:00',  1000.0, 	 10.0, 		16, 			1, 				1, 	 			1, 'F');
 --
 -- insert into appointments			-- id = 14
 -- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished)
@@ -1028,11 +1029,11 @@ insert into user_authority (user_id, authority_id) values (27, 5);
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting appointment requests -----------------------------------------------------
-insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
-values                           (0.0,       1000.0,  '2020-05-11 10:00:00',   'DOCTOR',    16,          22,              null);
-
 insert into appointment_requests ( app_req_type,  patient_id, predef_appointment_id)
-values                           (   'PATIENT',             23,              1);
+values                           (   'PATIENT',             23,              14);
+
+insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
+values                           (0.0,       1000.0,  '2020-06-08 08:00:00',   'DOCTOR',    16,          22,              null);
 
 insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
 values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   'DOCTOR',    17,          23,              null);

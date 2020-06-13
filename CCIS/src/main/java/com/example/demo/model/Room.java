@@ -5,6 +5,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static javax.persistence.FetchType.EAGER;
@@ -16,6 +18,8 @@ import static javax.persistence.GenerationType.IDENTITY;
         @UniqueConstraint(columnNames = {"number", "clinic_id"})
 })
 public class Room {
+
+
    public enum RoomType{OPERATION, APPOINTMENT};
    @Id
    @GeneratedValue(strategy = IDENTITY)
@@ -127,4 +131,30 @@ public class Room {
    public void addAppointment(Appointment appointment){
       getCalendar().addAppointment(appointment);
    }
+
+   public boolean isAvailableForTimeAndDuration(Date time, long millisecondsDuration) {
+      List<Date> eventStartDates = getCalendar().getEventStartDates();
+      List<Date> eventEndDates = getCalendar().getEventEndDates();
+      int counter = 0;
+      if((time.getTime() + millisecondsDuration) <= eventStartDates.get(0).getTime()){
+         return true;
+      }
+
+      for(int i = 0; i != eventStartDates.size() - 1; i++){
+         if(!calendar.areTheSameDay(time, eventStartDates.get(i))){
+            counter++;
+            continue;
+         }
+         Date end = eventEndDates.get(i);
+         if(end.getTime() + millisecondsDuration <= eventStartDates.get(i+1).getTime() && calendar.areTheSameDay(eventStartDates.get(i+1), end)){
+            return true;
+         }
+      }
+      if(eventStartDates.size() == counter + 1)
+         return true;
+      return false;
+
+   }
+
+
 }

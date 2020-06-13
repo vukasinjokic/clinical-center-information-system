@@ -5,6 +5,7 @@ import com.example.demo.service.LoginService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 import javax.persistence.EntityManagerFactory;
@@ -16,6 +17,7 @@ import java.util.concurrent.ScheduledFuture;
 import static java.util.concurrent.TimeUnit.*;
 @SpringBootApplication
 @EnableAsync
+@EnableScheduling
 public class ClinicalCenterInformationSystemApplication {
 //
 //	public static LoginService loginService = new LoginService();

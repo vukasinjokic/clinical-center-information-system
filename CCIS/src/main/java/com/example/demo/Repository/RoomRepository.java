@@ -12,4 +12,5 @@ public interface RoomRepository extends JpaRepository<Room,Integer> {
     Room findByNumberAndClinicId(String number, Integer id);
     Room findByIdAndActivity(Integer id, Boolean activity);
     List<Room> findByClinicIdAndActivity(@Param("clinicId") Integer clinicId, @Param("activity") Boolean activity);
+    List<Room> findAllByActivityTrueAndClinicId(@Param("clinicId") Integer clinicId);
 }

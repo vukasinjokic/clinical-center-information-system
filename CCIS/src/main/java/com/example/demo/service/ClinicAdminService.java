@@ -75,6 +75,7 @@ public class ClinicAdminService {
         if(appointmentRequest.getPredefAppointment() != null){
             Integer appointment_id = appointmentRequest.getPredefAppointment().getId();
             appointment = appointmentRepository.getOne(appointment_id);
+            appointment.setTime(appointmentToReserve.getReservedTime());
         }
         else{
             appointment = new Appointment(appointmentToReserve.getReservedTime(), 0, 0, doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());

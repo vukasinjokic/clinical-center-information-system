@@ -28,6 +28,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
     @Query("SELECT appointment FROM Appointment appointment JOIN FETCH appointment.clinic WHERE appointment.id = (:id)")
     Optional<Appointment> findByIdAndFetchClinicEagerly(@Param("id") Integer id);
 
+    @Query("SELECT appointment FROM Appointment appointment JOIN FETCH appointment.doctor WHERE appointment.id = (:id)")
+    Appointment findByIdAndFetchDoctorEagerly(@Param("id") Integer id);
+
     @Query("select appointment.patient.email FROM Appointment appointment where appointment.id = (:id)")
     String findPatientEmailFromAppointment(@Param("id") Integer id);
 
