@@ -66,11 +66,12 @@ public class AppointmentScheduleController {
             return false;
         }
         Doctor doctor = doctorOptional.get();
-
-        for(Date availableTime : doctor.getAvailableTimesForDate(time)){
+        Calendar calendar = fetchDoctorCalendar(doctor);
+        List<Date> availableTimes = doctor.getAvailableTimesForDate(time, calendar);
+        for(Date availableTime : availableTimes){
             for(Room room : roomService.getRoomsForClinicId(doctor.getClinic().getId())){
                 if(room.isAvailableForTimeAndDuration(availableTime, doctor.getExaminationType().getMillisecondsDuration())){
-                    scheduleAppointmentForRequest(request, availableTime, room);
+                    scheduleAppointmentForRequest(request, availableTime, room, doctor);
                     return true;
                 }
             }
@@ -78,24 +79,20 @@ public class AppointmentScheduleController {
         return false;
     }
 
-    private void scheduleAppointmentForRequest(AppointmentRequest request, Date time, Room room) throws InterruptedException {
+    private void scheduleAppointmentForRequest(AppointmentRequest request, Date time, Room room, Doctor doctor) throws InterruptedException {
         Appointment appointment;
-        Doctor doctor;
-        Patient patient;
         Optional<AppointmentRequest> appointmentRequestOptional = appointmentRequestRepository.findByIdAndFetchPatientEagerly(request.getId());
-
+        if(!appointmentRequestOptional.isPresent()){
+            return;
+        }
+        Patient patient = appointmentRequestOptional.get().getPatient();
         if(request.getPredefAppointment() != null){
             Integer appointment_id = request.getPredefAppointment().getId();
             appointment = appointmentRepository.findByIdAndFetchDoctorEagerly(appointment_id);
-            patient = request.getPredefAppointment().getPatient();
             doctor = appointment.getDoctor();
+            appointment.setTime(time);
         }
         else{
-            if(!appointmentRequestOptional.isPresent()){
-                return;
-            }
-            patient = appointmentRequestOptional.get().getPatient();
-            doctor = request.getDoctor();
             Clinic clinic = doctorRepository.findClinicByDoctorId(doctor.getId());
             appointment = new Appointment(time, 0, 0, doctor, room, doctor.getExaminationType(), patient, clinic);
         }
@@ -114,5 +111,13 @@ public class AppointmentScheduleController {
         appointmentRequestRepository.deleteById(request.getId());
         roomRepository.save(room);
         calendarRepository.save(room.getCalendar());
+    }
+
+    private Calendar fetchDoctorCalendar(Doctor doctor){
+        Optional<Calendar> calendarOptional = calendarRepository.findById(doctor.getCalendar().getId());
+        if(calendarOptional.isPresent()){
+           return (calendarOptional.get());
+        }
+        return null;
     }
 }

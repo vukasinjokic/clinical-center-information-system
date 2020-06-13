@@ -91,32 +91,32 @@ public class Doctor extends MedicalStaff {
       getCalendar().addAppointment(appointment);
    }
 
-    public List<Date> getAvailableTimesForDate(Date time) {
+    public List<Date> getAvailableTimesForDate(Date time, Calendar calendar) {
        List<Date> availableStartTimes = new ArrayList<Date>();
-       List<Date> eventStartDates = getCalendar().getEventStartDates();
-       List<Date> eventEndDates = getCalendar().getEventEndDates();
+       List<Date> eventStartDates = calendar.getEventStartDates();
+       List<Date> eventEndDates = calendar.getEventEndDates();
        int counter = 0;
        if((time.getTime() + examinationType.getMillisecondsDuration()) <= eventStartDates.get(0).getTime()){
           availableStartTimes.add(time);
        }
        for(int i = 0; i != eventStartDates.size() - 1; i++){
-          if(!getCalendar().areTheSameDay(time, eventStartDates.get(i))){
+          if(!calendar.areTheSameDay(time, eventStartDates.get(i))){
              counter++;
              continue;
           }
           Date end = eventEndDates.get(i);
-          while(end.getTime() + examinationType.getMillisecondsDuration() <= eventStartDates.get(i+1).getTime()){
-             if(getCalendar().areTheSameDay(end, eventStartDates.get(i + 1))
-                     || end.getTime() + examinationType.getMillisecondsDuration() <= getCalendar().getDayStart(end).getTime() + businessHours.getEnded().getTime())
+          while(end.getTime() + examinationType.getMillisecondsDuration() <= eventStartDates.get(i+1).getTime() && calendar.areTheSameDay(time, end)){
+             if(calendar.areTheSameDay(end, eventStartDates.get(i + 1))
+                     || (end.getTime() + examinationType.getMillisecondsDuration() <= calendar.getDayStart(time).getTime() + businessHours.getEnded().getTime() + 1000 * 60 * 60))
              {
-                 availableStartTimes.add(end);
+                 availableStartTimes.add(new Date(end.getTime()));
              }
              end.setTime(end.getTime() + examinationType.getMillisecondsDuration());
           }
        }
        //nema pregleda za trazeni dan i ako se pregled moze izvrsiti pre kraja radnog vremena
        if(eventStartDates.size() == counter + 1
-               && time.getTime() + examinationType.getMillisecondsDuration() <= getCalendar().getDayStart(time).getTime() + businessHours.getEnded().getTime())
+               && time.getTime() + examinationType.getMillisecondsDuration() <= calendar.getDayStart(time).getTime() + businessHours.getEnded().getTime())
        {
           availableStartTimes.add(time);
        }

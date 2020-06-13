@@ -98,7 +98,7 @@ public class Calendar {
     }
 
     public List<Date> getEventStartDates() {
-        return eventStartDates;
+        return this.eventStartDates;
     }
 
     public void setEventStartDates(List<Date> startDates) {
@@ -106,7 +106,7 @@ public class Calendar {
     }
 
     public List<Date> getEventEndDates() {
-        return eventEndDates;
+        return this.eventEndDates;
     }
 
     public void setEventEndDates(List<Date> endDates) {
