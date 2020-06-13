@@ -12,7 +12,6 @@ import com.example.demo.model.Prescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,11 +42,15 @@ public class ClinicService {
 
 
     public Clinic findById(Integer id) {
-        return clinicRepository.findById(id).orElse(null);
+        Clinic clinic = clinicRepository.findById(id).get();
+        clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity()));
+        return clinic;
     }
 
     public List<Clinic> getAllClinics() {
-        return clinicRepository.findAll();
+        List<Clinic> clinics = clinicRepository.findAll();
+        clinics.forEach(clinic -> clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity())));
+        return clinics;
     }
 
     public boolean gradeClinic(Clinic clinic, Integer patientId, float newGrade) {

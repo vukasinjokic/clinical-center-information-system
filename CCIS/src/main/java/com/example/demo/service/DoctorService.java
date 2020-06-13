@@ -94,7 +94,9 @@ public class DoctorService {
         //DOCTOR ACTIVITY
         Optional<Clinic> optionalClinic = clinicRepository.findById(clinicId);
         Clinic clinic = optionalClinic.get();
-        return clinicRepository.findDoctorsFromClinic(clinic);
+        List<Doctor> doctorsFromClinic = clinicRepository.findDoctorsFromClinic(clinic);
+        doctorsFromClinic.removeIf(doctor -> !doctor.getActivity());
+        return doctorsFromClinic;
     }
 
 
@@ -196,27 +198,35 @@ public class DoctorService {
     }
 
     public boolean schedule(AppointmentDTO appointmentDTO) throws ParseException {
-        Doctor user = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Patient patient = patientRepository.findByEmail(appointmentDTO.getPatient());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        try {
+            Doctor user = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Patient patient = patientRepository.findByEmail(appointmentDTO.getPatient());
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
-        Date startDate = formatter.parse(appointmentDTO.getDate());
-//        if(!doctorValidation.validateDoctorBusy(startDate,))
+            Date startDate = formatter.parse(appointmentDTO.getDate());
+//          if(!doctorValidation.validateDoctorBusy(startDate,))
 
-        if(patient == null)
+            if (patient == null)
+                return false;
+
+            AppointmentRequest request = new AppointmentRequest();
+            user.setCounter(user.getCounter() + 1);
+//            Thread.sleep(5000);           // for testing optimistic blocking
+            doctorRepository.save(user);
+            request.setDoctor(user);
+            request.setPatient(patient);
+            request.setTime(formatter.parse(appointmentDTO.getDate()));
+            request.setType(AppointmentRequest.AppointmentReqType.DOCTOR);
+
+            Doctor get_doctor_clinic = doctorRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
+            get_doctor_clinic.getClinic().getAppointmentRequests().add(request);
+
+            clinicRepository.save(get_doctor_clinic.getClinic());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
-
-        AppointmentRequest request = new AppointmentRequest();
-        request.setDoctor(user);
-        request.setPatient(patient);
-        request.setTime(formatter.parse(appointmentDTO.getDate()));
-        request.setType(AppointmentRequest.AppointmentReqType.DOCTOR);
-
-        Doctor get_doctor_clinic = doctorRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
-        get_doctor_clinic.getClinic().getAppointmentRequests().add(request);
-
-        clinicRepository.save(get_doctor_clinic.getClinic());
-        return true;
+        }
     }
 
     public boolean updateMedicalRecord(MedicalRecordDTO recordToUpdate) {

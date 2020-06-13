@@ -8,9 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OptimisticLockException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,58 +64,37 @@ public class AppointmentRequestController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<String> addAppointmentRequest(@RequestBody AppointmentToReservePatient appointmentToAdd) {
         try {
-            Integer clinicId = 0;
-            AppointmentRequest appointmentRequest = new AppointmentRequest();
+            Date chosenDate = formatter.parse(appointmentToAdd.getAppointmentTime());
             Patient patient = patientService.findByEmail(appointmentToAdd.getPatientEmail());
             if (patient == null)
                 return new ResponseEntity<>("Invalid user email", HttpStatus.BAD_REQUEST);
 
-            if (appointmentToAdd.getAppointmentId() == null) {
-                Date chosenDate = formatter.parse(appointmentToAdd.getAppointmentTime());
-                Doctor doctor = doctorService.findById(Integer.parseInt(appointmentToAdd.getDoctorId()));
-                if (doctor == null)
-                    return new ResponseEntity<>("Invalid doctor id", HttpStatus.BAD_REQUEST);
+            Doctor doctor = doctorService.findById(Integer.parseInt(appointmentToAdd.getDoctorId()));
+            if (doctor == null)
+                return new ResponseEntity<>("Invalid doctor id", HttpStatus.BAD_REQUEST);
 
-                Clinic clinic = clinicService.findById(Integer.parseInt(appointmentToAdd.getClinicId()));
-                if (clinic == null)
-                    return new ResponseEntity<>("Invalid clinic id", HttpStatus.BAD_REQUEST);
-                clinicId = clinic.getId();
+            Clinic clinic = clinicService.findById(Integer.parseInt(appointmentToAdd.getClinicId()));
+            if (clinic == null)
+                return new ResponseEntity<>("Invalid clinic id", HttpStatus.BAD_REQUEST);
 
-                appointmentRequest.setDoctor(doctor);
-                appointmentRequest.setPatient(patient);
-                appointmentRequest.setTime(chosenDate);
 
-                appointmentRequest.setPrice(appointmentToAdd.getPrice());
-                appointmentRequest.setDiscount(0f);
-
-                appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
-            } else {
-                Appointment predefinedAppointment = appointmentService.getAppointment(appointmentToAdd.getAppointmentId());
-                clinicId = predefinedAppointment.getClinic().getId();
-
-                appointmentRequest.setDoctor(predefinedAppointment.getDoctor());
-                appointmentRequest.setPatient(patient);
-                appointmentRequest.setTime(predefinedAppointment.getTime());
-
-                appointmentRequest.setPrice(predefinedAppointment.getPrice());
-                appointmentRequest.setDiscount(predefinedAppointment.getDiscount());
-
-                appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
-                appointmentRequest.setPredefAppointment(predefinedAppointment);
-            }
-
-            boolean success = appointmentRequestService.saveRequest(appointmentRequest);
-            if (success) {
-                List<ClinicAdmin> clinicAdmins = clinicAdminService.getClinicAdminsByClinicId(clinicId);
-                emailService.alertClinicAdminForAppointmentPatientRequest(clinicAdmins, appointmentRequest);
-
+            int result = appointmentRequestService.saveRequest(patient, doctor, chosenDate, appointmentToAdd.getPrice(), clinic.getId());
+            if (result == 0)
                 return new ResponseEntity<>("OK", HttpStatus.OK);
-            } else {
+            else if (result == 1)
                 return new ResponseEntity<>("Request not saved to database", HttpStatus.INTERNAL_SERVER_ERROR);
+            else if (result == -1) {
+                return new ResponseEntity<>("Appointments is already taken.", HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>("Unknown server error", HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
         } catch (ParseException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Invalid date time format", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unknown server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

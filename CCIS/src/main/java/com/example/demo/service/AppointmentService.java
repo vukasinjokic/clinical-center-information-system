@@ -5,6 +5,7 @@ import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.model.*;
 import com.example.demo.model.Calendar;
 import com.example.demo.useful_beans.AppointmentToFinish;
+import com.example.demo.useful_beans.AppointmentToReservePatient;
 import com.example.demo.useful_beans.MedicineForPrescription;
 import com.example.demo.validation.AppointmentValidation;
 import com.example.demo.validation.DoctorValidation;
@@ -33,6 +34,10 @@ public class AppointmentService {
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
     private CalendarRepository calendarRepository;
+    @Autowired
+    private PatientService patientService;
+    @Autowired
+    private ClinicAdminService clinicAdminService;
 
     private DoctorValidation doctorValidation = new DoctorValidation();
 
@@ -59,6 +64,23 @@ public class AppointmentService {
 
     public Appointment getAppointment(Integer id){
         return appointmentRepository.findById(id).get();
+    }
+
+    public int savePatientToPredefinedAppointments(Patient patient, Appointment predefinedAppointment) {
+        try {
+            predefinedAppointment.setCounter(predefinedAppointment.getCounter() + 1);
+//                Thread.sleep(5000);           // for testing optimistic blocking
+            predefinedAppointment.setPatient(patient);
+
+            predefinedAppointment = appointmentRepository.save(predefinedAppointment);
+            if (predefinedAppointment != null)
+                return 0;   // success
+            else
+                return 1;   // not saved to database
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;      // OptimisticLockException
+        }
     }
 
     public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {

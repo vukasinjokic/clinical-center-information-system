@@ -51,11 +51,13 @@ export default {
 
         schedule(appointmentRequest) {
             appointmentRequest.patientEmail = localStorage.getItem("user_email");
-            Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
+            console.log("nemanja");
+            
+            Vue.$axios.post("http://localhost:8081/appointments/addPatientToPredefinedAppointment", appointmentRequest)
             .then(response => {
                 if (response.status === 200) {
                     this.$store.dispatch('snackbar/showSuccess', 
-                    "Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.",
+                    "Uspešno ste zakazali lekarski pregled.",
                     {root: true});
                 } else {
                     this.$store.dispatch('snackbar/showError', "Unknown error: " + response.status + ".\nMessage: " + response.data, {root: true});
