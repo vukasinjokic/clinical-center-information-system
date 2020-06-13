@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.AppointmentRepository;
 import com.example.demo.Repository.CalendarRepository   ;
+import com.example.demo.Repository.ClinicAdminRepository;
 import com.example.demo.Repository.RoomRepository;
 import com.example.demo.dto.RoomDTO;
 import com.example.demo.model.*;
@@ -23,6 +24,8 @@ public class RoomService {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private CalendarRepository calendarRepository;
+    @Autowired
+    private ClinicAdminRepository clinicAdminRepository;
 
     private RoomValidation roomValidation = new RoomValidation();
 
@@ -37,13 +40,15 @@ public class RoomService {
 
     public Room save(RoomDTO roomDTO){
         ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Room doesExist = roomRepository.findByNumber(roomDTO.getNumber());
-        Room doesExistName = roomRepository.findByName(roomDTO.getName());
+        Optional<Integer> clinicId = clinicAdminRepository.findClinicIdByAdminId(user.getId());
+        Room doesExist = roomRepository.findByNumberAndClinicIdAndActivity(roomDTO.getNumber(), clinicId.get(), true);
 
-        if(doesExist == null && doesExistName == null){
+        if(doesExist == null){
             Clinic clinic = user.getClinic();
 
             Room new_room = new Room(roomDTO.getName(),roomDTO.getNumber(),clinic, Room.RoomType.valueOf(roomDTO.getType().toUpperCase()));
+            Calendar calendar = calendarRepository.save(new Calendar());
+            new_room.setCalendar(calendar);
             new_room.setActivity(true);
             return roomRepository.save(new_room);
         }
@@ -58,11 +63,8 @@ public class RoomService {
             if(!roomValidation.validateUsing(find_room.get(),appointmentRepository))
                 return null;
 
-            if(!find_room.get().getName().equals(roomDTO.getName()))
-                if(!roomValidation.validateName(roomDTO.getName(),roomRepository))
-                    return null;
             if(!find_room.get().getNumber().equals(roomDTO.getNumber()))
-                if(!roomValidation.validateNumber(roomDTO.getNumber(),roomRepository))
+                if(!roomValidation.validateNumber(roomDTO.getNumber(),roomRepository,find_room.get().getClinic().getId()))
                     return null;
 
             Room update_room = find_room.get();
@@ -91,6 +93,7 @@ public class RoomService {
             //logicko brisanje
             if(appointments.size() == 0){
                 room.setActivity(false);
+                room.setNumber(null);
                 roomRepository.save(room);
                 return true;
             }

@@ -14,7 +14,9 @@ public class AppointmentDTO {
     public String doctorEmail;
     private DoctorDTO doctor; //trebalo bi doctorDTO
     private String patient;
-    public String room;
+    private String roomName;
+    private String roomNumber;
+    private String roomId;
     private String examinationType;
     private String clinic;
     private String report;
@@ -53,6 +55,14 @@ public class AppointmentDTO {
         return report;
     }
 
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
     public void setReport(String report) {
         this.report = report;
     }
@@ -64,8 +74,26 @@ public class AppointmentDTO {
         this.clinic = clinic;
     }
 
-    public void setRoom(String room){
-        this.room = room;
+    public void setRoom(Room r){
+        this.setRoomName(r.getName());
+        this.setRoomNumber(r.getNumber());
+        this.setRoomId(r.getId().toString());
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public void setPatient(Patient patient){
@@ -75,10 +103,6 @@ public class AppointmentDTO {
 
     public void setPatient(String patient) {
         this.patient = patient;
-    }
-
-    public void setRoom(Room r){
-        this.room = r.getName() + " " + r.getNumber();
     }
 
     public void setExaminationType(ExaminationType et){
@@ -126,11 +150,6 @@ public class AppointmentDTO {
     public String getPatient() {
         return patient;
     }
-
-    public String getRoom() {
-        return room;
-    }
-
 
     public String getExaminationType() {
         return examinationType;

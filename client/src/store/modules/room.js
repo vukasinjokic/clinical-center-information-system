@@ -143,13 +143,13 @@ const actions = {
             commit('deletedRoom', id);
             dispatch('snackbar/showSuccess', "Successfully deleted.", {root: true});
         }catch(error){
-            dispatch('snackbar/showWarning', "Can't delete", {root: true});
+            dispatch('snackbar/showWarning', "Can't delete. Room is scheduled.", {root: true});
         }
     },
     async addRoom({commit}, room){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/rooms/addRoom', room);
-            commit('addedRoom', response.data);
+            commit('addedRoom', response.data); 
         }catch(error){
             alert(error.response);
         }
@@ -160,7 +160,7 @@ const actions = {
             commit('updatedRoom', response.data);
             dispatch("snackbar/showSuccess", "Successfully updated", {root: true});
         }catch(error){
-            dispatch("snackbar/showWarning", "Can't update", {root:true});
+            dispatch("snackbar/showWarning", "Can't update. Room is scheduled.", {root:true});
         }
     },
 

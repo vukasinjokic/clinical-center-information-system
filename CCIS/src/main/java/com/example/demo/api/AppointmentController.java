@@ -8,7 +8,9 @@ import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.RoomDTO;
 import com.example.demo.model.*;
 import com.example.demo.service.AppointmentService;
+import com.example.demo.service.DoctorService;
 import com.example.demo.service.RoomService;
+import com.example.demo.useful_beans.AppointmentToReservePatient;
 import com.example.demo.useful_beans.UserData;
 import com.example.demo.useful_beans.AppointmentToFinish;
 import org.modelmapper.ModelMapper;
@@ -19,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,8 @@ public class AppointmentController {
 
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private DoctorService doctorService;
 
     private final AppointmentService appointmentService;
     private final RoomService roomService;
@@ -75,6 +80,27 @@ public class AppointmentController {
                 .collect(Collectors.toList());
     }
 
+    @PostMapping("/addPatientToPredefinedAppointment")
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<String> addPatientToPredefinedAppointment(@RequestBody AppointmentToReservePatient appointmentToAdd) {
+        Patient patient = patientRepository.findByEmail(appointmentToAdd.getPatientEmail());
+        if (patient == null)
+            return new ResponseEntity<>("Invalid user email", HttpStatus.BAD_REQUEST);
+
+        Appointment predefinedAppointment = appointmentService.getAppointment(appointmentToAdd.getAppointmentId());
+
+        int result = appointmentService.savePatientToPredefinedAppointments(patient, predefinedAppointment);
+        if (result == 0)
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+        else if (result == 1)
+            return new ResponseEntity<>("Request not saved to database", HttpStatus.INTERNAL_SERVER_ERROR);
+        else if (result == -1) {
+            return new ResponseEntity<>("Appointments is already taken.", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("Unknown server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     //operation rooms for free appointment
     @GetMapping("/getRooms")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
@@ -94,8 +120,7 @@ public class AppointmentController {
     @GetMapping(path="/getDoctors/{ex_type_id}")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
     public List<DoctorDTO> getDoctorsByExType(@PathVariable("ex_type_id") Integer ex_type_id){
-        List<Doctor> doctors = doctorRepository.findByExaminationTypeId(ex_type_id);
-
+        List<Doctor> doctors = doctorService.gedDoctorsByExType(ex_type_id);
         return doctors.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

@@ -123,7 +123,7 @@ export default {
         zakazi(){
             if(this.$refs.form.validate()){
                 var obj = {
-                    time: new Date(this.date +  ' ' + this.duration),
+                    time: this.date +  ' ' + this.duration,
                     examinationType: this.type,
                     patient: this.email
                 }

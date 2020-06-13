@@ -26,16 +26,13 @@ public class RoomValidation {
 
         return true;
     }
-    public boolean validateNumber(String number, RoomRepository roomRepository){
-        List<Room> roomList = roomRepository.findAll();
+    public boolean validateNumber(String number, RoomRepository roomRepository, Integer clinicId){
+        Room room = roomRepository.findByNumberAndClinicId(number, clinicId);
 
-        Optional<Room> find = roomList.stream()
-                .filter(room -> room.getNumber().equals(number))
-                .findAny();
-        if(find.isPresent())
-            return false;
+        if(room == null)
+            return true;
+        return false;
 
-        return true;
     }
     public boolean validateUsing(Room room, AppointmentRepository appointmentRepository){
         Date date_now = new Date();

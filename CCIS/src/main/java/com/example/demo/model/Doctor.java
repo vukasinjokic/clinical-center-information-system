@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
-import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,9 +11,10 @@ import java.util.*;
 @Entity
 @Table(name = "doctors")
 public class Doctor extends MedicalStaff {
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="rating_id", nullable = false)
-    private Rating rating;
+
+   @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+   @JoinColumn(name="rating_id", nullable = true)
+   private Rating rating;
 
     @Type(type = "true_false")
     private Boolean activity;

@@ -18,7 +18,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
 
     List<Appointment> findByRoomId(Integer id);
 
-    List<Appointment> findByDoctorId(Integer id);
+    List<Appointment> findByClinicId(Integer id);
+
     List<Appointment> findByPatientIdAndFinished(Integer id, boolean finished);
 
     @Query("SELECT a FROM Appointment a WHERE a.patient IS NULL AND a.clinic = (:clinic) AND a.finished = false")
@@ -37,6 +38,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
     Calendar findDoctorsCalendarFromAppointment(@Param("id") Integer id);
 
     Optional<Appointment> findFirstByDoctorEmailAndPatientEmailAndFinishedFalseOrderByTimeAsc(@Param("doctorEmail") String doctorEmail, @Param("patientEmail") String patientEmail);
+
+    List<Appointment> findAllByDoctorIdAndTimeBetweenAndFinishedFalse(
+            @Param("doctorId") Integer doctorId,
+            @Param("dateFrom") Date dateFrom,
+            @Param("dateTo") Date dateTo
+    );
 
     List<Appointment> findAllByClinicIdAndTimeBetweenAndFinished(
             @Param("clinicId") Integer clinicId,

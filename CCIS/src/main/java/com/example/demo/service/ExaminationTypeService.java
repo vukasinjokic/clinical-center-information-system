@@ -1,9 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.Repository.AppointmentRepository;
-import com.example.demo.Repository.ExaminationTypeRepository;
-import com.example.demo.model.Appointment;
-import com.example.demo.model.ExaminationType;
+import com.example.demo.Repository.*;
+import com.example.demo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +17,12 @@ public class ExaminationTypeService {
     private ExaminationTypeRepository examinationTypeRepository;
     @Autowired
     private AppointmentRepository appointmentRepository;
+    @Autowired
+    private PriceListItemRepository priceListItemRepository;
+    @Autowired
+    private PriceListRepository priceListRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     public List<ExaminationType> findAllTypes(){
         //validacija
@@ -28,13 +32,25 @@ public class ExaminationTypeService {
     }
     public boolean removeType(String name){
         ExaminationType examinationType = examinationTypeRepository.findByName(name);
+        List<Doctor> doctors = doctorRepository.findByExaminationTypeId(examinationType.getId());
+        if(doctors.size() != 0)
+            return false;
 
+        List<PriceList> priceLists = priceListRepository.findAll();
         if(examinationType != null){
-            List<Appointment> appointments = appointmentRepository.findByExaminationTypeId(examinationType.getId());
-            if(appointments.size() == 0){
-                examinationTypeRepository.deleteById(examinationType.getId());
-                return true;
+            Optional<PriceListItem> item = priceListItemRepository.findByExaminationTypeId(examinationType.getId());
+            if(item.isPresent()){
+                PriceListItem listItem = item.get();
+                for(PriceList priceList : priceLists){
+                    priceList.setItems(priceList.getItems().stream().filter(priceListItem -> !priceListItem.getId().equals(listItem.getId())).collect(Collectors.toList()));
+                    priceListRepository.save(priceList);
+                    priceListItemRepository.delete(listItem);
+                }
+//                priceListItemRepository.delete(listItem);
             }
+            examinationTypeRepository.deleteById(examinationType.getId());
+            return true;
+
         }
         return false;
     }

@@ -42,11 +42,15 @@ public class ClinicService {
 
 
     public Clinic findById(Integer id) {
-        return clinicRepository.findById(id).orElse(null);
+        Clinic clinic = clinicRepository.findById(id).get();
+        clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity()));
+        return clinic;
     }
 
     public List<Clinic> getAllClinics() {
-        return clinicRepository.findAll();
+        List<Clinic> clinics = clinicRepository.findAll();
+        clinics.forEach(clinic -> clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity())));
+        return clinics;
     }
 
     public boolean gradeClinic(Clinic clinic, Integer patientId, float newGrade) {
@@ -78,9 +82,15 @@ public class ClinicService {
         return clinicAdmin.getClinic().getRating().getAverageGrade();
     }
 
-    public List<ChartAppointment> makeChartAppointment(String period, String admin_email){
+    public List<ChartAppointment> makeChartAppointment(String period,String time, String admin_email){
         List<ChartAppointment> chart;
-        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(admin_email);
 
         if(period.equals("DAILY")){
@@ -151,7 +161,7 @@ public class ClinicService {
                     mapa.put(calendar2.get(Calendar.MONTH) + ".", 1);
             }
         }
-        this.fillMap(mapa,".", 13);
+        this.fillYearMap(mapa,".", 12);
         this.fillChartList(mapa,yearlyChart);
 
         Collections.sort(yearlyChart);
@@ -168,6 +178,15 @@ public class ClinicService {
 
     private void fillMap(HashMap<String, Integer> chartMap, String assign, int numberOfIteration){
         for(int i = 1; i < numberOfIteration; i++) {
+            String a = i + assign;
+            if (!chartMap.containsKey(a)) {
+                chartMap.put(a, 0);
+            }
+        }
+    }
+
+    private void fillYearMap(HashMap<String, Integer> chartMap, String assign, int numberOfIteration){
+        for(int i = 0; i < numberOfIteration; i++) {
             String a = i + assign;
             if (!chartMap.containsKey(a)) {
                 chartMap.put(a, 0);
@@ -203,7 +222,8 @@ public class ClinicService {
             priceList.getItems().add(priceListItem);
             priceList.setClinic(admin.getClinic());
             priceListRepository.save(priceList);
-            return priceListItemRepository.save(priceListItem);
+
+            return priceListItemRepository.findByExaminationTypeId(examinationType.getId()).get();
         }
         return null;
     }

@@ -62,8 +62,12 @@ const actions = {
         dispatch('snackbar/showSuccess',"Uspesno poslat zahtev",{ root: true });
     },
     async scheduleAppointment({dispatch}, appo){
-        const response = await Vue.$axios.post('http://localhost:8081/doctors/scheduleAppointment', appo);
-        dispatch('snackbar/showSuccess',response.data, {root: true});
+        try{
+            const response = await Vue.$axios.post('http://localhost:8081/doctors/scheduleAppointment', appo);
+            dispatch('snackbar/showSuccess',response.data, {root: true});
+        }catch(error){
+            dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
 
     async updateRecord({dispatch}, record){

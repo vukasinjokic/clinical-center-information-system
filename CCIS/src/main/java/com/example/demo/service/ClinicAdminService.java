@@ -125,7 +125,6 @@ public class ClinicAdminService {
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
         return (List<MedicalStaffRequest>)
                 clinicAdmin.getClinic().getMedicalStaffRequests();
-
     }
 
     public float getProfit(String email, String dateFrom, String dateTo) throws ParseException {
@@ -167,7 +166,14 @@ public class ClinicAdminService {
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
 
         if(check_request.isPresent()){
+
             MedicalStaff medicalStaff = (MedicalStaff) userRepository.findByEmail(check_request.get().getMedicalStaff_email());
+            List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndTimeBetweenAndFinishedFalse(
+                medicalStaff.getId(), check_request.get().getFromDate(), check_request.get().getToDate()
+            );
+            if(appointments.size() != 0)
+                return false;
+
             medicalStaff.addVacationDates(check_request.get());
 
             emailService.alertStaffForVacation(user, check_request.get(),"");
