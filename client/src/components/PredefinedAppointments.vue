@@ -54,7 +54,7 @@ export default {
             Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
             .then(response => {
                 if (response.status === 200) {
-                    this.$store.dispatch('snackbar/showSUccess', 
+                    this.$store.dispatch('snackbar/showSuccess', 
                     "Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.",
                     {root: true});
                 } else {

@@ -143,7 +143,7 @@ const actions = {
     async addRoom({commit}, room){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/rooms/addRoom', room);
-            commit('addedRoom', response.data);
+            commit('addedRoom', response.data); 
         }catch(error){
             alert(error.response);
         }
