@@ -94,7 +94,9 @@ public class DoctorService {
         //DOCTOR ACTIVITY
         Optional<Clinic> optionalClinic = clinicRepository.findById(clinicId);
         Clinic clinic = optionalClinic.get();
-        return clinicRepository.findDoctorsFromClinic(clinic);
+        List<Doctor> doctorsFromClinic = clinicRepository.findDoctorsFromClinic(clinic);
+        doctorsFromClinic.removeIf(doctor -> !doctor.getActivity());
+        return doctorsFromClinic;
     }
 
 

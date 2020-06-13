@@ -42,11 +42,15 @@ public class ClinicService {
 
 
     public Clinic findById(Integer id) {
-        return clinicRepository.findById(id).orElse(null);
+        Clinic clinic = clinicRepository.findById(id).get();
+        clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity()));
+        return clinic;
     }
 
     public List<Clinic> getAllClinics() {
-        return clinicRepository.findAll();
+        List<Clinic> clinics = clinicRepository.findAll();
+        clinics.forEach(clinic -> clinic.getDoctors().removeIf(doctor -> (!doctor.getActivity())));
+        return clinics;
     }
 
     public boolean gradeClinic(Clinic clinic, Integer patientId, float newGrade) {
