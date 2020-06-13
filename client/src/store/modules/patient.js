@@ -39,6 +39,10 @@ const actions = {
             this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
         }
     },
+
+    async activateAccount(id){
+        await Vue.$axios.post('http://localhost:8081/patients/activateAccount/' + id);        
+    },
     
     async fetchUserProfile({commit}){
         const response = await Vue.$axios.get('http://localhost:8081/auth/userDetails');

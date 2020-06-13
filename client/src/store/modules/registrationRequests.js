@@ -33,12 +33,11 @@ const actions = {
         }
     },
 
-    async handleAcceptingRequest({commit}, id){
+    async handleAcceptingRequest({commit, dispatch}, id){
         try{
             await Vue.$axios.post("http://localhost:8081/clinicCenterAdmin/handleAcceptingRequest/" + id);
             commit('deletedRequest', id);
-            // dispatch('snackBar/showSuccess', "Successfuly regitered user", {root : true});
-            alert("Succesfult registered user");
+            dispatch('snackbar/showSuccess', "Successfuly regitered user", {root : true});
         }
         catch(error){
             // dispatch('snackbar/showError', error.response, {root : true});

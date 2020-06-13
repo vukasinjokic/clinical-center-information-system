@@ -55,15 +55,22 @@ public class PatientController {
 //                .map(this::convertToDTO)
 //                .collect(Collectors.toList());
 //    }
-        @GetMapping(path="/getPatients/{staff_email}")
-        @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
-        public List<PatientDTO> getPatientsByClinic(@PathVariable("staff_email") String staff_email){
-            List<Patient> patients = medicalStaffService.getPatientsForStaffMail(staff_email);
+    @GetMapping(path="/getPatients/{staff_email}")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    public List<PatientDTO> getPatientsByClinic(@PathVariable("staff_email") String staff_email){
+        List<Patient> patients = medicalStaffService.getPatientsForStaffMail(staff_email);
 
-            return patients.stream()
-                    .map(this::convertToDTO)
-                    .collect(Collectors.toList());
-        }
+        return patients.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping(path = "/activateAccount/{id}")
+    public ResponseEntity activateAccount(@PathVariable("id") Integer id){
+        if(patientService.activateAccount(id))
+            return ResponseEntity.ok("Successfully activated account");
+        return ResponseEntity.badRequest().body("Account was already activated");
+    }
 
     @GetMapping(path = "/medicalRecord/{patientEmail}")
     @PreAuthorize("hasAnyRole('PATIENT','DOCTOR')")

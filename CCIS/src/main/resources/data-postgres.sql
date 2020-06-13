@@ -806,28 +806,28 @@ values (nextval('ust_seq_user'), 'doktor6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8i
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting patients -----------------------------------------------------------
 insert into patients			-- id = 22
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent1@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ljubiša', 'Ljubišić', 'T', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent1@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ljubiša', 'Ljubišić', 'T', 'Nepoznata 10', 'Novi Sad', 'Srbija', '0641234567', '12121212121', 1, 'T');
 
 insert into patients			-- id = 23
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent2@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ana', 'Anić','T' , 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 1);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent2@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Ana', 'Anić','T' , 'Nepoznata 11', 'Sremska Mitrovica', 'Srbija', '0641234567', '13131313131', 1, 'T');
 
 insert into patients			-- id = 24
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milica', 'Milicić','F' ,'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141',1);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent3@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milica', 'Milicić','F' ,'Nepoznata 12', 'Banatsko Aranđelovo', 'Srbija', '0641234567', '14141414141',1, 'T');
 
 insert into patients			-- id = 25
-(id, email, password, first_name, last_name, is_password_changed, address, city, country, phone_number, social_security_number,clinic_id)
-values (nextval('ust_seq_user'), 'pacijent4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Gordana', 'Gordanović','F' ,'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 2);
+(id, email, password, first_name, last_name, is_password_changed, address, city, country, phone_number, social_security_number,clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent4@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Gordana', 'Gordanović','F' ,'Nepoznata 13', 'Subotica', 'Srbija', '0641234567', '15151515151', 2, 'T');
 
 insert into patients			-- id = 26
-(id,  email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id)
-values (nextval('ust_seq_user'), 'pacijent5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Olja', 'Oljić','F', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161',2);
+(id,  email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number, clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent5@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Olja', 'Oljić','F', 'Nepoznata 14', 'Kikinda', 'Srbija', '0641234567', '16161616161',2, 'T');
 
 insert into patients			-- id = 27
-(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number,clinic_id)
-values (nextval('ust_seq_user'), 'pacijent6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milena', 'Milenić','F' ,'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 2);
+(id, email, password, first_name, last_name,is_password_changed, address, city, country, phone_number, social_security_number,clinic_id, verified)
+values (nextval('ust_seq_user'), 'pacijent6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQBbeDQbg4LRLd8E3/632x/BzbQA3OQa3R6.', 'Milena', 'Milenić','F' ,'Nepoznata 15', 'Loznica', 'Srbija', '0641234567', '17171717171', 2, 'T');
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

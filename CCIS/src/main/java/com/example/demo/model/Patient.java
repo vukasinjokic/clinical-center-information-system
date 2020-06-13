@@ -27,8 +27,8 @@ public class Patient extends User {
    @OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL},fetch = LAZY)
    private Collection<Appointment> appointments;
 
-//   @Type(type = "true_false")
-//   private boolean active;
+   @Type(type = "true_false")
+   private boolean verified;
 
 
    public Patient() {
@@ -46,12 +46,12 @@ public class Patient extends User {
       this.appointments = new HashSet<Appointment>();
    }
 
-//   public Patient(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities, boolean active) {
-//      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, false);
-//      this.medicalRecord = new MedicalRecord(this);
-//      this.appointments = new HashSet<Appointment>();
-//      this.active = active;
-//   }
+   public Patient(String email, String password, String name, String lastName, String address, String city, String country, String phone, String socialSecurityNumber, List<Authority> authorities, boolean verified) {
+      super(email, password, name, lastName, address, city, country, phone, socialSecurityNumber, null, authorities, false);
+      this.medicalRecord = new MedicalRecord(this);
+      this.appointments = new HashSet<Appointment>();
+      this.verified = verified;
+   }
 
    public Collection<Appointment> getAppointments() {
       return appointments;
@@ -61,13 +61,13 @@ public class Patient extends User {
       this.appointments = appointments;
    }
 
-//   public boolean isActive() {
-//      return active;
-//   }
-//
-//   public void setActive(boolean active) {
-//      this.active = active;
-//   }
+   public boolean isVerified() {
+      return verified;
+   }
+
+   public void setVerified(boolean verified) {
+      this.verified = verified;
+   }
 
    public MedicalRecord getMedicalRecord() {
       return medicalRecord;

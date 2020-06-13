@@ -24,4 +24,16 @@ public class PatientService {
     public Patient findByEmail(String patientEmail){
         return patientRepository.findByEmail(patientEmail);
     }
+
+    public boolean activateAccount(Integer id) {
+        Optional<Patient> patientOptional = patientRepository.findById(id);
+        if(patientOptional.isPresent()){
+            Patient patient = patientOptional.get();
+            patient.setVerified(true);
+            patientRepository.save(patient);
+            return true;
+        }
+        return false;
+
+    }
 }

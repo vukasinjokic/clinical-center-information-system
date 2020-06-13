@@ -35,6 +35,7 @@ import ValidatePerscriptions from '../components/ValidatePerscriptions'
 import CodeBook from '../components/CodeBook'
 import InstantHomeRedirect from '../views/InstantHomeRedirect'
 import PredefinedAppointments from '../components/PredefinedAppointments'
+import ActivateAccount from '../components/ActivateAccount'
 
 
 
@@ -247,13 +248,20 @@ const router = new VueRouter({
         name: "Unauthorized",
         component: Unauthorized
       },
-
+      {
+        path: "/activateAccount/:id",
+        name: "ActivateAccount",
+        component : ActivateAccount,
+        beforeEnter: isLogOut
+        
+      },
       {
         path: "/404",
         alias: "*",
         name: "NotFound",
         component: NotFound
-      }
+      },
+      
     ]
   })
 

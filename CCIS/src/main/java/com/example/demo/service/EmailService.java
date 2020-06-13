@@ -132,4 +132,14 @@ public class EmailService {
         mail.setText("Postovani/a " + doctor.getFirstName() + ", \n\n Zakazan je "+ appointment.getExaminationType().getName()+ " u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". Pozvani ste da joj prisustvujete. \n\n");
         javaMailSender.send(mail);
     }
+
+    public void alertPatientOfAccountVerification(Patient p) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+//            mail.setTo(p.getEmail());
+        mail.setTo("isamrstim23@gmail.com");
+        mail.setFrom("isamrstim23@gmail.com");
+        mail.setSubject("Potvrda verifikacije naloga");
+        mail.setText("Postovani/a " + p.getFirstName() + ", \n\n Posetite link http://localhost:8080/#/activateAccount/" + p.getId()  +" da bi ste verifikovali nalog.\n\n");
+        javaMailSender.send(mail);
+    }
 }
