@@ -193,11 +193,10 @@ export default {
                                 let vacationDates = doctor.calendar.vacationDates;
                                 var hasVacation = vacationDates.length == 2;
                                 if (hasVacation) {
-                                    let startVacation = vacationDates[0];
-                                    let endVacation = vacationDates[1];
-
+                                    let startVacation = new Date(vacationDates[0]);
+                                    let endVacation = new Date(vacationDates[1]);
                                     // If doctor is on vacation, skip him 
-                                    if (startVacation.getTime() <= startSelectedDayMiliseconds < endVacation.getTime()) {
+                                    if (startVacation.getMilliseconds() <= startSelectedDayMiliseconds < endVacation.getMilliseconds()) {
                                         return false;
                                     }
                                 }

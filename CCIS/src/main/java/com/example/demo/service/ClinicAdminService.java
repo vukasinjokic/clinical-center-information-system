@@ -7,6 +7,7 @@ import com.example.demo.useful_beans.AppointmentToReserve;
 import com.example.demo.Repository.ClinicAdminRepository;
 import com.example.demo.Repository.MedicalStaffRequestRepository;
 import com.example.demo.useful_beans.DeclineVacRequest;
+import com.example.demo.validation.DoctorValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +48,7 @@ public class ClinicAdminService {
     @Autowired
     private UserRepository userRepository;
 
+
     private final ModelMapper modelMapper = new ModelMapper();
 
 
@@ -58,13 +60,16 @@ public class ClinicAdminService {
         return clinicAdminRepository.findByClinicId(clinicId);
     }
 
-    public void handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
+    public boolean handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
         AppointmentRequest appointmentRequest = appointmentRequestRepository.findById(appointmentToReserve.getRequestId()).get();
 
         Integer patient_id = appointmentRequest.getPatient().getId();
         Patient patient = patientRepository.findById(patient_id).get();
 
         List<Doctor> doctors = doctorRepository.findAllById(appointmentToReserve.getDoctorsIds());
+        if(!checkIfDoctorsAreAvailable(doctors, appointmentToReserve, appointmentRequest)){
+            return false;
+        }
 
         Doctor doctor = doctors.get(doctors.size() - 1);
 
@@ -84,17 +89,28 @@ public class ClinicAdminService {
         addAppointmentToDoctors(appointment, doctors);
 
         room.addAppointment(appointment);
-        updateDataBase(appointment, patient, doctors, room);
-
         emailService.alertDoctorsOperation(doctors, appointment);
         emailService.alertPatientOperation(appointment);
+        updateDataBase(appointment, doctors, appointmentRequest);
+        return true;
     }
 
-    private void updateDataBase(Appointment appointment, Patient patient, List<Doctor> doctors, Room room){
+    private boolean checkIfDoctorsAreAvailable(List<Doctor> doctors, AppointmentToReserve appointmentToReserve, AppointmentRequest appointmentRequest){
+        DoctorValidation doctorValidation = new DoctorValidation();
+        if(doctors.isEmpty()) return false;
+        float duration = doctors.get(0).getExaminationType().getDuration();
+        for(Doctor doctor : doctors){
+            if(!doctorValidation.validateDoctorBusy(appointmentToReserve.getReservedTime(), duration, doctor)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updateDataBase(Appointment appointment, List<Doctor> doctors, AppointmentRequest appointmentRequest ){
         appointmentRepository.save(appointment);
-//        patientRepository.save(patient);
-//        roomRepository.save(room);
         doctorRepository.saveAll(doctors);
+        appointmentRequestRepository.delete(appointmentRequest);
     }
 
     private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors) {

@@ -99,10 +99,16 @@ const actions = {
 
     async handleReservation({dispatch, commit}, payload){
         
-        await Vue.$axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload);
+        Vue.$axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload)
+        .then(response => {
+            dispatch("snackbar/showSuccess", response.data, {root:true});
+            dispatch('appointmentRequests/deleteRequest',  payload.requestId, {root : true});
+        })
+        .catch(err => {
+            dispatch("snackbar/showError", err.data, {root: true});
+        })
         const response = await Vue.$axios.get("http://localhost:8081/rooms/getRoom/" +  payload.room.id);
-        commit('updatedRoom', response.data);
-        dispatch('appointmentRequests/deleteRequest',  payload.requestId, {root : true});
+        commit('updatedRoom', response.data);        
         commit('resetTable');
 
 

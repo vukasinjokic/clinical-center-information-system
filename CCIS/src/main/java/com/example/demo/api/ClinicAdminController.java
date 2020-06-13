@@ -79,13 +79,14 @@ public class ClinicAdminController {
 
     @PostMapping(path ="/handleReservation", consumes = "application/json")
     @PreAuthorize("hasRole('CLINIC_ADMIN')")
-    public void handleReservation(@RequestBody AppointmentToReserve appointmentToReserve){
-
+    public ResponseEntity handleReservation(@RequestBody AppointmentToReserve appointmentToReserve){
         try {
-            clinicAdminService.handleReservation(appointmentToReserve);
+            if(clinicAdminService.handleReservation(appointmentToReserve))
+                return ResponseEntity.ok("Successfully reserved appointment");
+            return ResponseEntity.badRequest().body("One or more doctors are not available for this operation");
         }catch( Exception e ){
-            ResponseEntity.status(404);
             e.printStackTrace();
+            return ResponseEntity.badRequest().body("Something went wrong.Operation was not reserved.");
         }
 
     }

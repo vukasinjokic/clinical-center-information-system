@@ -94,9 +94,9 @@
                             <td>Start date: {{ dateToString(item.calendar.eventStartDates[it-1])}}</td>
                             <td>End date: {{ dateToString(item.calendar.eventEndDates[it-1])}}</td>
                         </tr>
-                        <tr style="background-color:gray" v-if="availableTimes">
+                        <tr v-if="availableTimes">
                             <td >First available appointment : {{dateToString(availableTimes[item.id])}}</td>
-                            <td style="text-align:center; margin-left:140px;"><v-btn @click="reserveRoom(item)" color="blue">Reserve room</v-btn> </td>
+                            <td style="text-align:center; margin-left:140px;"><v-btn @click="reserveRoom(item)" color="blue" dark>Reserve room</v-btn> </td>
                             <v-row justify="center">
                                 <v-dialog v-model="dialog" persistent max-width="500">
                                 <v-card>

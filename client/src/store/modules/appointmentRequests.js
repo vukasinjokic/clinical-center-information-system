@@ -24,7 +24,6 @@ const actions = {
 
     async deleteRequest({commit}, id){
         try{
-            await Vue.$axios.delete('http://localhost:8081/appointmentRequests/deleteRequest/' + id);
             commit('deletedRequest', id);
         }catch(error){
             alert(error.response);
