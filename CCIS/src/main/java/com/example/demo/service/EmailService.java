@@ -32,14 +32,14 @@ public class EmailService {
     }
 
     @Async
-    public void alertPatientOperation(Appointment appointment) throws MailException, InterruptedException{
+    public void alertPatientOperation( Appointment appointment) throws MailException, InterruptedException{
 
         SimpleMailMessage mail = new SimpleMailMessage();
 //        mail.setTo(doctor.getEmail());
         mail.setTo("isamrstim23@gmail.com");
         mail.setFrom("blabla");
         mail.setSubject("Nov pregled");
-        mail.setText("Postovani/a " + appointment.getPatient().getFirstName() + ", \n\n Odobren je vas zahtev za "+ appointment.getExaminationType().getName() + ". Odrzace se u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". \n\n");
+        mail.setText("Postovani/a" + ", \n\n Odobren je vas zahtev za "+ appointment.getExaminationType().getName() + ". Odrzace se u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". \n\n");
         javaMailSender.send(mail);
     }
 
