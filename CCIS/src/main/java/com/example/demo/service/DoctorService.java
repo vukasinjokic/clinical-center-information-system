@@ -59,6 +59,8 @@ public class DoctorService {
     private MedicalStaffRepository medicalStaffRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CalendarRepository calendarRepository;
 
     private DoctorValidation doctorValidation = new DoctorValidation();
     public Doctor findById(Integer id){
@@ -168,6 +170,11 @@ public class DoctorService {
         newDoctor.setCity(doctorDTO.getCity());
         newDoctor.setAddress(doctorDTO.getAddress());
         newDoctor.setCountry(doctorDTO.getCountry());
+        Rating rating = new Rating();
+        rating.setAverageGrade(0.0f);
+        newDoctor.setRating(rating);
+        Calendar calendar = calendarRepository.save(new Calendar());
+        newDoctor.setCalendar(calendar);
         newDoctor.setActivity(true);
     }
 
@@ -192,7 +199,7 @@ public class DoctorService {
         try {
             Doctor user = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Patient patient = patientRepository.findByEmail(appointmentDTO.getPatient());
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
             Date startDate = formatter.parse(appointmentDTO.getDate());
 //          if(!doctorValidation.validateDoctorBusy(startDate,))
@@ -234,5 +241,14 @@ public class DoctorService {
             return true;
         }
         return false;
+    }
+
+    public List<Doctor> gedDoctorsByExType(Integer ex_type_id) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Integer> clinicId = clinicAdminRepository.findClinicIdByAdminId(user.getId());
+        if(clinicId.isPresent()){
+            return doctorRepository.findAllByClinicIdAndExaminationTypeIdAndActivityTrue(clinicId.get(), ex_type_id);
+        }
+        return null;
     }
 }

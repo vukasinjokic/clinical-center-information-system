@@ -26,6 +26,8 @@ public class AppointmentService {
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
+    private ClinicAdminRepository clinicAdminRepository;
+    @Autowired
     private ClinicRepository clinicRepository;
     @Autowired
     private ExaminationTypeRepository examinationTypeRepository;
@@ -35,7 +37,12 @@ public class AppointmentService {
     private DoctorValidation doctorValidation = new DoctorValidation();
 
     public List<Appointment> getAllAppointments(){
-        return appointmentRepository.findAll();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Integer> clinicId = clinicAdminRepository.findClinicIdByAdminId(user.getId());
+        if(clinicId.isPresent())
+            return appointmentRepository.findByClinicId(clinicId.get());
+
+        return null;
     }
 
     public List<Appointment> findByPatientIdFinished(Integer patientId) {
@@ -61,10 +68,9 @@ public class AppointmentService {
         Date date = formatter.parse(appointmentDTO.getDate());
         //apointmentDTO sada ima doctorDTO i tu treba izmena
         Doctor getDoctor = doctorRepository.findByEmail(appointmentDTO.doctorEmail);
-        int room_len = appointmentDTO.getRoom().length();
-        String room_number = appointmentDTO.getRoom().substring(room_len - 3, room_len);
-        Room getRoom = roomRepository.findByNumber(room_number);
+
         Optional<Clinic> getClinic = clinicRepository.findById(user.getClinic().getId());
+        Room getRoom = roomRepository.findByIdAndActivity(Integer.parseInt(appointmentDTO.getRoomId()),true);
         ExaminationType getType = examinationTypeRepository.findById(Integer.parseInt(appointmentDTO.getExaminationType())).get();
 
         if(!doctorValidation.validateDoctorBusy(date, getType.getDuration(),getDoctor))
@@ -79,7 +85,7 @@ public class AppointmentService {
                     .filter(item -> item.getExaminationType().getId() == getType.getId())
                     .findAny().get().getPrice();
 
-            appointment_to_add = new Appointment(date, price, 0, getDoctor, getRoom, getType, getClinic.get());
+            appointment_to_add = new Appointment(date, price, appointmentDTO.getDiscount(), getDoctor, getRoom, getType, getClinic.get());
             getRoom.addAppointment(appointment_to_add);
             getDoctor.addAppointment(appointment_to_add);
             appointmentRepository.save(appointment_to_add);
@@ -88,53 +94,32 @@ public class AppointmentService {
         return null;
     }
 
+    public boolean valRoom(Date sd, Date ed, Room room){
+        Long start = sd.getTime();
+        Long end = ed.getTime();
+        List<Date> startDates = room.getCalendar().getEventStartDates();
+        List<Date> endDates = room.getCalendar().getEventEndDates();
+        for(int i = 0; i<startDates.size(); i++){
+            Long getTimeStart = startDates.get(i).getTime();
+            Long getTimeEnd = endDates.get(i).getTime();
+            if((getTimeStart <= start && getTimeEnd > start) ||
+                    (getTimeStart <= end && getTimeEnd >= end) ||
+                    (getTimeStart >= start && getTimeStart <= end) )
+            {
+                return false;
+            }
+        }return true;
+    }
+
     public boolean validateRoom(Date startDate, float duration, Room room){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        int d = (int) duration*3600*1000;
+        int d = (int) (3600*1000*duration);
         Date endDate = new Date(startDate.getTime()+d);
         if(room.getCalendar().getEventStartDates() == null){
-            room.getCalendar().setEventStartDates(new ArrayList<Date>());
-            room.getCalendar().setEventEndDates(new ArrayList<Date>());
             return true;
         }
-        List<HashMap<Date,Date>> check_dates_list = room.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
-        if(check_dates_list == null)
-            return true;
-        for(int i = 0; i< check_dates_list.size(); i++){
 
-            for (Map.Entry<Date, Date> entry : check_dates_list.get(i).entrySet()) {
-
-                if (startDate.after(entry.getKey())) {
-                    if (startDate.before(entry.getValue()))
-                        return false;
-                    if (i < check_dates_list.size() - 1) {
-                        for (Map.Entry<Date, Date> entry1 : check_dates_list.get(i+1).entrySet()) {
-                            if (startDate.before(entry1.getKey()) && startDate.after(entry.getValue())) {
-                                if (endDate.before(entry1.getKey())) {
-                                    return true;
-                                }
-                            } else {
-                                continue;
-                            }
-                        }
-                    } else {
-                        if (startDate.after(entry.getKey())) {
-                            if (startDate.after(entry.getValue()))
-                                return true;
-                        } else { //before
-                            if (endDate.before(entry.getKey()))
-                                return true;
-                        }
-                    }
-                } else if (startDate.before(entry.getKey())) {
-                    if (endDate.before(entry.getKey()))
-                        return true;
-                    else
-                        return false;
-                }
-            }
-        }
-        return false;
+        return valRoom(startDate,endDate, room);
     }
 
     public CodeBook getCodebookFromAppointmentClinic(Integer appointment_id) {
@@ -153,8 +138,10 @@ public class AppointmentService {
             mr.addAppointment(appointment);
             mr.addPrescription(prescription);
 
-            Calendar calendar = appointmentRepository.findDoctorsCalendarFromAppointment(appointmentToFinish.appointmentId);
-            calendar.removeEventByAppointmentId(appointmentToFinish.appointmentId);
+            List<Calendar> calendars = calendarRepository.findAllByAppointmentIdsContaining(appointmentToFinish.appointmentId);
+            for(Calendar calendar : calendars){
+                calendar.removeEventByAppointmentId(appointmentToFinish.appointmentId);
+            }
 
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);

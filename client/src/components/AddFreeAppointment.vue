@@ -6,7 +6,7 @@
            <v-btn  v-on="on" color="orange lighten-1">Add free appointment</v-btn>
         </template>
         <v-card>
-          <v-toolbar height="45px" color="orange lighten-1" class="white--text">
+          <v-toolbar height="45px" color="primary lighten-1" class="white--text">
             <span class="headline">Add free appointment</span>
           </v-toolbar>
           <v-card-text>
@@ -23,7 +23,9 @@
                         max-width="290px">
                         <template v-slot:activator="{ on }">
                           <v-text-field  v-model="date"
-                            prepend-icon="mdi-timetable"
+                            outlined
+                            dense
+                            append-icon="mdi-timetable"
                             v-on="on"
                             :rules="[requiredRule]"
                             readonly
@@ -39,6 +41,8 @@
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                      <v-text-field
+                        outlined
+                        dense
                         :rules="[requiredRule]"
                         v-model="time"
                         label="Pick time"
@@ -48,8 +52,10 @@
                         required
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12" sm="6">
                  <v-select
+                    outlined
+                    dense
                     :items="getExaminationTypeNames"
                     :rules="[requiredRule]"
                     label="Examination type"
@@ -60,6 +66,8 @@
                 </v-col>
                 <v-col cols="12" sm = "6">
                   <v-text-field 
+                      outlined
+                      dense
                       readonly
                       label="Duration" type="float" 
                       v-model="dura" 
@@ -68,6 +76,8 @@
                 
                 <v-col cols="12" sm="6">
                   <v-select
+                    outlined
+                    dense
                     v-model="room"
                     :rules="[requiredRule]"
                     :items="allRoomsNumber"
@@ -77,6 +87,8 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-select
+                    outlined
+                    dense
                     :rules="[requiredRule]"
                     hint="Choose examination type"
                     :items="getDoctors"

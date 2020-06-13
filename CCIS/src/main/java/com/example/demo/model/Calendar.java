@@ -1,12 +1,14 @@
 package com.example.demo.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,26 +20,31 @@ public class Calendar {
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "vataction_dates", joinColumns = @JoinColumn(name = "calendar_id"))
     @Column(name = "vacation_dates")
     private List<Date> vacationDates;
 
-    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ElementCollection()
     @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"))
     @Column(name = "event_start_dates")
     private List<Date> eventStartDates;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "event_end_dates", joinColumns = @JoinColumn(name = "calendar_id"))
     @Column(name = "event_end_dates")
     private List<Date> eventEndDates;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "event_names", joinColumns = @JoinColumn(name = "calendar_id"))
     @Column(name = "event_names")
     private List<String> eventNames;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "appointment_ids", joinColumns = @JoinColumn(name = "calendar_id"))
     @Column(name = "appointment_id")
@@ -65,6 +72,8 @@ public class Calendar {
     }
 
     public Calendar() {
+        this.eventStartDates = new ArrayList<Date>();
+        this.eventEndDates = new ArrayList<Date>();
     }
 
     public Calendar(Integer id, List<Date> eventStartDates, List<Date> eventEndDates, List<String> eventNames, List<Integer> appointmentIds){
@@ -92,7 +101,7 @@ public class Calendar {
     }
 
     public List<Date> getEventStartDates() {
-        return eventStartDates;
+        return this.eventStartDates;
     }
 
     public void setEventStartDates(List<Date> startDates) {
@@ -100,7 +109,7 @@ public class Calendar {
     }
 
     public List<Date> getEventEndDates() {
-        return eventEndDates;
+        return this.eventEndDates;
     }
 
     public void setEventEndDates(List<Date> endDates) {
@@ -156,6 +165,11 @@ public class Calendar {
         }
     }
     private void addEvent(Date startDate, Date endDate, String eventName, Integer appointmentId){
+        if(this.getEventStartDates().size() == 0){
+            this.eventStartDates.add(startDate);
+            this.eventEndDates.add(endDate);
+            return;
+        }
         if(startDate.after(eventStartDates.get(eventStartDates.size() - 1))){
             eventStartDates.add(startDate);
             eventEndDates.add(endDate);
@@ -184,5 +198,27 @@ public class Calendar {
                 break;
             }
         }
+    }
+    public boolean areTheSameDay(Date date1, Date date2){
+        java.util.Calendar cal1 = java.util.Calendar.getInstance();
+        java.util.Calendar cal2 = java.util.Calendar.getInstance();
+        cal1.setTime(date1);
+        cal2.setTime(date2);
+        return cal1.get(java.util.Calendar.DAY_OF_YEAR) == cal2.get(java.util.Calendar.DAY_OF_YEAR) &&
+                cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR);
+    }
+
+    public Date getDayStart(Date date){
+        java.util.Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        return calendar.getTime();
+    }
+    public Date getDayStartAfter(Date date){
+        java.util.Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        calendar.add(java.util.Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
     }
 }

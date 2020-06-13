@@ -3,6 +3,8 @@ package com.example.demo.validation;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Doctor;
+import com.example.demo.model.Room;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -42,6 +44,23 @@ public class DoctorValidation {
         return true;
     }
 
+    public boolean valDoctorBusy(Date sd, Date ed, Doctor doctor){
+        long start = sd.getTime();
+        long end = ed.getTime();
+        List<Date> startDates = doctor.getCalendar().getEventStartDates();
+        List<Date> endDates = doctor.getCalendar().getEventEndDates();
+        for(int i = 0; i<startDates.size(); i++){
+            long getTimeStart = startDates.get(i).getTime();
+            long getTimeEnd = endDates.get(i).getTime();
+            if((getTimeStart <= start && getTimeEnd > start) ||
+                    (getTimeStart <= end && getTimeEnd >= end) ||
+                    (getTimeStart >= start && getTimeStart <= end) )
+            {
+                return false;
+            }
+        }return true;
+    }
+
     public boolean validateDoctorBusy(Date startDate, float duration, Doctor doctor){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         int d = (int) duration*3600*1000;
@@ -51,48 +70,10 @@ public class DoctorValidation {
             return false;
 
         if(doctor.getCalendar().getEventStartDates() == null){
-            doctor.getCalendar().setEventStartDates(new ArrayList<Date>());
-            doctor.getCalendar().setEventEndDates(new ArrayList<Date>());
             return true;
         }
-        List<HashMap<Date,Date>> check_dates_list = doctor.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
-        if(check_dates_list == null)
-            return true;
-        for(int i = 0; i< check_dates_list.size(); i++){
 
-            for (Map.Entry<Date, Date> entry : check_dates_list.get(i).entrySet()) {
-
-                if (startDate.after(entry.getKey())) {
-                    if (startDate.before(entry.getValue()))
-                        return false;
-                    if (i < check_dates_list.size() - 1) {
-                        for (Map.Entry<Date, Date> entry1 : check_dates_list.get(i+1).entrySet()) {
-                            if (startDate.before(entry1.getKey()) && startDate.after(entry.getValue())) {
-                                if (endDate.before(entry1.getKey())) {
-                                    return true;
-                                }
-                            } else {
-                                continue;
-                            }
-                        }
-                    } else {
-                        if (startDate.after(entry.getKey())) {
-                            if (startDate.after(entry.getValue()))
-                                return true;
-                        } else { //before
-                            if (endDate.before(entry.getKey()))
-                                return true;
-                        }
-                    }
-                } else if (startDate.before(entry.getKey())) {
-                    if (endDate.before(entry.getKey()))
-                        return true;
-                    else
-                        return false;
-                }
-            }
-        }
-        return false;
+        return this.valDoctorBusy(startDate, endDate, doctor);
     }
 
     public boolean checkAppointments(List<Appointment> appointments,Date date){
