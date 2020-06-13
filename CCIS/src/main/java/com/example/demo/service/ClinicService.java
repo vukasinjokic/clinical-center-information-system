@@ -12,7 +12,6 @@ import com.example.demo.model.Prescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
