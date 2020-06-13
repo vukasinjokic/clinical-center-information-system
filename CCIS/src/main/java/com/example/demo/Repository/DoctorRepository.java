@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -13,6 +14,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     List<Doctor> findByExaminationTypeId(Integer id);
     Doctor findByEmail(String email);
+
 
     Doctor findByEmailAndActivity(
             @Param("email") String email,
@@ -22,6 +24,11 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     List<Doctor> findAllByClinicIdAndActivity(
             @Param("clinicId") Integer clinicId,
             @Param("activity") Boolean activity
+    );
+
+    List<Doctor> findAllByClinicIdAndExaminationTypeIdAndActivityTrue(
+            @Param("clinicId") Integer clinicId,
+            @Param("examinationId") Integer examinationId
     );
 
     @Query("SELECT doctor FROM Doctor doctor JOIN FETCH doctor.clinic WHERE doctor.email = (:email)")

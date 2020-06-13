@@ -65,6 +65,8 @@ public class Calendar {
     }
 
     public Calendar() {
+        this.eventStartDates = new ArrayList<Date>();
+        this.eventEndDates = new ArrayList<Date>();
     }
 
     public Calendar(Integer id, List<Date> eventStartDates, List<Date> eventEndDates, List<String> eventNames, List<Integer> appointmentIds){
@@ -156,6 +158,11 @@ public class Calendar {
         }
     }
     private void addEvent(Date startDate, Date endDate, String eventName, Integer appointmentId){
+        if(this.getEventStartDates().size() == 0){
+            this.eventStartDates.add(startDate);
+            this.eventEndDates.add(endDate);
+            return;
+        }
         if(startDate.after(eventStartDates.get(eventStartDates.size() - 1))){
             eventStartDates.add(startDate);
             eventEndDates.add(endDate);

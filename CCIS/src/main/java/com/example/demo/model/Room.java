@@ -12,17 +12,19 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "rooms", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"number", "clinic_id"})
+})
 public class Room {
    public enum RoomType{OPERATION, APPOINTMENT};
    @Id
    @GeneratedValue(strategy = IDENTITY)
    private Integer id;
 
-   @Column(name = "name", unique = true, nullable = false)
+   @Column(name = "name", nullable = false)
    private String name;
 
-   @Column(name = "number", unique = true, nullable = false)
+   @Column(name = "number", nullable = true)
    private String number;
 
    @Type(type = "true_false")
@@ -32,7 +34,7 @@ public class Room {
    @Column(name = "room_type", length = 15)
    private RoomType type;
 
-   @OneToOne(fetch = EAGER)
+   @OneToOne(cascade = CascadeType.ALL,fetch = EAGER)
    @JoinColumn(name = "calendar_id")
    private Calendar calendar;
 

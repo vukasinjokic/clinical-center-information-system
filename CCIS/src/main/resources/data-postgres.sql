@@ -467,31 +467,31 @@ values (nextval('ust_seq_user'), 'admin6@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8iQ
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting calendars ----------------------------------------------------------
-insert into calendars (id) values (1);
-insert into calendars (id) values (2);
-insert into calendars (id) values (3);
-insert into calendars (id) values (4);
-insert into calendars (id) values (5);
-insert into calendars (id) values (6);
-insert into calendars (id) values (7);
-insert into calendars (id) values (8);
-insert into calendars (id) values (9);
-insert into calendars (id) values (10);
-insert into calendars (id) values (11);
-insert into calendars (id) values (12);
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
 
-insert into calendars (id) values (13);
-insert into calendars (id) values (14);
-insert into calendars (id) values (15);
-insert into calendars (id) values (16);
-insert into calendars (id) values (17);
-insert into calendars (id) values (18);
-insert into calendars (id) values (19);
-insert into calendars (id) values (20);
-insert into calendars (id) values (21);
-insert into calendars (id) values (22);
-insert into calendars (id) values (23);
-insert into calendars (id) values (24);
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
+insert into calendars default values;
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 

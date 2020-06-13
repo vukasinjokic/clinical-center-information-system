@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "doctors")
 public class Doctor extends MedicalStaff {
-   @OneToOne(fetch = FetchType.EAGER)
+   @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
    @JoinColumn(name="rating_id", nullable = true)
    private Rating rating;
 

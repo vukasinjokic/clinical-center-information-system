@@ -53,7 +53,7 @@ public class ClinicAdminController {
     }
 
     @DeleteMapping("/acceptRequest/{id}")
-    @PreAuthorize("hasRole('CLINIC_ADMIN')")
+//    @PreAuthorize("hasRole('CLINIC_ADMIN')")
     public ResponseEntity<Void> acceptRequest(@PathVariable("id") Integer id){
         if(clinicAdminService.AcceptRequest(id))
             return new ResponseEntity<>(HttpStatus.OK);
