@@ -48,7 +48,7 @@ public class AppointmentScheduleController {
             List<AppointmentRequest> requests = appointmentRequestService.getRequests();
             for(AppointmentRequest request : requests){
                 Doctor doctor = request.getDoctor();
-                Date time = request.getTime();
+                Date time = request.getTime() == null ? request.getPredefAppointment().getTime() : request.getTime();
                 while(!reserveRoomForRequestAtTime(request, time)){
                     time.setTime(time.getTime() + 1000*60*60*24);
                 }
@@ -60,7 +60,6 @@ public class AppointmentScheduleController {
 
     }
     private boolean reserveRoomForRequestAtTime(AppointmentRequest request, Date time) throws InterruptedException {
-        time = time == null ? request.getPredefAppointment().getTime() : time;
         Optional<Doctor> doctorOptional = doctorRepository.findById(request.getDoctor() == null ? request.getPredefAppointment().getDoctor().getId() : request.getDoctor().getId());
         if(!doctorOptional.isPresent()){
             return false;

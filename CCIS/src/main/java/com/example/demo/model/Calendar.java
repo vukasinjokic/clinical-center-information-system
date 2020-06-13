@@ -20,6 +20,7 @@ public class Calendar {
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "vataction_dates", joinColumns = @JoinColumn(name = "calendar_id"))
     @Column(name = "vacation_dates")
@@ -204,6 +205,13 @@ public class Calendar {
         java.util.Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        return calendar.getTime();
+    }
+    public Date getDayStartAfter(Date date){
+        java.util.Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        calendar.add(java.util.Calendar.DAY_OF_MONTH, 1);
         return calendar.getTime();
     }
 }

@@ -153,8 +153,10 @@ public class AppointmentService {
             mr.addAppointment(appointment);
             mr.addPrescription(prescription);
 
-            Calendar calendar = appointmentRepository.findDoctorsCalendarFromAppointment(appointmentToFinish.appointmentId);
-            calendar.removeEventByAppointmentId(appointmentToFinish.appointmentId);
+            List<Calendar> calendars = calendarRepository.findAllByAppointmentIdsContaining(appointmentToFinish.appointmentId);
+            for(Calendar calendar : calendars){
+                calendar.removeEventByAppointmentId(appointmentToFinish.appointmentId);
+            }
 
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);
