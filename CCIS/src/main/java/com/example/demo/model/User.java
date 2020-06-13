@@ -15,6 +15,13 @@ public abstract class User implements UserDetails {
    @SequenceGenerator(name = "ust_seq_user", sequenceName = "ust_seq_user", initialValue = 1, allocationSize=1)
    private Integer id;
 
+   @Column(name = "counter", unique = false, nullable = false)
+   private Integer counter = 0;
+
+   @Version
+   @Column(name = "version", unique = false, nullable = false)
+   private int version;
+
    @Column(name = "email", unique = true, nullable = false)
    private String email;
 
@@ -87,6 +94,15 @@ public abstract class User implements UserDetails {
       this.authorities = authorities;
       this.passwordChanged = passwordChanged;
    }
+
+   public Integer getCounter() {
+      return counter;
+   }
+
+   public void setCounter(Integer counter) {
+      this.counter = counter;
+   }
+
    public Boolean isPasswordChanged() {
       return passwordChanged;
    }

@@ -8,9 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OptimisticLockException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,6 +81,8 @@ public class AppointmentRequestController {
                     return new ResponseEntity<>("Invalid clinic id", HttpStatus.BAD_REQUEST);
                 clinicId = clinic.getId();
 
+                doctor.setCounter(doctor.getCounter() + 1);
+//                Thread.sleep(5000);           // for testing optimistic blocking
                 appointmentRequest.setDoctor(doctor);
                 appointmentRequest.setPatient(patient);
                 appointmentRequest.setTime(chosenDate);
@@ -91,6 +95,9 @@ public class AppointmentRequestController {
                 Appointment predefinedAppointment = appointmentService.getAppointment(appointmentToAdd.getAppointmentId());
                 clinicId = predefinedAppointment.getClinic().getId();
 
+                predefinedAppointment.setCounter(predefinedAppointment.getCounter() + 1);
+//                Thread.sleep(5000);           // for testing optimistic blocking
+                appointmentRequest.setPredefAppointment(predefinedAppointment);
                 appointmentRequest.setDoctor(predefinedAppointment.getDoctor());
                 appointmentRequest.setPatient(patient);
                 appointmentRequest.setTime(predefinedAppointment.getTime());
@@ -99,7 +106,6 @@ public class AppointmentRequestController {
                 appointmentRequest.setDiscount(predefinedAppointment.getDiscount());
 
                 appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
-                appointmentRequest.setPredefAppointment(predefinedAppointment);
             }
 
             boolean success = appointmentRequestService.saveRequest(appointmentRequest);
@@ -114,6 +120,9 @@ public class AppointmentRequestController {
         } catch (ParseException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Invalid date time format", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Appointments is already taken.", HttpStatus.BAD_REQUEST);
         }
     }
 
