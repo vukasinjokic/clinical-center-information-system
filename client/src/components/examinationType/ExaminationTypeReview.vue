@@ -119,7 +119,7 @@ export default {
           return (value) => !!value || "Required.";
         },
         numberRule(){
-            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be valid.";
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be number.";
         },
         formTitle () {
             return this.editedIndex === -1 ? 'New Item' : 'Edit Item'

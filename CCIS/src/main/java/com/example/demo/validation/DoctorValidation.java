@@ -3,13 +3,14 @@ package com.example.demo.validation;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Doctor;
-import javafx.util.Pair;
+import com.example.demo.model.Room;
 
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
 
 public class DoctorValidation {
 
@@ -47,51 +48,38 @@ public class DoctorValidation {
         return true;
     }
 
+    public boolean valDoctorBusy(Date sd, Date ed, Doctor doctor){
+        long start = sd.getTime();
+        long end = ed.getTime();
+        List<Date> startDates = doctor.getCalendar().getEventStartDates();
+        List<Date> endDates = doctor.getCalendar().getEventEndDates();
+        for(int i = 0; i<startDates.size(); i++){
+            long getTimeStart = startDates.get(i).getTime();
+            long getTimeEnd = endDates.get(i).getTime();
+            if((getTimeStart <= start && getTimeEnd > start) ||
+                    (getTimeStart <= end && getTimeEnd >= end) ||
+                    (getTimeStart >= start && getTimeStart <= end) )
+            {
+                return false;
+            }
+        }return true;
+    }
+
     public boolean validateDoctorBusy(Date startDate, float duration, Doctor doctor){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        int d = (int) duration*3600*1000;
-        Date endDate = new Date(startDate.getTime()+d);
+        float d = (duration *3600*1000);
+        Date endDate = new Date(startDate.getTime()+(long)d);
 
         if(isDoctorOnVacation(doctor,startDate,endDate))
             return false;
 
         if(doctor.getCalendar().getEventStartDates() == null){
-            doctor.getCalendar().setEventStartDates(new ArrayList<Date>());
-            doctor.getCalendar().setEventEndDates(new ArrayList<Date>());
             return true;
         }
-        List<Pair<Date,Date>> check_dates_list = doctor.getCalendar().formatDates().get(sdf.format(startDate).substring(0,10));
-        if(check_dates_list == null)
-            return true;
-        for(int i = 0; i< check_dates_list.size(); i++){
-            if(startDate.after(check_dates_list.get(i).getKey())){
-                if(startDate.before(check_dates_list.get(i).getValue()))
-                    return false;
-                if(i < check_dates_list.size()-1){
-                    if(startDate.before(check_dates_list.get(i+1).getKey()) && startDate.after(check_dates_list.get(i).getValue())){
-                        if(endDate.before(check_dates_list.get(i+1).getKey())){
-                            return true;
-                        }
-                    }else{
-                        continue;
-                    }
-                }else{
-                    if(startDate.after(check_dates_list.get(i).getKey())){
-                        if(startDate.after(check_dates_list.get(i).getValue()))
-                            return true;
-                    }else{ //before
-                        if(endDate.before(check_dates_list.get(i).getKey()))
-                            return true;
-                    }
-                }
-            }else if(startDate.before(check_dates_list.get(i).getKey())){
-                if(endDate.before(check_dates_list.get(i).getKey()))
-                    return true;
-                else
-                    return false;
-            }
-        }
-        return false;
+        if(!this.checkBusinessHours(doctor,startDate,endDate))
+            return false;
+
+        return this.valDoctorBusy(startDate, endDate, doctor);
     }
 
     public boolean checkAppointments(List<Appointment> appointments,Date date){
@@ -116,12 +104,18 @@ public class DoctorValidation {
     }
 
     public boolean checkBusinessHours(Doctor doctor, Date start, Date end){
-        Date startBusinessHours = doctor.getBusinessHours().getStarted();
-        Date endBusinessHours = doctor.getBusinessHours().getEnded();
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        String startTimeString = localDateFormat.format(start);
+        String endTimeString = localDateFormat.format(end);
+        LocalTime startTime = LocalTime.parse(startTimeString);
+        LocalTime endTime = LocalTime.parse(endTimeString);
+
+        LocalTime startBusinessHours = LocalTime.parse(doctor.getBusinessHours().getStarted().toString());
+        LocalTime endBusinessHours = LocalTime.parse(doctor.getBusinessHours().getEnded().toString());
         //mozda bi tu moglo i equals
-        if(start.after(startBusinessHours) && start.before(endBusinessHours))
-            if(end.before(endBusinessHours))
-                return true;
+        if((startTime.isAfter(startBusinessHours) || startTime.equals(startBusinessHours)) && (endTime.isBefore(endBusinessHours) || endTime.equals(endBusinessHours)))
+            return true;
         return false;
     }
 }

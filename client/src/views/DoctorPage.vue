@@ -1,7 +1,8 @@
 <template>
     <div>     
-        <v-navigation-drawer width="260" :clipped="clipped" v-model="drawer" enable-resize-watcher app  class="indigo lighten-5">
-            <v-divider class="mb-7" />
+        <v-navigation-drawer width="250" :clipped="clipped" v-model="drawer" enable-resize-watcher app 
+                                        class="indigo lighten-5">
+            <v-divider class="mb-12" />
             <v-list nav dense>
                 <div/>
                 <v-list-item v-for="item in items"
@@ -17,13 +18,12 @@
                     </v-list-item-content>
                 </v-list-item> 
                 <v-list-group
+                    no-action
                     value="true"
+                    prepend-icon="mdi-account"
                     >
                    <template v-slot:activator>
                         <v-list-item>
-                            <v-list-item-icon>
-                                <v-icon>{{ icon }}</v-icon>
-                            </v-list-item-icon>
                             <v-list-item-content>Profile</v-list-item-content>
                         </v-list-item>
                     </template> 
@@ -32,10 +32,11 @@
                         :key="prof"
                         :to="prof.link"
                         >
-                        <v-list-tile-title v-text="prof.title"></v-list-tile-title>
-                            <v-list-tile-action>
-                                <v-icon v-text="prof.icon"></v-icon>
-                            </v-list-tile-action>
+                        <v-list-item-icon>
+                            <v-icon v-text="prof.icon"></v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title v-text="prof.title"></v-list-item-title>
+                        
                     </v-list-item>
                 </v-list-group>
             </v-list>
@@ -61,16 +62,16 @@ export default {
     data(){
         return {
             items: [
-                { title: 'Patient', link: '/doctor/patient', icon: 'mdi-clipboard-outline' },
-                { title: 'Zapocinjanje pregleda', link: '/doctor/', icon:'mdi-check' },
-                { title: 'Work calendar', link: '/doctor/:16/calendar', icon: 'mdi-calendar' },
+                { title: 'Patient', link: '/doctor/patient', icon: 'mdi-account-group' },
+                // { title: 'Zapocinjanje pregleda', link: '/doctor/', icon:'mdi-check' },
+                { title: 'Work calendar', link: '/doctor/calendar', icon: 'mdi-calendar' },
                 { title: 'Create request for vacation', link: '/doctor/vacationRequest',icon:'mdi-airplane' },
                 // { title: 'Profile', link: '/doctor/profile', icon: 'mdi-account' },
-                { title: 'Zakazivanje pregleda/operacija', link: '/doctor/scheduleApp', icon: 'mdi-arrow-down-bold-box' },
+                { title: 'Schedule appointment', link: '/doctor/scheduleApp', icon: 'mdi-arrow-down-bold-box' },
             ],
             profile: [
                 {title: 'Edit profile',link:'/doctor/profile', icon: 'mdi-account'},
-                {title: 'Change password',link: '/change-password', icon: 'mdi-account'}
+                {title: 'Change password',link: '/change-password', icon: 'mdi-key'}
             ],
             drawer: true,
             icon: 'mdi-account'

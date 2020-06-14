@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.Repository.UserRepository;
+import com.example.demo.model.Doctor;
+import com.example.demo.model.Patient;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +29,20 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with email '%s'.", username));
         } else {
-            return user;
+            if(user instanceof Patient){
+                Patient patient = (Patient) user;
+                if(patient.isVerified())
+                    return patient;
+                throw new UsernameNotFoundException(String.format("Account with username '%s' not verified.", username));
+            }
+            if (user instanceof Doctor) {
+                Doctor doctor = (Doctor) user;
+                if (doctor.getActivity())
+                    return doctor;
+                else
+                    throw new UsernameNotFoundException(String.format("No user found with email '%s'.", username));
+            } else
+                return user;
         }
     }
 }

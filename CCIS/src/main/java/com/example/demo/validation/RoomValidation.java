@@ -7,6 +7,7 @@ import com.example.demo.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,19 +26,17 @@ public class RoomValidation {
 
         return true;
     }
-    public boolean validateNumber(String number, RoomRepository roomRepository){
-        List<Room> roomList = roomRepository.findAll();
+    public boolean validateNumber(String number, RoomRepository roomRepository, Integer clinicId){
+        Room room = roomRepository.findByNumberAndClinicId(number, clinicId);
 
-        Optional<Room> find = roomList.stream()
-                .filter(room -> room.getNumber().equals(number))
-                .findAny();
-        if(find.isPresent())
-            return false;
+        if(room == null)
+            return true;
+        return false;
 
-        return true;
     }
     public boolean validateUsing(Room room, AppointmentRepository appointmentRepository){
-        List<Appointment> appointments = appointmentRepository.findByRoomId(room.getId());
+        Date date_now = new Date();
+        List<Appointment> appointments = appointmentRepository.findAllByRoomIdAndTimeAfter(room.getId(),date_now);
         if(appointments.size() == 0)
             return true;
 

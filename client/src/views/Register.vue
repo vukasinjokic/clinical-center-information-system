@@ -65,7 +65,7 @@
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
                                 v-model="user.phoneNumber" 
-                                :rules="[ruleRequired]" 
+                                :rules="[ruleRequired,numberRule]" 
                                 label="Phone number" 
                                 required>
                             </v-text-field>
@@ -73,7 +73,7 @@
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
                                 v-model="user.socialSecurityNumber" 
-                                :rules="[ruleRequired]" 
+                                :rules="[ruleRequired,numberRule]" 
                                 label="Social security number" 
                                 required>
                             </v-text-field>
@@ -151,7 +151,10 @@ export default {
         },
         minChar(){
             return (value) => (value && value.length >= 8) || "Min 8 characters";
-        }
+        },
+        numberRule(){
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be number.";
+        },
     },
     methods: {
         submit(){
@@ -171,7 +174,10 @@ export default {
                 if(response.status === 200){
                     alert("Admin successfully registered");
                     this.$router.push('/clinicCenterAdmin')
-                }
+                } else
+                    this.$store.dispatch('snackbar/showError', response.data, {root: true});
+            }).catch((error) => {
+                this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
             })
         },
 
@@ -187,17 +193,13 @@ export default {
             axios.post('http://localhost:8081/auth/registerPatient', this.user)
             .then(response => {
                 if (response.status === 200) {
-                    alert("Vaš zahtev za registraciju je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
+                    this.$store.dispatch('snackbar/showSuccess', "Vaš zahtev za registraciju je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.", {root: true});
                 } else {
-                    alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
+                    this.$store.dispatch('snackbar/showError', "Unknown error: " + response.status + ".\nMessage: " + response.data, {root: true});
                 }
             })
             .catch(error => {
-                if (error.response.status >= 400) {
-                    alert("Error: " + error.response.status + ".\nMessage: " + error.response.data)
-                } else {
-                    alert("Unknown error: " + error.response.status + ".\nMessage: " + error.response.data);
-                }
+                this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
             });
             
         },

@@ -47,11 +47,21 @@ const actions = {
     },
 
     async fetchPatientFinishedAppointments({commit}, mail){
-        const response = await Vue.$axios.post('http://localhost:8081/appointments/getPatientAppointments', {mail});
-        var finishedAppointments = response.data.filter(appointment => {
-            return appointment.finished;
-        })
-        commit('setAppo', finishedAppointments);
+        try {
+            const response = await Vue.$axios.post('http://localhost:8081/appointments/getPatientAppointments', {mail});
+            commit('setAppo', response.data);
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
+    },
+
+    async fetchPredefinedAppointments({commit}, clinicId) {
+        try {
+            const response = await Vue.$axios.post("http://localhost:8081/appointments/getPredefinedAppointments/" + clinicId);
+            commit('setAppo', response.data);
+        } catch(error) {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        }
     },
 
     async fetchRooms({commit}){
@@ -72,7 +82,7 @@ const actions = {
             commit('newApp', response.data);
             dispatch('snackbar/showSuccess', 'Uspesno dodat slobodan pregled', {root: true});
         }catch(error){
-            dispatch('snackbar/showWarning',"Doktor ili soba su zauzeti u zadato vreme.",{root:true}); // moze i da je doktor na odmoru
+            dispatch('snackbar/showWarning',error.response.data,{root:true}); // moze i da je doktor na odmoru
         }
     },
    

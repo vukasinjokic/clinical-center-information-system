@@ -3,6 +3,8 @@ package com.example.demo.api;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.MedicalRecordDTO;
 import com.example.demo.dto.PatientDTO;
+import com.example.demo.model.*;
+import com.example.demo.service.*;
 import com.example.demo.model.ClinicAdmin;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.MedicalRecord;
@@ -31,23 +33,43 @@ public class PatientController {
 
     private final PatientService patientService;
     private final DoctorService doctorService;
+    private final MedicalStaffService medicalStaffService;
+
 
     private ModelMapper modelMapper = new ModelMapper();
 
-    public PatientController(PatientService patientService, DoctorService doctorService) {
+    public PatientController(PatientService patientService, DoctorService doctorService, MedicalStaffService medicalStaffService) {
         this.patientService = patientService;
         this.doctorService = doctorService;
+        this.medicalStaffService = medicalStaffService;
+
     }
 
-    @GetMapping(path="/getPatients/{doctor_email}")
-    @PreAuthorize("hasAnyRole('DOCTOR')")
-    public List<PatientDTO> getPatientsByClinic(@PathVariable("doctor_email") String doctor_email){
-        Doctor d = doctorService.findByEmail(doctor_email);
-        List<Patient> patients = patientService.getPatients(d.getClinic().getName());
+//    @GetMapping(path="/getPatients/{doctor_email}")
+//    @PreAuthorize("hasAnyRole('DOCTOR')")
+//    public List<PatientDTO> getPatientsByClinic(@PathVariable("doctor_email") String doctor_email){
+//        Doctor d = doctorService.findByEmail(doctor_email);
+//        List<Patient> patients = patientService.getPatients(d.getClinic().getName());
+//
+//        return patients.stream()
+//                .map(this::convertToDTO)
+//                .collect(Collectors.toList());
+//    }
+    @GetMapping(path="/getPatients/{staff_email}")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'NURSE')")
+    public List<PatientDTO> getPatientsByClinic(@PathVariable("staff_email") String staff_email){
+        List<Patient> patients = medicalStaffService.getPatientsForStaffMail(staff_email);
 
         return patients.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping(path = "/activateAccount/{id}")
+    public ResponseEntity activateAccount(@PathVariable("id") Integer id){
+        if(patientService.activateAccount(id))
+            return ResponseEntity.ok("Successfully activated account");
+        return ResponseEntity.badRequest().body("Account was already activated");
     }
 
     @GetMapping(path = "/medicalRecord/{patientEmail}")

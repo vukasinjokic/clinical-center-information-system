@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router'
 import UserProfile from '../components/UserProfile.vue'
 import VacationReqReview from '../components/VacationReqReview'
-import Room from '../views/Rooms'
+import ClinicAdminRooms from '../components/ClinicAdminRooms.vue'
 import Login from '../views/Login'
 import Appointments from '../views/Appointments'
 import ExaminationTypeReview from '../components/examinationType/ExaminationTypeReview.vue'
@@ -19,6 +19,7 @@ import AppointmentRequests from '../components/AppointmentRequests'
 import ScheduleAppointment from '../components/ScheduleAppointment';
 import DoctorReview from '../components/doctor/DoctorReview';
 import ClinicProfile from '../components/ClinicProfile';
+import ClinicProfileForPatient from '../components/ClinicProfileForPatient';
 import ChangePassword from '../components/ChangePassword';
 import NursePage from '../views/NursePage'
 import PatientPage from '../views/PatientPage'
@@ -33,6 +34,9 @@ import BusinessReport from '../components/businessReport/BusinessReport'
 import ValidatePerscriptions from '../components/ValidatePerscriptions'
 import CodeBook from '../components/CodeBook'
 import InstantHomeRedirect from '../views/InstantHomeRedirect'
+import PredefinedAppointments from '../components/PredefinedAppointments'
+import ActivateAccount from '../components/ActivateAccount'
+
 
 
 Vue.use(VueRouter);
@@ -167,11 +171,11 @@ const router = new VueRouter({
         children: [
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
-            {path: ':16/calendar', name: 'Calendar', component : Calendar},
+            {path: 'calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
             {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment},
-            {path: 'startAppointment', name: 'startAppointment', component: StartAppointment, props : true},
-            {path: 'patient/record/:email', name:'Record', component: MedicalRecord}
+            {path: 'startAppointment/:email', name: 'startAppointment', component: StartAppointment, props : true},
+            {path: 'patient/record/:email?', name:'Record', component: MedicalRecord}
         ]
       },
       {
@@ -182,7 +186,7 @@ const router = new VueRouter({
         children: [
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
-            {path: ':16/calendar', name: 'Calendar', component : Calendar},
+            {path: 'calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
             {path: 'validatePerscriptions', name: 'ValidatePerscriptions', component: ValidatePerscriptions}
         ]
@@ -196,7 +200,7 @@ const router = new VueRouter({
           {path: 'businessReport', name: 'BusinessReport', component: BusinessReport},
           {path: 'appointmentRequests', name: 'AppointmentRequests', component: AppointmentRequests},
           {path: 'vacationRequests', name: 'Vacation Requests', component: VacationReqReview },
-          {path: 'rooms', name: 'Rooms', component: Room },
+          {path: 'updateRooms', name: 'ClinicAdminRooms', component: ClinicAdminRooms },
           {path: 'ex_type', name: 'ExaminationType', component : ExaminationTypeReview },
           {path: 'appointments', name: 'Appointments', component : Appointments },
           {path: 'doctors', name: 'Doctors', component : DoctorReview},
@@ -227,7 +231,9 @@ const router = new VueRouter({
           {path: "appointments", name: "AppointmentsForPatient", component: AppointmentsForPatient},
           {path: "medicalRecord", name: "MedicalRecord", component: MedicalRecord},
           {path: 'profile', name: 'UserProfile', component: UserProfile},
-          {path: 'doctors', name: 'DoctorsForPatient', component: Doctors}
+          {path: 'clinicProfile/:id', name: 'ClinicProfileForPatient', component: ClinicProfileForPatient},
+          {path: 'doctors', name: 'DoctorsForPatient', component: Doctors},
+          {path: 'predefinedAppointments/:clinicId', name: 'PredefinedAppointments', component: PredefinedAppointments}
         ]
       },
       {
@@ -242,13 +248,20 @@ const router = new VueRouter({
         name: "Unauthorized",
         component: Unauthorized
       },
-
+      {
+        path: "/activateAccount/:id",
+        name: "ActivateAccount",
+        component : ActivateAccount,
+        beforeEnter: isLogOut
+        
+      },
       {
         path: "/404",
         alias: "*",
         name: "NotFound",
         component: NotFound
-      }
+      },
+      
     ]
   })
 

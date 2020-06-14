@@ -14,7 +14,7 @@ const getters = {
 
 const actions = {
     async fetchClinics({commit}){
-        await Vue.$axios.get('http://localhost:8081/clinics/getClinics')
+        await Vue.$axios.get('http://localhost:8081/clinics/getClinicsPatient')
         .then(response => {
             for (let i = 0; i < response.data.length; i++) {
                 var clinic = response.data[i];
@@ -28,7 +28,7 @@ const actions = {
             }
             commit('setClinics', response.data);
         })
-        .catch(() => { alert("Nemate pravo pregleda svih klinika") });
+        .catch(() => { this.$store.dispatch('snackbar/showError', "Nemate pravo pregleda svih klinika", {root: true}); });
     },
 
     clinicsSetter({commit}, clinics) {
@@ -36,7 +36,10 @@ const actions = {
     },
 
     async saveClinic({commit}, clinic){
-        const response = await Vue.$axios.post('http://localhost:8081/clinics/addClinic', clinic);
+        const response = await Vue.$axios.post('http://localhost:8081/clinics/addClinic', clinic)
+        .catch(error => {
+            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+        });
         commit('newClinic', response.data);
     },
 

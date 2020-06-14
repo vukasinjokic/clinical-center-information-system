@@ -25,38 +25,31 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     @Async
-    public void alertDoctorsOperation(List<DoctorDTO> doctors, Appointment appointment) throws MailException, InterruptedException{
-
-        for(DoctorDTO doctor : doctors){
-            SimpleMailMessage mail = new SimpleMailMessage();
-//            mail.setTo(doctor.getEmail());
-            mail.setTo("isamrstim23@gmail.com");
-            mail.setFrom("blabla");
-            mail.setSubject("Nova operacija zakazana");
-            mail.setText("Postovani/a " + doctor.getFirstName() + ", \n\n Zakazan je "+ appointment.getExaminationType().getName()+ " u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". Pozvani ste da joj prisustvujete. \n\n");
-            javaMailSender.send(mail);
+    public void alertDoctorsOperation(List<Doctor> doctors, Appointment appointment) throws MailException, InterruptedException{
+        for(Doctor doctor : doctors){
+            alertDoctorOperation(doctor, appointment);
         }
     }
 
     @Async
-    public void alertPatientOperation(Appointment appointment) throws MailException, InterruptedException{
+    public void alertPatientOperation( Appointment appointment) throws MailException, InterruptedException{
 
         SimpleMailMessage mail = new SimpleMailMessage();
 //        mail.setTo(doctor.getEmail());
         mail.setTo("isamrstim23@gmail.com");
         mail.setFrom("blabla");
         mail.setSubject("Nov pregled");
-        mail.setText("Postovani/a " + appointment.getPatient().getFirstName() + ", \n\n Odobren je vas zahtev za "+ appointment.getExaminationType().getName() + ". Odrzace se u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". \n\n");
+        mail.setText("Postovani/a" + ", \n\n Odobren je vas zahtev za "+ appointment.getExaminationType().getName() + ". Odrzace se u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". \n\n");
         javaMailSender.send(mail);
     }
 
     @Async
-    public void alertAdminForVacation(Doctor doctor, MedicalStaffRequest request){
+    public void alertAdminForVacation(MedicalStaff medicalStaff, MedicalStaffRequest request){
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo("isamrstim23@gmail.com");
-        mail.setFrom(doctor.getEmail());
+        mail.setFrom(medicalStaff.getEmail());
         mail.setSubject("Zahtev za " + request.getType().toString());
-        mail.setText("Postovani/a " + ", \n\n doktor " + doctor.getFirstName() + " " + doctor.getLastName()
+        mail.setText("Postovani/a " + ", \n\n doktor " + medicalStaff.getFirstName() + " " + medicalStaff.getLastName()
                        + " je zatrazio " + request.getType() + " od: " + request.getFromDate().toString()+
                         " do: " +request.getToDate().toString() + " datuma.");
         javaMailSender.send(mail);
@@ -126,6 +119,27 @@ public class EmailService {
         mail.setFrom("Clinical-center-information-system@gmail.com");
         mail.setSubject("Odbijen zahtev za registraciju");
         mail.setText(message);
+        javaMailSender.send(mail);
+    }
+
+    @Async
+    public void alertDoctorOperation(Doctor doctor, Appointment appointment) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+//            mail.setTo(doctor.getEmail());
+        mail.setTo("isamrstim23@gmail.com");
+        mail.setFrom("blabla");
+        mail.setSubject("Nova operacija zakazana");
+        mail.setText("Postovani/a " + doctor.getFirstName() + ", \n\n Zakazan je "+ appointment.getExaminationType().getName()+ " u sali "+appointment.getRoom().getName()+", datuma "+appointment.getTime()+". Pozvani ste da joj prisustvujete. \n\n");
+        javaMailSender.send(mail);
+    }
+
+    public void alertPatientOfAccountVerification(Patient p) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+//            mail.setTo(p.getEmail());
+        mail.setTo("isamrstim23@gmail.com");
+        mail.setFrom("isamrstim23@gmail.com");
+        mail.setSubject("Potvrda verifikacije naloga");
+        mail.setText("Postovani/a " + p.getFirstName() + ", \n\n Posetite link http://localhost:8080/#/activateAccount/" + p.getId()  +" da bi ste verifikovali nalog.\n\n");
         javaMailSender.send(mail);
     }
 }

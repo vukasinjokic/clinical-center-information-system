@@ -2,12 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.ClinicRepository;
 import com.example.demo.Repository.DoctorRepository;
-import com.example.demo.Repository.MedicalStaffRepository;
+import com.example.demo.Repository.MedicalStaffRequestRepository;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.RatingRepository;
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.MedicalRecordDTO;
+import com.example.demo.exceptions.ForbiddenException;
 import com.example.demo.model.AppointmentRequest;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
@@ -41,6 +42,8 @@ public class DoctorService {
     @Autowired
     private ClinicRepository clinicRepository;
     @Autowired
+    private MedicalStaffRequestRepository medicalStaffRequestRepository;
+    @Autowired
     private ClinicAdminRepository clinicAdminRepository;
     @Autowired
     private BusinessHoursRepository businessHoursRepository;
@@ -53,8 +56,11 @@ public class DoctorService {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
     @Autowired
+    private MedicalStaffRepository medicalStaffRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private CalendarRepository calendarRepository;
 
     private DoctorValidation doctorValidation = new DoctorValidation();
     public Doctor findById(Integer id){
@@ -62,9 +68,11 @@ public class DoctorService {
     }
 
     public List<Doctor> findAllDoctors(){
+        //treba izmena za aktivnost
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<ClinicAdmin> clinicAdmin =  clinicAdminRepository.findById(user.getId());
-        return (List<Doctor>) clinicAdmin.get().getClinic().getDoctors();
+        return doctorRepository.findAllByClinicIdAndActivity(
+                clinicAdmin.get().getClinic().getId(),true);
     }
 
     public Patient findPatientProfile(String email){
@@ -73,6 +81,7 @@ public class DoctorService {
     }
 
     public boolean canStaffViewRecord(String patientEmail){
+        //DOCTOR ACTIVITY
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndPatientEmailAndFinished(
                 user.getId(), patientEmail, true);
@@ -81,8 +90,19 @@ public class DoctorService {
         return true;
     }
 
+    public List<Doctor> findDoctorsFromClinic(Integer clinicId) {
+        //DOCTOR ACTIVITY
+        Optional<Clinic> optionalClinic = clinicRepository.findById(clinicId);
+        Clinic clinic = optionalClinic.get();
+        List<Doctor> doctorsFromClinic = clinicRepository.findDoctorsFromClinic(clinic);
+        doctorsFromClinic.removeIf(doctor -> !doctor.getActivity());
+        return doctorsFromClinic;
+    }
+
+
     public Doctor findByEmail(String email){
-        return doctorRepository.findByEmail(email);
+        //DOCTOR ACTIVITY
+        return doctorRepository.findByEmailAndActivity(email, true);
     }
 
     public boolean gradeDoctor(Doctor doctor, Integer patientId, float newGrade) {
@@ -91,29 +111,23 @@ public class DoctorService {
         doctorRating = ratingRepository.save(doctorRating);
         return doctorRating != null;
     }
-    public String deleteDoctor(Integer id){
+    public void deleteDoctor(Integer id) throws ForbiddenException {
         Optional<Doctor> find_doc = doctorRepository.findById(id);
-        List<Appointment> appointments = appointmentRepository.findByDoctorId(id);
-        //ne pokupi doktora koji ima appointments null
         Date date = new Date();
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndTimeAfter(id, date);
+        //ne pokupi doktora koji ima appointments null
         if(find_doc.isPresent()){
             Doctor doctor = find_doc.get();
-            if(doctorValidation.checkAppointments(appointments,date)) {
-                doctorRepository.delete(doctor);
-                return "";
-            }
-            if(doctor.getCalendar() == null){
-                doctorRepository.delete(doctor);
-                return "";
-            }
-//            if(doctorValidation.validateDeleting(doctor,date)){
-//                doctorRepository.delete(doctor);
-//                return "";
-//            }
 
-            return "Ne mozete obrisati doktora koji ima zakazan pregled.";
+            if(appointments.size() == 0){
+                doctor.setActivity(false);
+                doctorRepository.save(doctor);
+                return;
+            }
+
+            throw new ForbiddenException("Doktor ima zakazane preglede.");
         }
-        return "Doktor sa zadatim id ne postoji.";
+        throw new ForbiddenException("Doktor ima zakazane preglede.");
     }
 
     public Doctor saveDoctor(DoctorDTO doctorDTO){
@@ -155,13 +169,18 @@ public class DoctorService {
         newDoctor.setCity(doctorDTO.getCity());
         newDoctor.setAddress(doctorDTO.getAddress());
         newDoctor.setCountry(doctorDTO.getCountry());
+        Rating rating = new Rating();
+        rating.setAverageGrade(0.0f);
+        newDoctor.setRating(rating);
+        Calendar calendar = calendarRepository.save(new Calendar());
+        newDoctor.setCalendar(calendar);
+        newDoctor.setActivity(true);
     }
 
     public boolean sendRequest(MedicalStaffRequest request){
 
-        Doctor user = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Doctor get_doctor_clinic = doctorRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
-
+        MedicalStaff user = (MedicalStaff) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MedicalStaff get_doctor_clinic = medicalStaffRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
 //        get_doctor_clinic.getCalendar().getDates();
 
         request.setMedicalStaff_email(user.getEmail());
@@ -176,27 +195,35 @@ public class DoctorService {
     }
 
     public boolean schedule(AppointmentDTO appointmentDTO) throws ParseException {
-        Doctor user = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Patient patient = patientRepository.findByEmail(appointmentDTO.getPatient());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        try {
+            Doctor user = (Doctor) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Patient patient = patientRepository.findByEmail(appointmentDTO.getPatient());
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
-        Date startDate = formatter.parse(appointmentDTO.getDate());
-//        if(!doctorValidation.validateDoctorBusy(startDate,))
+            Date startDate = formatter.parse(appointmentDTO.getDate());
+//          if(!doctorValidation.validateDoctorBusy(startDate,))
 
-        if(patient == null)
+            if (patient == null)
+                return false;
+
+            AppointmentRequest request = new AppointmentRequest();
+            user.setCounter(user.getCounter() + 1);
+//            Thread.sleep(5000);           // for testing optimistic blocking
+            doctorRepository.save(user);
+            request.setDoctor(user);
+            request.setPatient(patient);
+            request.setTime(formatter.parse(appointmentDTO.getDate()));
+            request.setType(AppointmentRequest.AppointmentReqType.DOCTOR);
+
+            Doctor get_doctor_clinic = doctorRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
+            get_doctor_clinic.getClinic().getAppointmentRequests().add(request);
+
+            clinicRepository.save(get_doctor_clinic.getClinic());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
-
-        AppointmentRequest request = new AppointmentRequest();
-        request.setDoctor(user);
-        request.setPatient(patient);
-        request.setTime(formatter.parse(appointmentDTO.getDate()));
-        request.setType(AppointmentRequest.AppointmentReqType.DOCTOR);
-
-        Doctor get_doctor_clinic = doctorRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
-        get_doctor_clinic.getClinic().getAppointmentRequests().add(request);
-
-        clinicRepository.save(get_doctor_clinic.getClinic());
-        return true;
+        }
     }
 
     public boolean updateMedicalRecord(MedicalRecordDTO recordToUpdate) {
@@ -213,5 +240,14 @@ public class DoctorService {
             return true;
         }
         return false;
+    }
+
+    public List<Doctor> gedDoctorsByExType(Integer ex_type_id) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Integer> clinicId = clinicAdminRepository.findClinicIdByAdminId(user.getId());
+        if(clinicId.isPresent()){
+            return doctorRepository.findAllByClinicIdAndExaminationTypeIdAndActivityTrue(clinicId.get(), ex_type_id);
+        }
+        return null;
     }
 }

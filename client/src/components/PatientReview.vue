@@ -36,7 +36,7 @@
         <v-dialog v-model="dialog" max-width="554px">
             <v-card>
                 <PatientProfile></PatientProfile>
-                <v-card-actions>
+                <v-card-actions v-if="userRole != 'ROLE_NURSE'">
                     <v-btn
                         color="primary"
                         rounded
@@ -95,10 +95,12 @@ export default {
             search: '',
             dialog: false,
             selectedItem: {},
+            userRole: ''
         }
     },
     created(){
         this.fetchPatients();
+        this.userRole = localStorage.getItem("user_role");
     },
     computed: {
         ...mapGetters('patient',['allPatients'])
@@ -106,6 +108,7 @@ export default {
     methods:{
         ...mapActions('patient',['fetchPatients','fetchMedicalRecord']),
         ...mapActions('doctor',['fetchPatientProfile','canStaffViewRecord']),
+        ...mapActions('startAppointment', ['startAppointmentForPatient']),
 
         showPatient(item){
             this.dialog = true;
@@ -113,7 +116,11 @@ export default {
             this.fetchPatientProfile(item.email);
         },
         goTostartAppointment(){
-            console.log(this.selectedItem.email);
+            this.startAppointmentForPatient(this.selectedItem.email)
+            .then(() => {
+                this.$router.push('startAppointment/' + this.selectedItem.email);
+            }).catch(()=>{});
+            
         },
         goTomedicalRecord(){
             this.canStaffViewRecord(this.selectedItem.email)

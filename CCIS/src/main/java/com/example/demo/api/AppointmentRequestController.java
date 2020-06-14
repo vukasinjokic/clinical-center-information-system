@@ -8,11 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OptimisticLockException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,8 +27,9 @@ public class AppointmentRequestController {
     private final AppointmentRequestService appointmentRequestService;
     private final DoctorService doctorService;
     private final ClinicService clinicService;
-    private final UserService userService;
+    private final PatientService patientService;
     private final ClinicAdminService clinicAdminService;
+    private final AppointmentService appointmentService;
     private final EmailService emailService;
 
     private ModelMapper modelMapper = new ModelMapper();
@@ -38,14 +39,15 @@ public class AppointmentRequestController {
     public AppointmentRequestController(AppointmentRequestService appointmentRequestService,
                                         DoctorService doctorService,
                                         ClinicService clinicService,
-                                        UserService userService,
+                                        PatientService patientService,
                                         ClinicAdminService clinicAdminService,
-                                        EmailService emailService) {
+                                        AppointmentService appointmentService, EmailService emailService) {
         this.appointmentRequestService = appointmentRequestService;
         this.doctorService = doctorService;
         this.clinicService = clinicService;
-        this.userService = userService;
+        this.patientService = patientService;
         this.clinicAdminService = clinicAdminService;
+        this.appointmentService = appointmentService;
         this.emailService = emailService;
     }
 
@@ -63,6 +65,10 @@ public class AppointmentRequestController {
     public ResponseEntity<String> addAppointmentRequest(@RequestBody AppointmentToReservePatient appointmentToAdd) {
         try {
             Date chosenDate = formatter.parse(appointmentToAdd.getAppointmentTime());
+            Patient patient = patientService.findByEmail(appointmentToAdd.getPatientEmail());
+            if (patient == null)
+                return new ResponseEntity<>("Invalid user email", HttpStatus.BAD_REQUEST);
+
             Doctor doctor = doctorService.findById(Integer.parseInt(appointmentToAdd.getDoctorId()));
             if (doctor == null)
                 return new ResponseEntity<>("Invalid doctor id", HttpStatus.BAD_REQUEST);
@@ -71,28 +77,24 @@ public class AppointmentRequestController {
             if (clinic == null)
                 return new ResponseEntity<>("Invalid clinic id", HttpStatus.BAD_REQUEST);
 
-            User user = userService.findByEmail(appointmentToAdd.getPatientEmail());
-            if (user == null)
-                return new ResponseEntity<>("Invalid user email", HttpStatus.BAD_REQUEST);
 
-            AppointmentRequest appointmentRequest = new AppointmentRequest();
-            appointmentRequest.setDoctor(doctor);
-            appointmentRequest.setPatient((Patient) user);
-            appointmentRequest.setTime(chosenDate);
-            appointmentRequest.setType(AppointmentRequest.AppointmentReqType.PATIENT);
-
-            boolean success = appointmentRequestService.saveRequest(appointmentRequest);
-            if (success) {
-                List<ClinicAdmin> clinicAdmins = clinicAdminService.getClinicAdminsByClinicId(clinic.getId());
-                emailService.alertClinicAdminForAppointmentPatientRequest(clinicAdmins, appointmentRequest);
-
+            int result = appointmentRequestService.saveRequest(patient, doctor, chosenDate, appointmentToAdd.getPrice(), clinic.getId());
+            if (result == 0)
                 return new ResponseEntity<>("OK", HttpStatus.OK);
-            } else {
+            else if (result == 1)
                 return new ResponseEntity<>("Request not saved to database", HttpStatus.INTERNAL_SERVER_ERROR);
+            else if (result == -1) {
+                return new ResponseEntity<>("Appointments is already taken.", HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>("Unknown server error", HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
         } catch (ParseException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Invalid date time format", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unknown server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

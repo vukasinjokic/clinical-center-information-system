@@ -44,8 +44,17 @@ public class ClinicController {
     }
 
     @GetMapping("/getClinics")
-    @PreAuthorize("hasAnyRole('PATIENT','CLINIC_CENTER_ADMIN')")
+    @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN')")
     public List<ClinicsDTO> getAllClinics() {
+        List<Clinic> clinics = clinicService.getAllClinics();
+        return clinics.stream()
+                .map(this::convertToClinicsDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getClinicsPatient")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public List<ClinicsDTO> getAllClinicsPatient() {
         List<Clinic> clinics = clinicService.getAllClinics();
         return clinics.stream()
                 .map(this::convertToClinicsDTO)
@@ -59,10 +68,10 @@ public class ClinicController {
         return ResponseEntity.ok().body(rating);
     }
 
-    @GetMapping("/getAppointments/{period}/{email}")
+    @GetMapping("/getAppointments/{period}/{date}/{email}")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
-    public ResponseEntity getAppointments(@PathVariable String period, @PathVariable String email){
-        List<ChartAppointment> chart = clinicService.makeChartAppointment(period, email);
+    public ResponseEntity getAppointments(@PathVariable String period, @PathVariable String date, @PathVariable String email){
+        List<ChartAppointment> chart = clinicService.makeChartAppointment(period,date, email);
         if(chart != null)
             return ResponseEntity.ok().body(chart);
         return ResponseEntity.badRequest().body("nesto lose");
@@ -78,12 +87,32 @@ public class ClinicController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/getClinicById/{clinicId}")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public ResponseEntity<ClinicDTO> getClinicById(@PathVariable Integer clinicId){
+        Clinic clinic = clinicService.findById(clinicId);
+        if(clinic != null) {
+            ResponseEntity<ClinicDTO> clinicDTOResponseEntity = new ResponseEntity<>(modelMapper.map(clinic, ClinicDTO.class), HttpStatus.OK);
+            return clinicDTOResponseEntity;
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/getPriceList")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
     public ResponseEntity<PriceListDTO> getPriceList(){
         PriceList priceList = clinicService.getPriceList();
         if(priceList != null)
             return new ResponseEntity<>(new PriceListDTO(priceList), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getPriceList/{clinicId}")
+    @PreAuthorize("hasAnyRole('PATIENT')")
+    public ResponseEntity<PriceListDTO> getPriceListByClinicId(@PathVariable Integer clinicId){
+        Clinic clinic = clinicService.findById(clinicId);
+        if(clinic != null)
+            return new ResponseEntity<>(new PriceListDTO(clinic.getPriceList()), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

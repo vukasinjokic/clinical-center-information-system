@@ -45,4 +45,8 @@ public class ExaminationType {
    public void setDuration(float duration) {
       this.duration = duration;
    }
+
+    public long getMillisecondsDuration() {
+      return (long) (duration * 1000 * 60 * 60);
+    }
 }

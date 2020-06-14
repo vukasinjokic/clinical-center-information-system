@@ -18,6 +18,13 @@ public class Appointment {
    @GeneratedValue(strategy = IDENTITY)
    private Integer id;
 
+   @Version
+   @Column(name = "version", unique = false, nullable = false)
+   private int version;
+
+   @Column(name = "counter", unique = false, nullable = false)
+   private Integer counter = 0;
+
    @Temporal(TemporalType.TIMESTAMP)
    @Column(name = "time", unique = false, nullable = false)
    private Date time;
@@ -89,6 +96,14 @@ public class Appointment {
       this.room = room;
       this.examinationType = examinationType;
       this.clinic = clinic;
+   }
+
+   public Integer getCounter() {
+      return counter;
+   }
+
+   public void setCounter(Integer counter) {
+      this.counter = counter;
    }
 
    public String getReport() {

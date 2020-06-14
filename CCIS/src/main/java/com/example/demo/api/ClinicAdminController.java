@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +52,7 @@ public class ClinicAdminController {
     }
 
     @DeleteMapping("/acceptRequest/{id}")
-    @PreAuthorize("hasRole('CLINIC_ADMIN')")
+//    @PreAuthorize("hasRole('CLINIC_ADMIN')")
     public ResponseEntity<Void> acceptRequest(@PathVariable("id") Integer id){
         if(clinicAdminService.AcceptRequest(id))
             return new ResponseEntity<>(HttpStatus.OK);
@@ -79,13 +78,14 @@ public class ClinicAdminController {
 
     @PostMapping(path ="/handleReservation", consumes = "application/json")
     @PreAuthorize("hasRole('CLINIC_ADMIN')")
-    public void handleReservation(@RequestBody AppointmentToReserve appointmentToReserve){
-
+    public ResponseEntity handleReservation(@RequestBody AppointmentToReserve appointmentToReserve){
         try {
-            clinicAdminService.handleReservation(appointmentToReserve);
+            if(clinicAdminService.handleReservation(appointmentToReserve))
+                return ResponseEntity.ok("Successfully reserved appointment");
+            return ResponseEntity.badRequest().body("One or more doctors are not available for this operation");
         }catch( Exception e ){
-            ResponseEntity.status(404);
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Something went wrong.Operation was not reserved.");
         }
 
     }

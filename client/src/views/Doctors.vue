@@ -94,9 +94,11 @@
                                 @click="onClick({
                                     doctorId: item.id,
                                     clinicId: item.clinicId,
-                                    appointmentTime: freeAppointment.time
+                                    appointmentTime: freeAppointment.time,
+                                    patientEmail: '',
+                                    price: item.price
                                 })">
-                                    Schedule appointment
+                                    Zakaži pregled
                                 </v-btn>
                             </td>
                         </tr>
@@ -140,23 +142,21 @@ export default {
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
         ...mapGetters("examination_type", ['getTypes']),
 
-        // TODO: Videti zasto slanje mejla traje dugo
         onClick(appointmentRequest) {
             if (this.$refs.form.validate()) {
                 appointmentRequest.patientEmail = localStorage.getItem("user_email");
                 Vue.$axios.post("http://localhost:8081/appointmentRequests/addAppointmentRequest", appointmentRequest)
                 .then(response => {
                     if (response.status === 200) {
-                        alert("Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.")
+                        this.$store.dispatch('snackbar/showSuccess',
+                        "Vaš zahtev za lekarski pregled je poslat serveru. Odgovor da li je zahtev prihvaćen ili odbijen ćete dobiti na mejl.", 
+                        {root: true});
+                        
                     } else {
-                        alert("Unknown error: " + response.status + ".\nMessage: " + response.data);
+                        this.$store.dispatch('snackbar/showError', "Unknown error: " + response.status + ".\nMessage: " + response.data, {root: true});
                     }
                 }).catch(error => {
-                    if (error.response.status >= 400) {
-                        alert("Error: " + error.response.status + ".\nMessage: " + error.response.data)
-                    } else {
-                        alert("Unknown error: " + error.response.status + ".\nMessage: " + error.response.data);
-                    }
+                    this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
                 });
             }
         },
@@ -305,17 +305,32 @@ export default {
                     } else {
                         // Does chosen examination name matches doctors examination type?
                         if (doctor.examinationType.name.match(this.filterType)) {
+                            
+                            let startSelectedDay = (new Date(this.filterDate));
+                            startSelectedDay.setHours(7,0,0,0);
+                            let startSelectedDayMiliseconds = startSelectedDay.getTime();
+                            
+                            let endSelectedDay = new Date(this.filterDate);
+                            endSelectedDay.setHours(14,0,0,0);
+
+                            let vacationDates = doctor.calendar.vacationDates;
+                            var hasVacation = vacationDates.length == 2;
+                            if (hasVacation) {
+                                let startVacation = vacationDates[0];
+                                let endVacation = vacationDates[1];
+
+                                // If doctor is on vacation, skip him 
+                                if (startVacation.getTime() <= startSelectedDayMiliseconds < endVacation.getTime()) {
+                                    return false;
+                                }
+                            }
+
                             var hours = doctor.examinationType.duration;
                             let durationMilliseconds = hours * 1000 * 60 * 60;
 
                             let eventStartDates = doctor.calendar.eventStartDates.slice();
                             let eventEndDates = doctor.calendar.eventEndDates;
-                            
-                            let startSelectedDay = (new Date(this.filterDate));
-                            startSelectedDay.setHours(7,0,0,0);
-                            let endSelectedDay = new Date(this.filterDate);
-                            endSelectedDay.setHours(14,0,0,0);
-                            
+
                             eventStartDates.unshift(startSelectedDay);
 
                             for (var i = 1; i <= eventStartDates.length; i++) {

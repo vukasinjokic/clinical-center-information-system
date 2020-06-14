@@ -55,6 +55,20 @@ const actions = {
         commit('setPatientEmail', response.data);
     },
 
+    async startAppointmentForPatient({commit, dispatch}, patient_email){
+        await Vue.$axios.get("http://localhost:8081/appointments/getAppointmentForPatient/"+ patient_email)
+        .then(response => {
+            commit('setAppointment', response.data);
+            commit('setPatientEmail', patient_email);
+            commit('setAppointmentId', response.data.id);
+        })
+        .catch(err => {
+            dispatch('snackbar/showError', err.response.data, {root:true});
+            return Promise.reject();
+        })
+        
+    },
+
     setInitialAppointmentId({commit}, initialAppointmentId){
         commit('setAppointmentId', initialAppointmentId);
     }

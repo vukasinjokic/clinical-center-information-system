@@ -6,7 +6,7 @@
            <v-btn  v-on="on" color="orange lighten-1">Add free appointment</v-btn>
         </template>
         <v-card>
-          <v-toolbar height="45px" color="orange lighten-1" class="white--text">
+          <v-toolbar height="45px" color="primary lighten-1" class="white--text">
             <span class="headline">Add free appointment</span>
           </v-toolbar>
           <v-card-text>
@@ -23,7 +23,9 @@
                         max-width="290px">
                         <template v-slot:activator="{ on }">
                           <v-text-field  v-model="date"
-                            prepend-icon="mdi-timetable"
+                            outlined
+                            dense
+                            append-icon="mdi-timetable"
                             v-on="on"
                             :rules="[requiredRule]"
                             readonly
@@ -33,12 +35,15 @@
                             />
                         </template>
                         <v-date-picker  v-model="date"
-                                @input="fromDateMenu = false">           
+                                @input="fromDateMenu = false"
+                                 :min="dateNow">           
                         </v-date-picker>          
                     </v-menu>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                      <v-text-field
+                        outlined
+                        dense
                         :rules="[requiredRule]"
                         v-model="time"
                         label="Pick time"
@@ -48,18 +53,24 @@
                         required
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12" sm="6">
                  <v-select
-                    :items="getExaminationTypeNames"
+                    outlined
+                    dense
+                    :items="getExaminationTypes"
                     :rules="[requiredRule]"
                     label="Examination type"
                     v-model="type"
+                    item-text="name"
+                    return-object
                     @change="doSome"
                     required
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm = "6">
                   <v-text-field 
+                      outlined
+                      dense
                       readonly
                       label="Duration" type="float" 
                       v-model="dura" 
@@ -68,21 +79,36 @@
                 
                 <v-col cols="12" sm="6">
                   <v-select
+                    outlined
+                    dense
                     v-model="room"
                     :rules="[requiredRule]"
-                    :items="allRoomsNumber"
+                    :items="allRooms"
+                    item-text="number"
+                    return-object
                     label="Examination room"
                     required
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-select
+                    outlined
+                    dense
                     :rules="[requiredRule]"
                     hint="Choose examination type"
                     :items="getDoctors"
                     label="Doctor(choose examination type)"
                     v-model="doctor"
                   ></v-select>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-select
+                    outlined
+                    dense
+                    :items="discounts"
+                    label="Discount(%)"
+                    v-model="discount">
+                  </v-select>
                 </v-col>
               </v-row>
             </v-container>
@@ -109,11 +135,13 @@ export default {
             dialog: false,
             date: "",
             time: "",
-            type: "",
+            type: {},
             dura: null,
             price: null,
             doctor: "",
-            room: ""
+            room: {},
+            discount: null,
+            discounts: [0,10,20,30,40,50,60,70,80,90,100]
         }
     },
     created() {
@@ -122,15 +150,18 @@ export default {
         
     },
     computed: {
-        ...mapGetters('appointments',['allRooms','allRoomsNumber','getExaminationTypeNames',
+        ...mapGetters('appointments',['allRooms','allRoomsNumber','getExaminationTypes',
         'getTypeDuration','getDoctors']),
 
         requiredRule(){
           return (value) => !!value || "Required.";
         },
         durationRule(){
-            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be valid.";
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be number.";
         },
+        dateNow(){
+          return new Date().toISOString().slice(0,10);
+        }
     },
     methods:{
         ...mapActions('appointments',['fetchRooms','fetchTypes','fetchDoctors','saveAppointment']),
@@ -145,9 +176,10 @@ export default {
                     {
                       time: this.date + " " + this.time,
                       doctorEmail: this.doctor,
-                      room: this.room,
-                      examinationType: this.type,
-                      clinic: "Ne znam kliniku dok se ne uradi login"
+                      roomId: this.room.id,
+                      examinationType: this.type.id,
+                      clinic: "Ne znam kliniku dok se ne uradi login",
+                      discount: this.discount
                     }
 
             this.saveAppointment(newAppointment); 
@@ -155,9 +187,10 @@ export default {
           }
         },
         doSome(){
-            var duration = parseFloat(this.getTypeDuration(this.type).duration);
+            //var duration = parseFloat(this.getTypeDuration(this.type).duration);
+            var duration = parseFloat(this.type.duration);
             this.dura = duration + "h";
-            this.fetchDoctors(this.type);
+            this.fetchDoctors(this.type.id);
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static javax.persistence.FetchType.EAGER;
@@ -11,24 +14,31 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "rooms", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"number", "clinic_id"})
+})
 public class Room {
+
+
    public enum RoomType{OPERATION, APPOINTMENT};
    @Id
    @GeneratedValue(strategy = IDENTITY)
    private Integer id;
 
-   @Column(name = "name", unique = true, nullable = false)
+   @Column(name = "name", nullable = false)
    private String name;
 
-   @Column(name = "number", unique = true, nullable = false)
+   @Column(name = "number", nullable = true)
    private String number;
+
+   @Type(type = "true_false")
+   private Boolean activity;
 
    @Enumerated(EnumType.STRING)
    @Column(name = "room_type", length = 15)
    private RoomType type;
 
-   @OneToOne(fetch = EAGER)
+   @OneToOne(cascade = CascadeType.ALL,fetch = EAGER)
    @JoinColumn(name = "calendar_id")
    private Calendar calendar;
 
@@ -60,6 +70,14 @@ public class Room {
 
    public void setId(Integer id) {
       this.id = id;
+   }
+
+   public Boolean getActivity() {
+      return activity;
+   }
+
+   public void setActivity(Boolean activity) {
+      this.activity = activity;
    }
 
    public Collection<Appointment> getAppointments() {
@@ -113,4 +131,30 @@ public class Room {
    public void addAppointment(Appointment appointment){
       getCalendar().addAppointment(appointment);
    }
+
+   public boolean isAvailableForTimeAndDuration(Date time, long millisecondsDuration) {
+      List<Date> eventStartDates = getCalendar().getEventStartDates();
+      List<Date> eventEndDates = getCalendar().getEventEndDates();
+      int counter = 0;
+      if((time.getTime() + millisecondsDuration) <= eventStartDates.get(0).getTime()){
+         return true;
+      }
+
+      for(int i = 0; i != eventStartDates.size() - 1; i++){
+         if(!calendar.areTheSameDay(time, eventStartDates.get(i))){
+            counter++;
+            continue;
+         }
+         Date end = eventEndDates.get(i);
+         if(end.getTime() + millisecondsDuration <= eventStartDates.get(i+1).getTime() && calendar.areTheSameDay(eventStartDates.get(i+1), end)){
+            return true;
+         }
+      }
+      if(eventStartDates.size() == counter + 1)
+         return true;
+      return false;
+
+   }
+
+
 }

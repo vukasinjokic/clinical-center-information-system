@@ -23,19 +23,30 @@ const actions = {
             eventStartDates.push(formatted_date)
         }); 
         let eventEndDates = [];
+        
         response.data.eventEndDates.forEach(date => {
             let eventEndDate= new Date(date)
             let formatted_date = eventEndDate.getFullYear() + "-" + (eventEndDate.getMonth() + 1) + "-" + eventEndDate.getDate() + " " + eventEndDate.getHours() + ":" + eventEndDate.getMinutes();
             eventEndDates.push(formatted_date)
         }); 
-        let payload = {eventStartDates : eventStartDates, eventEndDates : eventEndDates, names : response.data.eventNames, appointmentIds : response.data.appointmentIds};
+        let names = response.data.eventNames;
+        console.log(response.data);
+        if(response.data.vacationDates.length != 0){
+            let vacationStart = new Date(response.data.vacationDates[0]);
+            let vacationEnd = new Date(response.data.vacationDates[1]);
+            let formatted_start = vacationStart.getFullYear() + "-" + (vacationStart.getMonth() + 1) + "-" + vacationStart.getDate() + " " + vacationStart.getHours() + ":" + vacationStart.getMinutes();
+            let formatted_end = vacationEnd.getFullYear() + "-" + (vacationEnd.getMonth() + 1) + "-" + vacationEnd.getDate() + " " + vacationEnd.getHours() + ":" + vacationEnd.getMinutes();
+            eventStartDates.push(formatted_start);
+            eventEndDates.push(formatted_end);
+            names.push("Vacation/Leave");
+        }
+        let payload = {eventStartDates : eventStartDates, eventEndDates : eventEndDates, names: names, appointmentIds : response.data.appointmentIds};
         dispatch('formatEvents', payload);
         
     },
 
     formatEvents({commit}, payload){
         let events = [];
-        let colors = ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'];
 
         for (let i = 0; i < payload.names.length; i++) {
 
@@ -43,7 +54,7 @@ const actions = {
             name: payload.names[i],
             start: payload.eventStartDates[i],
             end: payload.eventEndDates[i],
-            color: colors[Math.floor((colors.length) * Math.random())],
+            color: 'blue',
             appointmentId : payload.appointmentIds[i]
             })
         }
@@ -57,11 +68,6 @@ const actions = {
     resetCalendar({commit}) {
         commit("resetState");
     }
-
-    //     round (a, b) {
-        
-//         return Math.floor((b - a + 1) * Math.random()) + a
-//     },
 };
 
 const mutations = {

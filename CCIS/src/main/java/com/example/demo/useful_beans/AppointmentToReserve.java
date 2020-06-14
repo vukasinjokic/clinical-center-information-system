@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public class AppointmentToReserve {
-    public List<DoctorDTO> doctors;
+    public List<Integer> doctorsIds;
     public Integer requestId;
     public Date reservedTime;
     public RoomDTO room;
@@ -16,19 +16,19 @@ public class AppointmentToReserve {
     public AppointmentToReserve() {
     }
 
-    public AppointmentToReserve(List<DoctorDTO> doctors, Integer request, Date reservedTime, RoomDTO room) {
-        this.doctors = doctors;
+    public AppointmentToReserve(List<Integer> doctorsIds, Integer request, Date reservedTime, RoomDTO room) {
+        this.doctorsIds = doctorsIds;
         this.requestId = request;
         this.reservedTime = reservedTime;
         this.room = room;
     }
 
-    public List<DoctorDTO> getDoctors() {
-        return doctors;
+    public List<Integer> getDoctorsIds() {
+        return doctorsIds;
     }
 
-    public void setDoctors(List<DoctorDTO> doctors) {
-        this.doctors = doctors;
+    public void setDoctorsIds(List<Integer> doctorsIds) {
+        this.doctorsIds = doctorsIds;
     }
 
     public Integer getRequestId() {

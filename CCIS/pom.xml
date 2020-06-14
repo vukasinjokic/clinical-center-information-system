@@ -11,11 +11,17 @@
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ClinicalCenterInformationSystem</name>-
+	<name>ClinicalCenterInformationSystem</name>
 	<description>Demo project for Spring Boot</description>
+
 
 	<properties>
 		<java.version>1.8</java.version>
+
+		<sonar.projectKey>vujko_clinical-center-information-system</sonar.projectKey>
+		<sonar.organization>vujko-dzoni</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.login>b1d8cd13043fec756ce966145773d067f84f122e</sonar.login>
 	</properties>
 
 	<dependencies>

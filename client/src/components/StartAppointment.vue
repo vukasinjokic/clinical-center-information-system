@@ -164,7 +164,7 @@ export default {
 
         medicalRecordBtnClicked(){
             this.medicalRecordDialog = true;
-            this.$refs.setUpPatient(this.patientEmail);
+            this.$refs.medicalRecordComponent.setUpPatient(this.patientEmail);
         },
 
         schedulingFinished(){
@@ -185,7 +185,7 @@ export default {
                 report : this.report, 
                 prescriptionToAdd : this.prescription
             });
-            this.$router.replace(':16/calendar');
+            this.$router.push('doctor/calendar');
         }
         
     },
@@ -208,9 +208,12 @@ export default {
 
     },
     created(){
-        this.fetchAppointment(this.appointmentId); 
         this.fetchCodebook(this.appointmentId);
-        this.fetchPatientEmail(this.appointmentId);
+        if(this.appointment == null){
+            this.fetchAppointment(this.appointmentId); 
+            this.fetchPatientEmail(this.appointmentId);
+        }
+        
     }
 
 

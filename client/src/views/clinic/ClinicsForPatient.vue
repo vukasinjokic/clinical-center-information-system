@@ -58,12 +58,13 @@
                 :headers="headers"
                 :items="filterClinics"
                 class="blue-grey darken-4 white--text"
-                @click:row="redirect"
                 show-expand
                 dark>
 
-                <template v-slot:item.priceList="{ item }">
-                    {{item.priceList}}
+                <template v-slot:item.actions="{ item }">
+                    <v-btn color="blue" @click="redirectToDoctors(item.filteredDoctors)">Doktori</v-btn>
+                    &nbsp;
+                    <v-btn color="blue" @click="redirectToClinic(item.id)">Profil</v-btn>
                 </template>
                 
                 <template v-slot:expanded-item="{ headers, item }">
@@ -105,7 +106,8 @@ export default {
                 {text: "Name", value: "name"},
                 {text: "Address", value: "address"},
                 {text: "Rating", value: "rating"},
-                {text: "Description", value: "description", width: "40%"}
+                {text: "Description", value: "description", width: "30%"},
+                {text: "Actions", value: "actions"}
             ]
         }
     },
@@ -120,7 +122,7 @@ export default {
         ...mapGetters("examination_type", ['getTypes']),
 
 
-        redirect(clinic) {
+        redirectToDoctors(filteredDoctors) {
             if (this.$refs.form.validate()) {
                 sessionStorage.setItem("filterDetails",
                 JSON.stringify({
@@ -128,9 +130,18 @@ export default {
                     filterType: this.chosenExamination,
                     alreadyFiltered: true
                 }));
-                sessionStorage.setItem("doctors", JSON.stringify(clinic.filteredDoctors));
+                sessionStorage.setItem("doctors", JSON.stringify(filteredDoctors));
                 this.$router.push({ name: 'DoctorsForPatient'});
             }
+        },
+
+        redirectToClinic(clinicId) {
+            this.$router.push({
+                name: "ClinicProfileForPatient",
+                params: {
+                    id: clinicId
+                }
+            })
         },
 
 
@@ -171,16 +182,30 @@ export default {
                             this.setDoctorsFiltered(true);
                             // Does chosen examination name matches doctors examination type?
                             if (doctor.examinationType.name.match(this.chosenExamination)) {
+                                
+                                let startSelectedDay = new Date(this.chosenDate);
+                                startSelectedDay.setHours(7,0,0,0);
+                                let startSelectedDayMiliseconds = startSelectedDay.getTime();
+
+                                let endSelectedDay = new Date(this.chosenDate);
+                                endSelectedDay.setHours(14,0,0,0);
+
+                                let vacationDates = doctor.calendar.vacationDates;
+                                var hasVacation = vacationDates.length == 2;
+                                if (hasVacation) {
+                                    let startVacation = new Date(vacationDates[0]);
+                                    let endVacation = new Date(vacationDates[1]);
+                                    // If doctor is on vacation, skip him 
+                                    if (startVacation.getMilliseconds() <= startSelectedDayMiliseconds < endVacation.getMilliseconds()) {
+                                        return false;
+                                    }
+                                }
+
                                 var hours = doctor.examinationType.duration;
                                 let durationMilliseconds = hours * 1000 * 60 * 60;
 
                                 let eventStartDates = doctor.calendar.eventStartDates.slice();
                                 let eventEndDates = doctor.calendar.eventEndDates;
-
-                                let startSelectedDay = (new Date(this.chosenDate));
-                                startSelectedDay.setHours(7,0,0,0);
-                                let endSelectedDay = new Date(this.chosenDate);
-                                endSelectedDay.setHours(14,0,0,0);
 
                                 eventStartDates.unshift(startSelectedDay);
 

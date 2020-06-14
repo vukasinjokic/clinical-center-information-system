@@ -21,7 +21,7 @@
                   dark
                   flat
                 >
-                  <v-toolbar-title>Login form class="fill-height"</v-toolbar-title>       
+                  <v-toolbar-title>Login form</v-toolbar-title>       
                 </v-toolbar>
                 <v-card-text>
                   <v-form ref="form">
@@ -91,16 +91,15 @@ import Vue from 'vue';
                     localStorage.setItem('user_role', response.data.authorities[0]);
                     localStorage.setItem('is_password_changed', response.data.passwordChanged);
                     Vue.$axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem("JWT");
-                    alert("Uspesno logovanje");
+                    this.$store.dispatch('snackbar/showSuccess', "Uspešno logovanje", {root: true});
 
                     this.$router.push({
                       name: "InstantHomeRedirect"
                     });
-                }
-                else
-                    alert("Neispravan email ime ili lozinka");
+                } else
+                  this.$store.dispatch('snackbar/showError', "Unknown error", {root: true});
             })
-            .catch(() => { alert("Neispravan email ili lozinka") });
+            .catch(() => { this.$store.dispatch('snackbar/showError', "Neispravan email ili lozinka", {root: true}); });
 
           }
         }
