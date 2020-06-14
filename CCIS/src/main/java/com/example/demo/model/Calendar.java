@@ -191,7 +191,7 @@ public class Calendar {
 
     public void removeEventByAppointmentId(Integer appointmentId) {
         for(int i = 0; i != appointmentIds.size(); i++){
-            if(appointmentIds.get(i) == appointmentId){
+            if(appointmentIds.get(i).equals(appointmentId)){
                 eventStartDates.remove(i);
                 eventEndDates.remove(i);
                 eventNames.remove(i);

@@ -9,6 +9,7 @@ import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.MedicalRecordDTO;
 import com.example.demo.exceptions.ForbiddenException;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.AppointmentRequest;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Patient;
@@ -130,7 +131,7 @@ public class DoctorService {
         throw new ForbiddenException("Doktor ima zakazane preglede.");
     }
 
-    public Doctor saveDoctor(DoctorDTO doctorDTO){
+    public Doctor saveDoctor(DoctorDTO doctorDTO) throws NotFoundException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
 
@@ -155,7 +156,11 @@ public class DoctorService {
         businessHoursRepository.save(businessHours); //videcemo da pretrazimo postojece pa dodelimo
         newDoctor.setBusinessHours(businessHours);
         newDoctor.setClinic(admin.getClinic());
-        newDoctor.setExaminationType(examinationType.get());
+        if(examinationType.isPresent())
+            newDoctor.setExaminationType(examinationType.get());
+        else{
+            throw new NotFoundException("Examintaion type not found");
+        }
         return doctorRepository.save(newDoctor);
     }
 

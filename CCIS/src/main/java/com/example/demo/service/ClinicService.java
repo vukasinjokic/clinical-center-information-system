@@ -69,8 +69,9 @@ public class ClinicService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
         Optional<ClinicAdmin> ad = clinicAdminRepository.findById(user.getId());
-        ClinicAdmin admin = ad.get();
-        if(admin != null){
+
+        if(ad.isPresent()){
+            ClinicAdmin admin = ad.get();
             Clinic clinic = admin.getClinic();
             return clinic.getPriceList();
         }

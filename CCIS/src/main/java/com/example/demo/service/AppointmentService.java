@@ -66,7 +66,8 @@ public class AppointmentService {
     }
 
     public Appointment getAppointment(Integer id){
-        return appointmentRepository.findById(id).get();
+        Optional<Appointment> find_app = appointmentRepository.findById(id);
+        return find_app.orElse(null);
     }
 
     public int savePatientToPredefinedAppointments(Patient patient, Appointment predefinedAppointment) {
@@ -107,7 +108,7 @@ public class AppointmentService {
         if(getClinic.isPresent()) {
             //Sta ako klinika nema cenovnik (vratimo bad request)
             float price = getClinic.get().getPriceList().getItems().stream()
-                    .filter(item -> item.getExaminationType().getId() == getType.getId())
+                    .filter(item -> item.getExaminationType().getId().equals(getType.getId()))
                     .findAny().get().getPrice();
 
             appointment_to_add = new Appointment(date, price, appointmentDTO.getDiscount(), getDoctor, getRoom, getType, getClinic.get());
@@ -149,8 +150,10 @@ public class AppointmentService {
 
     public CodeBook getCodebookFromAppointmentClinic(Integer appointment_id) {
         //TODO make custom query
-        Appointment appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id).get();
-        return appointment.getClinic().getCodeBook();
+        Optional<Appointment> appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id);
+        if(appointment.isPresent())
+            return appointment.get().getClinic().getCodeBook();
+        return null;
     }
 
     public boolean handleAppointmentFinish(AppointmentToFinish appointmentToFinish) {

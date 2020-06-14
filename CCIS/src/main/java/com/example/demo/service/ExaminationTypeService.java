@@ -93,7 +93,7 @@ public class ExaminationTypeService {
                 .collect(Collectors.toList());
         if(doesExist.size() == 0)
             return false;
-        if(doesExist.get(0).getId() == name.getId()){
+        if(doesExist.get(0).getId().equals(name.getId())){
             return false;
         }
         return true;
