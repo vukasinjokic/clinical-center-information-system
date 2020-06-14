@@ -70,7 +70,6 @@ public class ClinicAdminService {
         if(!checkIfDoctorsAreAvailable(doctors, appointmentToReserve, appointmentRequest)){
             return false;
         }
-
         Doctor doctor = doctors.get(doctors.size() - 1);
 
         Integer room_id = Integer.parseInt(appointmentToReserve.getRoom().getId());
@@ -89,9 +88,9 @@ public class ClinicAdminService {
         addAppointmentToDoctors(appointment, doctors);
 
         room.addAppointment(appointment);
+        updateDataBase(appointment, doctors, appointmentRequest);
         emailService.alertDoctorsOperation(doctors, appointment);
         emailService.alertPatientOperation(appointment);
-        updateDataBase(appointment, doctors, appointmentRequest);
         return true;
     }
 
