@@ -27,7 +27,7 @@
                   <v-form ref="form">
                     <v-text-field
                       v-model="user.email"
-                      :rules="[requiredRule,emailRule]"
+                      :rules="[requiredRule]"
                       label="Email"
                       name="email"
                       type="text"

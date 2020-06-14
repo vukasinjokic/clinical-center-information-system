@@ -90,7 +90,7 @@
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
                                             <v-text-field
-                                                :rules="[requredRule, numberRule,minChar]"
+                                                :rules="[requredRule, numberRule,minSecNumber]"
                                                 v-model="editedItem.socialSecurityNumber"
                                                 label="SocialSecurityNumber">
                                             </v-text-field>
@@ -250,10 +250,13 @@ export default {
             return this.editedIndex === -1 ? 'New item' : 'Edit item.'
         },
         numberRule(){
-            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be valid.";
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be number.";
         },
          minChar(){
             return (value) => (value && value.length >= 8) || "Min 8 characters";
+        },
+        minSecNumber(){
+            return (value) => (value && value.length >= 10) || "Min 10 characters";
         },
         emailRule(){
           return (value) => /.+@.+\..+/.test(value) || "E-mail must be valid";

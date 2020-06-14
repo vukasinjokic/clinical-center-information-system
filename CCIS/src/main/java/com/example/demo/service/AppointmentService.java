@@ -107,9 +107,13 @@ public class AppointmentService {
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {
             //Sta ako klinika nema cenovnik (vratimo bad request)
-            float price = getClinic.get().getPriceList().getItems().stream()
+            Optional<PriceListItem> listItem = getClinic.get().getPriceList().getItems().stream()
                     .filter(item -> item.getExaminationType().getId().equals(getType.getId()))
-                    .findAny().get().getPrice();
+                    .findAny();
+            if(!listItem.isPresent())
+                throw new NotFoundException("Price list item for this type doesnt exists. ");
+            float price = listItem.get().getPrice();
+
             if(appointmentDTO.getDiscount() == null)
                 appointmentDTO.setDiscount(0.0f);
             appointment_to_add = new Appointment(date, price, appointmentDTO.getDiscount(), getDoctor, getRoom, getType, getClinic.get());
