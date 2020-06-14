@@ -516,6 +516,8 @@ insert into event_start_dates (calendar_id, event_start_dates) values (11,'2020-
 
 
 insert into event_start_dates (calendar_id, event_start_dates) values (12,'2020-07-11 10:00:00');
+
+----------------------------------------predef appointments-------------------------------------
 ------------------------------------------------------------------------------------------------
 -----------------------------------SOBE---------------------------------------------------------
 
@@ -1030,11 +1032,11 @@ insert into user_authority (user_id, authority_id) values (27, 5);
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting appointment requests -----------------------------------------------------
 
-insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
-values                           (0.0,       1000.0,  '2020-06-28 08:00:00',   'DOCTOR',    16,          22,              null);
-
-insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
-values                           (0.0,       1000.0,  '2020-07-11 09:00:00',   'DOCTOR',    17,          23,              null);
+-- insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
+-- values                           (0.0,       1000.0,  '2020-06-28 08:00:00',   'DOCTOR',    16,          22,              null);
+--
+-- insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
+-- values                           (0.0,       1000.0,  '2020-07-11 09:00:00',   'DOCTOR',    17,          23,              null);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------

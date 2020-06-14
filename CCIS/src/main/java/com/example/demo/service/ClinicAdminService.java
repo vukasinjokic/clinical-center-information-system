@@ -77,8 +77,8 @@ public class ClinicAdminService {
         Integer room_id = Integer.parseInt(appointmentToReserve.getRoom().getId());
         Room room = roomRepository.findById(room_id).get();
 
-        Appointment appointment = new Appointment(appointmentToReserve.getReservedTime(), 0, 0, doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
-
+        Appointment appointment = new Appointment(appointmentToReserve.getReservedTime(), appointmentRequest.getPrice(), appointmentRequest.getDiscount(), doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
+        appointment = appointmentRepository.save(appointment);
         patient.addAppointment(appointment);
         addAppointmentToDoctors(appointment, doctors);
 
