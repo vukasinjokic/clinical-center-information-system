@@ -92,9 +92,9 @@ public class ClinicAdminService {
     private boolean checkIfDoctorsAreAvailable(List<Doctor> doctors, AppointmentToReserve appointmentToReserve, AppointmentRequest appointmentRequest){
         DoctorValidation doctorValidation = new DoctorValidation();
         if(doctors.isEmpty()) return false;
-        float duration = doctors.get(0).getExaminationType().getDuration();
+        float duration = doctors.get(0).getExaminationType().getDuration() * 60 * 60 * 1000;
         for(Doctor doctor : doctors){
-            if(!doctorValidation.validateDoctorBusy(appointmentToReserve.getReservedTime(), duration, doctor)){
+            if(!doctor.isAvailableForTimeAndDuration(appointmentToReserve.getReservedTime(), (long) duration)){
                 return false;
             }
         }

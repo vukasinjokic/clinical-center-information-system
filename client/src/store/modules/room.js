@@ -32,74 +32,47 @@ const getters = {
 
 const actions = {
     
-
-    filterRooms: ({commit}, payload) => {
-        let search = payload.search;
-        let duration = payload.duration;
-        console.log(new Date());
-        let date = payload.date == "" ? new Date() : payload.date;
-        let availableTimes = {};
-        let filteredRooms = state.rooms.filter(room => {
-            let first = room.name.toUpperCase().match(search.toUpperCase()) || room.number.toUpperCase().match(search.toUpperCase());
-            let firstAvailable = null;
-            let eventStartDates = room.calendar.eventStartDates.slice();
-            let eventEndDates = room.calendar.eventEndDates;
-
-            let startSelectedDay = (new Date(date));
-            startSelectedDay.setHours(7,0,0,0);
-            let endSelectedDay = new Date(date);
-            endSelectedDay.setHours(14,0,0,0);
-
-            eventStartDates.unshift(startSelectedDay);
-            
-            let hourMinutes = duration.split(":");
-            let durationMilliseconds = hourMinutes[0] * 1000 * 60 * 60 + hourMinutes[1] * 1000 * 60;
-            let showRoom = false;
-            for(var i = 1; i != eventStartDates.length; i++){
-                let startAppDate = new Date(eventStartDates[i]);
-                let endAppDate = new Date(eventEndDates[i-1]);
-                if(endAppDate.getTime() <= startSelectedDay.getTime()){
-                    continue;
+    
+    async filterRooms({commit,state}, payload){
+        
+        Vue.$axios.get("http://localhost:8081/rooms/getFiltered?duration=" + payload.duration + "&date=" + payload.date)
+        .then(response => {
+            commit('setAvailableTimes', response.data);    
+        })
+        let filtered = [];
+        if((payload.search == "" && payload.type == "") || payload.type === undefined || payload.search === undefined){
+            state.rooms.forEach(room => {
+                filtered.push(room);
+            })
+        }
+        else if(payload.type == ""){
+            state.rooms.forEach(room => {
+                if(room.name.toUpperCase() == payload.search.toUpperCase()){
+                    filtered.push(room);
                 }
-
-                //can the appointment be set before the first already set appointment 
-                if(i == 1 && new Date(eventStartDates[i-1]).getTime() + durationMilliseconds <= startAppDate.getTime()){
-                    showRoom = true;
-                    firstAvailable = startSelectedDay;
-                    break;
+            })
+        }
+        else if(payload.search == ""){
+            state.rooms.forEach(room => {
+                if(room.type.toUpperCase() == payload.type.toUpperCase()){
+                    filtered.push(room);
                 }
-                
-                //can the appointment be set INBETWEEN already set appointments
-                if(i < eventStartDates.length && endAppDate.getTime() + durationMilliseconds  <= new Date(eventStartDates[i + 1]).getTime()){
-                    showRoom = true;
-                    firstAvailable = endAppDate;
-                    break;
+            })
+        }
+        else{
+            state.rooms.forEach(room =>{
+                if(room.type.toUpperCase() == payload.type.toUpperCase() && room.name.toUpperCase() == payload.search.toUpperCase()){
+                    filtered.push(room);
                 }
-                //can the appontment be set AFTER the last already set appointment
-                if(i == eventStartDates.length - 1 && firstAvailable == null && new Date(endAppDate).getTime() + durationMilliseconds <= endSelectedDay.getTime()){
-                    showRoom = true;
-                    firstAvailable = endAppDate;
-                    break;
-                }
-                
-            }
-            if(firstAvailable == null){
-                firstAvailable = startSelectedDay;
-                showRoom = true;
-            }
-            showRoom = room.type.toUpperCase().match(payload.type.toUpperCase()) ? true : false;
-            if(date == "") showRoom = true;
-            availableTimes[room.id] = firstAvailable;
-            return first  && showRoom;
-        });
-        if(duration == "00:00") availableTimes = null;   
-        commit('setFilteredRooms', filteredRooms);
-        commit('setAvailableTimes', availableTimes);        
+            })
+        }
+        commit('setFilteredRooms', filtered);
+              
     },
 
     async handleReservation({dispatch, commit}, payload){
         
-        Vue.$axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload)
+        await Vue.$axios.post("http://localhost:8081/clinicAdmins/handleReservation", payload)
         .then(response => {
             dispatch("snackbar/showSuccess", response.data, {root:true});
             dispatch('appointmentRequests/deleteRequest',  payload.requestId, {root : true});

@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -78,6 +81,15 @@ public class RoomController {
             return new ResponseEntity<RoomDTO>(convertToDTO(room),HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(path = "/getFiltered")
+    @PreAuthorize("hasRole('CLINIC_ADMIN')")
+    public Map<Integer, Date> getFiltered(
+            @RequestParam(name = "duration") String duration,
+            @RequestParam(name = "date") String date) throws ParseException {
+
+        return roomService.getFiltered(duration, date);
     }
 
     private RoomDTO convertToDTO(Room room){

@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.sql.Time;
+import java.util.*;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
@@ -154,6 +152,37 @@ public class Room {
          return true;
       return false;
 
+   }
+
+   public Date getFirstAvailableTimeForDate(Date time, long duration, Calendar calendar) {
+      List<Date> eventStartDates = calendar.getEventStartDates();
+      List<Date> eventEndDates = calendar.getEventEndDates();
+      int counter = 0;
+      if(eventStartDates.size() == 0 || (time.getTime() + duration) <= eventStartDates.get(0).getTime()){
+         return time;
+      }
+      for(int i = 0; i != eventStartDates.size() - 1; i++){
+         if(!calendar.areTheSameDay(time, eventStartDates.get(i))){
+            counter++;
+            continue;
+         }
+         Date end = eventEndDates.get(i);
+         while(end.getTime() + duration <= eventStartDates.get(i+1).getTime() && calendar.areTheSameDay(time, end)){
+            if(calendar.areTheSameDay(end, eventStartDates.get(i + 1))
+                    || (end.getTime() + duration <= calendar.getDayStart(time).getTime() + 14 * 1000 * 60 * 60))
+            {
+               return (new Date(end.getTime()));
+            }
+            end.setTime(end.getTime() + duration);
+         }
+      }
+      //nema pregleda za trazeni dan i ako se pregled moze izvrsiti pre kraja radnog vremena
+      if(eventStartDates.size() == counter + 1
+              && time.getTime() + duration <= calendar.getDayStart(time).getTime() + 14 * 1000 * 60 * 60)
+      {
+         return time;
+      }
+      return null;
    }
 
 

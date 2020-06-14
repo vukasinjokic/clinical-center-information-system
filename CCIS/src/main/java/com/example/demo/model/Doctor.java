@@ -133,4 +133,28 @@ public class Doctor extends MedicalStaff {
         return false;
     }
 
+    public boolean isAvailableForTimeAndDuration(Date time, long millisecondsDuration) {
+        List<Date> eventStartDates = getCalendar().getEventStartDates();
+        List<Date> eventEndDates = getCalendar().getEventEndDates();
+        int counter = 0;
+        if((time.getTime() + millisecondsDuration) <= eventStartDates.get(0).getTime()){
+            return true;
+        }
+
+        for(int i = 0; i != eventStartDates.size() - 1; i++){
+            if(!getCalendar().areTheSameDay(time, eventStartDates.get(i))){
+                counter++;
+                continue;
+            }
+            Date end = eventEndDates.get(i);
+            if(end.getTime() + millisecondsDuration <= eventStartDates.get(i+1).getTime() && getCalendar().areTheSameDay(eventStartDates.get(i+1), end)){
+                return true;
+            }
+        }
+        if(eventStartDates.size() == counter + 1)
+            return true;
+        return false;
+
+    }
+
 }

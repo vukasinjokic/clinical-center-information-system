@@ -6,14 +6,16 @@ import com.example.demo.Repository.ClinicAdminRepository;
 import com.example.demo.Repository.RoomRepository;
 import com.example.demo.dto.RoomDTO;
 import com.example.demo.model.*;
+import com.example.demo.model.Calendar;
 import com.example.demo.validation.RoomValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class RoomService {
@@ -99,5 +101,22 @@ public class RoomService {
             }
         }
         return false;
+    }
+
+    public Map<Integer,Date> getFiltered(String durationString, String dateString) throws ParseException {
+        ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<Room> rooms = roomRepository.findAllByActivityTrueAndClinicId(user.getClinic().getId());
+        Map<Integer, Date> firstAvailable = new HashMap<Integer, Date>();
+        for(Room room : rooms){
+            firstAvailable.put(room.getId(), room.getFirstAvailableTimeForDate(sdf.parse(dateString), getMillisecondsFromHourAndMinutes(durationString), room.getCalendar()));
+        }
+        return firstAvailable;
+
+    }
+
+    private long getMillisecondsFromHourAndMinutes(String duration){
+        List<String> hourMinutes = Arrays.asList(duration.split(":"));
+        return (Long.parseLong(hourMinutes.get(0)) * 1000 * 60 * 60 + Long.parseLong(hourMinutes.get(1)) * 1000 * 60);
     }
 }
