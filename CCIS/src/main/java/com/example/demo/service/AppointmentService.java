@@ -170,7 +170,8 @@ public class AppointmentService {
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);
             prescription.setClinic(appointment.getClinic());
-            
+
+
             perscriptionRepository.save(prescription);
             appointmentRepository.save(appointment);
             return true;
