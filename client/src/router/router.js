@@ -171,7 +171,7 @@ const router = new VueRouter({
         children: [
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
-            {path: ':16/calendar', name: 'Calendar', component : Calendar},
+            {path: 'calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
             {path: 'scheduleApp', name:'ScheduleAppointment', component: ScheduleAppointment},
             {path: 'startAppointment/:email', name: 'startAppointment', component: StartAppointment, props : true},
@@ -186,7 +186,7 @@ const router = new VueRouter({
         children: [
             {path: 'patient', name: 'PatientReview', component: PatientReview},
             {path: 'profile', name: 'UserProfile', component: UserProfile},
-            {path: ':16/calendar', name: 'Calendar', component : Calendar},
+            {path: 'calendar', name: 'Calendar', component : Calendar},
             {path: 'vacationRequest', name: 'VacationRequest', component: VacationRequest},
             {path: 'validatePerscriptions', name: 'ValidatePerscriptions', component: ValidatePerscriptions}
         ]

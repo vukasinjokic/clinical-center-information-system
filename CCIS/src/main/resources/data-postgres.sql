@@ -1039,9 +1039,9 @@ values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   '
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting prescriptions-------------------------------------------------------
-insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('F', 1, 1);
-insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('F', 2, 1);
-insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('T', 2, 1);
+insert into prescriptions( is_verified, medical_record_id, clinic_id, version) values ('F', 1, 1, 0);
+insert into prescriptions( is_verified, medical_record_id, clinic_id, version) values ('F', 2, 1, 0);
+insert into prescriptions( is_verified, medical_record_id, clinic_id, version) values ('T', 2, 1, 0);
 -- insert into clinics_prescriptions(prescriptions_id, clinic_id) values (1, 1);
 -- insert into clinics_prescriptions(prescriptions_id, clinic_id) values (2, 1);
 

@@ -2,12 +2,14 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.ClinicRepository;
 import com.example.demo.Repository.PerscriptionRepository;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.Clinic;
 import com.example.demo.model.Nurse;
 import com.example.demo.model.Prescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,13 +23,19 @@ public class PerscriptionService {
     @Autowired
     private ClinicRepository clinicRepository;
 
-    public boolean handleAcceptingPerscription(Integer id) {
+    @Transactional(readOnly = false)
+    public boolean handleAcceptingPerscription(Integer id) throws NotFoundException {
         Prescription prescription = perscriptionRepository.findById(id).get();
         if(prescription != null){
             Nurse nurse = (Nurse) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             prescription.setNurse(nurse);
             prescription.setVerified(true);
-            perscriptionRepository.save(prescription);
+            try {
+                perscriptionRepository.save(prescription);
+            }
+            catch(Exception e){
+                throw new NotFoundException();
+            }
             return true;
         }
         return false;

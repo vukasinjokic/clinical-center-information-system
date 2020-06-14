@@ -64,7 +64,7 @@ export default {
             items: [
                 { title: 'Patient', link: '/doctor/patient', icon: 'mdi-account-group' },
                 // { title: 'Zapocinjanje pregleda', link: '/doctor/', icon:'mdi-check' },
-                { title: 'Work calendar', link: '/doctor/:16/calendar', icon: 'mdi-calendar' },
+                { title: 'Work calendar', link: '/doctor/calendar', icon: 'mdi-calendar' },
                 { title: 'Create request for vacation', link: '/doctor/vacationRequest',icon:'mdi-airplane' },
                 // { title: 'Profile', link: '/doctor/profile', icon: 'mdi-account' },
                 { title: 'Schedule appointment', link: '/doctor/scheduleApp', icon: 'mdi-arrow-down-bold-box' },
