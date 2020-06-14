@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.model.Calendar;
 import com.example.demo.useful_beans.AppointmentToFinish;
@@ -38,6 +39,8 @@ public class AppointmentService {
     private PatientService patientService;
     @Autowired
     private ClinicAdminService clinicAdminService;
+    @Autowired
+    private PerscriptionRepository perscriptionRepository;
 
     private DoctorValidation doctorValidation = new DoctorValidation();
 
@@ -63,7 +66,8 @@ public class AppointmentService {
     }
 
     public Appointment getAppointment(Integer id){
-        return appointmentRepository.findById(id).get();
+        Optional<Appointment> find_app = appointmentRepository.findById(id);
+        return find_app.orElse(null);
     }
 
     public int savePatientToPredefinedAppointments(Patient patient, Appointment predefinedAppointment) {
@@ -83,7 +87,7 @@ public class AppointmentService {
         }
     }
 
-    public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
+    public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException, NotFoundException {
         ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -96,15 +100,15 @@ public class AppointmentService {
         ExaminationType getType = examinationTypeRepository.findById(Integer.parseInt(appointmentDTO.getExaminationType())).get();
 
         if(!doctorValidation.validateDoctorBusy(date, getType.getDuration(),getDoctor))
-            return null;
+            throw new NotFoundException("Doktor nije dostupan za trazeno vreme.");
         if(!validateRoom(date, getType.getDuration(), getRoom))
-            return null;
+            throw new NotFoundException("Soba nije dostupna za trazeno vreme.");
 
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {
             //Sta ako klinika nema cenovnik (vratimo bad request)
             float price = getClinic.get().getPriceList().getItems().stream()
-                    .filter(item -> item.getExaminationType().getId() == getType.getId())
+                    .filter(item -> item.getExaminationType().getId().equals(getType.getId()))
                     .findAny().get().getPrice();
 
             appointment_to_add = new Appointment(date, price, appointmentDTO.getDiscount(), getDoctor, getRoom, getType, getClinic.get());
@@ -146,12 +150,14 @@ public class AppointmentService {
 
     public CodeBook getCodebookFromAppointmentClinic(Integer appointment_id) {
         //TODO make custom query
-        Appointment appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id).get();
-        return appointment.getClinic().getCodeBook();
+        Optional<Appointment> appointment = appointmentRepository.findByIdAndFetchClinicEagerly(appointment_id);
+        if(appointment.isPresent())
+            return appointment.get().getClinic().getCodeBook();
+        return null;
     }
 
     public boolean handleAppointmentFinish(AppointmentToFinish appointmentToFinish) {
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentToFinish.appointmentId);
+        Optional<Appointment> appointmentOptional = appointmentRepository.findByIdAndFetchClinicEagerly(appointmentToFinish.appointmentId);
         if(appointmentOptional.isPresent()){
             Appointment appointment = appointmentOptional.get();
             appointment.setReport(appointmentToFinish.report);
@@ -167,7 +173,10 @@ public class AppointmentService {
 
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);
+            prescription.setClinic(appointment.getClinic());
 
+
+            perscriptionRepository.save(prescription);
             appointmentRepository.save(appointment);
             return true;
         }

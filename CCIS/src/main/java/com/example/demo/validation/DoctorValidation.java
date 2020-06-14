@@ -5,7 +5,11 @@ import com.example.demo.model.Appointment;
 import com.example.demo.model.Doctor;
 import com.example.demo.model.Room;
 
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 public class DoctorValidation {
@@ -63,8 +67,8 @@ public class DoctorValidation {
 
     public boolean validateDoctorBusy(Date startDate, float duration, Doctor doctor){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        int d = (int) duration*3600*1000;
-        Date endDate = new Date(startDate.getTime()+d);
+        float d = (duration *3600*1000);
+        Date endDate = new Date(startDate.getTime()+(long)d);
 
         if(isDoctorOnVacation(doctor,startDate,endDate))
             return false;
@@ -72,6 +76,8 @@ public class DoctorValidation {
         if(doctor.getCalendar().getEventStartDates() == null){
             return true;
         }
+        if(!this.checkBusinessHours(doctor,startDate,endDate))
+            return false;
 
         return this.valDoctorBusy(startDate, endDate, doctor);
     }
@@ -98,12 +104,18 @@ public class DoctorValidation {
     }
 
     public boolean checkBusinessHours(Doctor doctor, Date start, Date end){
-        Date startBusinessHours = doctor.getBusinessHours().getStarted();
-        Date endBusinessHours = doctor.getBusinessHours().getEnded();
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        String startTimeString = localDateFormat.format(start);
+        String endTimeString = localDateFormat.format(end);
+        LocalTime startTime = LocalTime.parse(startTimeString);
+        LocalTime endTime = LocalTime.parse(endTimeString);
+
+        LocalTime startBusinessHours = LocalTime.parse(doctor.getBusinessHours().getStarted().toString());
+        LocalTime endBusinessHours = LocalTime.parse(doctor.getBusinessHours().getEnded().toString());
         //mozda bi tu moglo i equals
-        if(start.after(startBusinessHours) && start.before(endBusinessHours))
-            if(end.before(endBusinessHours))
-                return true;
+        if((startTime.isAfter(startBusinessHours) || startTime.equals(startBusinessHours)) && (endTime.isBefore(endBusinessHours) || endTime.equals(endBusinessHours)))
+            return true;
         return false;
     }
 }

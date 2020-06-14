@@ -6,6 +6,7 @@ import com.example.demo.Repository.PatientRepository;
 import com.example.demo.dto.AppointmentDTO;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.RoomDTO;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.service.AppointmentService;
 import com.example.demo.service.DoctorService;
@@ -128,11 +129,9 @@ public class AppointmentController {
 
     @PostMapping(path = "/addAppointment", consumes = "application/json;charset=UTF-8")
     @PreAuthorize("hasAnyRole('CLINIC_CENTER_ADMIN', 'CLINIC_ADMIN', 'DOCTOR', 'NURSE')")
-    public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) throws ParseException {
+    public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) throws ParseException, NotFoundException {
         //validacija ide u service
         Appointment appointment = appointmentService.saveAppointment(appointmentDTO);
-        if(appointment == null)
-            return ResponseEntity.badRequest().header("Soba je zauzeta").body(new AppointmentDTO());
 
         return new ResponseEntity<AppointmentDTO>(convertToDTO(appointment), HttpStatus.CREATED);
     }

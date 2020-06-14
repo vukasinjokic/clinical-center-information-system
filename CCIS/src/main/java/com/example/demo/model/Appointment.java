@@ -3,9 +3,7 @@ package com.example.demo.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.servlet.annotation.HttpMethodConstraint;
 import java.util.*;
-
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;

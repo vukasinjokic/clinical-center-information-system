@@ -7,11 +7,13 @@ import com.example.demo.useful_beans.AppointmentToReserve;
 import com.example.demo.Repository.ClinicAdminRepository;
 import com.example.demo.Repository.MedicalStaffRequestRepository;
 import com.example.demo.useful_beans.DeclineVacRequest;
+import com.example.demo.validation.DoctorValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +49,7 @@ public class ClinicAdminService {
     @Autowired
     private UserRepository userRepository;
 
+
     private final ModelMapper modelMapper = new ModelMapper();
 
 
@@ -58,43 +61,50 @@ public class ClinicAdminService {
         return clinicAdminRepository.findByClinicId(clinicId);
     }
 
-    public void handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
+    @Transactional
+    public boolean handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
         AppointmentRequest appointmentRequest = appointmentRequestRepository.findById(appointmentToReserve.getRequestId()).get();
 
         Integer patient_id = appointmentRequest.getPatient().getId();
         Patient patient = patientRepository.findById(patient_id).get();
 
         List<Doctor> doctors = doctorRepository.findAllById(appointmentToReserve.getDoctorsIds());
-
+        if(!checkIfDoctorsAreAvailable(doctors, appointmentToReserve, appointmentRequest)){
+            return false;
+        }
         Doctor doctor = doctors.get(doctors.size() - 1);
 
         Integer room_id = Integer.parseInt(appointmentToReserve.getRoom().getId());
         Room room = roomRepository.findById(room_id).get();
 
-        Appointment appointment;
-        if(appointmentRequest.getPredefAppointment() != null){
-            Integer appointment_id = appointmentRequest.getPredefAppointment().getId();
-            appointment = appointmentRepository.getOne(appointment_id);
-            appointment.setTime(appointmentToReserve.getReservedTime());
-        }
-        else{
-            appointment = new Appointment(appointmentToReserve.getReservedTime(), 0, 0, doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
-        }
+        Appointment appointment = new Appointment(appointmentToReserve.getReservedTime(), 0, 0, doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
+
         patient.addAppointment(appointment);
         addAppointmentToDoctors(appointment, doctors);
 
         room.addAppointment(appointment);
-        updateDataBase(appointment, patient, doctors, room);
-
+        updateDataBase(appointment, doctors, appointmentRequest);
         emailService.alertDoctorsOperation(doctors, appointment);
         emailService.alertPatientOperation(appointment);
+        return true;
     }
 
-    private void updateDataBase(Appointment appointment, Patient patient, List<Doctor> doctors, Room room){
+    private boolean checkIfDoctorsAreAvailable(List<Doctor> doctors, AppointmentToReserve appointmentToReserve, AppointmentRequest appointmentRequest){
+        DoctorValidation doctorValidation = new DoctorValidation();
+        if(doctors.isEmpty()) return false;
+        float duration = doctors.get(0).getExaminationType().getDuration();
+        for(Doctor doctor : doctors){
+            if(!doctorValidation.validateDoctorBusy(appointmentToReserve.getReservedTime(), duration, doctor)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updateDataBase(Appointment appointment, List<Doctor> doctors, AppointmentRequest appointmentRequest ){
         appointmentRepository.save(appointment);
-//        patientRepository.save(patient);
-//        roomRepository.save(room);
         doctorRepository.saveAll(doctors);
+        appointmentRequestRepository.delete(appointmentRequest);
     }
 
     private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors) {
@@ -129,7 +139,7 @@ public class ClinicAdminService {
         }
         return ret;
     }
-
+    @Transactional
     public boolean declineRequest(DeclineVacRequest declineVacRequest){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
@@ -143,7 +153,7 @@ public class ClinicAdminService {
         }
         return false;
     }
-
+    @Transactional
     public boolean AcceptRequest(Integer id){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<MedicalStaffRequest> check_request = medicalStaffRequestRepository.findById(id);
@@ -160,9 +170,10 @@ public class ClinicAdminService {
 
             medicalStaff.addVacationDates(check_request.get());
 
-            emailService.alertStaffForVacation(user, check_request.get(),"");
             clinicAdmin.getClinic().getMedicalStaffRequests().remove(check_request.get());
             medicalStaffRequestRepository.deleteById(check_request.get().getId());
+            emailService.alertStaffForVacation(user, check_request.get(),"");
+
             return true;
         }
 

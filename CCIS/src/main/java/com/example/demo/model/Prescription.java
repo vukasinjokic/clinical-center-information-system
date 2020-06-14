@@ -42,6 +42,9 @@ public class Prescription {
     @JoinColumn(name = "clinic_id")
     private Clinic clinic;
 
+    @Version
+    private Long version;
+
     public Prescription() {
         this.isVerified = false;
     }
@@ -61,6 +64,16 @@ public class Prescription {
         this.medicalRecord = medicalRecord;
         this.nurse = nurse;
         this.clinic = clinic;
+    }
+
+    public Prescription(Integer id, Map<String, String> content, boolean isVerified, MedicalRecord medicalRecord, Nurse nurse, Clinic clinic, Long version) {
+        this.id = id;
+        this.content = content;
+        this.isVerified = isVerified;
+        this.medicalRecord = medicalRecord;
+        this.nurse = nurse;
+        this.clinic = clinic;
+        this.version = version;
     }
 
     public Clinic getClinic() {
@@ -109,5 +122,13 @@ public class Prescription {
 
     public void setMedicalRecord(MedicalRecord medicalRecord) {
         this.medicalRecord = medicalRecord;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

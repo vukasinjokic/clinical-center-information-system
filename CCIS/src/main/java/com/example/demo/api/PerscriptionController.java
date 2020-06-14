@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.dto.PrescriptionDTO;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.Prescription;
 import com.example.demo.service.PerscriptionService;
 import org.modelmapper.ModelMapper;
@@ -24,7 +25,7 @@ public class PerscriptionController {
 
     @PostMapping("/handleAcceptingPerscription/{id}")
     @PreAuthorize("hasRole('NURSE')")
-    public ResponseEntity handleAcceptingPerscription(@PathVariable Integer id){
+    public ResponseEntity handleAcceptingPerscription(@PathVariable Integer id) throws NotFoundException {
         if(perscriptionService.handleAcceptingPerscription(id)){
             return ResponseEntity.ok("Success");
         }

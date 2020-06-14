@@ -28,7 +28,8 @@ public class Calendar {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection()
-    @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"))
+    @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"), uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"calendar_id", "event_start_dates"})})
     @Column(name = "event_start_dates")
     private List<Date> eventStartDates;
 
@@ -190,7 +191,7 @@ public class Calendar {
 
     public void removeEventByAppointmentId(Integer appointmentId) {
         for(int i = 0; i != appointmentIds.size(); i++){
-            if(appointmentIds.get(i) == appointmentId){
+            if(appointmentIds.get(i).equals(appointmentId)){
                 eventStartDates.remove(i);
                 eventEndDates.remove(i);
                 eventNames.remove(i);

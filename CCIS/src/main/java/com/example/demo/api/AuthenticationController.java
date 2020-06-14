@@ -191,7 +191,10 @@ public class AuthenticationController {
         }
         if(adminToRegister.getClinicId() != null){
             //clinic admin
-            Clinic clinic = clinicRepository.findById(adminToRegister.getClinicId()).get();
+            Optional<Clinic> try_find_clinic = clinicRepository.findById(adminToRegister.getClinicId());
+            if(!try_find_clinic.isPresent())
+                return new ResponseEntity<>("Clinic doesnt exists", HttpStatus.NOT_FOUND);
+            Clinic clinic = try_find_clinic.get();
             List<Authority> auth = authorityService.findByName("ROLE_CLINIC_ADMIN");
             ClinicAdmin clinicAdmin = new ClinicAdmin(adminToRegister.getEmail(), passwordEncoder.encode(adminToRegister.getPassword()), adminToRegister.getFirstName(), adminToRegister.getLastName(), adminToRegister.getAddress(), adminToRegister.getCity(), adminToRegister.getCountry(), adminToRegister.getPhoneNumber(), adminToRegister.getSocialSecurityNumber(), clinic, auth, false);
             userRepository.save(clinicAdmin);

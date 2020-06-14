@@ -7,6 +7,7 @@ import com.example.demo.dto.DoctorDTO;
 import com.example.demo.dto.MedicalRecordDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.exceptions.ForbiddenException;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.service.DoctorService;
 import com.example.demo.service.MedicalStaffService;
@@ -62,10 +63,10 @@ public class DoctorController {
 
     @PostMapping("/saveDoctor")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
-    public ResponseEntity<DoctorDTO> saveDoctor(@RequestBody DoctorDTO doctorDTO){
+    public ResponseEntity<DoctorDTO> saveDoctor(@RequestBody DoctorDTO doctorDTO) throws NotFoundException {
         Doctor saved = doctorService.saveDoctor(doctorDTO);
-        if(saved == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        if(saved == null)
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<DoctorDTO>(convertDTO(saved), HttpStatus.CREATED);
     }

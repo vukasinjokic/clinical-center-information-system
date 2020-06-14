@@ -3,7 +3,6 @@ package com.example.demo.Repository;
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Clinic;
-import com.example.demo.model.CodeBook;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

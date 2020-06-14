@@ -1,6 +1,6 @@
 <template>
     <div>     
-        <v-navigation-drawer width="260" :clipped="clipped" v-model="drawer" enable-resize-watcher app dark class="blue-grey darken-2">
+        <v-navigation-drawer width="260" :clipped="clipped" v-model="drawer" enable-resize-watcher app class="indigo lighten-5">
             <v-divider class="mb-5" />
             <v-list>
                 <div/>
@@ -41,7 +41,7 @@ export default {
         return {
             items: [
                 { title: 'Patient', link: '/nurse/patient', icon: 'mdi-clipboard-outline' },
-                { title: 'Work calendar', link: '/nurse/:16/calendar', icon: 'mdi-calendar' },
+                { title: 'Work calendar', link: '/nurse/calendar', icon: 'mdi-calendar' },
                 { title: 'Create request for vacation', link: '/nurse/vacationRequest',icon:'mdi-airplane' },
                 { title: 'Profile', link: '/nurse/profile', icon: 'mdi-account' },
                 { title: 'Validate Perscription', link: '/nurse/validatePerscriptions', icon: 'mdi-ballot-outline' },

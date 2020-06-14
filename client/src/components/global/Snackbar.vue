@@ -7,13 +7,7 @@
                 v-model="snackBar"
             >
                 {{ getText }}
-                <v-btn
-                    dark
-                    text
-                    @click="closeSnackbar"
-                    >
-                    Close
-                </v-btn>
+               
             </v-snackbar>
         </div>
 
@@ -39,7 +33,7 @@ export default {
     },
     methods: {
         closeSnackbar(){
-            //this.getSnackbar = false;
+            //this.snackbar = false;
         }
     }
 }

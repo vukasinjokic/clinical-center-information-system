@@ -60,7 +60,7 @@ export default {
                     text: 'Clinic', value: 'clinic',fileterable: true
                 },
                 {
-                    text: 'Room', value: 'room', fileterable:true            
+                    text: 'Room', value: 'roomName', fileterable:true            
                 },
                 {
                     text: 'Date', value: 'date',fileterable: true

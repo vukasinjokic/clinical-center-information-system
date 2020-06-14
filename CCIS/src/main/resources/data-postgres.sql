@@ -31,7 +31,7 @@ values (nextval('ust_seq_user'), 'nemanja@gmail.com', '$2a$10$8eEItCz.KnYCjgUy8i
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting code books ---------------------------------------------------------
-insert into code_books (id) values (1);			-- id = 1
+insert into code_books default values;			-- id = 1
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -499,7 +499,7 @@ insert into calendars default values;
 -----------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------- Inserting event_start_dates ----------------------------------------------------------
 insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-06-08 08:00:00');
-insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-06-09 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-06-08 10:00:00');
 insert into event_start_dates (calendar_id, event_start_dates) values (7,'2020-07-02 10:00:00');
 
 insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-07-03 10:00:00');
@@ -508,19 +508,19 @@ insert into event_start_dates (calendar_id, event_start_dates) values (8,'2020-0
 insert into event_start_dates (calendar_id, event_start_dates) values (9,'2020-05-05 10:00:00');
 insert into event_start_dates (calendar_id, event_start_dates) values (9,'2020-05-06 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (10,'2020-05-07 10:00:00');
-insert into event_start_dates (calendar_id, event_start_dates) values (10,'2020-05-08 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (10,'2020-06-25 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (10,'2020-06-26 10:00:00');
 
 insert into event_start_dates (calendar_id, event_start_dates) values (11,'2020-05-09 10:00:00');
 insert into event_start_dates (calendar_id, event_start_dates) values (11,'2020-05-10 10:00:00');
 
 
-insert into event_start_dates (calendar_id, event_start_dates) values (12,'2020-05-11 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (12,'2020-07-11 10:00:00');
 ------------------------------------------------------------------------------------------------
 -----------------------------------SOBE---------------------------------------------------------
 
 insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-06-08 08:00:00');
-insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-06-09 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (13,'2020-06-08 10:00:00');
 
 insert into event_start_dates (calendar_id, event_start_dates) values (14,'2020-07-02 10:00:00');
 
@@ -532,15 +532,15 @@ insert into event_start_dates (calendar_id, event_start_dates) values (17,'2020-
 
 insert into event_start_dates (calendar_id, event_start_dates) values (18,'2020-05-06 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (19,'2020-05-07 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (19,'2020-06-25 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (20,'2020-05-08 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (20,'2020-06-26 10:00:00');
 
 insert into event_start_dates (calendar_id, event_start_dates) values (21,'2020-05-09 10:00:00');
 
 insert into event_start_dates (calendar_id, event_start_dates) values (22,'2020-05-10 10:00:00');
 
-insert into event_start_dates (calendar_id, event_start_dates) values (23,'2020-05-11 10:00:00');
+insert into event_start_dates (calendar_id, event_start_dates) values (23,'2020-07-11 10:00:00');
 
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
@@ -548,7 +548,7 @@ insert into event_start_dates (calendar_id, event_start_dates) values (23,'2020-
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -------------------------------------------------- Inserting event_end_dates ------------------------------------------------------------
 insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-06-08 08:30:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-06-09 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-06-08 11:00:00');
 insert into event_end_dates (calendar_id, event_end_dates) values (7, '2020-07-02 10:30:00');
 
 insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-07-03 11:00:00');
@@ -557,18 +557,18 @@ insert into event_end_dates (calendar_id, event_end_dates) values (8,'2020-07-04
 insert into event_end_dates (calendar_id, event_end_dates) values (9,'2020-05-05 11:00:00');
 insert into event_end_dates (calendar_id, event_end_dates) values (9,'2020-05-06 11:00:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (10, '2020-05-07 10:30:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (10, '2020-05-08 10:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (10, '2020-06-25 10:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (10, '2020-06-26 10:30:00');
 
 insert into event_end_dates (calendar_id, event_end_dates) values (11,'2020-05-09 11:00:00');
 insert into event_end_dates (calendar_id, event_end_dates) values (11,'2020-05-10 11:00:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (12,'2020-05-11 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (12,'2020-07-11 11:00:00');
 ------------------------------------------------------------------------------------------------
 -----------------------------------SOBE---------------------------------------------------------
 
 insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-06-08 08:30:00');
-insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-06-09 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (13, '2020-06-08 11:00:00');
 
 insert into event_end_dates (calendar_id, event_end_dates) values (14, '2020-07-02 10:30:00');
 
@@ -580,15 +580,15 @@ insert into event_end_dates (calendar_id, event_end_dates) values (17,'2020-05-0
 
 insert into event_end_dates (calendar_id, event_end_dates) values (18,'2020-05-06 11:00:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (19, '2020-05-07 10:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (19, '2020-06-25 10:30:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (20, '2020-05-08 10:30:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (20, '2020-06-26 10:30:00');
 
 insert into event_end_dates (calendar_id, event_end_dates) values (21,'2020-05-09 11:00:00');
 
 insert into event_end_dates (calendar_id, event_end_dates) values (22,'2020-05-10 11:00:00');
 
-insert into event_end_dates (calendar_id, event_end_dates) values (23,'2020-05-11 11:00:00');
+insert into event_end_dates (calendar_id, event_end_dates) values (23,'2020-07-11 11:00:00');
 
 -- -----------------------------------------------------------------------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------------------------------------------------------------------
@@ -900,15 +900,15 @@ values ('2020-06-08 08:00:00',  1000.0, 	 10.0, 		16, 				1, 					1, 				22, 			
 
 insert into appointments			-- id = 2
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-06-08 10:00:00',  1000.0, 	 10.0, 		16, 				1, 					3, 				23, 			1, 'T', 0, 0);
+values ('2020-06-08 10:00:00',  3000.0, 	 10.0, 		16, 				1, 					3, 				23, 			1, 'T', 0, 0);
 
 insert into appointments			-- id = 3
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-07-02 10:00:00',  700.0, 	  0.0, 		    16, 				2, 					1, 				23, 			1, 'F', 0, 0);
+values ('2020-07-02 10:00:00',  1000.0, 	  0.0, 		    16, 				2, 					1, 				23, 			1, 'F', 0, 0);
 
 insert into appointments			-- id = 4
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-07-03 10:00:00',  800.0, 	  5.0, 		    17, 				3, 					2, 				24, 			1, 'F', 0, 0);
+values ('2020-07-03 10:00:00',  2000.0, 	  5.0, 		    17, 				3, 					2, 				24, 			1, 'F', 0, 0);
 
 insert into appointments			-- id = 5
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
@@ -919,39 +919,39 @@ values ('2020-07-04 10:00:00',  900.0, 	  5.0, 		    17, 				4, 					2, 				25,	
 
 insert into appointments			-- id = 6
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-05 10:00:00',  850.0, 	  20.0, 	    18, 				5, 					3, 				26, 			2, 'T', 0, 0);
+values ('2020-05-05 10:00:00',  2500.0, 	  20.0, 	    18, 				5, 					3, 				26, 			2, 'T', 0, 0);
 
 insert into appointments			-- id = 7
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-06 10:00:00',  725.0, 	  10.0, 	    18, 				6, 					3, 				27, 		2, 'T', 0, 0);
+values ('2020-05-06 10:00:00',  2500.0, 	  10.0, 	    18, 				6, 					3, 				27, 		2, 'T', 0, 0);
 
 
 insert into appointments			-- id = 8
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-07 10:00:00',  550.0, 	  15.0, 	    19, 				7, 					1, 				22, 			2, 'T', 0, 0);
+values ('2020-06-25 10:00:00',  500.0, 	  15.0, 	    19, 				7, 					1, 				22, 			2, 'F', 0, 0);
 
 insert into appointments			-- id = 9
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-08 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 			2, 'T', 0, 0);
+values ('2020-06-26 10:00:00',  500.0, 	  10.0, 	    19, 				8, 					1, 				23, 			2, 'F', 0, 0);
 
 
 
 
 insert into appointments			-- id = 10
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-09 10:00:00',  650.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 			3, 'F', 0, 0);
+values ('2020-05-09 10:00:00',  2500.0, 	  5.0, 	   	    20, 				9, 					2, 				24, 			3, 'T', 0, 0);
 
 insert into appointments			-- id = 11
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-10 10:00:00',  725.0, 	  10.0, 	    20, 				10, 				2, 				25, 			3, 'F', 0, 0);
+values ('2020-05-10 10:00:00',  2500.0, 	  10.0, 	    20, 				10, 				2, 				25, 			3, 'T', 0, 0);
 
 insert into appointments			-- id = 12
 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-11 10:00:00',  725.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3, 'F', 0, 0);
+values ('2020-07-11 10:00:00',  3500.0, 	  15.0, 	    21, 				11, 				3, 				26, 		3, 'F', 0, 0);
 
-insert into appointments			-- id = 13
-				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
-values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 				3, 'F', 0, 0);
+-- insert into appointments			-- id = 13
+-- 				(time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, patient_id, clinic_id, finished, counter, version)
+-- values ('2020-07-12 10:00:00',  3500.0, 	  20.0, 	    21, 				12, 				3, 				27, 				3, 'F', 0, 0);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -959,7 +959,7 @@ values ('2020-05-12 10:00:00',  600.0, 	  20.0, 	    21, 				12, 				3, 				27, 
 ---------------------------------------------------- Inserting predefined appointments --------------------------------------------------
 insert into appointments			-- id = 14
 (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished, counter, version)
-values ('2020-06-08 08:00:00',  1000.0, 	 10.0, 		16, 			1, 				1, 	 			1, 'F', 0, 0);
+values ('2020-06-28 08:00:00',  1000.0, 	 10.0, 		16, 			1, 				1, 	 			1, 'F', 0, 0);
 --
 -- insert into appointments			-- id = 14
 -- (				time, 			price, 	discount, 	doctor_id, room_id, examination_type_id, clinic_id, finished, counter, version)
@@ -1029,21 +1029,19 @@ insert into user_authority (user_id, authority_id) values (27, 5);
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting appointment requests -----------------------------------------------------
-insert into appointment_requests ( app_req_type,  patient_id, predef_appointment_id)
-values                           (   'PATIENT',             23,              14);
 
 insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
-values                           (0.0,       1000.0,  '2020-06-08 08:00:00',   'DOCTOR',    16,          22,              null);
+values                           (0.0,       1000.0,  '2020-06-28 08:00:00',   'DOCTOR',    16,          22,              null);
 
 insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
-values                           (0.0,       1000.0,  '2020-05-11 09:00:00',   'DOCTOR',    17,          23,              null);
+values                           (0.0,       1000.0,  '2020-07-11 09:00:00',   'DOCTOR',    17,          23,              null);
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------- Inserting prescriptions-------------------------------------------------------
-insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('F', 1, 1);
-insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('F', 2, 1);
-insert into prescriptions( is_verified, medical_record_id, clinic_id) values ('T', 2, 1);
+insert into prescriptions( is_verified, medical_record_id, clinic_id, version) values ('F', 1, 1, 0);
+insert into prescriptions( is_verified, medical_record_id, clinic_id, version) values ('F', 2, 1, 0);
+insert into prescriptions( is_verified, medical_record_id, clinic_id, version) values ('T', 2, 1, 0);
 -- insert into clinics_prescriptions(prescriptions_id, clinic_id) values (1, 1);
 -- insert into clinics_prescriptions(prescriptions_id, clinic_id) values (2, 1);
 

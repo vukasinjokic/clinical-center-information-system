@@ -363,7 +363,7 @@ public class Clinic {
    public void removePersciptionById(Integer id) {
       if(this.prescriptions == null) return;
       for(Prescription p : prescriptions){
-         if(p.getId() == id) {
+         if(p.getId().equals(id)) {
             prescriptions.remove(p);
             return;
          }
