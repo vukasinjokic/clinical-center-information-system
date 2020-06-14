@@ -11,6 +11,9 @@
                         item-key="name"
                         class="blue-grey darken-4 white--text"
                         dark grey>
+                    <template v-slot:item.room="{ item }">
+                        {{item.roomName + " " + item.roomNumber}}
+                    </template>
              <template v-slot:top>
                 <v-toolbar flat class="blue-grey darken-4 white--text">
                     <v-spacer></v-spacer>
