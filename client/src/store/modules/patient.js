@@ -30,13 +30,13 @@ const actions = {
         commit('setPatients', response.data);
     },
 
-    async fetchMedicalRecord({commit}, email) {
+    async fetchMedicalRecord({commit, dispatch}, email) {
         try {    
             const response = await Vue.$axios.get('http://localhost:8081/patients/medicalRecord/' + email);
             commit("setMedicalRecord", JSON.parse(JSON.stringify(response.data)));
             commit("setRecordBackup", JSON.parse(JSON.stringify(response.data)));
         } catch(error) {
-            this.$store.dispatch('snackbar/showError', error.response.data, {root: true});
+            dispatch('snackbar/showError', error.response.data, {root: true});
         }
     },
 
