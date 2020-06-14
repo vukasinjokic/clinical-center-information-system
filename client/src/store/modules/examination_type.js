@@ -28,16 +28,16 @@ const actions = {
             dispatch('snackbar/showSuccess', "Uspesno obrisan", {root: true})
             
         }catch(error){
-            dispatch('snackbar/showError', 'Status' + error.response.status, {root: true}); //ne moze da se obrise referenciran 
+            dispatch('snackbar/showError', 'Cant delete used type.', {root: true}); //ne moze da se obrise referenciran 
         }
     },
     async addType({commit, dispatch}, type){
         try{
             const response = await Vue.$axios.post("http://localhost:8081/ex_type/addType", type);
             commit('addedType',response.data);
-            dispatch('snackbar/showSuccess', "Uspesno dodat", {root: true});
+            dispatch('snackbar/showSuccess', "Successfully inserted.", {root: true});
         }catch(error){
-            dispatch('showWarning', "Zauzeto ime", {root: true}); //videcemo kako da hendlamo error
+            dispatch('snackbar/showWarning', "Examination type name taken.", {root: true}); //videcemo kako da hendlamo error
         }
     },
     async updateType({commit, dispatch},type){
@@ -46,7 +46,7 @@ const actions = {
             commit('updatedType',response.data);
             dispatch('snackbar/showSuccess', "Uspesno izmenjen", {root: true});
         }catch(error){
-            dispatch('snackbar/showError',error.response.status, {root:true}); //videcemo kako da hendlamo error
+            dispatch('snackbar/showError',error.response.data, {root:true}); //videcemo kako da hendlamo error
         }
         
     },

@@ -150,8 +150,10 @@ public class Calendar {
     public void addVacationDates(MedicalStaffRequest medicalStaffRequest) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
-            this.getVacationDates().add(sdf.parse(sdf.format(medicalStaffRequest.getFromDate())));
-            this.getVacationDates().add(sdf.parse(sdf.format(medicalStaffRequest.getToDate())));
+            List<Date> list = new ArrayList<>();
+            list.add(sdf.parse(sdf.format(medicalStaffRequest.getFromDate())));
+            list.add(sdf.parse(sdf.format(medicalStaffRequest.getToDate())));
+            this.setVacationDates(list);
         }catch (ParseException p){
             p.printStackTrace();
         }
@@ -169,6 +171,7 @@ public class Calendar {
         if(this.getEventStartDates().size() == 0){
             this.eventStartDates.add(startDate);
             this.eventEndDates.add(endDate);
+            this.eventNames.add(eventName);
             return;
         }
         if(startDate.after(eventStartDates.get(eventStartDates.size() - 1))){

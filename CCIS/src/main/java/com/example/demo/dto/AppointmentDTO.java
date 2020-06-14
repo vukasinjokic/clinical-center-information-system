@@ -35,7 +35,7 @@ public class AppointmentDTO {
         this.price = price;
     }
 
-    public void setDiscount(float discount) {
+    public void setDiscount(Float discount) {
         this.discount = discount;
     }
 
@@ -135,7 +135,7 @@ public class AppointmentDTO {
     }
 
 
-    public float getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
 

@@ -22,7 +22,6 @@ const actions = {
             const response = await Vue.$axios.get('http://localhost:8081/doctors');
             commit('setDoctors', response.data);
         }catch(error){
-            console.log(error.response.status);
             dispatch('snackbar/showError', "Nesto se cudno desava", {root: true});
         }
     },
@@ -43,7 +42,7 @@ const actions = {
             commit('doctorAdded', response.data);
             dispatch('snackbar/showSuccess', "Uspesno dodat doktor", {root: true});
         }catch(error){
-            dispatch('snackbar/showError',"Neki error", {root: true});
+            dispatch('snackbar/showError',error.response.data , {root: true});
         }
     },
 

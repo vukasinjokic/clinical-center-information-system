@@ -54,14 +54,14 @@
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
                                             <v-text-field
-                                                :rules="[requredRule]"
+                                                :rules="[requredRule,emailRule]"
                                                 v-model="editedItem.email"
                                                 label="Email">
                                             </v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
                                             <v-text-field
-                                                :rules="[requredRule]"
+                                                :rules="[requredRule, minChar]"
                                                 v-model="editedItem.password"
                                                 label="Password"
                                                 type="password">
@@ -90,14 +90,14 @@
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
                                             <v-text-field
-                                                :rules="[requredRule, numberRule]"
+                                                :rules="[requredRule, numberRule,minChar]"
                                                 v-model="editedItem.socialSecurityNumber"
                                                 label="SocialSecurityNumber">
                                             </v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
                                             <v-text-field
-                                                :rules="[requredRule,numberRule]"
+                                                :rules="[requredRule,numberRule,minChar]"
                                                 v-model="editedItem.phoneNumber"
                                                 label="Phone number">
                                             </v-text-field>
@@ -125,7 +125,9 @@
                                             <v-select
                                                 :rules="[requredRule]"
                                                 v-model="selected"
-                                                :items="getExaminationTypeNames"
+                                                :items="getExaminationTypes"
+                                                return-object
+                                                item-text="name"
                                                 label="Examination type"
                                                 >
                                             </v-select>
@@ -187,10 +189,7 @@ export default {
                 country: "",
                 socialSecurityNumber: "",
                 phoneNumber: "",
-                examinationType: {
-                    id:"",
-                    name:""
-                },
+                exTypeId: "",
                 businessHours:{
                     started:"",
                     ended: ""
@@ -205,16 +204,13 @@ export default {
                 country: "",
                 socialSecurityNumber: "",
                 phoneNumber: "",
-                examinationType: {
-                    id:"",
-                    name:""
-                },
+                exTypeId: "",
                 businessHours:{
                     started:"",
                     ended: ""
                 }
             },
-            selected: {text: "", value: ""}
+            selected: {}
         }  
     },
     created(){
@@ -227,7 +223,7 @@ export default {
 
         save(){
             if(this.$refs.form.validate()){         
-                this.editedItem.examinationType.id = this.selected;
+                this.editedItem.exTypeId = this.selected.id;
                 this.doctor = Object.assign({}, this.editedItem);
                 this.doctor.businessHours = Object.assign({},this.editedItem.businessHours);
                 this.saveDoctor(this.doctor);
@@ -245,7 +241,7 @@ export default {
     },
     computed:{
         ...mapGetters('doctor', ['getDoctorList']),
-        ...mapGetters('appointments', ['getExaminationTypeNames']),
+        ...mapGetters('appointments', ['getExaminationTypes']),
 
         requredRule(){
             return (value) => !!value || "Required field."
@@ -256,6 +252,12 @@ export default {
         numberRule(){
             return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be valid.";
         },
+         minChar(){
+            return (value) => (value && value.length >= 8) || "Min 8 characters";
+        },
+        emailRule(){
+          return (value) => /.+@.+\..+/.test(value) || "E-mail must be valid";
+        }
     }
 
 }

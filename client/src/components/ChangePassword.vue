@@ -85,7 +85,8 @@ export default {
         closeDialog(){
             this.dialogPass = false;
             this.$refs.form.reset();
-            if(localStorage.getItem('is_password_changed') == 'true'){
+            const role = localStorage.getItem('user_role')
+            if(localStorage.getItem('is_password_changed') == 'true' || role === 'ROLE_PATIENT'){
                 this.$router.push({
                     name: "InstantHomeRedirect"
                 });

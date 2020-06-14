@@ -117,6 +117,9 @@ public class Clinic {
       this.appointmentRequests = appointmentRequests;
    }
 
+   public void removeAppointmentRequest(AppointmentRequest request){
+      this.appointmentRequests.remove(request);
+   }
 
    public String getName() {
       return name;

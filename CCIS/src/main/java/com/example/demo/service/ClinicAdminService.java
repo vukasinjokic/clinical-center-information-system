@@ -78,12 +78,14 @@ public class ClinicAdminService {
         Room room = roomRepository.findById(room_id).get();
 
         Appointment appointment = new Appointment(appointmentToReserve.getReservedTime(), 0, 0, doctor, room, doctor.getExaminationType(), patient, doctor.getClinic());
-
+        appointment = appointmentRepository.save(appointment);
         patient.addAppointment(appointment);
         addAppointmentToDoctors(appointment, doctors);
 
         room.addAppointment(appointment);
-        updateDataBase(appointment, doctors, appointmentRequest);
+        doctorRepository.saveAll(doctors);
+        doctor.getClinic().removeAppointmentRequest(appointmentRequest);
+        appointmentRequestRepository.delete(appointmentRequest);
         emailService.alertDoctorsOperation(doctors, appointment);
         emailService.alertPatientOperation(appointment);
         return true;
@@ -102,9 +104,7 @@ public class ClinicAdminService {
     }
 
     private void updateDataBase(Appointment appointment, List<Doctor> doctors, AppointmentRequest appointmentRequest ){
-        appointmentRepository.save(appointment);
-        doctorRepository.saveAll(doctors);
-        appointmentRequestRepository.delete(appointmentRequest);
+
     }
 
     private void addAppointmentToDoctors(Appointment appointment, List<Doctor> doctors) {

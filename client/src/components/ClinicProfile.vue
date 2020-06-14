@@ -8,15 +8,18 @@
                             Osnovni podaci o klinici
                         </v-card-title>
                         <v-card-text >
+                            <v-form ref="form">
                             <v-text-field
                                 label="Clinic name"
                                 v-model="getClinic.name"
+                                :rules="[requiredRule]"
                             >
                             </v-text-field>
                             <v-text-field
                                 v-model="getClinic.address"
                                 label="Address"
                                 prepend-icon="mdi-home"
+                                :rules="[requiredRule]"
                             ></v-text-field>
                             <v-textarea
                                 v-model="getClinic.description"
@@ -25,6 +28,7 @@
                                 label="Description"
                                 filled>
                             </v-textarea>
+                            </v-form>
                             <v-btn color="success" @click="saveUpdate"> Update </v-btn>
                         </v-card-text>
                     </v-card>
@@ -175,6 +179,8 @@ export default {
         ...mapActions('appointments',['fetchTypes']),
 
         saveUpdate(){
+            if(!this.$refs.form.validate())
+                return;
             //this.defaultClinic = Object.assign({}, this.getClinic);
             this.defaultClinic.id = this.getClinic.id;
             this.defaultClinic.name = this.getClinic.name;

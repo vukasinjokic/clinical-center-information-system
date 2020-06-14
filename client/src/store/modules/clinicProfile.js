@@ -66,21 +66,21 @@ const actions = {
         }
     },
 
-    async updatePriceList({commit}, priceListItem){
+    async updatePriceList({commit, dispatch}, priceListItem){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/clinics/updatePriceListItem', priceListItem);
             commit('commitListItem', response.data);
         }catch(error){
-            alert("Vec postoji stavka cenovnika");
+            dispatch("snackbar/showWarning","Vec postoji stavka cenovnika", {root:true});
         }
     },
 
-    async addPriceList({commit}, priceListItem){
+    async addPriceList({commit, dispatch}, priceListItem){
         try{
             const response = await Vue.$axios.post('http://localhost:8081/clinics/addPriceListItem', priceListItem);
             commit('setNewItem', response.data);
         }catch(error){
-            alert("Vec postoji stavka cenovnika");
+            dispatch("snackbar/showWarning","Vec postoji stavka cenovnika", {root:true});
         }
     }
 

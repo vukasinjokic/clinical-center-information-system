@@ -55,8 +55,10 @@ const actions = {
 const mutations = {
     setCodeBook: (state, codebook) => state.codeBook = codebook,
     
-    addedMedication: (state, med) => state.codeBook.medications[med.code] = med.name,
-    addedDiagnosis: (state, diagnosis) => state.codeBook.diagnoses[diagnosis.code] = diagnosis.name,
+    addedMedication: (state, med) => {
+        state.codeBook.medications[Object.keys(med).pop()] = Object.values(med).pop();
+    },
+    addedDiagnosis: (state, diagnosis) => state.codeBook.diagnoses[Object.keys(diagnosis).pop()] = Object.values(diagnosis).pop(),
     resetState (state) {
         Object.assign(state, getDefaultState())
     }

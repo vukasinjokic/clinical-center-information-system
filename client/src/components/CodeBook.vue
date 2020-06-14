@@ -106,6 +106,7 @@
 
             </v-card>
         </v-dialog>
+        {{getDiagnoses}}
     </div>
 </template>
 
