@@ -12,7 +12,9 @@
 3. Postgres baza podataka
 
 ### Korišćeni alati:
-1. alat za integraciju - TravisCI
+1. TravisCI - alat za integraciju
+2. SonarCloud - alata za analizu kvaliteta koda
+3. Heroku - link na kome je izvršen deplozment: https://clinic-center-inf-system.herokuapp.com/
 
 ### Preduslovi:
 Neophodno je instalirati:

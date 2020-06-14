@@ -11,11 +11,15 @@
                 <template v-slot:item.doctor="{ item }">
                     {{item.doctor.firstName + " " + item.doctor.lastName}}
                 </template>
+                    <template v-slot:item.room="{ item }">
+                        {{item.roomName + " " + item.roomNumber}}
+                    </template>
                 <template v-slot:item.actions="{ item }">
                     <v-btn color="blue" 
                     @click="schedule({
                         patientEmail: '',
-                        appointmentId: item.id
+                        appointmentId: item.id,
+                        appointment: item
                     })">
                     Zakaži pregled
                     </v-btn>
@@ -47,11 +51,13 @@ export default {
     },
 
     methods: {
-        ...mapActions("appointments", ["fetchPredefinedAppointments"]),
+        ...mapActions("appointments", ["fetchPredefinedAppointments", "resetAppointments"]),
 
         schedule(appointmentRequest) {
+            var index = this.allAppointments.indexOf(appointmentRequest.appointment);
+            this.allAppointments.splice(index, 1);
+
             appointmentRequest.patientEmail = localStorage.getItem("user_email");
-            console.log("nemanja");
             
             Vue.$axios.post("http://localhost:8081/appointments/addPatientToPredefinedAppointment", appointmentRequest)
             .then(response => {

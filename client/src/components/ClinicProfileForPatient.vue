@@ -100,6 +100,19 @@ export default {
         },
 
         redirectToDoctors() {
+            for (let i = 0; i < this.getPriceListItems.length; i++) {
+                const priceListItem = this.getPriceListItems[i];
+                for (let j = 0; j < this.getDoctorList().length; j++) {
+                    const doctor = this.getDoctorList()[j];
+                    if (doctor.examinationType.name == priceListItem.examinationType.name) {
+                        doctor.price = priceListItem.price;
+                    } else {
+                        continue;
+                    }
+                    
+                }
+            }
+
             var doctors = this.getDoctorList();
             sessionStorage.setItem("filterDetails",
             JSON.stringify({

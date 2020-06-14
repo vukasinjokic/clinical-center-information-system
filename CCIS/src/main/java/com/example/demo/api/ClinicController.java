@@ -5,8 +5,10 @@ import com.example.demo.dto.ClinicDTO;
 import com.example.demo.dto.ClinicsDTO;
 import com.example.demo.dto.PriceListDTO;
 import com.example.demo.model.Clinic;
+import com.example.demo.model.Doctor;
 import com.example.demo.model.PriceList;
 import com.example.demo.model.PriceListItem;
+import com.example.demo.model.Rating;
 import com.example.demo.model.User;
 import com.example.demo.model.Patient;
 import com.example.demo.dto.PrescriptionDTO;
@@ -25,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +59,7 @@ public class ClinicController {
     @PreAuthorize("hasAnyRole('PATIENT')")
     public List<ClinicsDTO> getAllClinicsPatient() {
         List<Clinic> clinics = clinicService.getAllClinics();
+
         return clinics.stream()
                 .map(this::convertToClinicsDTO)
                 .collect(Collectors.toList());
@@ -92,8 +96,8 @@ public class ClinicController {
     public ResponseEntity<ClinicDTO> getClinicById(@PathVariable Integer clinicId){
         Clinic clinic = clinicService.findById(clinicId);
         if(clinic != null) {
-            ResponseEntity<ClinicDTO> clinicDTOResponseEntity = new ResponseEntity<>(modelMapper.map(clinic, ClinicDTO.class), HttpStatus.OK);
-            return clinicDTOResponseEntity;
+            ClinicDTO clinicDTO = convertToClinicDTO(clinic);
+            return new ResponseEntity<>(clinicDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -189,8 +193,13 @@ public class ClinicController {
     }
 
     private ClinicsDTO convertToClinicsDTO(Clinic clinic){
+        Collection<Doctor> doctors = clinic.getDoctors();
+        Rating rating = clinic.getRating();
+        PriceList priceList = clinic.getPriceList();
         ClinicsDTO clinicsDTO = modelMapper.map(clinic, ClinicsDTO.class);
-        clinicsDTO.setDTOFields(clinic);
+        clinicsDTO.setDoctors(doctors);
+        clinicsDTO.setRating(rating);
+        clinicsDTO.setPriceList(priceList);
         return clinicsDTO;
     }
 }

@@ -113,7 +113,7 @@ export default {
     },
 
     methods: {
-        ...mapActions("clinics", ["fetchClinics"]),
+        ...mapActions("clinics", ["fetchClinicsPatient"]),
 
         ...mapActions("examination_type", ["fetchExaminationTypes"]),
 
@@ -266,7 +266,7 @@ export default {
     },
 
     created() {
-        this.fetchClinics();
+        this.fetchClinicsPatient();
         this.fetchExaminationTypes();
     }
 }

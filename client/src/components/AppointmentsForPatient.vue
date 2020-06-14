@@ -21,6 +21,9 @@
                     <template v-slot:item.doctor="{ item }">
                         {{item.doctor.firstName + " " + item.doctor.lastName}}
                     </template>
+                    <template v-slot:item.room="{ item }">
+                        {{item.roomName + " " + item.roomNumber}}
+                    </template>
                 </v-data-table>
             </v-card>
         </v-container>

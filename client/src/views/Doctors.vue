@@ -133,6 +133,7 @@ export default {
                 {text: "Surname", value: "lastName"},
                 {text: "Examination type", value: "examinationType.name"},
                 {text: "Rating", value: "rating"},
+                {text: "Price", value: "price"},
                 {text: "Clinic", value: "clinic"}
             ]
         }

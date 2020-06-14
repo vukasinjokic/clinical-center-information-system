@@ -13,7 +13,7 @@ const getters = {
 };
 
 const actions = {
-    async fetchClinics({commit}){
+    async fetchClinicsPatient({commit, dispatch}){
         await Vue.$axios.get('http://localhost:8081/clinics/getClinicsPatient')
         .then(response => {
             for (let i = 0; i < response.data.length; i++) {
@@ -28,7 +28,15 @@ const actions = {
             }
             commit('setClinics', response.data);
         })
-        .catch(() => { this.$store.dispatch('snackbar/showError', "Nemate pravo pregleda svih klinika", {root: true}); });
+        .catch(() => { dispatch('snackbar/showError', "Nemate pravo pregleda svih klinika", {root: true}); });
+    },
+
+    async fetchClinics({commit, dispatch}){
+        await Vue.$axios.get('http://localhost:8081/clinics/getClinics')
+        .then(response => {
+            commit('setClinics', response.data);
+        })
+        .catch(() => { dispatch('snackbar/showError', "Nemate pravo pregleda svih klinika", {root: true}); });
     },
 
     clinicsSetter({commit}, clinics) {

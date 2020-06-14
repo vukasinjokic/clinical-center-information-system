@@ -43,7 +43,7 @@ export default {
                 { title: 'Registration Requests', link: '/clinicCenterAdmin/registrationRequests', icon: 'mdi-clipboard-outline' },
                 { title: 'Clinics', link: "/clinicCenterAdmin/clinics", icon: 'mdi-hospital-box-outline'},
                 { title: 'Register admins', link: '/clinicCenterAdmin/registerAdmins', icon: 'mdi-account-plus-outline'},
-                { title: 'CodeBook', link: 'clinicCenterAdmin/codebook', icon: 'mdi-notebook-outline'}
+                { title: 'CodeBook', link: '/clinicCenterAdmin/codebook', icon: 'mdi-notebook-outline'}
             ],
             drawer: true
         }   
