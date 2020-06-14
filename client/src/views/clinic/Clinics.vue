@@ -20,9 +20,9 @@
             <v-data-table
                 :headers="headers"
                 :items="filterClinics"
-                class="blue-grey darken-4 white--text"
+                class="indigo lighten-5"
                 show-expand
-                dark>
+                >
 
                 <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
@@ -62,7 +62,6 @@ export default {
             headers: [
                 {text: "Name", value: "name"},
                 {text: "Address", value: "address"},
-                {text: "Price List", value: "priceList"},
                 {text: "Rating", value: "rating"},
                 {text: "Description", value: "description", width: "25%"}
             ]

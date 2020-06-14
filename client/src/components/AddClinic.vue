@@ -1,7 +1,7 @@
 
 <template v-slot:top>
 <div>
-    <v-toolbar flat class="blue-grey darken-4 white--text">
+    <v-toolbar flat class="indigo lighten-5">
       <v-spacer></v-spacer>
   <v-dialog v-model="dialog" persistent max-width="400px">
     <template v-slot:activator="{ on }">
