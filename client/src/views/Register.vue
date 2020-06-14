@@ -65,7 +65,7 @@
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
                                 v-model="user.phoneNumber" 
-                                :rules="[ruleRequired]" 
+                                :rules="[ruleRequired,numberRule]" 
                                 label="Phone number" 
                                 required>
                             </v-text-field>
@@ -73,7 +73,7 @@
                         <v-col cols="10" sm="5" md="5">
                             <v-text-field 
                                 v-model="user.socialSecurityNumber" 
-                                :rules="[ruleRequired]" 
+                                :rules="[ruleRequired,numberRule]" 
                                 label="Social security number" 
                                 required>
                             </v-text-field>
@@ -151,7 +151,10 @@ export default {
         },
         minChar(){
             return (value) => (value && value.length >= 8) || "Min 8 characters";
-        }
+        },
+        numberRule(){
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be number.";
+        },
     },
     methods: {
         submit(){

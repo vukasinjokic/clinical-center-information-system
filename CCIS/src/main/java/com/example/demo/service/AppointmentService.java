@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Repository.*;
 import com.example.demo.dto.AppointmentDTO;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.model.Calendar;
 import com.example.demo.useful_beans.AppointmentToFinish;
@@ -83,7 +84,7 @@ public class AppointmentService {
         }
     }
 
-    public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException {
+    public Appointment saveAppointment(AppointmentDTO appointmentDTO) throws ParseException, NotFoundException {
         ClinicAdmin user = (ClinicAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -96,9 +97,9 @@ public class AppointmentService {
         ExaminationType getType = examinationTypeRepository.findById(Integer.parseInt(appointmentDTO.getExaminationType())).get();
 
         if(!doctorValidation.validateDoctorBusy(date, getType.getDuration(),getDoctor))
-            return null;
+            throw new NotFoundException("Doktor nije dostupan za trazeno vreme.");
         if(!validateRoom(date, getType.getDuration(), getRoom))
-            return null;
+            throw new NotFoundException("Soba nije dostupna za trazeno vreme.");
 
         Appointment appointment_to_add;
         if(getClinic.isPresent()) {

@@ -157,7 +157,7 @@ export default {
           return (value) => !!value || "Required.";
         },
         durationRule(){
-            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be valid.";
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be number.";
         },
         dateNow(){
           return new Date().toISOString().slice(0,10);

@@ -124,10 +124,7 @@ public class DoctorService {
                 doctorRepository.save(doctor);
                 return;
             }
-//            if(doctorValidation.validateDeleting(doctor,date)){
-//                doctorRepository.delete(doctor);
-//                return "";
-//            }
+
             throw new ForbiddenException("Doktor ima zakazane preglede.");
         }
         throw new ForbiddenException("Doktor ima zakazane preglede.");

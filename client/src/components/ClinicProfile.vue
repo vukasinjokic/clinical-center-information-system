@@ -67,7 +67,7 @@
                                             </v-col>
                                             <v-col cols="12" sm="6" md="12">
                                                 <v-text-field
-                                                    :rules="[requiredRule]"
+                                                    :rules="[requiredRule, numberRule]"
                                                     v-model="editPriceList.price"
                                                     label="Price">
                                                 </v-text-field>
@@ -164,6 +164,9 @@ export default {
         },
         requiredRule(){
             return (value) => !!value || "Required field.";
+        },
+        numberRule(){
+            return v => /(^(\+)?\d+(\.\d+)?$)/.test(v) || "Input must be number.";
         },
         
     },

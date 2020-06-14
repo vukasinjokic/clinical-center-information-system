@@ -82,7 +82,7 @@ const actions = {
             commit('newApp', response.data);
             dispatch('snackbar/showSuccess', 'Uspesno dodat slobodan pregled', {root: true});
         }catch(error){
-            dispatch('snackbar/showWarning',"Doktor ili soba su zauzeti u zadato vreme.",{root:true}); // moze i da je doktor na odmoru
+            dispatch('snackbar/showWarning',error.response.data,{root:true}); // moze i da je doktor na odmoru
         }
     },
    
