@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,6 +61,7 @@ public class ClinicAdminService {
         return clinicAdminRepository.findByClinicId(clinicId);
     }
 
+    @Transactional
     public boolean handleReservation(AppointmentToReserve appointmentToReserve) throws InterruptedException {
         AppointmentRequest appointmentRequest = appointmentRequestRepository.findById(appointmentToReserve.getRequestId()).get();
 
@@ -137,7 +139,7 @@ public class ClinicAdminService {
         }
         return ret;
     }
-
+    @Transactional
     public boolean declineRequest(DeclineVacRequest declineVacRequest){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ClinicAdmin clinicAdmin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
@@ -151,7 +153,7 @@ public class ClinicAdminService {
         }
         return false;
     }
-
+    @Transactional
     public boolean AcceptRequest(Integer id){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<MedicalStaffRequest> check_request = medicalStaffRequestRepository.findById(id);
@@ -168,9 +170,10 @@ public class ClinicAdminService {
 
             medicalStaff.addVacationDates(check_request.get());
 
-            emailService.alertStaffForVacation(user, check_request.get(),"");
             clinicAdmin.getClinic().getMedicalStaffRequests().remove(check_request.get());
             medicalStaffRequestRepository.deleteById(check_request.get().getId());
+            emailService.alertStaffForVacation(user, check_request.get(),"");
+
             return true;
         }
 
