@@ -67,8 +67,8 @@ public class DoctorValidation {
 
     public boolean validateDoctorBusy(Date startDate, float duration, Doctor doctor){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        int d = (int) duration*3600*1000;
-        Date endDate = new Date(startDate.getTime()+d);
+        float d = (duration *3600*1000);
+        Date endDate = new Date(startDate.getTime()+(long)d);
 
         if(isDoctorOnVacation(doctor,startDate,endDate))
             return false;
@@ -114,9 +114,8 @@ public class DoctorValidation {
         LocalTime startBusinessHours = LocalTime.parse(doctor.getBusinessHours().getStarted().toString());
         LocalTime endBusinessHours = LocalTime.parse(doctor.getBusinessHours().getEnded().toString());
         //mozda bi tu moglo i equals
-        if(startTime.isAfter(startBusinessHours) && startTime.isBefore(endBusinessHours))
-            if(endTime.isBefore(endBusinessHours))
-                return true;
+        if((startTime.isAfter(startBusinessHours) || startTime.equals(startBusinessHours)) && (endTime.isBefore(endBusinessHours) || endTime.equals(endBusinessHours)))
+            return true;
         return false;
     }
 }

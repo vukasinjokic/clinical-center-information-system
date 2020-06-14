@@ -1029,8 +1029,6 @@ insert into user_authority (user_id, authority_id) values (27, 5);
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- Inserting appointment requests -----------------------------------------------------
-insert into appointment_requests ( app_req_type,  patient_id, predef_appointment_id)
-values                           (   'PATIENT',             23,              14);
 
 insert into appointment_requests (discount,   price,        time,           app_req_type, doctor_id, patient_id, predef_appointment_id)
 values                           (0.0,       1000.0,  '2020-06-08 08:00:00',   'DOCTOR',    16,          22,              null);
