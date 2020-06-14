@@ -105,7 +105,7 @@ const actions = {
             dispatch('appointmentRequests/deleteRequest',  payload.requestId, {root : true});
         })
         .catch(err => {
-            dispatch("snackbar/showError", err.data, {root: true});
+            dispatch("snackbar/showError", err.response.data, {root: true});
         })
         const response = await Vue.$axios.get("http://localhost:8081/rooms/getRoom/" +  payload.room.id);
         commit('updatedRoom', response.data);        
