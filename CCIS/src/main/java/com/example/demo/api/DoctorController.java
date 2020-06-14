@@ -63,7 +63,7 @@ public class DoctorController {
 
     @PostMapping("/saveDoctor")
     @PreAuthorize("hasAnyRole('CLINIC_ADMIN')")
-    public ResponseEntity<DoctorDTO> saveDoctor(@RequestBody DoctorDTO doctorDTO) throws NotFoundException {
+    public ResponseEntity<DoctorDTO> saveDoctor(@RequestBody DoctorDTO doctorDTO) throws NotFoundException, ForbiddenException {
         Doctor saved = doctorService.saveDoctor(doctorDTO);
 //        if(saved == null)
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -18,7 +18,10 @@ import com.example.demo.model.Rating;
 import com.example.demo.dto.DoctorDTO;
 import com.example.demo.model.*;
 import com.example.demo.validation.DoctorValidation;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,8 @@ import java.util.Optional;
 @Service
 public class DoctorService {
 
+    @Autowired
+    private UserService userService;
     @Autowired
     private DoctorRepository doctorRepository;
     @Autowired
@@ -62,6 +67,11 @@ public class DoctorService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CalendarRepository calendarRepository;
+    @Autowired
+    private AuthorityService authorityService;
+    @Autowired
+    private UserRepository userRepository;
+
 
     private DoctorValidation doctorValidation = new DoctorValidation();
     public Doctor findById(Integer id){
@@ -131,17 +141,14 @@ public class DoctorService {
         throw new ForbiddenException("Doktor ima zakazane preglede.");
     }
 
-    public Doctor saveDoctor(DoctorDTO doctorDTO) throws NotFoundException {
+    public Doctor saveDoctor(DoctorDTO doctorDTO) throws NotFoundException, ForbiddenException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ClinicAdmin admin = clinicAdminRepository.findByEmailAndFetchClinicEagerly(user.getEmail());
 
-        List<Doctor> allDoctors = findAllDoctors(); //from clinic
-        if(doctorValidation.isEmailExist(doctorDTO, allDoctors))
-            return null;
-        if(doctorValidation.isNumberExist(doctorDTO, allDoctors))
-            return null;
-
+        this.doesEmailAndNumberExists(doctorDTO);
+        List<Authority> auth = authorityService.findByName("ROLE_DOCTOR");
         Doctor newDoctor = new Doctor();
+        newDoctor.setAuthorities(auth);
 
         //businessHours u novu funkciju
         BusinessHours businessHours = new BusinessHours();
@@ -149,7 +156,10 @@ public class DoctorService {
         businessHours.setStarted(Time.valueOf(startTime));
         LocalTime endTime = LocalTime.parse(doctorDTO.getBusinessHours().getEnded());
         businessHours.setEnded(Time.valueOf(endTime));
-        Optional<ExaminationType> examinationType = examinationTypeRepository.findById(doctorDTO.getExaminationType().getId());
+        if(doctorDTO.getExTypeId() == null)
+            throw new NotFoundException("Examintaion type not found");
+
+        Optional<ExaminationType> examinationType = examinationTypeRepository.findById(Integer.parseInt(doctorDTO.getExTypeId()));
 
         setDoctorFields(newDoctor, doctorDTO);
 
@@ -161,7 +171,25 @@ public class DoctorService {
         else{
             throw new NotFoundException("Examintaion type not found");
         }
-        return doctorRepository.save(newDoctor);
+        return userRepository.save(newDoctor);
+    }
+    private void doesEmailAndNumberExists(DoctorDTO doctorDTO) throws NotFoundException {
+        List<User> existUsers = userService.findByEmailOrSocialSecurityNumber(
+                doctorDTO.getEmail(),
+                doctorDTO.getSocialSecurityNumber());
+        if (existUsers.size() > 2)
+            throw new NotFoundException("Unknown error. This should not happen.");
+
+        else if (existUsers.size() == 2)
+            throw new NotFoundException("Both email and social security number are already taken.");
+
+        else if (existUsers.size() == 1) {
+            if (existUsers.get(0).getEmail().equals(doctorDTO.getEmail()))
+                throw new NotFoundException("Choosen email is already taken.");
+
+            if (existUsers.get(0).getSocialSecurityNumber().equals(doctorDTO.getSocialSecurityNumber()))
+                throw new NotFoundException("Choosen social security number is already taken.");
+        }
     }
 
     private void setDoctorFields(Doctor newDoctor, DoctorDTO doctorDTO) {
@@ -176,6 +204,7 @@ public class DoctorService {
         newDoctor.setCountry(doctorDTO.getCountry());
         Rating rating = new Rating();
         rating.setAverageGrade(0.0f);
+        newDoctor.setPasswordChanged(false);
         newDoctor.setRating(rating);
         Calendar calendar = calendarRepository.save(new Calendar());
         newDoctor.setCalendar(calendar);

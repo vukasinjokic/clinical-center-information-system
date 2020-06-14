@@ -129,7 +129,7 @@ export default {
         ...mapActions('examination_type',['fetchExaminationTypes', 'deleteType','addType','updateType']),
 
         deleteItem(item){
-            this.deleteType(item.name);
+            this.deleteType(item.id);
         },
         editItem(item){
             this.editedIndex = this.getTypes.indexOf(item);

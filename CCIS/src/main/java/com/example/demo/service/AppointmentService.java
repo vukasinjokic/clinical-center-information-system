@@ -110,7 +110,8 @@ public class AppointmentService {
             float price = getClinic.get().getPriceList().getItems().stream()
                     .filter(item -> item.getExaminationType().getId().equals(getType.getId()))
                     .findAny().get().getPrice();
-
+            if(appointmentDTO.getDiscount() == null)
+                appointmentDTO.setDiscount(0.0f);
             appointment_to_add = new Appointment(date, price, appointmentDTO.getDiscount(), getDoctor, getRoom, getType, getClinic.get());
             getRoom.addAppointment(appointment_to_add);
             getDoctor.addAppointment(appointment_to_add);

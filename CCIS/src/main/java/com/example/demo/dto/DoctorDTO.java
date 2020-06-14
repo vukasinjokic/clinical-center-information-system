@@ -28,6 +28,7 @@ public class DoctorDTO {
     private Boolean passwordChanged;
     private BusinessHoursDTO businessHours;
     private ExaminationType examinationType;
+    private String exTypeId;
     private Collection<AppointmentDTO> appointments;
 
     public DoctorDTO(){}
@@ -57,6 +58,14 @@ public class DoctorDTO {
         if(clinic.getId() == null)
             return;
         this.clinicId = clinic.getId().toString();
+    }
+
+    public String getExTypeId() {
+        return exTypeId;
+    }
+
+    public void setExTypeId(String exTypeId) {
+        this.exTypeId = exTypeId;
     }
 
     public void setClinic(Clinic clinic){

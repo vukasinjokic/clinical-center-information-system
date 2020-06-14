@@ -133,6 +133,7 @@ public class EmailService {
         javaMailSender.send(mail);
     }
 
+    @Async
     public void alertPatientOfAccountVerification(Patient p) {
         SimpleMailMessage mail = new SimpleMailMessage();
 //            mail.setTo(p.getEmail());

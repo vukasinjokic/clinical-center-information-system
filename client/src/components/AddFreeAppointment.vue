@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
-           <v-btn  v-on="on" color="orange lighten-1">Add free appointment</v-btn>
+           <v-btn  v-on="on" @click="resetujFormu" color="orange lighten-1">Add free appointment</v-btn>
         </template>
         <v-card>
           <v-toolbar height="45px" color="primary lighten-1" class="white--text">
@@ -64,7 +64,6 @@
                     item-text="name"
                     return-object
                     @change="doSome"
-                    required
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm = "6">
@@ -140,7 +139,7 @@ export default {
             price: null,
             doctor: "",
             room: {},
-            discount: null,
+            discount: 0,
             discounts: [0,10,20,30,40,50,60,70,80,90,100]
         }
     },
@@ -169,6 +168,7 @@ export default {
         closeDialog(){
             this.dialog = false;
             this.$refs.form.reset();
+            this.discount = 0;
         },
         save(){ 
           if(this.$refs.form.validate()){

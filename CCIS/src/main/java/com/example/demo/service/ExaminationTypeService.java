@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.Repository.*;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,15 +31,17 @@ public class ExaminationTypeService {
         //types.forEach(type -> type.setDuration(type.getDuration()));
         return types;
     }
-    public boolean removeType(String name){
-        ExaminationType examinationType = examinationTypeRepository.findByName(name);
-        List<Doctor> doctors = doctorRepository.findByExaminationTypeId(examinationType.getId());
-        if(doctors.size() != 0)
+    public boolean removeType(Integer id){
+        Optional<ExaminationType> examinationType = examinationTypeRepository.findById(id);
+        List<Doctor> doctors = doctorRepository.findByExaminationTypeId(examinationType.get().getId());
+        long numberOfUsages = appointmentRepository.findNumberOfUsagesExaminationType(examinationType.get().getId());
+
+        if(doctors.size() != 0 || numberOfUsages != 0)
             return false;
 
         List<PriceList> priceLists = priceListRepository.findAll();
-        if(examinationType != null){
-            Optional<PriceListItem> item = priceListItemRepository.findByExaminationTypeId(examinationType.getId());
+        if(examinationType.isPresent()){
+            Optional<PriceListItem> item = priceListItemRepository.findByExaminationTypeId(examinationType.get().getId());
             if(item.isPresent()){
                 PriceListItem listItem = item.get();
                 for(PriceList priceList : priceLists){
@@ -48,27 +51,29 @@ public class ExaminationTypeService {
                 }
 //                priceListItemRepository.delete(listItem);
             }
-            examinationTypeRepository.deleteById(examinationType.getId());
+            examinationTypeRepository.deleteById(examinationType.get().getId());
             return true;
 
         }
         return false;
     }
-    public ExaminationType updateType(ExaminationType forUpdate){
+    public ExaminationType updateType(ExaminationType forUpdate) throws NotFoundException {
         Optional<ExaminationType> findType = examinationTypeRepository.findById(forUpdate.getId());
 
         if(findType.isPresent()){
             ExaminationType examinationType = findType.get();
             List<Appointment> appointments = appointmentRepository.findByExaminationTypeId(examinationType.getId());
             if(appointments.size() == 0){
-                if(!this.validateUsing(forUpdate)){
+                int findUsage = examinationTypeRepository.findUsedName(examinationType.getId(),forUpdate.getName());
+                if(findUsage == 0){
                     examinationType.setName(forUpdate.getName());
                     examinationType.setDuration(forUpdate.getDuration());
                     examinationType = examinationTypeRepository.save(examinationType);
-                    return  examinationType;
+                    return examinationType;
                 }
-                return null;
+                throw new NotFoundException("Name is already used");
             }
+            throw new NotFoundException("Can't update used type.");
         }
         return null;
     }
