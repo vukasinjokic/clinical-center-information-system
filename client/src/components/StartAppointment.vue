@@ -185,7 +185,7 @@ export default {
                 report : this.report, 
                 prescriptionToAdd : this.prescription
             });
-            this.$router.replace(':16/calendar');
+            this.$router.push('doctor/calendar');
         }
         
     },

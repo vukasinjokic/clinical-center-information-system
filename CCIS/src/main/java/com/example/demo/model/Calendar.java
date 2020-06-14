@@ -28,7 +28,8 @@ public class Calendar {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection()
-    @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"))
+    @CollectionTable(name = "event_start_dates", joinColumns = @JoinColumn(name = "calendar_id"), uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"calendar_id", "event_start_dates"})})
     @Column(name = "event_start_dates")
     private List<Date> eventStartDates;
 

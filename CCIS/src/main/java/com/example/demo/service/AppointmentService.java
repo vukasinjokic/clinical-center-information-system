@@ -38,6 +38,8 @@ public class AppointmentService {
     private PatientService patientService;
     @Autowired
     private ClinicAdminService clinicAdminService;
+    @Autowired
+    private PerscriptionRepository perscriptionRepository;
 
     private DoctorValidation doctorValidation = new DoctorValidation();
 
@@ -151,7 +153,7 @@ public class AppointmentService {
     }
 
     public boolean handleAppointmentFinish(AppointmentToFinish appointmentToFinish) {
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentToFinish.appointmentId);
+        Optional<Appointment> appointmentOptional = appointmentRepository.findByIdAndFetchClinicEagerly(appointmentToFinish.appointmentId);
         if(appointmentOptional.isPresent()){
             Appointment appointment = appointmentOptional.get();
             appointment.setReport(appointmentToFinish.report);
@@ -167,7 +169,9 @@ public class AppointmentService {
 
             appointment.getClinic().addPrescription(prescription);
             appointment.setFinished(true);
-
+            prescription.setClinic(appointment.getClinic());
+            
+            perscriptionRepository.save(prescription);
             appointmentRepository.save(appointment);
             return true;
         }
